@@ -1,8 +1,14 @@
 <script setup>
-// ראשי — Practitioner Homepage. Composition of:
-// Hero (brand banner) · Quick Access · Events · Articles · Videos · Back-to-top
+// ראשי — Practitioner Homepage.
+// Two compositions, one page:
+//   desktop/tablet — the original design: Hero · Quick Access · Events ·
+//                    Articles · Videos (unchanged).
+//   phones         — MobileHome: greeting, brand card, live stats,
+//                    צמח היום, then the same content sections.
 import { Head } from '@inertiajs/vue3';
 import { EVENTS, ARTICLES, VIDEOS } from '@/data/mock';
+import { useIsMobile } from '@/composables/useIsMobile';
+import MobileHome from '@/Components/home/MobileHome.vue';
 import HeroPromo from '@/Components/home/HeroPromo.vue';
 import QuickAccess from '@/Components/home/QuickAccess.vue';
 import HomeEvents from '@/Components/home/HomeEvents.vue';
@@ -17,11 +23,14 @@ defineProps({
     articles: { type: Array, default: () => ARTICLES },
     videos: { type: Array, default: () => VIDEOS },
 });
+
+const isMobile = useIsMobile();
 </script>
 
 <template>
     <Head title="ראשי" />
-    <div>
+    <MobileHome v-if="isMobile" :events="events" :articles="articles" :videos="videos" />
+    <div v-else>
         <HeroPromo />
         <QuickAccess />
         <HomeEvents :events="events" />

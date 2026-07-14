@@ -17,9 +17,9 @@ const page = usePage();
 const cart = useCartStore();
 const modeStore = useModeStore();
 
-// TODO(backend): replace with the authenticated practitioner from Inertia
-// shared props (e.g. usePage().props.auth.user) once Laravel provides it.
-const USER = { name: 'נעמי שגב', initials: 'נש', points: '1,240' };
+import { DEMO_USER } from '@/data/user';
+
+const USER = DEMO_USER; // TODO(backend): auth user via Inertia shared props
 
 const currentRoute = computed(() => routeNameFromUrl(page.url));
 // The article detail view highlights the "מאמרים" nav entry.

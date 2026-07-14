@@ -11,6 +11,11 @@ export const PATTERNS = [
     [/(\d[\d.,]*)\s*ג(?![֐-׿])/g, '$1g'], // grams after a number
     [/(\d[\d.,]*)\s*מ״ל/g, '$1 ml'],
     [/^אינטראקציה עם\s+/, 'Interaction with '],
+    // Mobile-home greeting — the name after the comma stays as-is.
+    [/^בוקר טוב, /, 'Good morning, '],
+    [/^צהריים טובים, /, 'Good afternoon, '],
+    [/^ערב טוב, /, 'Good evening, '],
+    [/^לילה טוב, /, 'Good night, '],
     [/^הסר\s+/, 'Remove '],
     [/^הסרת\s+/, 'Remove '],
     [/\bליום\b/g, '/day'],
