@@ -230,6 +230,17 @@ for (let o = 0; o < strong.px.length; o += 4) {
     strong.px[o + 2] = Math.round(255 + (0x28 - 255) * t);
 }
 write('resources/img/trifolium-mark-strong.png', strong);
+// Cream variant for dark surfaces (the mobile app header): ink → warm cream,
+// with the ink ramp folded into alpha so it composites onto any deep green.
+const creamMark = resize(mark, 512, 512);
+for (let o = 0; o < creamMark.px.length; o += 4) {
+    const a = creamMark.px[o + 3] / 255;
+    if (!a) continue;
+    const ink = Math.min(1, (765 - (creamMark.px[o] + creamMark.px[o + 1] + creamMark.px[o + 2])) / (765 - (0x3d + 0x5a + 0x3a)));
+    creamMark.px[o] = 0xf6; creamMark.px[o + 1] = 0xf2; creamMark.px[o + 2] = 0xe4;
+    creamMark.px[o + 3] = Math.round(255 * a * Math.pow(Math.max(0, ink), 0.8));
+}
+write('resources/img/trifolium-mark-cream.png', creamMark);
 write('resources/img/mark-green.png', resize(mark, 512, 512));
 // PWA icons — inverted for punch on a phone home screen: deep herbal-green
 // gradient, mark in warm cream. (The old cream-on-cream icon washed out.)
