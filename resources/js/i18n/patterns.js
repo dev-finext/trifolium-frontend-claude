@@ -11,6 +11,8 @@ export const PATTERNS = [
     [/(\d[\d.,]*)\s*ג(?![֐-׿])/g, '$1g'], // grams after a number
     [/(\d[\d.,]*)\s*מ״ל/g, '$1 ml'],
     [/^אינטראקציה עם\s+/, 'Interaction with '],
+    // Mobile-home ledger kicker: "צמח היום · <form>" — the form is data.
+    [/^צמח היום · /, 'Herb of the day · '],
     // Mobile-home greeting — the name after the comma stays as-is.
     [/^בוקר טוב, /, 'Good morning, '],
     [/^צהריים טובים, /, 'Good afternoon, '],

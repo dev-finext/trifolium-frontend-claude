@@ -1,11 +1,13 @@
 <script setup>
-// צמח היום — the mobile home's signature card. One herb from the dispensary
-// rotates in daily (deterministic by date, so everyone sees the same herb and
-// it survives reloads). Shows the mode-aware name, the clinical blurb from
-// the monograph data, its use-chips — and drops the herb straight into a new
-// formula in the lab.
+// צמח היום — the daily monograph entry of the mobile home "ledger".
+// Set as an editorial entry, not a card: kicker between hairlines, the herb
+// name in display serif, clinical blurb, uses inline, and a text-rule action
+// that drops the herb straight into a new formula in the lab.
+//
+// One herb from the dispensary rotates in daily — deterministic by date, so
+// everyone sees the same herb and it survives reloads. The name respects the
+// active treatment mode (Western botanical / Chinese pinyin) via HerbName.
 import { computed } from 'vue';
-import Icon from '@/Components/ui/Icon.vue';
 import HerbName from '@/Components/mode/HerbName.vue';
 import { HERBS, HERB_BLURBS } from '@/data/mock';
 import { useWizardStore } from '@/stores/wizard';
@@ -31,85 +33,85 @@ function startFormula() {
 </script>
 
 <template>
-    <section class="hotd card" aria-label="צמח היום">
-        <div class="hotd__head">
-            <span class="hotd__kicker">
-                <Icon name="leaf" :size="13" color="var(--accent)" />
-                צמח היום
-            </span>
-            <span class="hotd__form">{{ herb.form }}</span>
+    <section class="ldg-herb" aria-label="צמח היום">
+        <div class="ldg-herb__kicker">
+            <span class="ldg-herb__kicker-line" aria-hidden="true"></span>
+            <span class="ldg-herb__kicker-text">צמח היום · {{ herb.form }}</span>
+            <span class="ldg-herb__kicker-line" aria-hidden="true"></span>
         </div>
 
-        <div class="hotd__name">
-            <HerbName :herb="herb" :primary-size="21" :secondary-size="14" />
+        <div class="ldg-herb__name">
+            <HerbName :herb="herb" :primary-size="26" :secondary-size="16" :primary-weight="500" />
         </div>
 
-        <p v-if="blurb" class="hotd__blurb">{{ blurb }}</p>
+        <p v-if="blurb" class="ldg-herb__blurb">{{ blurb }}</p>
 
-        <div v-if="herb.uses?.length" class="hotd__uses">
-            <span v-for="use in herb.uses" :key="use" class="hotd__use">{{ use }}</span>
-        </div>
+        <p v-if="herb.uses?.length" class="ldg-herb__uses">
+            {{ herb.uses.join(' · ') }}
+        </p>
 
-        <button class="btn btn--primary hotd__cta" @click="startFormula">
-            <Icon name="flask" :size="16" color="#fff" />
+        <button class="ldg-herb__go" @click="startFormula">
             התחל רקיחה עם הצמח
+            <span aria-hidden="true">←</span>
         </button>
     </section>
 </template>
 
 <style>
-.hotd {
-    padding: 18px 18px 16px;
-    border-inline-start: 3px solid var(--accent);
-}
-.hotd__head {
+.ldg-herb { padding: 34px 20px 0; text-align: center; }
+
+.ldg-herb__kicker {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+    gap: 14px;
 }
-.hotd__kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+.ldg-herb__kicker-line { flex: 1; height: 1px; background: var(--ldg-rule, rgba(34, 48, 31, 0.18)); }
+.ldg-herb__kicker-text {
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-}
-.hotd__form {
-    font-size: 11.5px;
     font-weight: 600;
-    color: var(--ink-3);
-    background: var(--surface-sunk);
-    border-radius: 999px;
-    padding: 3px 10px;
+    letter-spacing: 0.18em;
+    color: var(--ldg-amber, #8f5b1c);
+    white-space: nowrap;
 }
-.hotd__name { margin-bottom: 8px; }
-.hotd__blurb {
-    margin: 0 0 12px;
+
+.ldg-herb__name { margin-top: 16px; }
+/* HerbName sets the Latin face inline — the ledger swaps it for the brand serif */
+.ldg-herb__name [style*='font-latin'] {
+    font-family: 'Cormorant Garamond', serif !important;
+}
+
+.ldg-herb__blurb {
+    margin: 12px auto 0;
+    max-width: 42ch;
     font-size: 13.5px;
-    line-height: 1.65;
+    line-height: 1.75;
     color: var(--ink-2);
     text-wrap: pretty;
 }
-.hotd__uses {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 14px;
-}
-.hotd__use {
-    font-size: 12px;
+.ldg-herb__uses {
+    margin: 10px 0 0;
+    font-size: 12.5px;
     font-weight: 600;
-    color: var(--accent-ink);
-    background: var(--accent-tint);
-    border-radius: 999px;
-    padding: 3px 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
 }
-.hotd__cta {
-    width: 100%;
-    height: 44px;
+
+.ldg-herb__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 6px 2px;
+    background: none;
+    border: 0;
+    border-bottom: 1.5px solid var(--ldg-amber, #8f5b1c);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ldg-amber, #8f5b1c);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
+.ldg-herb__go:active { color: var(--ldg-ink, #22301f); border-color: var(--ldg-ink, #22301f); }
 </style>
