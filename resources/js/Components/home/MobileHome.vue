@@ -112,12 +112,14 @@ const stats = computed(() => [
     color: var(--ink-3);
 }
 
-/* brand card — content up top, the still-life strip along the base.
-   Background blends into the art's top gradient stop so the seam vanishes. */
+/* brand card — one composition: mark + tagline up top, and the CTA sitting
+   ON the still-life "counter", in the calm middle between the decoction pot
+   (left of the strip) and the jars (right). Background blends into the art's
+   top gradient stop so the seam vanishes. */
 .mhome__brand {
     position: relative;
     margin: 0 14px;
-    min-height: 296px;
+    min-height: 272px;
     display: flex;
     align-items: stretch;
     background: linear-gradient(180deg, #f8faf3 0%, #f4f6ef 100%);
@@ -132,7 +134,7 @@ const stats = computed(() => [
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    padding: 24px 18px 120px; /* bottom clears the art strip */
+    padding: 22px 18px 26px;
 }
 .mhome__brand-mark {
     height: 84px;
@@ -148,10 +150,11 @@ const stats = computed(() => [
     color: var(--accent-ink);
 }
 .mhome__brand-cta {
-    height: 44px;
-    padding: 0 22px;
+    margin-top: auto; /* drops onto the art strip, between pot and jars */
+    height: 46px;
+    padding: 0 24px;
     font-size: 14.5px;
-    box-shadow: 0 8px 20px -8px rgba(42, 64, 40, 0.55);
+    box-shadow: 0 10px 24px -8px rgba(42, 64, 40, 0.6);
 }
 
 /* stat chips */
