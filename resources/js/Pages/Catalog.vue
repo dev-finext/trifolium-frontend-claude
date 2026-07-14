@@ -10,6 +10,7 @@ import ProductCard from '@/Components/catalog/ProductCard.vue';
 import PatientPickerModal from '@/Components/catalog/PatientPickerModal.vue';
 import { visit } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart';
+import { useIsMobile } from '@/composables/useIsMobile';
 import { PRODUCTS, CATEGORIES, PATIENTS } from '@/data/mock';
 
 const props = defineProps({
@@ -46,6 +47,12 @@ const productForm = (p) => {
 
 const FORMS = ['תמיסה', 'כמוסות', 'אבקה', 'תה', 'משחה'];
 const PRODUCT_TAGS = ['נמכר ביותר', 'חדש'];
+
+// On phones the sidebar stacks above the grid (the mobile grid collapse), so
+// an always-open 900px filter panel buried the products. It collapses behind
+// a toggle instead; desktop renders the sidebar permanently, as designed.
+const isMobile = useIsMobile();
+const filtersOpen = ref(false);
 
 const activeCat = ref('all');
 const pickFor = ref(null); // product awaiting patient selection
@@ -146,10 +153,20 @@ function clearAll() {
                 </div>
             </div>
 
+            <!-- Mobile: filters collapse behind this toggle (hidden on desktop) -->
+            <button v-if="isMobile" class="catalog-filters-toggle" @click="filtersOpen = !filtersOpen">
+                <Icon name="filter" :size="15" color="var(--ink-2)" />
+                סינון
+                <span v-if="activeCount > 0" class="catalog-filters-toggle__count num">{{ activeCount }}</span>
+                <Icon :name="filtersOpen ? 'chevron_down' : 'chevron_left'" :size="15" color="var(--ink-3)" style="margin-inline-start: auto" />
+            </button>
+
             <!-- Two-column layout: sidebar (right in RTL) + grid -->
             <div style="display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start">
                 <!-- FILTER SIDEBAR -->
                 <aside
+                    v-show="!isMobile || filtersOpen"
+                    class="catalog-filters"
                     :style="{
                         background: 'var(--surface)',
                         border: '1px solid var(--line)',
@@ -305,3 +322,40 @@ function clearAll() {
         />
     </div>
 </template>
+
+<style>
+/* Mobile filter toggle — rendered only under the phone tier (v-if isMobile) */
+.catalog-filters-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.catalog-filters-toggle__count {
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* When stacked above the grid on phones, the panel must scroll with the page
+   (its desktop position:sticky is an inline style, hence the !important). */
+html.tf-mobile .catalog-filters { position: static !important; }
+</style>
