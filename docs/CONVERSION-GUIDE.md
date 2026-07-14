@@ -7,6 +7,7 @@ follows — read it together with the canonical example,
 [`resources/js/Pages/Contact.vue`](../resources/js/Pages/Contact.vue).
 
 ## Golden rules
+test
 
 1. **High fidelity.** Colors, typography, spacing, copy and interactions in the
    prototype are final. Port them exactly — do not redesign, "improve", or
