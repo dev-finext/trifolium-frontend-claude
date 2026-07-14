@@ -143,6 +143,39 @@ function resize(img, nw, nh) {
     return { w: nw, h: nh, px: out };
 }
 
+/** Inverted app icon: deep-green vertical gradient, the mark re-inked in warm
+ *  cream, centered at `scale`. A gentle gamma (0.7) on the ink ramp thickens
+ *  the fine strokes so the botanical mark stays legible at 60px on a phone
+ *  home screen. The circle sits inside the maskable safe zone (central 80%). */
+function iconifyInverted(mark, size, [t1r, t1g, t1b], [t2r, t2g, t2b], [fr, fg, fb], scale = 0.78) {
+    const target = Math.round(size * scale);
+    const m = resize(mark, target, Math.round(target * mark.h / mark.w));
+    const px = Buffer.alloc(size * size * 4);
+    for (let y = 0; y < size; y++) {
+        const k = y / (size - 1);
+        const br = Math.round(t1r + (t2r - t1r) * k), bgc = Math.round(t1g + (t2g - t1g) * k), bb = Math.round(t1b + (t2b - t1b) * k);
+        for (let x = 0; x < size; x++) {
+            const o = (y * size + x) * 4;
+            px[o] = br; px[o + 1] = bgc; px[o + 2] = bb; px[o + 3] = 255;
+        }
+    }
+    const ox = Math.round((size - m.w) / 2), oy = Math.round((size - m.h) / 2);
+    // Darkest ink of the green-recolored mark (#3d5a3a) normalizes the ramp.
+    const denom = 765 - (0x3d + 0x5a + 0x3a);
+    for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) {
+        const so = (y * m.w + x) * 4, a = m.px[so + 3] / 255;
+        if (!a) continue;
+        const ink = Math.min(1, (765 - (m.px[so] + m.px[so + 1] + m.px[so + 2])) / denom);
+        const t = a * Math.pow(Math.max(0, ink), 0.7);
+        if (!t) continue;
+        const dо = ((oy + y) * size + (ox + x)) * 4;
+        px[dо] = Math.round(px[dо] + (fr - px[dо]) * t);
+        px[dо + 1] = Math.round(px[dо + 1] + (fg - px[dо + 1]) * t);
+        px[dо + 2] = Math.round(px[dо + 2] + (fb - px[dо + 2]) * t);
+    }
+    return { w: size, h: size, px };
+}
+
 /** Composite onto a solid background, mark centered at `scale` of canvas. */
 function iconify(mark, size, [br, bg, bb], scale = 0.66) {
     const target = Math.round(size * scale);
@@ -198,6 +231,11 @@ for (let o = 0; o < strong.px.length; o += 4) {
 }
 write('resources/img/trifolium-mark-strong.png', strong);
 write('resources/img/mark-green.png', resize(mark, 512, 512));
-write('public/icons/icon-512.png', iconify(mark, 512, CREAM));
-write('public/icons/icon-192.png', iconify(mark, 192, CREAM));
-write('public/icons/icon-180.png', iconify(mark, 180, CREAM));
+// PWA icons — inverted for punch on a phone home screen: deep herbal-green
+// gradient, mark in warm cream. (The old cream-on-cream icon washed out.)
+const ICON_TOP = [0x40, 0x5e, 0x3c];    // lighter herbal green
+const ICON_BOTTOM = [0x24, 0x3a, 0x22]; // deep forest
+const ICON_INK = [0xf6, 0xf2, 0xe4];    // warm cream mark
+write('public/icons/icon-512.png', iconifyInverted(mark, 512, ICON_TOP, ICON_BOTTOM, ICON_INK));
+write('public/icons/icon-192.png', iconifyInverted(mark, 192, ICON_TOP, ICON_BOTTOM, ICON_INK));
+write('public/icons/icon-180.png', iconifyInverted(mark, 180, ICON_TOP, ICON_BOTTOM, ICON_INK));

@@ -9,7 +9,7 @@
 //
 // Registered with the deployment base as its scope (see resources/js/app.js),
 // so the same file works on GitHub Pages (/repo-name/) and under Laravel (/).
-const CACHE = 'trifolium-v2'; // bumped: brand assets replaced (real logo)
+const CACHE = 'trifolium-v3'; // bumped: new inverted app icons (icons/ is cache-first)
 
 self.addEventListener('install', (event) => {
     // Activate the new worker immediately on deploy.
