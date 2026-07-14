@@ -1,0 +1,1331 @@
+// Mock data — the API contract sketch.
+//
+// Ported verbatim from the design handoff (data.js). Every exported array/object
+// shows the exact shape the matching Laravel endpoint should return; replace
+// consumers of this module with real Inertia props / API calls incrementally.
+// (Pages already declare these as prop defaults, so a controller that passes
+// real data simply wins over the mock.)
+import echinaceaImg from '@img/echinacea.jpg';
+// Herbs (צמחי מרפא) — common Western/Chinese/Mediterranean medicinal plants used in Israeli practice
+const HERBS = [
+  { id: 'ashwagandha', heb: 'אשווגנדה', lat: 'Withania somnifera', cn: '睡茄 · Shuì Qié', category: 'adapt', uses: ['חרדה', 'שינה', 'עייפות'], price: 0.85, stock: 'in', form: 'אבקה' },
+  { id: 'echinacea',   heb: 'אכינצאה',  lat: 'Echinacea purpurea', cn: '紫锥菊 · Zǐ Zhuī Jú', category: 'immune', uses: ['חיזוק חיסון', 'הצטננות'], price: 0.62, stock: 'in', form: 'תמצית' },
+  { id: 'calendula',   heb: 'ציפורן חתול', lat: 'Calendula officinalis', cn: '金盏花 · Jīn Zhǎn Huā', category: 'skin', uses: ['עור', 'דלקת'], price: 0.48, stock: 'in', form: 'פרחים' },
+  { id: 'chamomile',   heb: 'בבונג',    lat: 'Matricaria chamomilla', cn: '洋甘菊 · Yáng Gān Jú', category: 'nerv', uses: ['שינה', 'עיכול', 'הרגעה'], price: 0.34, stock: 'in', form: 'פרחים' },
+  { id: 'valerian',    heb: 'ולריאן',   lat: 'Valeriana officinalis', cn: '缬草 · Xié Cǎo', category: 'nerv', uses: ['שינה', 'חרדה'], price: 0.71, stock: 'in', form: 'שורש' },
+  { id: 'passionflower', heb: 'פסיפלורה', lat: 'Passiflora incarnata', cn: '西番莲 · Xī Fān Lián', category: 'nerv', uses: ['חרדה', 'שינה'], price: 0.68, stock: 'in', form: 'עלים' },
+  { id: 'milkthistle', heb: 'גדילן מצוי', lat: 'Silybum marianum', cn: '水飞蓟 · Shuǐ Fēi Jì', category: 'liver', uses: ['כבד', 'ניקוי רעלים'], price: 0.79, stock: 'in', form: 'זרעים' },
+  { id: 'dandelion',   heb: 'שן הארי',  lat: 'Taraxacum officinale', cn: '蒲公英 · Pú Gōng Yīng', category: 'liver', uses: ['כבד', 'עיכול', 'משתן'], price: 0.42, stock: 'in', form: 'שורש' },
+  { id: 'nettle',      heb: 'סרפד',     lat: 'Urtica dioica', cn: '荨麻 · Qián Má', category: 'mineral', uses: ['אנמיה', 'אלרגיה'], price: 0.39, stock: 'in', form: 'עלים' },
+  { id: 'ginger',      heb: 'זנגביל',   lat: 'Zingiber officinale', cn: '生姜 · Shēng Jiāng', category: 'digest', uses: ['בחילה', 'עיכול', 'דלקת'], price: 0.45, stock: 'in', form: 'שורש מיובש' },
+  { id: 'turmeric',    heb: 'כורכום',   lat: 'Curcuma longa', cn: '姜黄 · Jiāng Huáng', category: 'digest', uses: ['דלקת', 'מפרקים'], price: 0.52, stock: 'in', form: 'שורש' },
+  { id: 'licorice',    heb: 'שוש קרח',  lat: 'Glycyrrhiza glabra', cn: '甘草 · Gān Cǎo', category: 'adapt', uses: ['קיבה', 'יותרת הכליה'], price: 0.58, stock: 'in', form: 'שורש' },
+  { id: 'rhodiola',    heb: 'רודיולה',  lat: 'Rhodiola rosea', cn: '红景天 · Hóng Jǐng Tiān', category: 'adapt', uses: ['עייפות', 'מאמץ נפשי'], price: 1.20, stock: 'in', form: 'שורש' },
+  { id: 'lemonbalm',   heb: 'מליסה',    lat: 'Melissa officinalis', cn: '香蜂草 · Xiāng Fēng Cǎo', category: 'nerv', uses: ['שינה', 'הרגעה', 'עיכול'], price: 0.41, stock: 'in', form: 'עלים' },
+  { id: 'sage',        heb: 'מרווה',    lat: 'Salvia officinalis', cn: '鼠尾草 · Shǔ Wěi Cǎo', category: 'digest', uses: ['גרון', 'הזעה'], price: 0.36, stock: 'in', form: 'עלים' },
+  { id: 'rosemary',    heb: 'רוזמרין',  lat: 'Rosmarinus officinalis', cn: '迷迭香 · Mí Dié Xiāng', category: 'circ', uses: ['ריכוז', 'מחזור דם'], price: 0.38, stock: 'in', form: 'עלים' },
+  { id: 'hawthorn',    heb: 'עוזרר',    lat: 'Crataegus monogyna', cn: '山楂 · Shān Zhā', category: 'circ', uses: ['לב', 'לחץ דם'], price: 0.49, stock: 'low', form: 'פירות' },
+  { id: 'astragalus',  heb: 'אסטרגלוס', lat: 'Astragalus membranaceus', cn: '黄芪 · Huáng Qí', category: 'immune', uses: ['חיסון', 'מרץ'], price: 0.88, stock: 'in', form: 'שורש' },
+  { id: 'reishi',      heb: 'ריישי',    lat: 'Ganoderma lucidum', cn: '灵芝 · Líng Zhī', category: 'immune', uses: ['חיסון', 'שינה'], price: 1.45, stock: 'in', form: 'פטריה' },
+  { id: 'lavender',    heb: 'לבנדר',    lat: 'Lavandula angustifolia', cn: '薰衣草 · Xūn Yī Cǎo', category: 'nerv', uses: ['שינה', 'הרגעה'], price: 0.55, stock: 'in', form: 'פרחים' },
+  { id: 'stjohnswort', heb: 'פרע מחורר', lat: 'Hypericum perforatum', cn: '贯叶连翘 · Guàn Yè Lián Qiào', category: 'nerv', uses: ['מצב רוח', 'דיכאון קל'], price: 0.64, stock: 'in', form: 'פרחים' },
+  { id: 'ginseng',     heb: 'ג׳ינסנג',  lat: 'Panax ginseng', cn: '人参 · Rén Shēn', category: 'adapt', uses: ['עייפות', 'ריכוז'], price: 1.65, stock: 'in', form: 'שורש' },
+  { id: 'schisandra',  heb: 'שיזנדרה',  lat: 'Schisandra chinensis', cn: '五味子 · Wǔ Wèi Zǐ', category: 'adapt', uses: ['כבד', 'סיבולת'], price: 1.10, stock: 'in', form: 'פירות' },
+  { id: 'olive',       heb: 'עלי זית',  lat: 'Olea europaea', cn: '橄榄叶 · Gǎn Lǎn Yè', category: 'circ', uses: ['לחץ דם', 'חיסון'], price: 0.31, stock: 'in', form: 'עלים' },
+
+  // ── Respiratory (מערכת הנשימה) ──
+  { id: 'thyme',       heb: 'קורנית',    lat: 'Thymus vulgaris', cn: '百里香 · Bǎi Lǐ Xiāng', category: 'resp', uses: ['שיעול', 'ליחה', 'חיטוי'], price: 0.37, stock: 'in', form: 'עלים' },
+  { id: 'mullein',     heb: 'בוצין',     lat: 'Verbascum thapsus', cn: '毛蕊花 · Máo Ruǐ Huā', category: 'resp', uses: ['שיעול', 'ריאות', 'גרון'], price: 0.44, stock: 'in', form: 'פרחים' },
+  { id: 'marshmallow', heb: 'חטמית רפואית', lat: 'Althaea officinalis', cn: '药蜀葵 · Yào Shǔ Kuí', category: 'resp', uses: ['שיעול יבש', 'ריריות', 'קיבה'], price: 0.52, stock: 'in', form: 'שורש' },
+  { id: 'plantain',    heb: 'לחך',       lat: 'Plantago lanceolata', cn: '车前 · Chē Qián', category: 'resp', uses: ['שיעול', 'גרון', 'עור'], price: 0.33, stock: 'in', form: 'עלים' },
+  { id: 'eucalyptus',  heb: 'אקליפטוס',  lat: 'Eucalyptus globulus', cn: '桉叶 · Ān Yè', category: 'resp', uses: ['ליחה', 'שיעול', 'חיטוי'], price: 0.34, stock: 'in', form: 'עלים' },
+  { id: 'elder',       heb: 'סמבוק שחור', lat: 'Sambucus nigra', cn: '接骨木 · Jiē Gǔ Mù', category: 'immune', uses: ['חיסון', 'הצטננות', 'חום'], price: 0.58, stock: 'in', form: 'פרחים ופירות' },
+
+  // ── Digestion (עיכול) ──
+  { id: 'peppermint',  heb: 'מנטה',      lat: 'Mentha piperita', cn: '薄荷 · Bò He', category: 'digest', uses: ['עיכול', 'בחילה', 'גזים'], price: 0.35, stock: 'in', form: 'עלים' },
+  { id: 'fennel',      heb: 'שומר',      lat: 'Foeniculum vulgare', cn: '茴香 · Huí Xiāng', category: 'digest', uses: ['גזים', 'התכווצויות', 'הנקה'], price: 0.34, stock: 'in', form: 'זרעים' },
+  { id: 'yarrow',      heb: 'אכילאה',    lat: 'Achillea millefolium', cn: '蓍草 · Shī Cǎo', category: 'digest', uses: ['דימום', 'חום', 'עיכול'], price: 0.41, stock: 'in', form: 'פרחים' },
+  { id: 'cinnamon',    heb: 'קינמון',    lat: 'Cinnamomum verum', cn: '肉桂 · Ròu Guì', category: 'digest', uses: ['סוכר בדם', 'עיכול', 'מחזור דם'], price: 0.39, stock: 'in', form: 'קליפה' },
+  { id: 'cardamom',    heb: 'הל',        lat: 'Elettaria cardamomum', cn: '小豆蔻 · Xiǎo Dòu Kòu', category: 'digest', uses: ['עיכול', 'גזים', 'בחילה'], price: 0.72, stock: 'in', form: 'זרעים' },
+  { id: 'clove',       heb: 'ציפורן',    lat: 'Syzygium aromaticum', cn: '丁香 · Dīng Xiāng', category: 'digest', uses: ['חיטוי', 'כאבי שיניים', 'עיכול'], price: 0.61, stock: 'in', form: 'ניצנים' },
+  { id: 'gentian',     heb: 'גנציאנה צהובה', lat: 'Gentiana lutea', cn: '龙胆 · Lóng Dǎn', category: 'digest', uses: ['ממריץ עיכול', 'מרה', 'תיאבון'], price: 0.78, stock: 'in', form: 'שורש' },
+  { id: 'wormwood',    heb: 'לענה',      lat: 'Artemisia absinthium', cn: '苦艾 · Kǔ Ài', category: 'digest', uses: ['תולעים', 'מרה', 'עיכול'], price: 0.45, stock: 'low', form: 'עלים' },
+
+  // ── Nervous system (מערכת עצבים) ──
+  { id: 'gotukola',    heb: 'גוטו קולה', lat: 'Centella asiatica', cn: '积雪草 · Jī Xuě Cǎo', category: 'nerv', uses: ['ריכוז', 'עור', 'זיכרון'], price: 0.66, stock: 'in', form: 'עלים' },
+  { id: 'oats',        heb: 'שיבולת שועל', lat: 'Avena sativa', cn: '燕麦 · Yàn Mài', category: 'nerv', uses: ['מערכת עצבים', 'שחיקה', 'חרדה'], price: 0.32, stock: 'in', form: 'עשב' },
+  { id: 'skullcap',    heb: 'סקולקאפ',   lat: 'Scutellaria lateriflora', cn: '美黄芩 · Měi Huáng Qín', category: 'nerv', uses: ['חרדה', 'מתח', 'שינה'], price: 0.70, stock: 'in', form: 'עשב' },
+
+  // ── Circulation & heart (מחזור דם ולב) ──
+  { id: 'motherwort',  heb: 'לב הארי',   lat: 'Leonurus cardiaca', cn: '益母草 · Yì Mǔ Cǎo', category: 'circ', uses: ['לב', 'חרדה', 'וסת'], price: 0.42, stock: 'in', form: 'עשב' },
+  { id: 'ginkgo',      heb: 'גינקו',     lat: 'Ginkgo biloba', cn: '银杏 · Yín Xìng', category: 'circ', uses: ['זיכרון', 'מחזור דם מוחי', 'ריכוז'], price: 0.84, stock: 'in', form: 'עלים' },
+  { id: 'garlic',      heb: 'שום',       lat: 'Allium sativum', cn: '大蒜 · Dà Suàn', category: 'circ', uses: ['לחץ דם', 'כולסטרול', 'חיסון'], price: 0.30, stock: 'in', form: 'שן יבשה' },
+
+  // ── Women's health (בריאות האישה) ──
+  { id: 'vitex',       heb: 'שיח אברהם', lat: 'Vitex agnus-castus', cn: '牡荆 · Mǔ Jīng', category: 'women', uses: ['איזון הורמונלי', 'וסת', 'גיל המעבר'], price: 0.69, stock: 'in', form: 'פירות' },
+  { id: 'blackcohosh', heb: 'קוהוש שחור', lat: 'Actaea racemosa', cn: '升麻 · Shēng Má', category: 'women', uses: ['גיל המעבר', 'גלי חום'], price: 0.94, stock: 'in', form: 'שורש' },
+  { id: 'raspberry',   heb: 'עלי פטל',   lat: 'Rubus idaeus', cn: '覆盆子 · Fù Pén Zǐ', category: 'women', uses: ['רחם', 'הריון', 'וסת'], price: 0.36, stock: 'in', form: 'עלים' },
+
+  // ── Urinary (דרכי שתן) ──
+  { id: 'cranberry',   heb: 'חמוצית',    lat: 'Vaccinium macrocarpon', cn: '蔓越莓 · Màn Yuè Méi', category: 'urin', uses: ['דרכי שתן', 'שלפוחית'], price: 0.74, stock: 'in', form: 'פירות' },
+  { id: 'uvaursi',     heb: 'ענבי דוב',  lat: 'Arctostaphylos uva-ursi', cn: '熊果 · Xióng Guǒ', category: 'urin', uses: ['דלקת שלפוחית', 'משתן'], price: 0.63, stock: 'in', form: 'עלים' },
+  { id: 'goldenrod',   heb: 'שבט הזהב',  lat: 'Solidago virgaurea', cn: '一枝黄花 · Yī Zhī Huáng Huā', category: 'urin', uses: ['כליות', 'משתן', 'דלקת'], price: 0.47, stock: 'in', form: 'פרחים' },
+
+  // ── Skin (עור) ──
+  { id: 'burdock',     heb: 'לפה גדולה', lat: 'Arctium lappa', cn: '牛蒡 · Niú Bàng', category: 'skin', uses: ['עור', 'ניקוי רעלים', 'אקנה'], price: 0.43, stock: 'in', form: 'שורש' },
+  { id: 'redclover',   heb: 'תלתן אדום', lat: 'Trifolium pratense', cn: '红车轴草 · Hóng Chē Zhóu Cǎo', category: 'skin', uses: ['עור', 'גיל המעבר', 'לימפה'], price: 0.40, stock: 'in', form: 'פרחים' },
+
+  // ── Classic Chinese Materia Medica (for preset formulas) ──
+  { id: 'guizhi',     heb: 'גוי ג׳י',          lat: 'Cinnamomum cassia',           cn: '桂枝 · Guì Zhī',         category: 'circ',   uses: ['שחרור חיצון', 'חימום מרידיאנים', 'לב'],      price: 0.52, stock: 'in', form: 'ענף' },
+  { id: 'baishao',    heb: 'ביי שאו',            lat: 'Paeonia lactiflora',          cn: '白芍 · Bái Sháo',        category: 'women',  uses: ['הזנת דם', 'כיבוי כבד', 'כאב'],                price: 0.74, stock: 'in', form: 'שורש' },
+  { id: 'dazao',      heb: 'דא ג׳או',           lat: 'Ziziphus jujuba',             cn: '大枣 · Dà Zǎo',          category: 'adapt',  uses: ['הזנת Qi', 'הרגעה', 'גיוס תרופות'],            price: 0.38, stock: 'in', form: 'פרי' },
+  { id: 'baitouweng', heb: 'ביי טאו וונג',       lat: 'Pulsatilla chinensis',        cn: '白头翁 · Bái Tóu Wēng',  category: 'digest', uses: ['ניקוי חום-רעלים', 'דיזנטריה', 'דלקת'],        price: 0.68, stock: 'in', form: 'שורש' },
+  { id: 'huanglian',  heb: 'הואנג ליאן',         lat: 'Coptis chinensis',            cn: '黄连 · Huáng Lián',      category: 'digest', uses: ['ניקוי חום', 'דלקת', 'סוכרת'],                 price: 1.20, stock: 'in', form: 'שורש' },
+  { id: 'huangbai',   heb: 'הואנג בּאי',         lat: 'Phellodendron amurense',      cn: '黄柏 · Huáng Bǎi',       category: 'urin',   uses: ['חום-לחות', 'כליות', 'עור'],                    price: 0.88, stock: 'in', form: 'קליפה' },
+  { id: 'qinpi',      heb: 'צ׳ין פּי',          lat: 'Fraxinus rhynchophylla',      cn: '秦皮 · Qín Pí',          category: 'digest', uses: ['ניקוי חום', 'עיניים', 'מעיים'],               price: 0.61, stock: 'in', form: 'קליפה' },
+  { id: 'danggui',    heb: 'דאנג גוּאי',         lat: 'Angelica sinensis',           cn: '当归 · Dāng Guī',        category: 'women',  uses: ['הזנת דם', 'מחזור וסת', 'כאבים'],              price: 0.95, stock: 'in', form: 'שורש' },
+  { id: 'baizhu',     heb: 'ביי ג׳ו',           lat: 'Atractylodes macrocephala',   cn: '白术 · Bái Zhú',         category: 'adapt',  uses: ['חיזוק Qi טחול', 'ייבוש לחות', 'עיכול'],       price: 0.82, stock: 'in', form: 'שורש' },
+  { id: 'fuling',     heb: 'פוּ לינג',           lat: 'Poria cocos',                 cn: '茯苓 · Fú Líng',         category: 'adapt',  uses: ['ניקוז לחות', 'הרגעה', 'טחול'],               price: 0.76, stock: 'in', form: 'פטריה' },
+  { id: 'chaihu',     heb: 'צ׳אי הוּ',           lat: 'Bupleurum chinense',          cn: '柴胡 · Chái Hú',         category: 'liver',  uses: ['שחרור Qi כבד', 'חום', 'הרמת יאנג'],           price: 0.90, stock: 'in', form: 'שורש' },
+  { id: 'shudihuang', heb: 'שוּ דּי הוּאנג',     lat: 'Rehmannia glutinosa',         cn: '熟地黄 · Shú Dì Huáng',  category: 'adapt',  uses: ['הזנת Yin כליות', 'דם', 'עצמות'],             price: 0.85, stock: 'in', form: 'שורש מעובד' },
+  { id: 'shanyurou',  heb: 'שאן ג׳וּ רוּ',      lat: 'Cornus officinalis',          cn: '山茱萸 · Shān Zhū Yú',   category: 'adapt',  uses: ['הזנת Yin', 'כליות-כבד', 'סוגר אסנציות'],    price: 1.10, stock: 'in', form: 'פרי' },
+  { id: 'shanyao',    heb: 'שאן יאו',            lat: 'Dioscorea opposita',          cn: '山药 · Shān Yào',        category: 'adapt',  uses: ['הזנת Qi', 'כליות-ריאות-טחול'],               price: 0.58, stock: 'in', form: 'שורש' },
+  { id: 'zexie',      heb: 'זה שייה',            lat: 'Alisma orientale',            cn: '泽泻 · Zé Xiè',          category: 'urin',   uses: ['ניקוז לחות-חום', 'כליות', 'משתן'],            price: 0.55, stock: 'in', form: 'שורש' },
+  { id: 'mudanpi',    heb: 'מוּ דאן פּי',        lat: 'Paeonia suffruticosa',        cn: '牡丹皮 · Mǔ Dān Pí',     category: 'circ',   uses: ['קירור דם', 'הפעלת דם', 'ניקוי חום'],          price: 0.92, stock: 'in', form: 'קליפת שורש' },
+  { id: 'chuanxiong', heb: 'צ׳ואן שיונג',       lat: 'Ligusticum chuanxiong',       cn: '川芎 · Chuān Xiōng',     category: 'circ',   uses: ['הפעלת דם', 'כאב', 'ראש'],                     price: 0.78, stock: 'in', form: 'שורש' },
+];
+
+// Tradition of origin — drives the Chinese-mode ingredient search grouping
+// (classic Chinese materia medica is shown first, then a divider, then the
+// Western herbs). Anything not listed here is treated as Western.
+const CN_HERB_IDS = new Set([
+  'ginseng', 'astragalus', 'reishi', 'schisandra', 'licorice', 'rhodiola',
+  'ginger', 'cinnamon', 'turmeric', 'hawthorn', 'gotukola', 'motherwort',
+  'ginkgo', 'peppermint', 'burdock', 'blackcohosh', 'fennel', 'clove', 'cardamom',
+  'guizhi', 'baishao', 'dazao', 'baitouweng', 'huanglian', 'huangbai', 'qinpi',
+  'danggui', 'baizhu', 'fuling', 'chaihu', 'shudihuang', 'shanyurou', 'shanyao',
+  'zexie', 'mudanpi', 'chuanxiong',
+]);
+HERBS.forEach((h) => { h.origin = CN_HERB_IDS.has(h.id) ? 'cn' : 'west'; });
+
+const CATEGORIES = [
+  { id: 'all', heb: 'הכל' },
+  { id: 'adapt', heb: 'אדפטוגנים' },
+  { id: 'nerv', heb: 'מערכת עצבים' },
+  { id: 'immune', heb: 'חיסון' },
+  { id: 'digest', heb: 'עיכול' },
+  { id: 'liver', heb: 'כבד' },
+  { id: 'circ', heb: 'מחזור דם ולב' },
+  { id: 'resp', heb: 'מערכת הנשימה' },
+  { id: 'women', heb: 'בריאות האישה' },
+  { id: 'urin', heb: 'דרכי שתן' },
+  { id: 'skin', heb: 'עור' },
+  { id: 'mineral', heb: 'מינרלים' },
+];
+
+// Shelf products (מוצרי מדף) — ready-made compounds & tinctures
+const PRODUCTS = [
+  { id: 'p1', heb: 'תמיסת שינה רגועה', sub: 'ולריאן · פסיפלורה · מליסה', price: 89, vol: '50 ml', tag: 'נמכר ביותר' },
+  { id: 'p2', heb: 'מיקס חיסון יומי', sub: 'אכינצאה · אסטרגלוס · זנגביל', price: 124, vol: '60 כמוסות' },
+  { id: 'p3', heb: 'אדפטוגן בוקר', sub: 'אשווגנדה · רודיולה · שוש', price: 142, vol: '100 גרם אבקה' },
+  { id: 'p4', heb: 'תמצית עיכול', sub: 'כורכום · זנגביל · שן הארי', price: 76, vol: '30 ml' },
+  { id: 'p5', heb: 'משקה לב ולחץ דם', sub: 'עוזרר · עלי זית', price: 98, vol: '50 ml', tag: 'חדש' },
+  { id: 'p6', heb: 'משחת קלנדולה', sub: 'ציפורן חתול · שמן זית', price: 54, vol: '50 גרם' },
+  { id: 'p7', heb: 'תמיסת מצב רוח', sub: 'פרע מחורר · מליסה · לבנדר', price: 92, vol: '50 ml' },
+  { id: 'p8', heb: 'תה ערב', sub: 'בבונג · לבנדר · מליסה', price: 38, vol: '40 שקיות' },
+  { id: 'p9', heb: 'תמצית כבד', sub: 'גדילן · שן הארי · שיזנדרה', price: 108, vol: '60 ml' },
+];
+
+// Patients (מטופלים)
+const PATIENTS = [
+  { id: 'pt1', tz: '203731807', heb: 'דנה כהן', age: 42, last: 'לפני 3 ימים', tag: 'פעיל', initials: 'דכ' },
+  { id: 'pt2', tz: '207463614', heb: 'יעל ברק', age: 58, last: 'לפני שבוע', tag: 'פעיל', initials: 'יב', meds: ['Coumadin', 'Eltroxin'] },
+  { id: 'pt3', tz: '211195421', heb: 'אלון מזרחי', age: 35, last: 'לפני יומיים', tag: 'פעיל', initials: 'אמ' },
+  { id: 'pt4', tz: '214927228', heb: 'נעמה לוי', age: 29, last: 'לפני חודש', tag: 'מעקב', initials: 'נל' },
+  { id: 'pt5', tz: '218659035', heb: 'אבי שטרן', age: 64, last: 'אתמול', tag: 'פעיל', initials: 'אש', meds: ['Concor', 'Aspirin Cardio'] },
+  { id: 'pt6', tz: '222390842', heb: 'מיכל אדלר', age: 47, last: 'לפני 10 ימים', tag: 'מעקב', initials: 'מא' },
+  { id: 'pt7', tz: '226122649', heb: 'רונן גולן', age: 51, last: 'לפני 4 ימים', tag: 'פעיל', initials: 'רג' },
+  { id: 'pt8', tz: '229854456', heb: 'שירה פרידמן', age: 33, last: 'לפני שבועיים', tag: 'פעיל', initials: 'שפ', meds: ['Cipralex'] },
+  { id: 'pt9', tz: '233586263', heb: 'דוד אזולאי', age: 68, last: 'אתמול', tag: 'מעקב', initials: 'דא', meds: ['Warfarin', 'Metformin'] },
+  { id: 'pt10', tz: '237318070', heb: 'ליאת בן דוד', age: 39, last: 'לפני 5 ימים', tag: 'פעיל', initials: 'לב' },
+  { id: 'pt11', tz: '241049877', heb: 'עומר נחום', age: 26, last: 'לפני חודש', tag: 'מעקב', initials: 'ענ' },
+  { id: 'pt12', tz: '244781684', heb: 'תמר רוזן', age: 44, last: 'לפני 3 ימים', tag: 'פעיל', initials: 'תר', meds: ['Eltroxin'] },
+  { id: 'pt13', tz: '248513491', heb: 'יוסי חדד', age: 57, last: 'לפני שבוע', tag: 'פעיל', initials: 'יח' },
+  { id: 'pt14', tz: '252245298', heb: 'הדס שמש', age: 31, last: 'לפני יומיים', tag: 'מעקב', initials: 'הש' },
+  { id: 'pt15', tz: '255977105', heb: 'גיא ביטון', age: 49, last: 'לפני 12 ימים', tag: 'פעיל', initials: 'גב', meds: ['Concor'] },
+  { id: 'pt16', tz: '259708912', heb: 'נועה אבני', age: 28, last: 'אתמול', tag: 'פעיל', initials: 'נא' },
+  { id: 'pt17', tz: '263440719', heb: 'איתי קפלן', age: 62, last: 'לפני 6 ימים', tag: 'מעקב', initials: 'אק', meds: ['Aspirin Cardio', 'Normiten'] },
+  { id: 'pt18', tz: '267172526', heb: 'מירב סבן', age: 41, last: 'לפני שבוע', tag: 'פעיל', initials: 'מס' },
+  { id: 'pt19', tz: '270904333', heb: 'אורי דהן', age: 36, last: 'לפני 4 ימים', tag: 'פעיל', initials: 'אד' },
+  { id: 'pt20', tz: '274636140', heb: 'רותם הראל', age: 53, last: 'לפני חודש', tag: 'מעקב', initials: 'רה' },
+  { id: 'pt21', tz: '278367947', heb: 'ענת מלכה', age: 45, last: 'לפני 3 ימים', tag: 'פעיל', initials: 'עמ', meds: ['Lustral'] },
+  { id: 'pt22', tz: '282099754', heb: 'בני שרון', age: 70, last: 'אתמול', tag: 'מעקב', initials: 'בש', meds: ['Coumadin', 'Glucophage'] },
+  { id: 'pt23', tz: '285831561', heb: 'דפנה ניר', age: 34, last: 'לפני יומיים', tag: 'פעיל', initials: 'דנ' },
+  { id: 'pt24', tz: '289563368', heb: 'אסף וקנין', age: 48, last: 'לפני שבועיים', tag: 'פעיל', initials: 'או' },
+  { id: 'pt25', tz: '293295175', heb: 'שני גבאי', age: 30, last: 'לפני 8 ימים', tag: 'מעקב', initials: 'שג' },
+  { id: 'pt26', tz: '297026982', heb: 'יובל אשכנזי', age: 55, last: 'לפני 5 ימים', tag: 'פעיל', initials: 'יא', meds: ['Omeprazole'] },
+];
+
+// Recent orders for dashboard
+const ORDERS = [
+  { id: 'TF-2845', patient: 'דנה כהן', items: 'פורמולה מותאמת — 7 צמחים', total: 218, status: 'בהכנה במעבדה', dot: 'amber', date: 'היום, 09:42' },
+  { id: 'TF-2844', patient: 'אבי שטרן', items: 'תמיסת שינה רגועה ×2', total: 178, status: 'נשלח', dot: 'blue', date: 'אתמול' },
+  { id: 'TF-2843', patient: 'יעל ברק', items: 'פורמולה מותאמת — 5 צמחים', total: 165, status: 'ממתין לתשלום', dot: 'gray', date: '24.05' },
+  { id: 'TF-2842', patient: 'אלון מזרחי', items: 'אדפטוגן בוקר + מיקס חיסון', total: 266, status: 'נמסר', dot: 'green', date: '22.05' },
+  { id: 'TF-2841', patient: 'נעמה לוי', items: 'תה ערב ×3', total: 114, status: 'נמסר', dot: 'green', date: '20.05' },
+];
+
+// (TFDATA assignment is at end of file)
+
+// --- Events / updates (3-4 cards) ---
+const EVENTS = [
+  { id: 'e1', cat: 'אירוע', title: 'כנס שנתי לרפואת צמחים — תל אביב', desc: 'יום עיון מקצועי עם ד״ר רחל סער ועוד 12 מרצים מובילים בתחום.', date: '12.06.2026', accentHue: 110 },
+  { id: 'e2', cat: 'מאמר חדש', title: 'אדפטוגנים בעידן של שחיקה כרונית', desc: 'סקירה קלינית עדכנית של אשווגנדה, רודיולה ושיזנדרה במצבי דחק.', date: '24.05.2026', accentHue: 30 },
+  { id: 'e3', cat: 'עדכון מערכת', title: 'מאגר רכיבים עודכן — 14 צמחים חדשים', desc: 'כולל סייבריאן, אסטרגלוס סיני ועוד צמחים נדירים מטיבט.', date: '20.05.2026', accentHue: 200 },
+  { id: 'e4', cat: 'וובינר', title: 'אינטראקציות צמחים-תרופות — מה חדש?', desc: 'הקלטה זמינה לצפייה. כולל מצגות וחומרי קריאה להורדה.', date: '15.05.2026', accentHue: 280 },
+];
+
+// --- Articles ---
+// Every article shares the same hero/cover image (assets/echinacea.jpg).
+// `sections` carry the long-form body for the article page.
+const ARTICLE_IMAGE = echinaceaImg;
+
+// --- Homepage promotional HERO carousel (the "sales" slot) ---
+// Rotating campaigns: events, new products, fresh stock. Each slide carries
+// an image (photo or system illustration), marketing copy, and a CTA.
+const PROMOS = [
+  {
+    id: 'p1', kind: 'webinar', icon: 'camera',
+    kicker: 'הרצאת זום · אונליין',
+    title: 'פורמולציות מוכנות לשימוש בקליניקה',
+    titleB: 'בדגש על שימוש חיצוני',
+    desc: 'הרצאת זום למטפלות ומטפלי טריפוליום — נכיר פורמולציות מן המוכן ואת דרכי היישום החיצוני בקליניקה היומיומית.',
+    when: { wday: 'יום רביעי', date: '13.05.26', time: '20:15–21:30' },
+    media: { type: 'photo', src: ARTICLE_IMAGE },
+    primary: { label: 'מילוי טופס הרשמה', action: 'register' },
+    secondary: { label: 'פרטים נוספים', action: 'contact' },
+    note: 'המקומות מוגבלים · לינק הזום יישלח בוואטסאפ',
+  },
+  {
+    id: 'p2', kind: 'product', icon: 'package',
+    kicker: 'מוצר חדש במדף',
+    title: 'תמצית אכינצאה מרוכזת',
+    titleB: 'סדרת חיזוק החורף',
+    desc: 'תמצית אלכוהולית בריכוז גבוה לתמיכה במערכת החיסון — זמינה כעת להזמנה במדף המוצרים המוכנים.',
+    media: { type: 'product', heb: 'תמצית אכינצאה' },
+    primary: { label: 'לצפייה במוצר', action: 'catalog' },
+    secondary: { label: 'לכל המדף', action: 'catalog' },
+    note: 'אחריות איכות · משלוח תוך 3 ימי עסקים',
+  },
+  {
+    id: 'p3', kind: 'stock', icon: 'leaf',
+    kicker: 'נכנס למלאי',
+    title: '14 צמחים חדשים',
+    titleB: 'נוספו למאגר הרכיבים',
+    desc: 'כולל אסטרגלוס סיני, סייבריאן ועוד צמחים נדירים — זמינים כעת לרקיחת פורמולות אישיות במרשם.',
+    media: { type: 'hero' },
+    primary: { label: 'למאגר הרכיבים', action: 'compounding' },
+    secondary: { label: 'מה התחדש', action: 'articles' },
+    note: 'עודכן היום · 142 רכיבים פעילים',
+  },
+];
+
+const ARTICLES = [
+  {
+    id: 'a1', num: 41, cat: 'צמחי מרפא',
+    title: 'שילוב פסיפלורה וולריאן בטיפול בנדודי שינה',
+    excerpt: 'מחקר חדש מצביע על אפקט סינרגיסטי בין שני הצמחים, עם השפעה מובהקת על איכות השינה ללא אפקט מטמטם.',
+    author: 'ד״ר רחל סער', credential: 'Dipl. Ac. & C.H', initials: 'רס', readMin: 7, date: '21.05.2026',
+    lead: 'פסיפלורה (Passiflora incarnata) וולריאן (Valeriana officinalis) הם שניים מצמחי ההרגעה הנחקרים ביותר ברפואת הצמחים המערבית. כל אחד מהם פועל במנגנון מעט שונה על מערכת העצבים — ושילובם, כך עולה ממחקרים עדכניים, מניב אפקט גדול מסכום חלקיו.',
+    sections: [
+      { h: 'מנגנון הפעולה', p: [
+        'ולריאן פועל בעיקר דרך מערכת ה-GABA: רכיבים בשורש מעכבים את פירוק ה-GABA ומגבירים את זמינותו בסינפסה, מה שמסביר את האפקט המרגיע וההיפנוטי שלו. פסיפלורה, לעומת זאת, נקשרת לקולטני GABA-A באופן ישיר ומפחיתה דריכות מבלי לגרום לערפול קוגניטיבי בבוקר שלמחרת.',
+        'הסינרגיה נובעת מכך ששני הצמחים מתכנסים על אותו ציר מעכב — אך דרך שני שערים שונים. התוצאה היא הרגעה עמוקה יותר במינון נמוך יותר של כל מרכיב בנפרד.' ] },
+      { h: 'מינון מומלץ בקליניקה', list: [
+        'טינקטורה משולבת: יחס 1:1, מינון של 3–5 ml כשעה לפני השינה.',
+        'חליטה: 2 גרם פסיפלורה + 1.5 גרם ולריאן, השריה של 10 דקות.',
+        'יש להתחיל במינון הנמוך ולהעלות בהדרגה לאורך שבוע.' ] },
+      { h: 'למי זה מתאים', p: [
+        'השילוב מתאים במיוחד למצבי נדודי שינה על רקע חרדה ומחשבות טורדניות — מצב שבו המטופל "לא מצליח לכבות את הראש". פחות מתאים לנדודי שינה על רקע דיכאון עמוק, שם נעדיף גישה אחרת.' ] },
+      { h: 'אזהרות והתוויות נגד', p: [
+        'יש להימנע בהריון ובהנקה ללא ליווי מקצועי. ולריאן עלול לגרום לתופעת ערות פרדוקסלית בכ-10% מהאוכלוסייה — במקרה כזה יש להפסיק. אין לשלב עם תרופות הרגעה ממשפחת הבנזודיאזפינים ללא פיקוח רפואי.' ] },
+    ],
+  },
+  {
+    id: 'a2', num: 38, cat: 'מחקר',
+    title: 'כורכומין: ביו-זמינות והדרכים לשפר אותה',
+    excerpt: 'סקירה של השיטות העדכניות להגדלת הספיגה — פיפרין, ליפוזומים, ננו-מולקולות. מה באמת עובד בקליניקה?',
+    author: 'פרופ׳ דניאל אבן', credential: 'Ph.D · Pharmacognosy', initials: 'דא', readMin: 12, date: '18.05.2026',
+    lead: 'כורכומין הוא הרכיב הפעיל המרכזי בכורכום (Curcuma longa) ואחד מנוגדי הדלקת הטבעיים הנחקרים ביותר. הבעיה הקלינית המוכרת שלו אינה היעדר יעילות — אלא ביו-זמינות נמוכה במיוחד: רוב המינון הנבלע אינו מגיע כלל לזרם הדם.',
+    sections: [
+      { h: 'מדוע הספיגה נמוכה', p: [
+        'כורכומין הוא מולקולה הידרופובית עם מסיסות נמוכה במים, מטבוליזם מהיר בכבד ובדופן המעי, ופינוי מהיר מהגוף. שילוב הגורמים הללו אומר שכורכומין "חופשי" שנבלע מתפרק עוד לפני שהוא יכול לפעול.' ] },
+      { h: 'אסטרטגיות לשיפור הספיגה', list: [
+        'פיפרין (תמצית פלפל שחור): מעכב את אנזים ה-glucuronidation ומגדיל ספיגה פי 20 בקירוב.',
+        'מטריצת שומן: נטילה עם ארוחה שומנית או בתוך שמן נושא משפרת מסיסות.',
+        'פורמולציות ליפוזומליות: עוטפות את הכורכומין בשכבת שומן ומגנות עליו במעבר במעי.',
+        'ננו-חלקיקים ופיטוזומים: מקטינים את גודל החלקיק ומגדילים שטח פנים לספיגה.' ] },
+      { h: 'מה באמת עובד בקליניקה', p: [
+        'בפרקטיקה, השילוב הפשוט והזול ביותר — כורכומין עם פיפרין ומטריצת שומן — נותן את יחס העלות-תועלת הטוב ביותר עבור רוב המטופלים. פורמולציות ליפוזומליות שמורות למצבים דלקתיים כרוניים שבהם נדרשת חשיפה מערכתית גבוהה ועקבית.' ] },
+      { h: 'שיקולי בטיחות', p: [
+        'במינונים גבוהים ובשילוב פיפרין, יש להיזהר אצל נוטלי מדללי דם ותרופות המתפרקות בכבד, שכן עיכוב אנזימי הכבד עלול לשנות את ריכוזן.' ] },
+    ],
+  },
+  {
+    id: 'a3', num: 35, cat: 'טיפ קליני',
+    title: 'איך להציג פורמולה למטופל ראשון',
+    excerpt: 'שיחת ההתחלה היא הכל. שיטה מסודרת להציג מטרות, יחסים והוראות שימוש בשפה ברורה ובוטחת.',
+    author: 'ענת לוי', credential: 'Medical Herbalist', initials: 'על', readMin: 5, date: '14.05.2026',
+    lead: 'הפגישה הראשונה קובעת את ההיענות לטיפול הרבה יותר מהרכב הפורמולה עצמו. מטופל שמבין מה הוא לוקח, למה, וכיצד — מתמיד פי כמה. הנה מבנה שיחה שעובד.',
+    sections: [
+      { h: 'פתחו במטרה, לא ברכיבים', p: [
+        'אל תפתחו ברשימת הצמחים. פתחו במטרה הטיפולית: "הפורמולה הזו נועדה לעזור לך להירדם מהר יותר ולישון רציף". המטופל צריך לשמוע קודם את ה"למה" ורק אחר כך את ה"מה".' ] },
+      { h: 'הסבירו את היחסים בפשטות', p: [
+        'אפשר להציג את עקרון הצמח המוביל והצמחים התומכים בשפה יומיומית: "יש כאן צמח מרכזי אחד שעושה את עיקר העבודה, ושניים-שלושה שעוזרים לו ומאזנים אותו". זה בונה אמון מבלי להעמיס מונחים.' ] },
+      { h: 'הוראות שימוש כתובות', list: [
+        'מינון מדויק וזמן נטילה ביום.',
+        'עם אוכל או בלעדיו.',
+        'מה לעשות אם שוכחים מנה.',
+        'מתי לצפות לשינוי ראשון ומתי לחזור למעקב.' ] },
+      { h: 'נהלו ציפיות', p: [
+        'אמרו במפורש מתי סביר לראות שינוי — לרוב שבועיים עד ארבעה. מטופל שיודע מראש שזה תהליך הדרגתי לא יתייאש אחרי שלושה ימים.' ] },
+    ],
+  },
+  {
+    id: 'a4', num: 33, cat: 'צמחי מרפא',
+    title: 'אדפטוגנים בעידן של שחיקה כרונית',
+    excerpt: 'אשווגנדה, רודיולה ושיזנדרה — כיצד לבחור את האדפטוגן הנכון לפי פרופיל המטופל, ולא לפי האופנה.',
+    author: 'ד״ר רחל סער', credential: 'Dipl. Ac. & C.H', initials: 'רס', readMin: 9, date: '09.05.2026',
+    lead: 'המונח "אדפטוגן" הפך למילת מפתח שיווקית — אך מאחוריו עומד עיקרון פרמקולוגי אמיתי: צמחים המסייעים לגוף לווסת את תגובת הדחק ולחזור לאיזון. המפתח הקליני הוא התאמה, לא הכללה.',
+    sections: [
+      { h: 'מהו אדפטוגן באמת', p: [
+        'אדפטוגן אמיתי עומד בשלושה תנאים: הוא לא-ספציפי (מסייע בעמידות לדחק מסוגים שונים), הוא מנרמל (מחזיר מערכות לאיזון בשני הכיוונים), והוא בטוח יחסית בשימוש ממושך. אשווגנדה, רודיולה, שיזנדרה וג׳ינסנג עומדים בקריטריונים אלו.' ] },
+      { h: 'התאמה לפי פרופיל', list: [
+        'אשווגנדה — למטופל "דרוך ועייף", עם קושי בשינה וקורטיזול גבוה בערב. מחממת ומרגיעה.',
+        'רודיולה — לעייפות עם ערפול קוגניטיבי וירידה בריכוז. ממריצה, עדיף בבוקר.',
+        'שיזנדרה — לעומס כבדי ולשחיקה עם רגישות רגשית. מייצבת ומגנה.' ] },
+      { h: 'טעות נפוצה', p: [
+        'מתן רודיולה ממריצה למטופל דרוך וחרד עלול להחמיר את התמונה. תמיד יש לקרוא את כיוון חוסר האיזון לפני בחירת האדפטוגן — לא כל עייפות זהה.' ] },
+      { h: 'משך טיפול', p: [
+        'אדפטוגנים פועלים במצטבר. מומלץ מחזור של 6–8 שבועות ולאחריו הערכה מחדש, עם הפסקות קצרות כדי למנוע התרגלות.' ] },
+    ],
+  },
+  {
+    id: 'a5', num: 29, cat: 'מונוגרפיה',
+    title: 'אכינצאה: מתי באמת להשתמש ובאיזה מינון',
+    excerpt: 'הצמח הנפוץ ביותר לחיזוק חיסון — אך התזמון והמינון קובעים אם הוא יעבוד. סקירה קלינית מבוססת ראיות.',
+    author: 'פרופ׳ דניאל אבן', credential: 'Ph.D · Pharmacognosy', initials: 'דא', readMin: 8, date: '02.05.2026',
+    lead: 'אכינצאה (Echinacea purpurea) היא אחד מצמחי המרפא הנמכרים בעולם — ואחד המובנים-לא-נכון ביותר. שימוש שגוי בתזמון או במינון מסביר חלק ניכר מהאכזבה ממנה בקליניקה.',
+    sections: [
+      { h: 'מנגנון אימונומודולטורי', p: [
+        'הרכיבים הפעילים — פוליסכרידים, אלקמידים ופלבנואידים — מגבירים פעילות מקרופאגים ועוררים הפרשת ציטוקינים. אכינצאה אינה "מחזקת חיסון" באופן כללי וקבוע, אלא מווסתת תגובה חיסונית בזמן צורך.' ] },
+      { h: 'תזמון הוא הכל', p: [
+        'היעילות הגבוהה ביותר היא בתחילת התקף ויראלי — ב-24 עד 48 השעות הראשונות. שימוש מניעתי ארוך-טווח רציף פחות יעיל ואף עלול לתשוש את התגובה. עדיף לשמור אותה כ"כלי תגובה מהיר".' ] },
+      { h: 'מינון יעיל', list: [
+        'טינקטורה: 3–4 ml, 3–4 פעמים ביום בימים הראשונים של התקף.',
+        'מחזורי שימוש של 7–10 ימים, לא יותר.',
+        'הפסקה בין מחזורים כדי לשמר את התגובה.' ] },
+      { h: 'אזהרות', p: [
+        'יש להיזהר במחלות אוטואימוניות ובמטופלים הנוטלים מדכאי חיסון. נדרשת התייעצות רפואית בנשים בהריון, מניקות וילדים.' ] },
+    ],
+  },
+  {
+    id: 'a6', num: 26, cat: 'מחקר',
+    title: 'גדילן מצוי וההגנה על הכבד',
+    excerpt: 'סילימרין — מנגנון ההגנה ההפטו-פרוטקטיבי, ראיות קליניות, ושילוב נכון בפורמולות ניקוי.',
+    author: 'ד״ר רחל סער', credential: 'Dipl. Ac. & C.H', initials: 'רס', readMin: 10, date: '24.04.2026',
+    lead: 'גדילן מצוי (Silybum marianum) הוא צמח ההגנה על הכבד הקלאסי. הרכיב הפעיל, סילימרין, נחקר בהרחבה ומציג מנגנון הגנה רב-שכבתי — אך גם כאן, פורמולציה נכונה מכריעה.',
+    sections: [
+      { h: 'מנגנון ההגנה', p: [
+        'סילימרין פועל בכמה רמות: הוא נוגד חמצון רב-עוצמה המגן על קרומי תאי הכבד, מעודד התחדשות תאי כבד דרך סינתזת חלבונים, ומייצב את ממברנת ההפטוציט מפני חדירת רעלים.' ] },
+      { h: 'ראיות קליניות', p: [
+        'מחקרים מצביעים על תועלת בכבד שומני לא-אלכוהולי, בהגנה מפני נזק תרופתי, ובתמיכה בהתאוששות מעומס רעלים. העוצמה משתנה לפי האיכות והריכוז של הסטנדרטיזציה לסילימרין.' ] },
+      { h: 'שילוב בפורמולת כבד', list: [
+        'גדילן כצמח מוביל — נוגד חמצון ומגן.',
+        'שן הארי — לתמיכה בזרימת מרה.',
+        'שיזנדרה — מגן ומווסת אנזימי כבד.',
+        'כורכום — נוגד דלקת משלים.' ] },
+      { h: 'נקודת מינון', p: [
+        'בשל ספיגה משתנה, עדיפות לתמצית מתוקננת לאחוז סילימרין ידוע. נטילה עם מעט שומן משפרת זמינות.' ] },
+    ],
+  },
+  {
+    id: 'a7', num: 22, cat: 'בטיחות',
+    title: 'אינטראקציות צמחים-תרופות: מתי להיזהר',
+    excerpt: 'מדריך מעשי לזיהוי שילובים מסוכנים — פרע מחורר, שוש, כורכום וזנגביל מול תרופות מרשם נפוצות.',
+    author: 'פרופ׳ דניאל אבן', credential: 'Ph.D · Pharmacognosy', initials: 'דא', readMin: 11, date: '15.04.2026',
+    lead: 'הנחת היסוד ש"טבעי = בטוח" מסוכנת בקליניקה. צמחי מרפא הם חומרים פעילים, וחלקם משנים את הפרמקוקינטיקה של תרופות מרשם. זיהוי מוקדם של שילובים בעייתיים הוא חלק בלתי נפרד מהאחריות המקצועית.',
+    sections: [
+      { h: 'הצמחים הבעייתיים ביותר', list: [
+        'פרע מחורר (St. John’s Wort) — משרה אנזימי כבד ומפחית יעילות של גלולות, נוגדי קרישה ו-SSRI. סיכון לסינדרום סרוטונין.',
+        'שוש קרח — עלול להעלות לחץ דם ולהפחית ספיגת לבותירוקסין.',
+        'כורכום וזנגביל — מעצימים מדללי דם במינונים גבוהים.',
+        'ג׳ינסנג — אינטראקציה עם וורפרין; נדרש ניטור INR.' ] },
+      { h: 'עקרון העבודה', p: [
+        'תמיד מתחילים בתשאול מלא של תרופות מרשם, כולל גלולות וצמחים אחרים. כל מטופל הנוטל תרופה כרונית מחייב בדיקת אינטראקציה לפני מתן פורמולה.' ] },
+      { h: 'מתי להפנות לרופא', p: [
+        'בנוטלי נוגדי קרישה, תרופות לב, מדכאי חיסון או תרופות פסיכיאטריות — יש לתאם עם הרופא המטפל לפני שילוב צמחים פעילים. שיתוף פעולה, לא תחרות.' ] },
+    ],
+  },
+  {
+    id: 'a8', num: 18, cat: 'טיפ קליני',
+    title: 'צמחי מרפא בעונת המעבר — תמיכה הורמונלית',
+    excerpt: 'גישה מותאמת לתסמיני גיל המעבר: גלי חום, שינה ומצב רוח — בלי הורמונים, עם פורמולה חכמה.',
+    author: 'ענת לוי', credential: 'Medical Herbalist', initials: 'על', readMin: 6, date: '03.04.2026',
+    lead: 'גיל המעבר אינו מחלה אלא מעבר פיזיולוגי — אך התסמינים יכולים לפגוע משמעותית באיכות החיים. רפואת הצמחים מציעה תמיכה עדינה ומותאמת, המתמקדת בויסות ולא בדיכוי.',
+    sections: [
+      { h: 'מיפוי התסמין המוביל', p: [
+        'במקום פורמולה "לגיל המעבר", נתחיל מזיהוי התסמין המטריד ביותר: גלי חום, נדודי שינה, יובש, או תנודות במצב הרוח. הפורמולה נבנית סביבו.' ] },
+      { h: 'צמחים מרכזיים', list: [
+        'מרווה — להפחתת הזעות וגלי חום.',
+        'שיח אברהם — לויסות הציר ההורמונלי בשלב המוקדם.',
+        'אשווגנדה — לתמיכה בשינה ובעמידות לדחק.',
+        'מליסה ולבנדר — לאיזון מצב רוח ושינה.' ] },
+      { h: 'גישה הדרגתית', p: [
+        'התאמה הורמונלית צמחית פועלת באיטיות ובעדינות. נצפה לשיפור הדרגתי על פני 4–8 שבועות, עם כיול מתמשך של הפורמולה לפי התגובה.' ] },
+      { h: 'מתי להפנות להמשך בירור', p: [
+        'דימום לא סדיר, כאב חריג או תסמינים חדים מחייבים בירור גינקולוגי לפני המשך טיפול צמחי.' ] },
+    ],
+  },
+
+  // ── Chinese-medicine articles (רפואה סינית) ──
+  {
+    id: 'c1', num: 44, cat: 'תיאוריה סינית', system: 'chinese',
+    title: 'מבנה הפורמולה הסינית: מלך, שר, יועץ ושליח',
+    excerpt: 'העיקרון המארגן של כל מרשם קלאסי — כיצד ארבעת התפקידים בונים פורמולה מאוזנת ומכוונת מטרה.',
+    author: 'ד״ר יעל בן־חיים', credential: 'Dipl. CM · L.Ac', initials: 'יב', readMin: 9, date: '20.05.2026',
+    lead: 'בניגוד לתפיסה המערבית של "צמח לכל סימפטום", הפורמולה הסינית הקלאסית בנויה כהיררכיה מתפקדת. ארבעה תפקידים — 君臣佐使 (Jūn Chén Zuǒ Shǐ) — מסבירים מדוע צמח בודד נדיר במרשם סיני, ומדוע היחסים בין הצמחים חשובים לא פחות מזהותם.',
+    sections: [
+      { h: 'ארבעת התפקידים', list: [
+        'מלך (君) — הצמח המוביל, המכוון אל הגורם או התסמין המרכזי. נושא את המינון הגבוה ביותר.',
+        'שר (臣) — מחזק את פעולת המלך או מטפל בתסמין משני מרכזי.',
+        'יועץ (佐) — מתון או מאזן רעילות, או מטפל בתסמינים נלווים. לעיתים פועל בכיוון מנוגד כדי לרסן.',
+        'שליח (使) — מכוון את הפורמולה לעורק או לאיבר היעד, ומתאם בין הרכיבים.' ] },
+      { h: 'דוגמה קלינית', p: [
+        'בפורמולה לחיזוק ה־Qi של הטחול, הג׳ינסנג (人参) משמש כמלך; האטרקטילודס (白术) כשר המייבש לחות; הפוריה (茯苓) כיועץ המנקז לחות; ושורש הליקוריץ הצלוי (炙甘草) כשליח המתאם וממתן. הסרת אחד מהם משנה את אופי הפורמולה כולה.' ] },
+      { h: 'מדוע זה חשוב בקליניקה', p: [
+        'הבנת ההיררכיה מאפשרת התאמה אישית: מגדילים את מינון המלך כשהגורם המרכזי דומיננטי, מוסיפים שר כשמופיע תסמין משני, ומכווננים יועץ כדי לרכך תופעות לוואי. הפורמולה הופכת לכלי גמיש ולא למתכון קבוע.' ] },
+    ],
+  },
+  {
+    id: 'c2', num: 40, cat: 'צמחי מרפא', system: 'chinese',
+    title: 'זוגות צמחים (药对) — סינרגיה בפרקטיקה הסינית',
+    excerpt: 'צמדים קלאסיים שבהם 1+1 גדול משתיים — מנגנון הזיווג, דוגמאות מובילות ושיקולי מינון.',
+    author: 'אורי שלם', credential: 'Dipl. CM', initials: 'אש', readMin: 7, date: '11.05.2026',
+    lead: 'מסורת הצמחים הסינית פיתחה את מושג ה־药对 (Yào Duì) — זוגות צמחים הניתנים יחד באופן קבוע משום שפעולתם המשולבת עולה על סכום חלקיהם. הזיווג עשוי להעצים אפקט, לאזן צד קר־חם, או להפחית רעילות.',
+    sections: [
+      { h: 'סוגי זיווג', list: [
+        'העצמה הדדית — שני צמחים בעלי פעולה דומה המחזקים זה את זה.',
+        'איזון תרמי — צמד חם וקר היוצר פעולה ממוזנת ומדויקת.',
+        'ריסון רעילות — צמח אחד הממתן את הצד החריף של בן זוגו.' ] },
+      { h: 'צמדים קלאסיים', list: [
+        'Má Huáng + Guì Zhī — לשחרור החיצון וקידום הזעה בתסמונת קור.',
+        'Dāng Guī + Huáng Qí — להזנת הדם לצד חיזוק ה־Qi (היחס הקלאסי 1:5).',
+        'Zhī Mǔ + Huáng Bǎi — לניקוז חום ריק בחלק התחתון.' ] },
+      { h: 'שיקולי מינון', p: [
+        'היחס בין בני הזוג הוא חלק מהמרשם, לא פרט טכני. שינוי היחס משנה את כיוון הפעולה — כפי שב־Dāng Guī Bǔ Xuè Tāng דווקא יחס ה־5:1 לטובת ה־Huáng Qí הוא שמוליד את אפקט בניית הדם.' ] },
+    ],
+  },
+  {
+    id: 'c3', num: 37, cat: 'אבחון', system: 'chinese',
+    title: 'אבחון לפי לשון ודופק — יסודות מעשיים',
+    excerpt: 'שתי שיטות האבחון המרכזיות ברפואה הסינית: מה לחפש, איך לתעד, וכיצד לתרגם ממצא לפורמולה.',
+    author: 'ד״ר יעל בן־חיים', credential: 'Dipl. CM · L.Ac', initials: 'יב', readMin: 10, date: '28.04.2026',
+    lead: 'הלשון והדופק הם שני "המסכים" שדרכם הרפואה הסינית קוראת את מצב הפנים של הגוף. הם אינם מחליפים תשאול, אך הם מעגנים את האבחנה בממצא אובייקטיבי ויציב יחסית.',
+    sections: [
+      { h: 'אבחון הלשון', p: [
+        'בוחנים ארבעה ממדים: גוף הלשון (צבע, צורה, לחות), הציפוי (עובי, צבע, פיזור), אזורים (כל חלק מייצג איבר), ותנועתיות. לשון חיוורת ונפוחה עם ציפוי לבן רטוב מרמזת על ריק Qi וצבירת לחות; לשון אדומה עם ציפוי דק וצהוב מרמזת על חום.' ] },
+      { h: 'אבחון הדופק', p: [
+        'מומשים שלושה מיקומים בכל פרק יד, בשלוש רמות עומק. נבחנים קצב, עומק, עוצמה ואיכות. דופק חוטי (弦) מצביע לרוב על תסמונת כבד; דופק חלקלק (滑) על לחות או הריון; דופק חלש ועמוק על ריק.' ] },
+      { h: 'מתיאוריה לפורמולה', p: [
+        'הצלבת ממצאי הלשון והדופק עם התשאול מובילה לאבחנת התסמונת (辨证). רק לאחר זיהוי התסמונת — ולא לפי התסמין הבודד — נבחרת אסטרטגיית הטיפול ומבנה הפורמולה.' ] },
+    ],
+  },
+  {
+    id: 'c4', num: 31, cat: 'תיאוריה סינית', system: 'chinese',
+    title: 'ארבעת הטבעים וחמשת הטעמים בבחירת צמחים',
+    excerpt: 'התכונות הבסיסיות שמסווגות כל צמח סיני — קור־חום וטעם — וכיצד הן מכוונות את הבחירה הקלינית.',
+    author: 'אורי שלם', credential: 'Dipl. CM', initials: 'אש', readMin: 6, date: '16.04.2026',
+    lead: 'לפני שמדברים על פעולה ספציפית, כל צמח ברפואה הסינית מסווג לפי טבעו התרמי וטעמו. שתי תכונות אלו — 四气五味 — הן הקואורדינטות הראשונות שלפיהן הרוקח מתאים צמח למצב.',
+    sections: [
+      { h: 'ארבעת הטבעים', list: [
+        'קר וקריר — מנקזים חום, מרגיעים דלקת ותסמיני יתר.',
+        'חם וחמים — מחממים את הפנים, מפזרים קור ומחזקים את היאנג.',
+        'ניטרלי — מאוזן, מתאים לשימוש ממושך ולשילוב רחב.' ] },
+      { h: 'חמשת הטעמים', list: [
+        'חריף (辛) — מפזר ומניע Qi ודם.',
+        'מתוק (甘) — מזין, ממתן ומתאם.',
+        'חמוץ (酸) — מכווץ ומאחד.',
+        'מר (苦) — מנקז ומייבש לחות וחום.',
+        'מלוח (咸) — מרכך גושים ומשלשל.' ] },
+      { h: 'יישום קליני', p: [
+        'בחירת צמח מתחילה בהתאמת טבעו וטעמו למצב: למטופל עם תסמיני חום נבחר צמח קר־מר; למטופל עם קור פנימי וריק יאנג נבחר צמח חם־חריף. רק לאחר התאמה זו בודקים את הפעולה הספציפית ואת העורק שאליו הצמח "נכנס".' ] },
+    ],
+  },
+];
+
+// --- Tutorial videos (6) ---
+const VIDEOS = [
+  { id: 'v1', chapter: 'GETTING STARTED', title: 'ברוכים הבאים לטריפוליום V2', desc: 'סיור מודרך בכל ממשק המערכת והפיצ׳רים העיקריים.', duration: '3:45' },
+  { id: 'v2', chapter: 'COMPOUNDING', title: 'כיצד להכין פורמולה אישית מאפס', desc: 'מבחירת מטופל ועד שליחת קישור התשלום בוואטסאפ.', duration: '7:12' },
+  { id: 'v3', chapter: 'INGREDIENTS', title: 'עבודה עם מאגר הרכיבים ואינטראקציות', desc: 'סינון, חיפוש, ובדיקת התאמות בין צמחים לתרופות מערביות.', duration: '5:30' },
+  { id: 'v4', chapter: 'PATIENTS', title: 'ניהול מטופלים ורישומים רפואיים', desc: 'תיקים, היסטוריית פורמולות, תזכורות והערות פרטיות.', duration: '4:18' },
+  { id: 'v5', chapter: 'CATALOG', title: 'הזמנת מוצרים מוכנים מהמדף', desc: 'מצא תמצית מוכנה, הוסף לסל ושלח לתשלום בדקה.', duration: '3:55' },
+  { id: 'v6', chapter: 'ORDERS', title: 'מעקב אחר הזמנות וסטטוסים', desc: 'מה קורה בין המעבדה למטופל ואיך לדבר עם התמיכה.', duration: '4:02' },
+];
+
+// --- Expanded orders for homepage table ---
+const HOME_ORDERS = [
+  { id: 'TF-2849', patient: 'דנה כהן',     phone: '052-886-4546', formula: 'פורמולה להרגעה ושינה',    type: 'מותאמת',   date: 'היום, 09:42', status: 'בהכנה',         dot: 'amber' },
+  { id: 'TF-2848', patient: 'אבי שטרן',    phone: '054-318-2207', formula: 'תמיסת שינה רגועה ×2',     type: 'מדף',     date: 'אתמול, 17:20', status: 'נשלח',          dot: 'blue' },
+  { id: 'TF-2847', patient: 'יעל ברק',     phone: '054-771-2093', formula: 'תמצית כבד',               type: 'מותאמת',   date: '24.05, 14:08', status: 'ממתין לתשלום',   dot: 'amber' },
+  { id: 'TF-2846', patient: 'אלון מזרחי',  phone: '053-204-7781', formula: 'אדפטוגן בוקר + חיסון',    type: 'מדף',     date: '22.05, 11:35', status: 'הושלם',         dot: 'gray' },
+  { id: 'TF-2845', patient: 'נעמה לוי',    phone: '050-662-1934', formula: 'תה ערב ×3',               type: 'מדף',     date: '20.05, 08:50', status: 'הושלם',         dot: 'gray' },
+  { id: 'TF-2844', patient: 'מיכל אדלר',   phone: '058-440-9012', formula: 'תמיסת מצב רוח',           type: 'מותאמת',   date: '18.05, 16:00', status: 'בוטל',          dot: 'red' },
+  { id: 'TF-2843', patient: 'דנה כהן',     phone: '052-886-4546', formula: 'מיקס חיסון יומי',         type: 'מדף',     date: '15.05, 10:15', status: 'הושלם',         dot: 'gray' },
+  { id: 'TF-2842', patient: 'רוני גל',     phone: '054-905-3367', formula: 'תמיסת עיכול קלה',         type: 'מותאמת',   date: '14.05, 13:40', status: 'נשלח',          dot: 'blue' },
+  { id: 'TF-2841', patient: 'תמר אלוני',   phone: '053-771-5520', formula: 'פורמולת איזון הורמונלי',  type: 'מותאמת',   date: '12.05, 09:05', status: 'הושלם',         dot: 'gray' },
+  { id: 'TF-2840', patient: 'יוסי דהן',    phone: '050-228-6741', formula: 'תה ערב ×2',               type: 'מדף',     date: '11.05, 18:22', status: 'הושלם',         dot: 'gray' },
+  { id: 'TF-2839', patient: 'שירה נחום',   phone: '058-303-1188', formula: 'תמצית הרגעה לילדים',       type: 'מותאמת',   date: '09.05, 11:50', status: 'ממתין לתשלום',   dot: 'amber' },
+  { id: 'TF-2838', patient: 'מאיה רוזן',   phone: '052-619-4470', formula: 'אדפטוגן ריכוז',           type: 'מדף',     date: '07.05, 15:18', status: 'בהכנה',         dot: 'amber' },
+  { id: 'TF-2837', patient: 'אבי שטרן',    phone: '054-318-2207', formula: 'משחת עור מרגיעה',          type: 'מותאמת',   date: '05.05, 10:30', status: 'בוטל',          dot: 'red' },
+  { id: 'TF-2836', patient: 'נעמה לוי',    phone: '050-662-1934', formula: 'מיקס חיסון יומי ×3',       type: 'מדף',     date: '03.05, 08:12', status: 'הושלם',         dot: 'gray' },
+];
+
+// (TFDATA assigned at end of file)
+
+// ─────────────────────────────────────────────────────────────
+// Formula types — 9 preparation forms
+// ─────────────────────────────────────────────────────────────
+const FORMULA_TYPES = [
+  { id: 'tincture',   heb: 'טינקטורה',    unit: 'ml',   defaultQty: 30, sub: 'תמצית באלכוהול',     compat: ['adapt','nerv','immune','digest','liver','circ','resp','women','urin','mineral'] },
+  { id: 'capsule',    heb: 'קפסולות',     unit: 'כמוסות', defaultQty: 1,  sub: 'אבקה בקפסולה',       compat: ['adapt','immune','digest','liver','resp','women','urin','mineral'] },
+  { id: 'powder',     heb: 'אבקה',        unit: 'ג׳',    defaultQty: 20, sub: 'אבקה רחיצה',         compat: ['adapt','immune','digest','liver','resp','women','urin','mineral'] },
+  { id: 'tea',        heb: 'חליטה',       unit: 'ג׳',    defaultQty: 25, sub: 'עלים ופרחים יבשים',  compat: ['nerv','digest','immune','resp','women','urin'] },
+  { id: 'decoction',  heb: 'בישול אישי',  unit: 'ml',   defaultQty: 200, sub: 'מרתח מסורתי',        compat: ['adapt','nerv','immune','digest','liver','circ','resp','women','urin','mineral'], chineseOnly: true },
+  { id: 'gel',        heb: 'ג׳ל',         unit: 'ג׳',    defaultQty: 50, sub: 'לשימוש מקומי',       compat: ['skin','circ'] },
+  { id: 'cream',      heb: 'קרם',         unit: 'ג׳',    defaultQty: 50, sub: 'לשימוש מקומי',       compat: ['skin'] },
+  { id: 'eoil',       heb: 'שמן אתרי',    unit: 'ml',   defaultQty: 10, sub: 'תזקיק ארומטי',       compat: ['nerv','skin','resp'] },
+  { id: 'ioil',       heb: 'שמן מושרה',   unit: 'ml',   defaultQty: 100, sub: 'צמחים בשמן נושא',   compat: ['skin','circ'] },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Extended herb properties — keyed by herb id
+// (warming/cooling, taste, organ system)
+// ─────────────────────────────────────────────────────────────
+const HERB_PROPS = {
+  ashwagandha:   { temp: 'מחמם',   taste: 'מר וחריף',   organ: 'יותרת הכליה · עצבים' },
+  echinacea:     { temp: 'נייטרלי', taste: 'מר',         organ: 'חיסון · לימפה' },
+  calendula:     { temp: 'נייטרלי', taste: 'מר',         organ: 'עור · ריריות' },
+  chamomile:     { temp: 'מקרר',   taste: 'מר ומתוק',   organ: 'עצבים · עיכול' },
+  valerian:      { temp: 'מחמם',   taste: 'מר וחריף',   organ: 'עצבים · שינה' },
+  passionflower: { temp: 'מקרר',   taste: 'מתוק ומר',   organ: 'עצבים' },
+  milkthistle:   { temp: 'מקרר',   taste: 'מר',         organ: 'כבד' },
+  dandelion:     { temp: 'מקרר',   taste: 'מר',         organ: 'כבד · כליות' },
+  nettle:        { temp: 'נייטרלי', taste: 'מינרלי',    organ: 'דם · כליות' },
+  ginger:        { temp: 'מחמם',   taste: 'חריף',       organ: 'עיכול · מחזור דם' },
+  turmeric:      { temp: 'מחמם',   taste: 'חריף ומר',   organ: 'כבד · מפרקים' },
+  licorice:      { temp: 'נייטרלי', taste: 'מתוק',      organ: 'יותרת הכליה · ריאות' },
+  rhodiola:      { temp: 'מקרר',   taste: 'מר',         organ: 'עצבים · יותרת הכליה' },
+  lemonbalm:     { temp: 'מקרר',   taste: 'חמוץ ומתוק', organ: 'עצבים · עיכול' },
+  sage:          { temp: 'מחמם',   taste: 'מר וחריף',   organ: 'גרון · עיכול' },
+  rosemary:      { temp: 'מחמם',   taste: 'חריף',       organ: 'מחזור דם · ראש' },
+  hawthorn:      { temp: 'נייטרלי', taste: 'חמצמץ',     organ: 'לב' },
+  astragalus:    { temp: 'מחמם',   taste: 'מתוק',       organ: 'חיסון · ריאות' },
+  reishi:        { temp: 'נייטרלי', taste: 'מר',        organ: 'חיסון · שינה' },
+  lavender:      { temp: 'מקרר',   taste: 'מר ומתוק',   organ: 'עצבים · עור' },
+  stjohnswort:   { temp: 'מחמם',   taste: 'מר',         organ: 'עצבים · עור' },
+  ginseng:       { temp: 'מחמם',   taste: 'מר ומתוק',   organ: 'יותרת הכליה' },
+  schisandra:    { temp: 'מחמם',   taste: 'חמיץ ומתוק', organ: 'כבד · עצבים' },
+  olive:         { temp: 'מקרר',   taste: 'מר',         organ: 'לב · חיסון' },
+  thyme:         { temp: 'מחמם',   taste: 'חריף ומר',   organ: 'ריאות · גרון' },
+  mullein:       { temp: 'מקרר',   taste: 'מתוק ומריר', organ: 'ריאות' },
+  marshmallow:   { temp: 'מקרר',   taste: 'מתוק רירי',  organ: 'ריאות · קיבה · שתן' },
+  plantain:      { temp: 'מקרר',   taste: 'מליח ומריר', organ: 'ריאות · עור' },
+  eucalyptus:    { temp: 'מחמם',   taste: 'חריף',       organ: 'ריאות' },
+  elder:         { temp: 'מקרר',   taste: 'מתוק ומריר', organ: 'חיסון · ריאות' },
+  peppermint:    { temp: 'מקרר',   taste: 'חריף',       organ: 'עיכול · ראש' },
+  fennel:        { temp: 'מחמם',   taste: 'מתוק וחריף', organ: 'עיכול' },
+  yarrow:        { temp: 'מקרר',   taste: 'מר וחריף',   organ: 'דם · עיכול' },
+  cinnamon:      { temp: 'מחמם',   taste: 'חריף ומתוק', organ: 'עיכול · מחזור דם' },
+  cardamom:      { temp: 'מחמם',   taste: 'חריף',       organ: 'עיכול' },
+  clove:         { temp: 'מחמם',   taste: 'חריף',       organ: 'עיכול · שיניים' },
+  gentian:       { temp: 'מקרר',   taste: 'מר מאוד',    organ: 'קיבה · כבד' },
+  wormwood:      { temp: 'מקרר',   taste: 'מר מאוד',    organ: 'קיבה · כבד' },
+  gotukola:      { temp: 'מקרר',   taste: 'מר ומתוק',   organ: 'מוח · עור' },
+  oats:          { temp: 'נייטרלי', taste: 'מתוק',      organ: 'עצבים' },
+  skullcap:      { temp: 'מקרר',   taste: 'מר',         organ: 'עצבים' },
+  motherwort:    { temp: 'מקרר',   taste: 'מר וחריף',   organ: 'לב · רחם' },
+  ginkgo:        { temp: 'נייטרלי', taste: 'מר ועפיץ',  organ: 'מוח · מחזור דם' },
+  garlic:        { temp: 'מחמם',   taste: 'חריף',       organ: 'מחזור דם · חיסון' },
+  vitex:         { temp: 'מחמם',   taste: 'חריף ומר',   organ: 'ציר הורמונלי' },
+  blackcohosh:   { temp: 'מקרר',   taste: 'מר וחריף',   organ: 'רחם · מפרקים' },
+  raspberry:     { temp: 'מקרר',   taste: 'עפיץ',       organ: 'רחם' },
+  cranberry:     { temp: 'מקרר',   taste: 'חמצמץ',      organ: 'שלפוחית · שתן' },
+  uvaursi:       { temp: 'מקרר',   taste: 'עפיץ ומר',   organ: 'שלפוחית · שתן' },
+  goldenrod:     { temp: 'מקרר',   taste: 'מר וחריף',   organ: 'כליות · שתן' },
+  burdock:       { temp: 'מקרר',   taste: 'מר ומתוק',   organ: 'עור · כבד' },
+  redclover:     { temp: 'מקרר',   taste: 'מתוק',       organ: 'עור · לימפה' },
+};
+
+// ─────────────────────────────────────────────────────────────
+// Known herb–drug interactions (sample, conservative subset)
+// herbId → { drugMatch: regex string, severity, note }
+// ─────────────────────────────────────────────────────────────
+const KNOWN_INTERACTIONS = [
+  { herbId: 'stjohnswort', drug: /Cipralex|Prozac|Zoloft|Lustral|Seroxat|SSRI/i,
+    severity: 'high',   note: 'סיכון לסינדרום סרוטונין בשילוב עם SSRI' },
+  { herbId: 'licorice',    drug: /Eltroxin|Levothyroxine/i,
+    severity: 'medium', note: 'עלול להפחית את ספיגת הלבותירוקסין' },
+  { herbId: 'turmeric',    drug: /Coumadin|Warfarin|Aspirin/i,
+    severity: 'medium', note: 'מעצים מדללי דם — סיכון לדימום' },
+  { herbId: 'ginger',      drug: /Coumadin|Warfarin|Aspirin/i,
+    severity: 'low',    note: 'עשוי להעצים מדללי דם במינונים גבוהים' },
+  { herbId: 'ginseng',     drug: /Coumadin|Warfarin/i,
+    severity: 'medium', note: 'אינטראקציה עם וורפרין — נטר את ה־INR' },
+  // ── Additional sample interactions ──
+  { herbId: 'ashwagandha', drug: /Eltroxin|Levothyroxine|Synthroid/i,
+    severity: 'medium', note: 'עשוי להעצים את פעילות בלוטת התריס' },
+  { herbId: 'ashwagandha', drug: /Prograf|Tacrolimus|CellCept|Imuran/i,
+    severity: 'high',   note: 'עלול להתנגד לתרופות מדכאות חיסון' },
+  { herbId: 'valerian',    drug: /Dormicum|Clonex|Bondormin|Lyrica|Assival|Diazepam/i,
+    severity: 'medium', note: 'העצמת דיכוי מערכת העצבים המרכזית' },
+  { herbId: 'passionflower', drug: /Dormicum|Clonex|Bondormin|Assival|Diazepam/i,
+    severity: 'medium', note: 'העצמת אפקט מרגיע / מנמנם' },
+  { herbId: 'lavender',    drug: /Dormicum|Clonex|Bondormin|Assival/i,
+    severity: 'low',    note: 'עשוי להעצים השפעה מרגיעה' },
+  { herbId: 'chamomile',   drug: /Coumadin|Warfarin/i,
+    severity: 'medium', note: 'עשוי להעצים מדללי דם' },
+  { herbId: 'hawthorn',    drug: /Concor|Normiten|Digoxin|Lanoxin|Cardiloc/i,
+    severity: 'medium', note: 'אינטראקציה עם תרופות לב ולחץ דם' },
+  { herbId: 'milkthistle', drug: /Glucophage|Metformin/i,
+    severity: 'low',    note: 'עשוי להשפיע על רמות הסוכר בדם' },
+  { herbId: 'ginkgo',      drug: /Coumadin|Warfarin|Aspirin|Plavix/i,
+    severity: 'medium', note: 'מעצים מדללי דם — סיכון מוגבר לדימום' },
+  { herbId: 'garlic',      drug: /Coumadin|Warfarin|Aspirin/i,
+    severity: 'low',    note: 'עשוי להעצים מדללי דם במינון גבוה' },
+  { herbId: 'vitex',       drug: /Femed|Diane|Yarina|Yaz|Cilest/i,
+    severity: 'medium', note: 'עלול להתנגד לפעולת גלולות למניעת הריון' },
+  { herbId: 'eucalyptus',  drug: /Glucophage|Metformin/i,
+    severity: 'low',    note: 'עשוי להפחית מעט את רמות הסוכר בדם' },
+];
+
+// Description text for herbs (for info panel) — short clinical blurbs
+const HERB_BLURBS = {
+  ashwagandha:   'שורש אדפטוגני מהיורוודה. מכיל ויתאנולידים המסייעים בהפחתת קורטיזול, שיפור שינה והפחתת חרדה כרונית. שילוב מצוין ברקיחות לטיפול בשחיקה.',
+  passionflower: 'צמח רגיעה קלאסי. עובד דרך GABA — אפקט אנקסיוליטי עדין ללא ערפול. סינרגיה מצוינת עם ולריאן ומליסה ברקיחות לשינה ולחרדה.',
+  lemonbalm:     'עלים ארומטיים בעלי השפעה מרגיעה ומאזנת על מערכת העצבים והעיכול. ידידותית לילדים ולקשישים, מתאימה היטב לחליטות ולתמיסות שינה.',
+  valerian:      'שורש ולריאן — היפנוטי קלאסי. ריח חזק, אפקט עוצמתי. מינון תלוי באיכות התמצית. עדיף בערב; עלול לגרום ערות ב־10% מהאוכלוסייה.',
+  lavender:      'פרחי לבנדר — שמן אתרי עשיר בלינלול. מרגיע, נוגד דיכאון קל, מסייע בשינה. מתאים לתמיסות, חליטות ולשמנים מושרים.',
+  echinacea:     'מודולטור חיסון — מגביר פעילות פגוציטים. שימוש לטווח קצר במחזורים של 10–14 יום, יעיל בעיקר בתחילת התקף ויראלי.',
+  turmeric:      'אנטי-דלקתי חזק. ביו-זמינות נמוכה — שלב פיפרין או מטריצת שומן. שמור על מינון מתון בקרב נוטלי מדללי דם.',
+  ginger:        'מחמם, אנטי-בחילה, פרו-קינטי לעיכול. מצוין כפתיחה לפורמולות עיכול ולתמיסות לבחילות הריון (במינון נמוך).',
+  peppermint:    'עלים ארומטיים עשירי מנטול. נוגד התכווצויות מעי, מקל על גזים ובחילה. שילוב מצוין בתה עיכול — יש להימנע בריפלוקס וושט.',
+  fennel:        'זרעי שומר נגד גזים והתכווצויות. מרגיע מערכת עיכול ותומך בייצור חלב בהנקה. ידידותי לפעוטות ולתינוקות.',
+  vitex:         'שיח אברהם — מעדן הורמונלי. פועל על היפופיזה לאיזון פרוגסטרון-אסטרוגן. מתאים לסדר וסת ולתסמיני PMS; נטילה בבוקר היא היעילה ביותר.',
+  ginkgo:        'עלי גינקו — משפר מחזור דם מוחי והיקפי. תומך בזיכרון ובריכוז. זהירות בנוטלי מדללי דם — מעלה סיכון לדימום.',
+  elder:         'סמבוק שחור — פרחים להזעה והורדת חום, פירות עשירים באנתוציאנים לתמיכה חיסונית. קלאסי לעונת ההצטננות.',
+  thyme:         'קורנית — נוגד שיעול, מפרק ליחה ומחטא דרכי נשימה. עשיר בתימול; מצוין בחליטות ובתמיסות לשיעול פורה.',
+  burdock:       'שורש לפה — מנקה קלאסי לעור. תומך בפינוי רעלים דרך כבד ולימפה, מתאים לאקנה ולמצבי עור כרוניים.',
+};
+
+// Pregnancy / drug-class / children warnings keyed by herb id.
+// Used to render the red warning chip + tooltip in Step 3 ingredient library.
+const HERB_WARNINGS = {
+  ashwagandha:   ['הריון', 'אוטואימוני'],
+  licorice:      ['הריון', 'יתר לחץ דם'],
+  stjohnswort:   ['הריון', 'נטילת SSRI', 'נוגדי קרישה'],
+  valerian:      ['הריון (זהירות)'],
+  passionflower: ['הריון'],
+  sage:          ['הריון', 'הנקה'],
+  turmeric:      ['נוגדי קרישה'],
+  ginger:        ['נוגדי קרישה (במינון גבוה)'],
+  ginseng:       ['הריון', 'נוגדי קרישה'],
+  rhodiola:      ['הפרעות דו־קוטביות'],
+  rosemary:      ['הריון'],
+  hawthorn:      ['נוטלי תרופות לב'],
+  vitex:         ['הריון', 'גלולות'],
+  blackcohosh:   ['הריון', 'כבד'],
+  uvaursi:       ['הריון', 'שימוש ממושך'],
+  wormwood:      ['הריון', 'אפילפסיה'],
+  ginkgo:        ['נוגדי קרישה', 'לפני ניתוח'],
+  garlic:        ['נוגדי קרישה (במינון גבוה)'],
+  gentian:       ['כיב קיבה'],
+  motherwort:    ['הריון'],
+  eucalyptus:    ['ילדים קטנים'],
+};
+
+// Recommended adult daily dose per herb — dried-herb equivalent (illustrative
+// reference values, g/day). Shown as the "מינון מומלץ" column in Step 3.
+const HERB_DOSE = {
+  ashwagandha:   '3–6 ליום',
+  echinacea:     '1–3 ליום',
+  calendula:     '1–4 ליום',
+  chamomile:     '2–8 ליום',
+  valerian:      '2–4 ליום',
+  passionflower: '1–4 ליום',
+  milkthistle:   '4–9 ליום',
+  dandelion:     '3–10 ליום',
+  nettle:        '4–8 ליום',
+  ginger:        '1–3 ליום',
+  turmeric:      '3–9 ליום',
+  licorice:      '1–4 ליום',
+  rhodiola:      '1–3 ליום',
+  lemonbalm:     '2–6 ליום',
+  sage:          '1–3 ליום',
+  rosemary:      '2–4 ליום',
+  hawthorn:      '3–6 ליום',
+  astragalus:    '4–12 ליום',
+  reishi:        '2–6 ליום',
+  lavender:      '1–3 ליום',
+  stjohnswort:   '2–4 ליום',
+  ginseng:       '1–3 ליום',
+  schisandra:    '1.5–6 ליום',
+  olive:         '2–6 ליום',
+  thyme:         '1–4 ליום',
+  mullein:       '3–4 ליום',
+  marshmallow:   '3–6 ליום',
+  plantain:      '3–6 ליום',
+  eucalyptus:    '1–3 ליום',
+  elder:         '3–5 ליום',
+  peppermint:    '1.5–3 ליום',
+  fennel:        '1–3 ליום',
+  yarrow:        '2–4 ליום',
+  cinnamon:      '1–4 ליום',
+  cardamom:      '0.5–2 ליום',
+  clove:         '0.5–2 ליום',
+  gentian:       '0.5–2 ליום',
+  wormwood:      '0.5–2 ליום',
+  gotukola:      '1–4 ליום',
+  oats:          '3–6 ליום',
+  skullcap:      '1–3 ליום',
+  motherwort:    '2–4 ליום',
+  ginkgo:        '1–3 ליום',
+  garlic:        '2–4 ליום',
+  vitex:         '0.5–1.5 ליום',
+  blackcohosh:   '0.5–2 ליום',
+  raspberry:     '4–8 ליום',
+  cranberry:     '2–6 ליום',
+  uvaursi:       '1.5–4 ליום',
+  goldenrod:     '3–5 ליום',
+  burdock:       '2–6 ליום',
+  redclover:     '2–4 ליום',
+};
+
+// Botanical family per herb (משפחה בוטנית) — shown in the monograph info row.
+const HERB_FAMILY = {
+  ashwagandha: 'סולניים (Solanaceae)',
+  echinacea:   'מורכבים (Asteraceae)',
+  calendula:   'מורכבים (Asteraceae)',
+  chamomile:   'מורכבים (Asteraceae)',
+  valerian:    'יערתיים (Caprifoliaceae)',
+  passionflower: 'פסיפלוריים (Passifloraceae)',
+  milkthistle: 'מורכבים (Asteraceae)',
+  dandelion:   'מורכבים (Asteraceae)',
+  nettle:      'סרפדיים (Urticaceae)',
+  ginger:      'זנגביליים (Zingiberaceae)',
+  turmeric:    'זנגביליים (Zingiberaceae)',
+  licorice:    'קטניות (Fabaceae)',
+  rhodiola:    'בן־חמצוציים (Crassulaceae)',
+  lemonbalm:   'שפתניים (Lamiaceae)',
+  sage:        'שפתניים (Lamiaceae)',
+  rosemary:    'שפתניים (Lamiaceae)',
+  hawthorn:    'ורדיים (Rosaceae)',
+  astragalus:  'קטניות (Fabaceae)',
+  reishi:      'גנודרמיים (Ganodermataceae)',
+  lavender:    'שפתניים (Lamiaceae)',
+  stjohnswort: 'הִיפֵּריקוניים (Hypericaceae)',
+  ginseng:     'אראליים (Araliaceae)',
+  schisandra:  'שיזנדריים (Schisandraceae)',
+  olive:       'זיתיים (Oleaceae)',
+  thyme:       'שפתניים (Lamiaceae)',
+  mullein:     'לועניתיים (Scrophulariaceae)',
+  marshmallow: 'חלמיתיים (Malvaceae)',
+  plantain:    'לחכיים (Plantaginaceae)',
+  eucalyptus:  'הדסיים (Myrtaceae)',
+  elder:       'אדוקסיים (Adoxaceae)',
+  peppermint:  'שפתניים (Lamiaceae)',
+  fennel:      'סוככיים (Apiaceae)',
+  yarrow:      'מורכבים (Asteraceae)',
+  cinnamon:    'עריים (Lauraceae)',
+  cardamom:    'זנגביליים (Zingiberaceae)',
+  clove:       'הדסיים (Myrtaceae)',
+  gentian:     'ערבזיים (Gentianaceae)',
+  wormwood:    'מורכבים (Asteraceae)',
+  gotukola:    'סוככיים (Apiaceae)',
+  oats:        'דגניים (Poaceae)',
+  skullcap:    'שפתניים (Lamiaceae)',
+  motherwort:  'שפתניים (Lamiaceae)',
+  ginkgo:      'גינקואיים (Ginkgoaceae)',
+  garlic:      'שומיים (Amaryllidaceae)',
+  vitex:       'שפתניים (Lamiaceae)',
+  blackcohosh: 'נוריתיים (Ranunculaceae)',
+  raspberry:   'ורדיים (Rosaceae)',
+  cranberry:   'אברשיים (Ericaceae)',
+  uvaursi:     'אברשיים (Ericaceae)',
+  goldenrod:   'מורכבים (Asteraceae)',
+  burdock:     'מורכבים (Asteraceae)',
+  redclover:   'קטניות (Fabaceae)',
+};
+
+// Full monographs (the herb-info article). Each entry can have:
+//   species  — string shown in the "מינים נוספים" info column (optional)
+//   parts    — override for "חלקים בשימוש" (defaults to herb.form)
+//   sections — [{ title, body }] long-form article body
+//   warningNote — text for the red "אזהרות והתוויות נגד" block
+//   sources  — [string] reference list (מקורות)
+// Herbs without an entry fall back to a generic article built from blurb + uses.
+const HERB_MONOGRAPH = {
+  echinacea: {
+    species: 'האכיניצאה כוללת תשעה מינים, אך בשימוש הרפואי בולטים במיוחד שניים:\nEchinacea purpurea\nEchinacea angustifolia',
+    parts: 'השורש, העלים והפרחים – בהתאם למין הצמח',
+    sections: [
+      {
+        title: 'מתי נשתמש | התוויות רפואיות | שימושים עיקריים',
+        body: 'על פי מחקרים, האכיניצאה יעילה בעיקר במצבים של זיהומים בדרכי הנשימה והשתן, הצטננות, טיפול בתסמיני התקררות, קיצור משך המחלה והפחתת שכיחות דלקות אוזניים משניות בילדים.\nשימושים חיצוניים בצמח כוללים קידום ריפוי פצעים וטיפול במצבי עור דלקתיים.\n**לצמח יש השפעה על מערכת החיסון – יש להתייעץ עם גורם מקצועי או רופא.ה.**',
+      },
+      {
+        title: 'רכיבים פעילים ומנגנוני פעולה',
+        body: 'החומרים הפעילים העיקריים באכיניצאה כוללים **פוליסכרידים, אלקמידים ופלבנואידים**, להם מיוחסת השפעה אימונומודולטורית (מווסתת את מערכת החיסון), מעוררת חיסון, אנטי־ויראלית, אנטי־דלקתית ונוגדת חמצון.\nמנגנוני הפעולה העיקריים כוללים הגברת פעילות תאי הדם הלבנים (מקרופאגים ותאים אחרים), עידוד הפרשת ציטוקינים החיוניים להתמודדות עם זיהומים, ועיכוב החדרת וירוסים לתאים באמצעות חסימת קולטנים.',
+      },
+      {
+        title: 'רקע כללי',
+        body: 'האכיניצאה היא אחד מצמחי המרפא הנחקרים והנפוצים ביותר בעולם המערבי לתמיכה במערכת החיסון, הקלה על תסמיני הצטננות וזיהומים בדרכי הנשימה העליונות.\nהצמח שימש במשך מאות שנים את שבטי הילידים בצפון אמריקה, אשר השתמשו בעיקר בשורש האכיניצאה לטיפול במגוון רחב של בעיות רפואיות – עקיצות נחש, פצעים מזוהמים, כאבי גרון, שיעול וכאבים כלליים.\nבמאה ה־19 אומץ הצמח על ידי הרפואה האקלקטית בארצות הברית כ״טוניק כללי״, ובהמשך הגיע לאירופה והפך לפופולרי מאוד ברפואה הטבעית. כיום הוא נחשב לצמח מרכזי בטיפול במחלות זיהומיות של דרכי הנשימה ובהצטננויות חוזרות.',
+      },
+    ],
+    warningNote: 'נשים בהריון, מניקות, ילדים ואנשים הנוטלים תרופות מרשם – נדרשת התייעצות עם רופא.',
+    sources: [
+      'WHO Monographs on Selected Medicinal Plants. Geneva: World Health Organization. 2002.',
+      'European Medicines Agency (EMA). Final EU herbal monograph on Echinacea purpurea (L.) Moench, herba recens. 2012.',
+      'Shah SA, et al. Evaluation of echinacea for the prevention and treatment of the common cold: a meta-analysis. Lancet Infect Dis. 2007;7(7):473-480.',
+      'Signer J, Schapowal A, et al. Echinacea purpurea extract in respiratory viral infections: an overview of clinical trials. Front Med. 2023;10:948787.',
+    ],
+  },
+};
+
+// Saved formulas — appear in the "טען מפורמולה קיימת" popup inside Step 2 (compose).
+// Each entry seeds the same shape as the live `formula` state.
+const SAVED_FORMULAS = [
+  {
+    id: 'sf1',
+    name: 'פורמולה להרגעה ושינה',
+    summary: 'פסיפלורה · מליסה · אשווגנדה · לבנדר',
+    typeId: 'tincture',
+    tinctureVolume: 200,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'passionflower', qty: 56 },
+      { herbId: 'lemonbalm',     qty: 44 },
+      { herbId: 'ashwagandha',   qty: 66 },
+      { herbId: 'lavender',      qty: 34 },
+    ],
+    lastUsed: 'לפני 3 ימים · דנה כהן',
+    usageCount: 14,
+  },
+  {
+    id: 'sf2',
+    name: 'תמצית כבד וניקוי',
+    summary: 'גדילן · שן הארי · שיזנדרה · כורכום',
+    typeId: 'tincture',
+    tinctureVolume: 100,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'milkthistle', qty: 30 },
+      { herbId: 'dandelion',   qty: 28 },
+      { herbId: 'schisandra',  qty: 22 },
+      { herbId: 'turmeric',    qty: 20 },
+    ],
+    lastUsed: 'לפני שבוע · יעל ברק',
+    usageCount: 9,
+  },
+  {
+    id: 'sf3',
+    name: 'אדפטוגן בוקר — מרץ וריכוז',
+    summary: 'אשווגנדה · רודיולה · שוש · ג׳ינסנג',
+    typeId: 'capsule',
+    tinctureVolume: 100,
+    capsuleCount: 90,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'ashwagandha', qty: 30 },
+      { herbId: 'rhodiola',    qty: 25 },
+      { herbId: 'licorice',    qty: 15 },
+      { herbId: 'ginseng',     qty: 20 },
+    ],
+    lastUsed: 'לפני יומיים · אלון מזרחי',
+    usageCount: 21,
+  },
+  {
+    id: 'sf4',
+    name: 'מיקס חיסון לעונת המעבר',
+    summary: 'אכינצאה · אסטרגלוס · ריישי · זנגביל',
+    typeId: 'tincture',
+    tinctureVolume: 125,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'echinacea',   qty: 40 },
+      { herbId: 'astragalus',  qty: 35 },
+      { herbId: 'reishi',      qty: 30 },
+      { herbId: 'ginger',      qty: 20 },
+    ],
+    lastUsed: 'לפני חודש',
+    usageCount: 6,
+  },
+  {
+    id: 'sf5',
+    name: 'תמיסת מצב רוח',
+    summary: 'פרע מחורר · מליסה · לבנדר · רוזמרין',
+    typeId: 'tincture',
+    tinctureVolume: 50,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'stjohnswort', qty: 18 },
+      { herbId: 'lemonbalm',   qty: 14 },
+      { herbId: 'lavender',    qty: 10 },
+      { herbId: 'rosemary',    qty: 8 },
+    ],
+    lastUsed: 'לפני שבועיים',
+    usageCount: 11,
+  },
+  {
+    id: 'sf6',
+    name: 'תה ערב להרפיה',
+    summary: 'בבונג · לבנדר · מליסה',
+    typeId: 'tea',
+    tinctureVolume: 100,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'chamomile', qty: 40 },
+      { herbId: 'lavender',  qty: 25 },
+      { herbId: 'lemonbalm', qty: 35 },
+    ],
+    lastUsed: 'לפני 5 ימים',
+    usageCount: 4,
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Shopping cart (סל הקניות) — items awaiting payment.
+// Mixed: ready-made shelf products + custom personal formulas.
+// ─────────────────────────────────────────────────────────────
+const CART_ITEMS = [
+  // ── Shelf product — calendula salve ──
+  {
+    id: 'c1',
+    kind: 'shelf',
+    name: 'משחת קלנדולה',
+    form: 'משחה',
+    vol: '50 גרם',
+    patient: 'דנה כהן',
+    phone: '052-886-4546',
+    tags: ['עור', 'ריפוי פצעים', 'חיטוי', 'דלקות'],
+    desc: 'תערובת צמחים לשיקום ואיחוי העור, להקלה על דלקות מקומיות ולחיטוי פצעים שטחיים. לשימוש חיצוני בלבד — נמרח על האזור הפגוע 2–3 פעמים ביום.',
+    price: 54,
+    qty: 2,
+  },
+
+  // ── Personal formula — tincture (sample) for a patient ──
+  {
+    id: 'c2',
+    kind: 'formula',
+    typeId: 'tincture',
+    name: 'פורמולה להרגעה ושינה',
+    patient: 'דנה כהן',
+    phone: '052-886-4546',
+    vol: '100 ml',
+    typeNote: 'ללא ניזוף',
+    route: 'פנימי',
+    sample: true,
+    dosage: '20 טיפות · פעמיים ביום · לפני השינה',
+    pharmacyNote: 'אין',
+    ingredients: [
+      { herbId: 'passionflower', pct: 33.33 },
+      { herbId: 'lemonbalm',     pct: 33.33 },
+      { herbId: 'ashwagandha',   pct: 33.34 },
+    ],
+    price: 121.82,
+    qty: 1,
+  },
+
+  // ── Personal formula — capsules for a patient ──
+  {
+    id: 'c3',
+    kind: 'formula',
+    typeId: 'capsule',
+    name: 'אדפטוגן בוקר — מרץ וריכוז',
+    patient: 'אלון מזרחי',
+    phone: '053-204-7781',
+    vol: '90 כמוסות',
+    typeNote: 'מנה יומית ×30',
+    route: 'פנימי',
+    sample: false,
+    dosage: 'כמוסה אחת · בוקר · עם האוכל',
+    pharmacyNote: 'למלא בקפסולות צמחיות בגודל 0',
+    ingredients: [
+      { herbId: 'ashwagandha', pct: 40 },
+      { herbId: 'rhodiola',    pct: 35 },
+      { herbId: 'ginseng',     pct: 25 },
+    ],
+    price: 168,
+    qty: 1,
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Pending / on-hold orders (הזמנות בהמתנה) — orders parked out of the
+// active cart: awaiting payment, patient approval, or still a draft.
+// ─────────────────────────────────────────────────────────────
+const PENDING_ORDERS = [
+  // Custom formula — awaiting patient payment
+  {
+    id: 'h1', orderId: 'TF-2847', kind: 'formula', typeId: 'tincture',
+    name: 'תמצית כבד וניקוי', patient: 'יעל ברק', phone: '054-771-2093',
+    vol: '100 ml', typeNote: 'ללא ניזוף', route: 'פנימי',
+    dosage: '15 טיפות · 3× ביום', pharmacyNote: 'אין',
+    ingredients: [
+      { herbId: 'milkthistle', pct: 35 },
+      { herbId: 'dandelion',   pct: 30 },
+      { herbId: 'schisandra',  pct: 20 },
+      { herbId: 'turmeric',    pct: 15 },
+    ],
+    price: 142.50, qty: 1,
+    heldAt: 'לפני יומיים', reason: 'ממתין לתשלום', reasonTone: 'amber',
+  },
+  // Shelf product — awaiting patient approval
+  {
+    id: 'h2', orderId: 'TF-2842', kind: 'shelf',
+    name: 'מיקס חיסון יומי', form: 'כמוסות', vol: '60 כמוסות',
+    tags: ['כמוסות', 'חיסון'],
+    desc: 'אכינצאה · אסטרגלוס · זנגביל — תמיכה יומית במערכת החיסון לעונת המעבר.',
+    patient: 'אלון מזרחי', phone: '052-330-8841',
+    price: 124, qty: 2,
+    heldAt: 'לפני 4 ימים', reason: 'ממתין לאישור מטופל', reasonTone: 'blue',
+  },
+  // Custom formula — draft, no patient yet
+  {
+    id: 'h3', kind: 'formula', typeId: 'capsule',
+    name: 'אדפטוגן בוקר — מרץ וריכוז', patient: 'רותם לוי', phone: '054-612-9930',
+    vol: '90 כמוסות', route: 'פנימי',
+    dosage: 'כמוסה אחת · בוקר · עם האוכל', pharmacyNote: 'אין',
+    ingredients: [
+      { herbId: 'ashwagandha', pct: 40 },
+      { herbId: 'rhodiola',    pct: 35 },
+      { herbId: 'ginseng',     pct: 25 },
+    ],
+    price: 168, qty: 1,
+    heldAt: 'אתמול', reason: 'טיוטה', reasonTone: 'gray',
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Classic preset formulas — loaded into the ingredient table
+// as a locked base. Practitioners can add extra herbs on top.
+// ─────────────────────────────────────────────────────────────
+const PRESET_FORMULAS = [
+  {
+    id: 'guizhi_tang',
+    nameEn: 'Gui Zhi Tang',
+    nameZh: '桂枝汤',
+    namePinyin: 'Guì Zhī Tāng',
+    source: 'Shang Han Lun · 傷寒論',
+    indication: 'שחרור החיצון, הרמוניזציה של יינג וויי — רוח-קור חיצוני עם הזעה ספונטנית',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'guizhi',   parts: 9 },
+      { herbId: 'baishao',  parts: 9 },
+      { herbId: 'dazao',    parts: 9 },
+      { herbId: 'licorice', parts: 6 },
+      { herbId: 'ginger',   parts: 9 },
+    ],
+  },
+  {
+    id: 'baitouweng_tang',
+    nameEn: 'Bai Tou Weng Tang',
+    nameZh: '白头翁汤',
+    namePinyin: 'Bái Tóu Wēng Tāng',
+    source: 'Shang Han Lun · 傷寒論',
+    indication: 'ניקוי חום-רעלים, קירור דם — דיזנטריה ממחום-רעלים, דם בצואה',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'baitouweng', parts: 6 },
+      { herbId: 'huanglian',  parts: 9 },
+      { herbId: 'huangbai',   parts: 9 },
+      { herbId: 'qinpi',      parts: 9 },
+    ],
+  },
+  {
+    id: 'xiao_yao_san',
+    nameEn: 'Xiao Yao San',
+    nameZh: '逍遥散',
+    namePinyin: 'Xiāo Yáo Sǎn',
+    source: 'Tai Ping Hui Min He Ji Ju Fang · 太平惠民和劑局方',
+    indication: 'פיזור Qi כבד, חיזוק טחול, הזנת דם — עצירת Qi כבד עם חוסר דם',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'chaihu',     parts: 9 },
+      { herbId: 'danggui',    parts: 9 },
+      { herbId: 'baishao',    parts: 9 },
+      { herbId: 'baizhu',     parts: 9 },
+      { herbId: 'fuling',     parts: 9 },
+      { herbId: 'licorice',   parts: 6 },
+      { herbId: 'ginger',     parts: 9 },
+      { herbId: 'peppermint', parts: 3 },
+    ],
+  },
+  {
+    id: 'si_jun_zi_tang',
+    nameEn: 'Si Jun Zi Tang',
+    nameZh: '四君子汤',
+    namePinyin: 'Sì Jūn Zǐ Tāng',
+    source: 'Tai Ping Hui Min He Ji Ju Fang · 太平惠民和劑局方',
+    indication: 'חיזוק Qi הטחול והקיבה — חוסר Qi של טחול-קיבה, עייפות ואין-אוניה',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'ginseng',  parts: 9 },
+      { herbId: 'baizhu',   parts: 9 },
+      { herbId: 'fuling',   parts: 9 },
+      { herbId: 'licorice', parts: 6 },
+    ],
+  },
+  {
+    id: 'liu_wei_di_huang_wan',
+    nameEn: 'Liu Wei Di Huang Wan',
+    nameZh: '六味地黄丸',
+    namePinyin: 'Liù Wèi Dì Huáng Wán',
+    source: 'Xiao Er Yao Zheng Zhi Jue · 小兒藥證直訣',
+    indication: 'הזנת Yin הכליות — חוסר Yin כליות-כבד, חום ריק, הזעות לילה',
+    typeId: 'capsule',
+    ingredients: [
+      { herbId: 'shudihuang', parts: 24 },
+      { herbId: 'shanyurou',  parts: 12 },
+      { herbId: 'shanyao',    parts: 12 },
+      { herbId: 'zexie',      parts: 9 },
+      { herbId: 'fuling',     parts: 9 },
+      { herbId: 'mudanpi',    parts: 9 },
+    ],
+  },
+  {
+    id: 'bu_zhong_yi_qi_tang',
+    nameEn: 'Bu Zhong Yi Qi Tang',
+    nameZh: '补中益气汤',
+    namePinyin: 'Bǔ Zhōng Yì Qì Tāng',
+    source: 'Pi Wei Lun · 脾胃論',
+    indication: 'חיזוק Qi טחול-קיבה, הרמת יאנג השוקע — שקיעת יאנג עם עייפות כרונית',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'astragalus', parts: 18 },
+      { herbId: 'licorice',   parts: 9 },
+      { herbId: 'ginseng',    parts: 9 },
+      { herbId: 'baizhu',     parts: 9 },
+      { herbId: 'danggui',    parts: 6 },
+      { herbId: 'chaihu',     parts: 6 },
+    ],
+  },
+  {
+    id: 'si_wu_tang',
+    nameEn: 'Si Wu Tang',
+    nameZh: '四物汤',
+    namePinyin: 'Sì Wù Tāng',
+    source: 'Tai Ping Hui Min He Ji Ju Fang · 太平惠民和劑局方',
+    indication: 'הזנת דם והסדרתו — חוסר דם עם עצירת דם, מחזור לא סדיר, ראש תופף',
+    typeId: 'tincture',
+    ingredients: [
+      { herbId: 'shudihuang', parts: 12 },
+      { herbId: 'baishao',    parts: 10 },
+      { herbId: 'danggui',    parts: 10 },
+      { herbId: 'chuanxiong', parts: 8 },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// System formula templates — created by admins for practitioner convenience.
+// Loaded into the wizard as editable starting points (not read-only).
+// ─────────────────────────────────────────────────────────────
+const SYSTEM_FORMULAS = [
+  {
+    id: 'sys1',
+    name: 'תמצית הרגעה בסיסית',
+    summary: 'ולריאן · פסיפלורה · מליסה · בבונג',
+    description: 'נוסחת בסיס להרגעת מערכת העצבים ותמיכה בשינה. מתאימה כנקודת פתיחה לפורמולות שינה וחרדה — ניתן להתאים מינונים.',
+    typeId: 'tincture',
+    tinctureVolume: 100,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'valerian',      qty: 35 },
+      { herbId: 'passionflower', qty: 30 },
+      { herbId: 'lemonbalm',     qty: 25 },
+      { herbId: 'chamomile',     qty: 10 },
+    ],
+  },
+  {
+    id: 'sys2',
+    name: 'מיקס חיסון עונתי',
+    summary: 'אכינצאה · סמבוק · אסטרגלוס · זנגביל',
+    description: 'פורמולת בסיס לתמיכה חיסונית בעונות המעבר. יעילה כמניעה ובתחילת הצטננות. ניתן להוסיף רכיבים ולשנות מינונים.',
+    typeId: 'tincture',
+    tinctureVolume: 100,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'echinacea',  qty: 35 },
+      { herbId: 'elder',      qty: 25 },
+      { herbId: 'astragalus', qty: 25 },
+      { herbId: 'ginger',     qty: 15 },
+    ],
+  },
+  {
+    id: 'sys3',
+    name: 'תה עיכול קלאסי',
+    summary: 'מנטה · שומר · בבונג · זנגביל',
+    description: 'חליטת בסיס לתמיכה בעיכול, הפחתת גזים והרגעת מערכת העיכול. מתאים להכנה יומיומית ולהתאמה אישית.',
+    typeId: 'tea',
+    tinctureVolume: 50,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'peppermint', qty: 20 },
+      { herbId: 'fennel',     qty: 15 },
+      { herbId: 'chamomile',  qty: 10 },
+      { herbId: 'ginger',     qty: 5  },
+    ],
+  },
+  {
+    id: 'sys4',
+    name: 'איזון הורמונלי לאישה',
+    summary: 'שיח אברהם · מרווה · אשווגנדה · עלי פטל',
+    description: 'פורמולת בסיס לתמיכה הורמונלית ואיזון מחזור הוסת. נקודת פתיחה לטיפולי גיל המעבר ואיזון הציר ההורמונלי.',
+    typeId: 'tincture',
+    tinctureVolume: 100,
+    capsuleCount: 60,
+    capsuleMultiPacks: false,
+    ingredients: [
+      { herbId: 'vitex',       qty: 35 },
+      { herbId: 'sage',        qty: 25 },
+      { herbId: 'ashwagandha', qty: 25 },
+      { herbId: 'raspberry',   qty: 15 },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Free-pour formulas (פורמולה במזיגה חופשית) — the shelf catalog
+// offered as compoundable bases. Same shelf products (מוצרי מדף),
+// but instead of a sealed unit the practitioner pours any volume.
+// The base composition is LOCKED (like a classic preset) — extra
+// herbs may be added on top, but the base ratios cannot change.
+// ─────────────────────────────────────────────────────────────
+const FREEPOUR_FORMULAS = [
+  {
+    id: 'fp_p1', productId: 'p1', name: 'תמיסת שינה רגועה',
+    summary: 'ולריאן · פסיפלורה · מליסה',
+    indication: 'הרגעת מערכת העצבים ותמיכה בשינה איכותית',
+    typeId: 'tincture', shelfVol: '50 ml', price: 89,
+    ingredients: [
+      { herbId: 'valerian',      parts: 4 },
+      { herbId: 'passionflower', parts: 3 },
+      { herbId: 'lemonbalm',     parts: 3 },
+    ],
+  },
+  {
+    id: 'fp_p2', productId: 'p2', name: 'מיקס חיסון יומי',
+    summary: 'אכינצאה · אסטרגלוס · זנגביל',
+    indication: 'חיזוק מערכת החיסון ותמיכה בעונת החורף',
+    typeId: 'capsule', shelfVol: '60 כמוסות', price: 124,
+    ingredients: [
+      { herbId: 'echinacea',  parts: 4 },
+      { herbId: 'astragalus', parts: 4 },
+      { herbId: 'ginger',     parts: 2 },
+    ],
+  },
+  {
+    id: 'fp_p3', productId: 'p3', name: 'אדפטוגן בוקר',
+    summary: 'אשווגנדה · רודיולה · שוש',
+    indication: 'מרץ ואיזון בזמן דחק — תמיכה אדפטוגנית לבוקר',
+    typeId: 'powder', shelfVol: '100 גרם אבקה', price: 142,
+    ingredients: [
+      { herbId: 'ashwagandha', parts: 4 },
+      { herbId: 'rhodiola',    parts: 3 },
+      { herbId: 'licorice',    parts: 2 },
+    ],
+  },
+  {
+    id: 'fp_p4', productId: 'p4', name: 'תמצית עיכול',
+    summary: 'כורכום · זנגביל · שן הארי',
+    indication: 'תמיכה בעיכול, הפחתת דלקת ותמיכה בכבד',
+    typeId: 'tincture', shelfVol: '30 ml', price: 76,
+    ingredients: [
+      { herbId: 'turmeric',  parts: 3 },
+      { herbId: 'ginger',    parts: 3 },
+      { herbId: 'dandelion', parts: 2 },
+    ],
+  },
+  {
+    id: 'fp_p5', productId: 'p5', name: 'משקה לב ולחץ דם',
+    summary: 'עוזרר · עלי זית',
+    indication: 'תמיכה בבריאות הלב ואיזון לחץ הדם',
+    typeId: 'tincture', shelfVol: '50 ml', price: 98,
+    ingredients: [
+      { herbId: 'hawthorn', parts: 3 },
+      { herbId: 'olive',    parts: 2 },
+    ],
+  },
+  {
+    id: 'fp_p6', productId: 'p6', name: 'משחת קלנדולה',
+    summary: 'ציפורן חתול · שמן זית',
+    indication: 'טיפוח והרגעת העור — לשימוש חיצוני',
+    typeId: 'cream', shelfVol: '50 גרם', price: 54,
+    ingredients: [
+      { herbId: 'calendula', parts: 5 },
+      { herbId: 'olive',     parts: 3 },
+    ],
+  },
+  {
+    id: 'fp_p7', productId: 'p7', name: 'תמיסת מצב רוח',
+    summary: 'פרע מחורר · מליסה · לבנדר',
+    indication: 'תמיכה במצב הרוח והרגעה עדינה',
+    typeId: 'tincture', shelfVol: '50 ml', price: 92,
+    ingredients: [
+      { herbId: 'stjohnswort', parts: 4 },
+      { herbId: 'lemonbalm',   parts: 3 },
+      { herbId: 'lavender',    parts: 2 },
+    ],
+  },
+  {
+    id: 'fp_p8', productId: 'p8', name: 'תה ערב',
+    summary: 'בבונג · לבנדר · מליסה',
+    indication: 'חליטת ערב מרגיעה לפני השינה',
+    typeId: 'tea', shelfVol: '40 שקיות', price: 38,
+    ingredients: [
+      { herbId: 'chamomile', parts: 4 },
+      { herbId: 'lavender',  parts: 3 },
+      { herbId: 'lemonbalm', parts: 3 },
+    ],
+  },
+  {
+    id: 'fp_p9', productId: 'p9', name: 'תמצית כבד',
+    summary: 'גדילן · שן הארי · שיזנדרה',
+    indication: 'ניקוי רעלים ותמיכה בתפקוד הכבד',
+    typeId: 'tincture', shelfVol: '60 ml', price: 108,
+    ingredients: [
+      { herbId: 'milkthistle', parts: 4 },
+      { herbId: 'dandelion',   parts: 3 },
+      { herbId: 'schisandra',  parts: 2 },
+    ],
+  },
+];
+
+export {
+    HERBS, CN_HERB_IDS, CATEGORIES, PRODUCTS, PATIENTS, ORDERS,
+    EVENTS, ARTICLES, ARTICLE_IMAGE, VIDEOS, HOME_ORDERS,
+    FORMULA_TYPES, HERB_PROPS, KNOWN_INTERACTIONS,
+    HERB_BLURBS, HERB_WARNINGS, HERB_DOSE, HERB_FAMILY, HERB_MONOGRAPH,
+    SAVED_FORMULAS, CART_ITEMS, PENDING_ORDERS,
+    PROMOS, PRESET_FORMULAS, SYSTEM_FORMULAS, FREEPOUR_FORMULAS,
+};

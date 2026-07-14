@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9ebe3"></stop>
+      <stop offset="1" stop-color="#c9d2bd"></stop>
+    </linearGradient>
+    <linearGradient id="bot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b8e58"></stop>
+      <stop offset="1" stop-color="#3d5a3a"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"></rect>
+  <g transform="translate(300,210)">
+    <rect x="-46" y="-110" width="92" height="22" rx="3" fill="#2d3e2a"></rect>
+    <rect x="-58" y="-92" width="116" height="200" rx="14" fill="url(#bot)"></rect>
+    <rect x="-44" y="-40" width="88" height="120" rx="6" fill="#f4efe3" opacity="0.92"></rect>
+    <text x="0" y="0" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="20" font-weight="600" fill="#3d5a3a">Trifolium</text>
+    <text x="0" y="22" text-anchor="middle" font-family="Assistant, sans-serif" font-size="11" fill="#6b7a5e">תמצית צמחי מרפא</text>
+    <line x1="-30" y1="36" x2="30" y2="36" stroke="#c9d2bd" stroke-width="1"></line>
+    <text x="0" y="56" text-anchor="middle" font-family="Assistant, sans-serif" font-size="10" fill="#8a9579">50 ml</text>
+  </g>
+</svg>
