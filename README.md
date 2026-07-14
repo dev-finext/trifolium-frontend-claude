@@ -94,6 +94,26 @@ not a production environment. The production deploy will be the Laravel app.
 One-time repo setup if the first run fails at "configure-pages":
 Settings → Pages → Source: **GitHub Actions**.
 
+### PWA (installable app)
+
+The app ships as a PWA: `public/manifest.webmanifest` (RTL, Hebrew, brand
+icons, app shortcuts), `public/sw.js` (network-first pages / cache-first
+hashed assets — fresh deploys are picked up immediately, visited pages work
+offline), and registration in `app.js` (production builds only). Icons are
+generated from the brand trefoil by `scripts/generate-icons.mjs`.
+
+GitHub Pages satisfies every PWA requirement (HTTPS + static files); all PWA
+URLs are **relative**, so the same files work under the Pages subpath today
+and under Laravel later — when integrating, copy `public/manifest.webmanifest`,
+`public/sw.js` and `public/icons/` into Laravel's `public/`, and keep the
+`<link rel="manifest">` / `apple-touch-icon` tags from `preview/index.html`
+in the Blade root template.
+
+Installing: **Android/Chrome** — menu → "Add to Home screen" (or the install
+chip in the address bar). **iOS/Safari** — Share → "Add to Home Screen"
+(iOS never shows an automatic prompt). Desktop Chrome/Edge — the ⊕ install
+icon in the address bar.
+
 ### Wiring real data
 
 - **Props-first pages**: list pages declare their data as props with mock

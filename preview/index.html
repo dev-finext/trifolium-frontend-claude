@@ -13,6 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f6f8f5" />
     <meta name="apple-mobile-web-app-title" content="Trifolium" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- PWA: %BASE_URL% is substituted by Vite at build time, so these resolve
+         correctly under the GitHub Pages subpath as well as at a domain root. -->
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="%BASE_URL%icons/icon-180.png" />
     <title>Trifolium — בית המרקחת הדיגיטלי</title>
 
     <!-- Hebrew UI: Assistant · Latin text & numerals: Inter · Brand serif: Cormorant Garamond -->

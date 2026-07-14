@@ -1,0 +1,44 @@
+{
+    "name": "Trifolium — בית המרקחת הדיגיטלי",
+    "short_name": "Trifolium",
+    "description": "פלטפורמה מקצועית לרוקחים: רקיחת פורמולות צמחים אישיות, קטלוג, הזמנות ומעקב.",
+    "dir": "rtl",
+    "lang": "he",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#f6f8f5",
+    "theme_color": "#f6f8f5",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "הכנת פורמולה",
+            "url": "./compounding/",
+            "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "סל הקניות",
+            "url": "./cart/"
+        }
+    ]
+}

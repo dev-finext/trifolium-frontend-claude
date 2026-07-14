@@ -20,6 +20,17 @@ initMobileLayoutFlag();
 // A no-op in the default Hebrew product; never affects the end-user build.
 initEnglishOverlay();
 
+// PWA: register the service worker (production builds only — caching in dev
+// would mask live edits). Scope = the deployment base, so the same worker
+// serves GitHub Pages (/repo/) and Laravel (/). Files live in public/.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL })
+            .catch(() => { /* PWA is progressive — the app works fine without it */ });
+    });
+}
+
 createInertiaApp({
     title: (title) => (title ? `${title} — Trifolium` : 'Trifolium'),
     resolve: (name) => {
