@@ -77,6 +77,23 @@ same `resources/js/app.js` entry that runs in production.
 
 5. Delete `preview/` and `vite.preview.config.js` — they are dev scaffolding.
 
+### CI/CD — demo on every push
+
+Every push to `main` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml):
+
+1. **CI gate** — `npm run build` (the Laravel-target build) must compile.
+2. **Deploy** — `npm run build:demo` pre-renders a fully static demo
+   (one HTML per route, via [scripts/build-static-demo.mjs](scripts/build-static-demo.mjs))
+   and publishes it to **GitHub Pages**:
+   **https://dev-finext.github.io/trifolium-frontend-claude/**
+
+Demo caveats (static host, no Inertia server): navigation is a full page load
+and client state (cart, wizard) resets between pages — it's for design review,
+not a production environment. The production deploy will be the Laravel app.
+
+One-time repo setup if the first run fails at "configure-pages":
+Settings → Pages → Source: **GitHub Actions**.
+
 ### Wiring real data
 
 - **Props-first pages**: list pages declare their data as props with mock

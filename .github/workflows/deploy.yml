@@ -1,0 +1,71 @@
+# CI/CD — runs on every push to main:
+#   1. build  — compile check (the Laravel-target build must stay green) and
+#               the static demo build.
+#   2. deploy — publishes the demo to GitHub Pages:
+#               https://dev-finext.github.io/trifolium-frontend-claude/
+#
+# The demo is fully static (see scripts/build-static-demo.mjs): navigation is
+# full page loads and client state resets between pages — intended for design
+# review, not as the production environment (that will be the Laravel app).
+#
+# One-time repo setup: Settings → Pages → Source: "GitHub Actions".
+name: CI & Deploy demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once; a newer push supersedes an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # CI gate — the production (Laravel-target) build must compile.
+      - name: Build (compile check)
+        run: npm run build
+
+      # The deployable: fully static demo, served under the repo subpath.
+      - name: Build static demo
+        run: npm run build:demo
+        env:
+          VITE_BASE: /trifolium-frontend-claude/
+
+      - uses: actions/configure-pages@v5
+        with:
+          # Try to enable Pages automatically on first run; if the token lacks
+          # permission, enable once manually: Settings → Pages → Source: GitHub Actions.
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
