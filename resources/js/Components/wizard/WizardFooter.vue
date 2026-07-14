@@ -87,6 +87,7 @@ onBeforeUnmount(() => {
         }"
     >
         <div
+            class="wizard-footer-inner"
             :style="{
                 maxWidth: 'min(1080px, calc(var(--maxw-lab) - 24px))',
                 width: '100%',
@@ -123,6 +124,14 @@ onBeforeUnmount(() => {
                 <FooterCell label="נפח" last>
                     <span class="num">{{ volume }}</span> {{ volumeUnit }}
                 </FooterCell>
+            </div>
+
+            <!-- Mobile-only compact summary (CSS-gated; the full summary above is
+                 hidden on phones). Shows just the two live figures. -->
+            <div class="wizard-footer-mini num" aria-hidden="true">
+                <span>{{ items }} רכיבים</span>
+                <span class="wizard-footer-mini__dot">·</span>
+                <span>{{ volume }} {{ volumeUnit }}</span>
             </div>
 
             <!-- הבא — left edge (end) in RTL. -->

@@ -265,6 +265,23 @@ function goForward() { if (canForward.value) go(step.value + 1); }
                 @forward="goForward"
             />
 
+            <!-- Mobile progress header (CSS-gated; replaces the desktop step
+                 indicator, which the mobile stylesheet hides). Sticky under the
+                 top bar so the practitioner always knows where they are. -->
+            <div class="wizard-mobile-progress" aria-hidden="true">
+                <div class="wizard-mobile-progress__row">
+                    <span class="wizard-mobile-progress__step num">{{ step }}/{{ stepsResolved.length }}</span>
+                    <span class="wizard-mobile-progress__label">{{ stepsResolved[step - 1]?.label }}</span>
+                </div>
+                <div class="wizard-mobile-progress__track">
+                    <span
+                        v-for="s in stepsResolved"
+                        :key="s.n"
+                        :class="['wizard-mobile-progress__seg', { 'wizard-mobile-progress__seg--done': s.n <= step }]"
+                    />
+                </div>
+            </div>
+
             <!-- Step content -->
             <main style="padding: 40px 24px 120px">
                 <div style="max-width: var(--maxw-lab); margin: 0 auto">

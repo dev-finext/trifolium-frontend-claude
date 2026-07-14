@@ -209,7 +209,9 @@ const toggleKpi = (kpiStatus) => {
                 <button class="btn btn--ghost" @click="clearAll">נקה סינון</button>
             </div>
             <div v-else class="card" style="padding: 0; overflow: hidden">
-                <table style="width: 100%; border-collapse: collapse; table-layout: fixed">
+                <!-- .orders-table: on phones the mobile stylesheet re-lays this
+                     table out as stacked order cards (see app.css). -->
+                <table class="orders-table" style="width: 100%; border-collapse: collapse; table-layout: fixed">
                     <colgroup>
                         <col style="width: 108px" />
                         <col style="width: 120px" />

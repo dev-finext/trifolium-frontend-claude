@@ -797,3 +797,196 @@ html.tf-mobile {
   }
   .page { padding: 18px 12px 88px; }
 }
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE APP SHELL — refinements on top of the base tf-mobile
+   layer above. Phones get an app-like frame: bottom tab bar
+   (Components/navbar/BottomTabBar.vue), a minimal top bar, the
+   compliance strip in-flow at the page end, and no web footer.
+   ═════════════════════════════════════════════════════════════ */
+html.tf-mobile {
+  /* Reserve room for the fixed tab bar (60px + iPhone home indicator). */
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  .page { padding-bottom: 28px; }
+
+  /* Top bar: burger · logo only — cart lives in the tab bar. */
+  .nav__top-cart { display: none !important; }
+
+  /* Native apps don't have web footers: hide the link columns + contact
+     strip; keep the legal compliance strip, in-flow at the page end
+     (static — the fixed slot belongs to the tab bar now). */
+  footer { margin-top: 40px; }
+  footer > div:not(:last-child) { display: none !important; } /* beats inline display */
+  #site-compliance-strip {
+    position: static !important;
+    box-shadow: none !important;
+    border-top: none;
+  }
+
+  /* Touch feedback: cards and buttons acknowledge the press instantly. */
+  .btn:active { transform: scale(0.98); }
+  .card:active { border-color: var(--line-strong); }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   WIZARD ON PHONES — the core flow gets a native-app treatment:
+   a slim sticky progress header, a solid full-width action bar
+   pinned to the bottom edge (the tab bar is absent inside the
+   wizard), and touch-first pickers (horizontal snap-scroll cards
+   and pills instead of the prototype's <select> fallbacks).
+   ═════════════════════════════════════════════════════════════ */
+/* Progress header — hidden everywhere except phones. */
+.wizard-mobile-progress { display: none; }
+
+html.tf-mobile {
+  .wizard-mobile-progress {
+    display: block;
+    position: sticky;
+    top: 56px;                    /* right under the mobile top bar */
+    z-index: 30;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px 12px;
+  }
+  .wizard-mobile-progress__row {
+    display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+  }
+  .wizard-mobile-progress__step {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    background: var(--accent-tint); border-radius: 999px; padding: 2px 9px;
+  }
+  .wizard-mobile-progress__label { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .wizard-mobile-progress__track { display: flex; gap: 5px; }
+  .wizard-mobile-progress__seg {
+    flex: 1; height: 3.5px; border-radius: 999px;
+    background: var(--line); transition: background .25s ease;
+  }
+  .wizard-mobile-progress__seg--done { background: var(--accent); }
+
+  /* ---- Bottom action bar: full-width, solid, pinned to the edge ---- */
+  .wizard-footer-bar { bottom: 0 !important; height: auto !important; }
+  .wizard-footer-inner {
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 60px;
+    margin: 0 !important;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 0 !important;
+    border-inline: none !important;
+    border-bottom: none !important;
+    box-shadow: 0 -8px 24px -16px rgba(31, 46, 29, 0.4) !important;
+  }
+  /* The primary (continue) action reads as THE button. */
+  .wizard-footer-inner > div:last-child button {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #fff !important;
+    height: 42px !important;
+    padding-inline: 20px !important;
+    font-size: 14.5px !important;
+  }
+  .wizard-footer-inner > div:last-child button:disabled {
+    background: var(--surface-sunk) !important;
+    border-color: var(--line) !important;
+    color: var(--ink-4) !important;
+  }
+  .wizard-footer-inner > div:first-child button { height: 42px !important; }
+
+  /* Compact live summary in the middle of the bar (full one is hidden). */
+  .wizard-footer-mini {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12.5px; font-weight: 600; color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .wizard-footer-mini__dot { color: var(--line-strong); }
+
+  /* ---- Formula-type picker: glyph cards in a horizontal snap strip ----
+     (Overrides the base layer's dropdown fallback — the cards ARE the
+     professional, app-like experience; scrolling sideways is native.) */
+  .ftype-select-wrap { display: none !important; }
+  .ftype-grid {
+    display: grid !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: column;
+    grid-auto-columns: 96px;
+    gap: 10px !important;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 2px 2px 10px;
+    margin-inline: -2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .ftype-grid::-webkit-scrollbar { display: none; }
+  .ftype-grid > * { scroll-snap-align: start; }
+
+  /* ---- Orders list: the 8-column table becomes stacked order cards ----
+     A 776px table has no honest home on a phone. Each row re-lays out as a
+     card: patient (bold) · formula · status, with the order id + date as a
+     quiet top line. Phone / type / the "צפה" link are dropped — the whole
+     card is tappable and the details live on the order page. */
+  .orders-table { table-layout: auto !important; }
+  .orders-table colgroup, .orders-table thead { display: none; }
+  .orders-table, .orders-table tbody { display: block; width: 100% !important; }
+  .orders-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'id     date'
+      'patient patient'
+      'formula formula'
+      'status  status';
+    padding: 13px 16px 14px;
+    border-bottom: 1px solid var(--line) !important;
+  }
+  .orders-table tbody tr:active { background: var(--accent-tint) !important; }
+  .orders-table td { display: block; padding: 0 !important; border: none; }
+  .orders-table td:nth-child(1) { grid-area: id; font-size: 11.5px !important; }
+  .orders-table td:nth-child(6) { grid-area: date; font-size: 11.5px !important; }
+  .orders-table td:nth-child(2) { grid-area: patient; font-size: 15.5px !important; font-weight: 700 !important; margin-top: 3px; }
+  .orders-table td:nth-child(4) { grid-area: formula; font-size: 13.5px !important; margin-top: 1px; }
+  .orders-table td:nth-child(7) { grid-area: status; margin-top: 7px; }
+  .orders-table td:nth-child(3),
+  .orders-table td:nth-child(5),
+  .orders-table td:nth-child(8) { display: none; }
+
+  /* ---- Volume picker: keep the pills, let them scroll sideways ---- */
+  .vol-select-wrap { display: none !important; }
+  .vol-pills {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .vol-pills::-webkit-scrollbar { display: none; }
+  .vol-pills > * { flex-shrink: 0; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   TABLET / SMALL LAPTOP — html.tf-tablet (761–1080px).
+   The desktop design, breathing a little tighter: 4-across tiles
+   become 2×2, 3-across card grids become 2, chrome paddings shrink.
+   ═════════════════════════════════════════════════════════════ */
+html.tf-tablet {
+  .nav { padding: 0 14px; }
+  .nav__links { gap: 14px; }
+  .nav__link { font-size: 13.5px; }
+  /* User menu slims to avatar-only (name + chevron hidden) so the four
+     destinations, logo and actions all fit an 800px-class viewport. */
+  .nav [aria-haspopup='true'] > span:nth-child(2),
+  .nav [aria-haspopup='true'] > svg { display: none; }
+  .nav [aria-haspopup='true'] { padding: 4px !important; }
+
+  .page { padding: 32px 20px 72px; }
+
+  /* Tile / card grid hammers (inline grids from the design) */
+  [style*="repeat(4, 1fr)"], [style*="repeat(4,1fr)"],
+  [style*="repeat(3, 1fr)"], [style*="repeat(3,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Footer: brand + three link columns → two columns */
+  footer [style*="1.4fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px 40px !important; }
+}

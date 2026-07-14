@@ -119,7 +119,10 @@ function go(id) {
 
             <span class="nav__desktop-only" style="width: 1px; height: 26px; background: var(--line); margin: 0 2px" />
 
-            <IconAction icon="cart" tooltip="סל הקניות" :count="cartCount" :active="route === 'cart'" @click="go('cart')" />
+            <!-- On phones the cart lives in the bottom tab bar (nav__top-cart hides this). -->
+            <span class="nav__top-cart">
+                <IconAction icon="cart" tooltip="סל הקניות" :count="cartCount" :active="route === 'cart'" @click="go('cart')" />
+            </span>
             <span class="nav__desktop-only">
                 <IconAction
                     icon="cart_clock"

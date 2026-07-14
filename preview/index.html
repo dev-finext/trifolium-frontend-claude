@@ -7,7 +7,12 @@
 <html dir="rtl" lang="he">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- viewport-fit=cover: draw under the iPhone notch/home-indicator; the app
+         shell pads with env(safe-area-inset-*). maximum-scale intentionally NOT
+         set (pinch-zoom stays available — accessibility). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f6f8f5" />
+    <meta name="apple-mobile-web-app-title" content="Trifolium" />
     <title>Trifolium — בית המרקחת הדיגיטלי</title>
 
     <!-- Hebrew UI: Assistant · Latin text & numerals: Inter · Brand serif: Cormorant Garamond -->

@@ -5,6 +5,7 @@
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import TheNavbar from '@/Components/navbar/TheNavbar.vue';
+import BottomTabBar from '@/Components/navbar/BottomTabBar.vue';
 import TheFooter from '@/Components/TheFooter.vue';
 import CartToast from '@/Components/CartToast.vue';
 import ModeSwitchConfirmModal from '@/Components/mode/ModeSwitchConfirmModal.vue';
@@ -56,6 +57,10 @@ const screenLabel = computed(() => SCREEN_LABELS[currentRoute.value] || currentR
         <slot />
 
         <TheFooter />
+
+        <!-- Mobile app shell: bottom tab bar (phones only, via CSS). The wizard
+             owns the bottom edge with its own action bar, so it opts out. -->
+        <BottomTabBar v-if="navRoute !== 'compounding'" :route="navRoute" />
 
         <CartToast />
 
