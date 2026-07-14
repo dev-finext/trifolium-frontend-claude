@@ -6,8 +6,8 @@
 // The client-side counterpart (logical name → URL) lives in
 // resources/js/lib/routes.js — keep the two files in sync.
 
-/** Static routes: pathname → page component. */
-const STATIC_ROUTES = {
+/** Static routes: pathname → page component. (Also consumed by scripts/build-static-demo.mjs.) */
+export const STATIC_ROUTES = {
     '/': 'Home',
     '/login': 'Auth/Login',
     '/register': 'Auth/Register',

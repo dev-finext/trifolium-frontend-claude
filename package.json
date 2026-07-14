@@ -7,7 +7,8 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite --config vite.preview.config.js",
-        "build:preview": "vite build --config vite.preview.config.js"
+        "build:preview": "vite build --config vite.preview.config.js",
+        "build:demo": "vite build --config vite.preview.config.js --mode static && node scripts/build-static-demo.mjs"
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.0.0",

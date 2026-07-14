@@ -9,6 +9,16 @@
 // the one file to rewrite — e.g. `return route(name, params)`.
 import { router } from '@inertiajs/vue3';
 
+// Deployment base path (Vite's `base`) — '/' in dev and under Laravel, a
+// subpath on the static GitHub Pages demo. Every generated URL carries it.
+const BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
+// Static-demo mode (GitHub Pages): there is no Inertia server, so navigation
+// must be a full page load to the pre-rendered HTML instead of an XHR visit.
+// Set at build time by `npm run build:demo` (vite --mode static); always off
+// in dev and in the Laravel build.
+const STATIC_DEMO = import.meta.env.VITE_STATIC_DEMO === '1';
+
 const ROUTE_URLS = {
     // Auth flow
     'login': '/login',
@@ -53,8 +63,13 @@ export function routeUrl(name, params = {}) {
             query[key] = value;
         }
     }
+    // Static demo: routes are pre-rendered as <route>/index.html, so link
+    // straight to the directory form ("/cart/") — works on any static host
+    // without relying on a trailing-slash redirect.
+    if (STATIC_DEMO && url !== '/') url += '/';
+
     const qs = new URLSearchParams(query).toString();
-    return qs ? `${url}?${qs}` : url;
+    return BASE + (qs ? `${url}?${qs}` : url);
 }
 
 /**
@@ -62,7 +77,9 @@ export function routeUrl(name, params = {}) {
  * Used by the layout to highlight the active nav link.
  */
 export function routeNameFromUrl(url) {
-    const path = (url.split('?')[0].replace(/\/+$/, '')) || '/';
+    let path = (url.split('?')[0].replace(/\/+$/, '')) || '/';
+    // Strip the deployment base so matching stays base-agnostic.
+    if (BASE && path.startsWith(BASE)) path = path.slice(BASE.length) || '/';
     for (const [name, pattern] of Object.entries(ROUTE_URLS)) {
         if (!pattern.includes(':') && pattern === path) return name;
     }
@@ -80,5 +97,11 @@ export function routeNameFromUrl(url) {
  * `window.scrollTo(0, 0)` behavior.
  */
 export function visit(name, params = {}) {
-    router.visit(routeUrl(name, params));
+    const url = routeUrl(name, params);
+    // Static demo (no server): full page load to the pre-rendered HTML.
+    if (STATIC_DEMO) {
+        window.location.assign(url);
+        return;
+    }
+    router.visit(url);
 }
