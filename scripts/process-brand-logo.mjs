@@ -185,6 +185,18 @@ const write = (p, img) => { fs.writeFileSync(path.join(root, p), encodePng(img))
 
 write('resources/img/trifolium-logo.png', resize(full, Math.round(240 * full.w / full.h), 240));
 write('resources/img/trifolium-mark.png', resize(mark, 512, 512));
+// Strong variant for the mobile home hero: deeper green + a steeper ink ramp
+// (gamma boost sharpens the antialiased edges → reads bolder at small sizes).
+const strong = resize(mark, 512, 512);
+for (let o = 0; o < strong.px.length; o += 4) {
+    if (strong.px[o + 3] === 0) continue;
+    const ink = Math.min(1, (765 - (strong.px[o] + strong.px[o + 1] + strong.px[o + 2])) / (765 - (0x2b + 0x45 + 0x28)));
+    const t = Math.pow(ink, 0.72); // steepen
+    strong.px[o]     = Math.round(255 + (0x2b - 255) * t);
+    strong.px[o + 1] = Math.round(255 + (0x45 - 255) * t);
+    strong.px[o + 2] = Math.round(255 + (0x28 - 255) * t);
+}
+write('resources/img/trifolium-mark-strong.png', strong);
 write('resources/img/mark-green.png', resize(mark, 512, 512));
 write('public/icons/icon-512.png', iconify(mark, 512, CREAM));
 write('public/icons/icon-192.png', iconify(mark, 192, CREAM));

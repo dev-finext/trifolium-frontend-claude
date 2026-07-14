@@ -4,6 +4,7 @@
 
 // Placeholder illustrations (placeholders.jsx)
 export { default as HeroIllustration } from './HeroIllustration.vue';
+export { default as HeroPanorama } from './HeroPanorama.vue';
 export { default as ChineseHeroIllustration } from './ChineseHeroIllustration.vue';
 export { default as EventIllustration } from './EventIllustration.vue';
 export { default as ArticleIllustration } from './ArticleIllustration.vue';

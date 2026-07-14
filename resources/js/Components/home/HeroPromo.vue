@@ -1,10 +1,11 @@
 <script setup>
 // HERO — full-bleed botanical banner with a crisp Trifolium lockup.
-// Photographic backdrop (cleaned of the baked-in logo) + sharp,
-// design-system-aligned brand mark, wordmark and Hebrew tagline.
+// The backdrop is HeroPanorama (an illustrated apothecary still-life in the
+// app's own art language — jars, herbs, a Chinese decoction pot); it replaced
+// the raster hero-bg.png, which only ever shipped as a placeholder gradient.
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import heroBgUrl from '@img/hero-bg.png';
-import markGreenUrl from '@img/mark-green.png';
+import { HeroPanorama } from '@/Components/art';
+import markGreenUrl from '@img/trifolium-mark-strong.png';
 
 const seen = ref(false);
 let raf = 0;
@@ -32,16 +33,10 @@ const rise = (delay) => ({
             borderBottom: '1px solid var(--line)',
         }"
     >
-        <!-- botanical backdrop -->
-        <img
-            :src="heroBgUrl"
-            alt=""
-            aria-hidden="true"
-            :style="{
-                position: 'absolute', inset: 0, width: '100%', height: '100%',
-                objectFit: 'cover', objectPosition: 'center 42%', display: 'block',
-            }"
-        />
+        <!-- botanical backdrop — illustrated still-life -->
+        <div aria-hidden="true" style="position: absolute; inset: 0">
+            <HeroPanorama />
+        </div>
         <!-- soft luminous wash to lift the lockup off the foliage -->
         <div
             aria-hidden="true"
