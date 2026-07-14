@@ -1,26 +1,25 @@
 <script setup>
-// The phone home screen — "פנקס הרוקח": an editorial, print-inspired ledger.
-// A deliberate counterpoint to the app's card language: warm paper, hairline
-// rules, Hebrew serif display type (Frank Ruhl Libre), figures set like an
-// annual report, and press states that invert to ink. No cards anywhere —
-// structure comes from rules and whitespace, the way a pharmacopoeia page is
-// set.
+// The phone home screen — a different composition from desktop, built for a
+// practitioner opening the app on the go:
 //
-// Composition (content identical to before, only the design changed):
-//   masthead      — double rule · TRIFOLIUM wordmark · dateline · greeting
-//   figures row   — בהכנה / בהמתנה / נקודות as ledger figures → their screens
-//   action rule   — letterpress-style bordered bar → the compounding wizard
-//   צמח היום      — editorial monograph entry (see HerbOfTheDay.vue)
-//   events · articles · videos — the shared components, flattened to entries
-//                   by the scoped overrides at the bottom of this file
+//   בוקר טוב, נעמי              ← time-aware greeting + Hebrew date
+//   [brand card: panorama + mark + new-formula CTA]
+//   [three live stat chips: בהכנה · בהמתנה · נקודות]
+//   [צמח היום]                  ← daily herb monograph, straight into the lab
+//   events · articles · videos  ← the shared sections, unchanged
 //
 // Desktop renders the original Home composition untouched (see Pages/Home.vue).
+// Sections rise in gently on first paint; motion is skipped for users with
+// prefers-reduced-motion.
 import { computed } from 'vue';
+import Icon from '@/Components/ui/Icon.vue';
+import { HeroPanorama } from '@/Components/art';
 import HerbOfTheDay from '@/Components/home/HerbOfTheDay.vue';
 import HomeEvents from '@/Components/home/HomeEvents.vue';
 import HomeArticles from '@/Components/home/HomeArticles.vue';
 import HomeVideos from '@/Components/home/HomeVideos.vue';
 import BackToTop from '@/Components/home/BackToTop.vue';
+import markStrongUrl from '@img/trifolium-mark-strong.png';
 import { DEMO_USER } from '@/data/user';
 import { HOME_ORDERS } from '@/data/mock';
 import { useCartStore } from '@/stores/cart';
@@ -34,6 +33,8 @@ defineProps({
 
 const cart = useCartStore();
 
+// "בוקר טוב" until noon, then צהריים/ערב/לילה — the small thing a person
+// notices first.
 const greeting = computed(() => {
     const h = new Date().getHours();
     if (h >= 5 && h < 12) return 'בוקר טוב';
@@ -44,47 +45,49 @@ const greeting = computed(() => {
 const todayLabel = new Intl.DateTimeFormat('he-IL', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
 
 const inPrep = HOME_ORDERS.filter((o) => o.status === 'בהכנה').length;
-const figures = computed(() => [
-    { id: 'orders', label: 'בהכנה', value: inPrep },
-    { id: 'pending', label: 'בהמתנה', value: cart.state.pendingItems.length },
-    { id: 'profile', label: 'נקודות', value: DEMO_USER.points },
+
+const stats = computed(() => [
+    { id: 'orders', label: 'בהכנה', value: inPrep, icon: 'flask' },
+    { id: 'pending', label: 'בהמתנה', value: cart.state.pendingItems.length, icon: 'cart_clock' },
+    { id: 'profile', label: 'נקודות', value: DEMO_USER.points, icon: 'coin' },
 ]);
 </script>
 
 <template>
-    <div class="ldg">
-        <!-- masthead -->
-        <header class="ldg__masthead">
-            <div class="ldg__rule ldg__rule--double" aria-hidden="true"></div>
-            <div class="ldg__brand">
-                <span class="ldg__wordmark">TRIFOLIUM</span>
-                <span class="ldg__brandsub">בית מרקחת לצמחי מרפא</span>
-            </div>
-            <div class="ldg__rule" aria-hidden="true"></div>
-            <p class="ldg__dateline">{{ todayLabel }}</p>
-            <h1 class="ldg__hello">{{ greeting }}, {{ DEMO_USER.firstName }}</h1>
+    <div class="mhome">
+        <!-- greeting -->
+        <header class="mhome__greet">
+            <h1 class="mhome__hello">{{ greeting }}, {{ DEMO_USER.firstName }}</h1>
+            <p class="mhome__date">{{ todayLabel }}</p>
         </header>
 
-        <!-- ledger figures -->
-        <nav class="ldg__figures" aria-label="סיכום מהיר">
-            <button v-for="f in figures" :key="f.id" class="ldg__figure" @click="visit(f.id)">
-                <span class="ldg__figure-value">{{ f.value }}</span>
-                <span class="ldg__figure-label">{{ f.label }}</span>
+        <!-- brand card: mark + primary action, the still-life as a counter
+             along the base (fit="strip" — the wide art letterboxes bottom) -->
+        <section class="mhome__brand card" aria-label="Trifolium">
+            <div class="mhome__brand-art" aria-hidden="true"><HeroPanorama fit="strip" /></div>
+            <div class="mhome__brand-body">
+                <img :src="markStrongUrl" alt="Trifolium" class="mhome__brand-mark" />
+                <div class="mhome__brand-tagline">בית מרקחת לצמחי מרפא</div>
+                <button class="btn btn--primary mhome__brand-cta" @click="visit('compounding')">
+                    <Icon name="flask" :size="17" color="#fff" />
+                    רקיחת פורמולה חדשה
+                </button>
+            </div>
+        </section>
+
+        <!-- live stat chips -->
+        <nav class="mhome__stats" aria-label="סיכום מהיר">
+            <button v-for="s in stats" :key="s.id" class="mhome__stat" @click="visit(s.id)">
+                <Icon :name="s.icon" :size="17" color="var(--accent)" :stroke="1.7" />
+                <span class="mhome__stat-value num">{{ s.value }}</span>
+                <span class="mhome__stat-label">{{ s.label }}</span>
             </button>
         </nav>
 
-        <!-- the primary action, set like a letterpress rule -->
-        <div class="ldg__action-wrap">
-            <button class="ldg__action" @click="visit('compounding')">
-                רקיחת פורמולה חדשה
-                <span aria-hidden="true">←</span>
-            </button>
-        </div>
+        <!-- the signature card -->
+        <div class="mhome__section"><HerbOfTheDay /></div>
 
-        <!-- daily monograph -->
-        <HerbOfTheDay />
-
-        <!-- shared content sections, flattened to editorial entries -->
+        <!-- shared content sections (same components as desktop) -->
         <HomeEvents :events="events" />
         <HomeArticles :articles="articles" />
         <HomeVideos :videos="videos" />
@@ -94,198 +97,115 @@ const figures = computed(() => [
 </template>
 
 <style>
-/* ————— the ledger sheet ————— */
-.ldg {
-    --ldg-paper: #faf7ef;
-    --ldg-ink: #22301f;
-    --ldg-rule: rgba(34, 48, 31, 0.18);
-    --ldg-rule-strong: rgba(34, 48, 31, 0.5);
-    --ldg-amber: #8f5b1c;
-    background: var(--ldg-paper);
-    counter-reset: ldgsec;
-    padding-bottom: 26px;
+.mhome { padding-top: 18px; }
+.mhome__greet { padding: 0 16px 14px; }
+.mhome__hello {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
 }
-
-/* ————— masthead ————— */
-.ldg__masthead { padding: 22px 20px 0; text-align: center; }
-.ldg__rule { height: 1px; background: var(--ldg-rule-strong); }
-.ldg__rule--double {
-    height: 4px;
-    border-top: 2px solid var(--ldg-rule-strong);
-    border-bottom: 1px solid var(--ldg-rule-strong);
-    background: none;
-}
-.ldg__brand {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 10px;
-    padding: 9px 0;
-}
-.ldg__wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: 0.34em;
-    margin-inline-end: -0.34em; /* optically recenter the tracked type */
-    color: var(--ldg-ink);
-}
-.ldg__brandsub {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+.mhome__date {
+    margin: 3px 0 0;
+    font-size: 13px;
     color: var(--ink-3);
 }
-.ldg__dateline {
-    margin: 16px 0 0;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: var(--ldg-amber);
-}
-.ldg__hello {
-    margin: 4px 0 0;
-    font-family: 'Frank Ruhl Libre', serif;
-    font-size: 30px;
-    font-weight: 500;
-    line-height: 1.2;
-    color: var(--ldg-ink);
-}
 
-/* ————— ledger figures ————— */
-.ldg__figures {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 22px 20px 0;
-    border-top: 1px solid var(--ldg-rule);
-    border-bottom: 1px solid var(--ldg-rule);
+/* brand card — one composition: mark + tagline up top, and the CTA sitting
+   ON the still-life "counter", in the calm middle between the decoction pot
+   (left of the strip) and the jars (right). Background blends into the art's
+   top gradient stop so the seam vanishes. */
+.mhome__brand {
+    position: relative;
+    margin: 0 14px;
+    min-height: 272px;
+    display: flex;
+    align-items: stretch;
+    background: linear-gradient(180deg, #f8faf3 0%, #f4f6ef 100%);
 }
-.ldg__figure {
+.mhome__brand-art { position: absolute; inset: 0; }
+.mhome__brand-body {
+    position: relative;
+    z-index: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
-    padding: 14px 4px 12px;
-    background: none;
-    border: 0;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 22px 18px 26px;
+}
+.mhome__brand-mark {
+    height: 84px;
+    width: 84px;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(31, 46, 29, 0.22));
+}
+.mhome__brand-tagline {
+    margin: 8px 0 14px;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--accent-ink);
+}
+.mhome__brand-cta {
+    margin-top: auto; /* drops onto the art strip, between pot and jars */
+    height: 46px;
+    padding: 0 24px;
+    font-size: 14.5px;
+    box-shadow: 0 10px 24px -8px rgba(42, 64, 40, 0.6);
+}
+
+/* stat chips */
+.mhome__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 14px 14px 0;
+}
+.mhome__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 6px 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
     font-family: inherit;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
-.ldg__figure + .ldg__figure { border-inline-start: 1px solid var(--ldg-rule); }
-.ldg__figure:active .ldg__figure-value { color: var(--ldg-amber); }
-.ldg__figure-value {
-    font-family: 'Frank Ruhl Libre', serif;
-    font-size: 27px;
-    font-weight: 500;
+.mhome__stat:active { background: var(--accent-tint); }
+.mhome__stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
     line-height: 1.1;
-    color: var(--ldg-ink);
-    font-variant-numeric: tabular-nums;
-    transition: color 0.15s ease;
 }
-.ldg__figure-label {
-    font-size: 10.5px;
+.mhome__stat-label {
+    font-size: 11.5px;
     font-weight: 600;
-    letter-spacing: 0.16em;
     color: var(--ink-3);
 }
 
-/* ————— the action rule ————— */
-.ldg__action-wrap { padding: 22px 20px 0; }
-.ldg__action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    height: 52px;
-    background: none;
-    border: 1.5px solid var(--ldg-ink);
-    border-radius: 3px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--ldg-ink);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s ease, color 0.15s ease;
-}
-.ldg__action:active { background: var(--ldg-ink); color: var(--ldg-paper); }
+.mhome__section { padding: 14px 14px 0; }
 
-/* ————— shared sections, reset to editorial entries —————
-   The section components are shared with desktop, so the redesign lands as
-   scoped overrides: card shells flatten to rule-separated entries, headers
-   pick up the serif + a printed section index. */
-html.tf-mobile .ldg section {
-    background: transparent !important;
-    border: 0 !important;
-    padding: 34px 20px 4px !important;
-}
-html.tf-mobile .ldg section h2 {
-    font-family: 'Frank Ruhl Libre', serif;
-    font-size: 23px;
-    font-weight: 500;
-    letter-spacing: 0;
-}
-html.tf-mobile .ldg section:not(.ldg-herb) h2::before {
-    counter-increment: ldgsec;
-    content: counter(ldgsec, decimal-leading-zero);
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--ldg-amber);
-    margin-inline-end: 10px;
-    vertical-align: 3px;
-}
-/* header underline becomes a strong scholarly rule */
-html.tf-mobile .ldg section [style*='border-bottom'] h2 { margin-bottom: 0; }
-/* card shells → flat entries divided by hairlines */
-html.tf-mobile .ldg [style*='border-radius: var(--r-card)'] {
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    transform: none !important;
-    border-bottom: 1px solid var(--ldg-rule) !important;
-    padding-bottom: 6px;
-}
-/* single-column entry flow (events/videos grids) */
-html.tf-mobile .ldg [style*='repeat(4, 1fr)'],
-html.tf-mobile .ldg [style*='repeat(3, 1fr)'] {
-    grid-template-columns: 1fr !important;
-    gap: 24px !important;
-}
-/* keep cover images, but framed by a hairline instead of a card edge */
-html.tf-mobile .ldg [style*='height: 160px'] {
-    border: 1px solid var(--ldg-rule) !important;
-    border-radius: 2px;
-}
-/* section "see all" links go amber, letterpress style */
-html.tf-mobile .ldg section a {
-    color: var(--ldg-amber) !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.04em;
-}
-
-/* ————— entrance: rules draw in, type settles ————— */
+/* gentle staggered entrance for the above-the-fold blocks — one pass,
+   skipped under reduced motion. Below-the-fold sections render plainly. */
 @media (prefers-reduced-motion: no-preference) {
-    .ldg__rule, .ldg__rule--double {
-        transform: scaleX(0);
-        animation: ldg-rule-in 0.7s cubic-bezier(0.3, 0, 0.2, 1) 0.05s forwards;
-    }
-    .ldg__brand, .ldg__dateline, .ldg__hello, .ldg__figures, .ldg__action-wrap {
+    .mhome > *:nth-child(-n + 4) {
         opacity: 0;
-        transform: translateY(8px);
-        animation: ldg-settle 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        transform: translateY(12px);
+        animation: mhome-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
     }
-    .ldg__brand { animation-delay: 0.16s; }
-    .ldg__dateline { animation-delay: 0.26s; }
-    .ldg__hello { animation-delay: 0.32s; }
-    .ldg__figures { animation-delay: 0.42s; }
-    .ldg__action-wrap { animation-delay: 0.5s; }
+    .mhome > *:nth-child(1) { animation-delay: 0.02s; }
+    .mhome > *:nth-child(2) { animation-delay: 0.1s; }
+    .mhome > *:nth-child(3) { animation-delay: 0.18s; }
+    .mhome > *:nth-child(4) { animation-delay: 0.26s; }
 }
-@keyframes ldg-rule-in { to { transform: scaleX(1); } }
-@keyframes ldg-settle { to { opacity: 1; transform: none; } }
+@keyframes mhome-rise {
+    to { opacity: 1; transform: none; }
+}
 </style>
