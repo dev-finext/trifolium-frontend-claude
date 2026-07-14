@@ -30,6 +30,25 @@ export default function inertiaPreview() {
         configureServer(server) {
             server.middlewares.use(async (req, res, next) => {
                 const url = new URL(req.url, 'http://localhost');
+
+                // Dev-only escape hatch: POST a data-URL image here and it lands
+                // in preview/.snapshots/ — lets tooling (or a human) capture a
+                // canvas-rendered snapshot of the running UI for inspection.
+                if (url.pathname === '/__snapshot' && req.method === 'POST') {
+                    let body = '';
+                    req.on('data', (c) => { body += c; });
+                    req.on('end', () => {
+                        const m = body.match(/^data:image\/(png|jpeg);base64,(.+)$/s);
+                        if (!m) { res.statusCode = 400; return res.end('expected an image data URL'); }
+                        const dir = path.join(previewDir, '.snapshots');
+                        fs.mkdirSync(dir, { recursive: true });
+                        const name = (url.searchParams.get('name') || 'snapshot').replace(/[^\w-]/g, '') + '.' + (m[1] === 'png' ? 'png' : 'jpg');
+                        fs.writeFileSync(path.join(dir, name), Buffer.from(m[2], 'base64'));
+                        res.end('saved ' + name);
+                    });
+                    return;
+                }
+
                 const match = resolvePreviewRoute(url.pathname);
                 if (!match) return next();
 
