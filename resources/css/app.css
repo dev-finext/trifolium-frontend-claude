@@ -609,7 +609,7 @@ html.tf-mobile {
     background: transparent; border: none; cursor: pointer;
   }
   .nav__desktop-only { display: none !important; }
-  .nav__logo, .nav img { height: 38px !important; }
+  .nav__logo { height: 38px !important; }
 
   /* ---- Drawer becomes active ---- */
   .nav-drawer {
@@ -810,6 +810,8 @@ html.tf-mobile {
    (Components/navbar/BottomTabBar.vue), a minimal top bar, the
    compliance strip in-flow at the page end, and no web footer.
    ═════════════════════════════════════════════════════════════ */
+/* The circular-mark logo exists only on phones (desktop shows the full lockup). */
+.nav__logo-mark { display: none; }
 html.tf-mobile {
   /* Reserve room for the fixed tab bar (60px + iPhone home indicator). */
   body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
@@ -835,8 +837,11 @@ html.tf-mobile {
 
   /* ---- Top bar: identity (name + points) + truly centered logo ----
      Sides are uneven (burger vs. identity), so the logo centers itself
-     absolutely instead of trusting the grid columns. */
+     absolutely instead of trusting the grid columns. On phones the full
+     lockup gives way to the circular brand mark. */
   .nav { position: sticky; top: 0; }
+  .nav__logo-full { display: none !important; }
+  .nav__logo-mark { display: block !important; height: 42px !important; width: 42px; }
   .nav__center {
     position: absolute; left: 50%; top: 0; bottom: 0;
     transform: translateX(-50%);

@@ -15,6 +15,8 @@ defineProps({
         alt="Trifolium"
         :style="{
             height: `${height}px`, width: 'auto', display: 'block',
+            // The official lockup is ~4:1 — never overflow a narrow card.
+            maxWidth: '100%', objectFit: 'contain',
             filter: tone === 'light' ? 'brightness(0) invert(1)' : 'none',
         }"
     />

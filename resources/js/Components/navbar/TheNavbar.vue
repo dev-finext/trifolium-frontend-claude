@@ -11,6 +11,7 @@ import MobileDrawer from '@/Components/navbar/MobileDrawer.vue';
 import { NAV_LINKS } from '@/Components/navbar/nav-links.js';
 import { visit } from '@/lib/routes';
 import logoUrl from '@img/trifolium-logo.png';
+import markUrl from '@img/trifolium-mark.png';
 
 defineProps({
     /** Logical name of the active screen (see lib/routes.js). */
@@ -81,8 +82,17 @@ function go(id) {
                 v-if="!logoFailed"
                 :src="logoUrl"
                 alt="Trifolium"
+                class="nav__logo-full"
                 style="height: 44px; width: auto; display: block"
                 @error="logoFailed = true"
+            />
+            <!-- Phones: the circular brand mark alone (the full lockup is too
+                 wide next to the identity cluster). CSS-gated. -->
+            <img
+                v-if="!logoFailed"
+                :src="markUrl"
+                alt="Trifolium"
+                class="nav__logo-mark"
             />
             <div v-else style="display: flex; flex-direction: column; align-items: center; gap: 2px">
                 <svg width="22" height="14" viewBox="0 0 32 20" fill="none" style="display: block">
