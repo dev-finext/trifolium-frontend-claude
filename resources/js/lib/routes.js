@@ -97,9 +97,18 @@ export function routeNameFromUrl(url) {
  * `window.scrollTo(0, 0)` behavior.
  */
 export function visit(name, params = {}) {
-    const url = routeUrl(name, params);
+    let url = routeUrl(name, params);
     // Static demo (no server): full page load to the pre-rendered HTML.
     if (STATIC_DEMO) {
+        // Carry the developer English overlay (?lang=en) across page loads —
+        // on the demo every navigation is a fresh document, so the URL is the
+        // only place the language choice lives. (In the real Inertia app the
+        // overlay persists by itself: navigation never reloads the page.)
+        try {
+            if (new URLSearchParams(window.location.search).get('lang') === 'en') {
+                url += (url.includes('?') ? '&' : '?') + 'lang=en';
+            }
+        } catch { /* ignore */ }
         window.location.assign(url);
         return;
     }
