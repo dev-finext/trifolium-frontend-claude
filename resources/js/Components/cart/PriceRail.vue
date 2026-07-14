@@ -17,6 +17,7 @@ const lineTotal = computed(() => props.item.price * props.item.qty);
 
 <template>
     <div
+        class="price-rail"
         :style="{
             width: '210px', flexShrink: 0,
             padding: '22px 22px',

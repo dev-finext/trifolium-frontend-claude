@@ -69,8 +69,11 @@ function go(id) {
             </template>
         </div>
 
-        <!-- Center: official Trifolium logo (typographic fallback if it fails to load) -->
+        <!-- Center: official Trifolium logo (typographic fallback if it fails to load).
+             .nav__center: on phones the mobile stylesheet absolutely centers this
+             so uneven side clusters can't push the logo off-center. -->
         <div
+            class="nav__center"
             style="display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%"
             @click="go('home')"
         >
@@ -114,6 +117,13 @@ function go(id) {
         >
             <!-- points — gold coin + bold count (no "נקודות" label) -->
             <span class="nav__desktop-only"><PointsBadge :value="user.points" /></span>
+
+            <!-- Mobile identity: first name + points, compact (CSS-gated;
+                 hidden on desktop where the full user menu carries these). -->
+            <span class="nav__mobile-id">
+                <span class="nav__mobile-id__name">{{ user.name }}</span>
+                <PointsBadge :value="user.points" />
+            </span>
 
             <span class="nav__desktop-only"><UserMenu :user="user" @navigate="go" /></span>
 

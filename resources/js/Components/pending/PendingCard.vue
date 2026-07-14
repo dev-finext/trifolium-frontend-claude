@@ -68,7 +68,7 @@ function viewOrder(item) {
 </script>
 
 <template>
-    <div class="card" style="display: flex; align-items: stretch; flex-wrap: wrap">
+    <div class="card pending-card" style="display: flex; align-items: stretch; flex-wrap: wrap">
         <!-- thumbnail + body -->
         <div :style="{ flex: 1, minWidth: '300px', padding: '20px', display: 'flex', gap: '18px', alignItems: 'flex-start' }">
             <div
@@ -138,6 +138,7 @@ function viewOrder(item) {
 
         <!-- action rail -->
         <div
+            class="pending-card__rail"
             :style="{
                 width: '200px', flexShrink: 0, padding: '20px',
                 display: 'flex', flexDirection: 'column', gap: '12px',

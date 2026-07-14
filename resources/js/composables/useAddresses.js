@@ -62,7 +62,13 @@ export function tfSaveAddresses(list) {
     return normalized;
 }
 
-export const tfPrimaryAddress = (list) => list.find(a => a.primary) || list[0] || null;
+/** Primary (default) address of a list. Accepts a plain array or the ref
+ *  returned by useAddresses() — unwrapped defensively so call sites can't
+ *  crash on the ref/array seam. */
+export const tfPrimaryAddress = (list) => {
+    const arr = Array.isArray(list) ? list : (list && Array.isArray(list.value) ? list.value : []);
+    return arr.find((a) => a.primary) || arr[0] || null;
+};
 
 // Reactive hook — the returned ref updates whenever addresses are saved
 // anywhere in the app.

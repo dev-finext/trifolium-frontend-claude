@@ -35,6 +35,7 @@ function toTop() {
 
 <template>
     <button
+        class="back-to-top"
         aria-label="חזרה לראש הדף"
         title="חזרה לראש הדף"
         :style="{

@@ -30,14 +30,16 @@ const payer = ref('me');        // 'me' | 'patient'
 const benefit = ref('points');  // 'points' | 'discount'  (only when payer === 'me')
 
 // Practitioner's saved addresses (source of truth = profile).
+// NOTE: useAddresses() returns a ref — script access goes through .value
+// (templates auto-unwrap it).
 const addresses = useAddresses();
 const meAddrId = ref(null);
 // Default the "ship to me" choice to the primary address; keep it valid
 // if the selected address was removed in the profile.
 watchEffect(() => {
-    const valid = meAddrId.value && addresses.some((a) => a.id === meAddrId.value);
+    const valid = meAddrId.value && addresses.value.some((a) => a.id === meAddrId.value);
     if (!valid) {
-        const primary = tfPrimaryAddress(addresses);
+        const primary = tfPrimaryAddress(addresses.value);
         meAddrId.value = primary ? primary.id : null;
     }
 });
