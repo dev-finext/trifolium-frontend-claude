@@ -6,7 +6,7 @@
 import { ref, computed } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 import FormulaTypeArt from '@/Components/wizard/FormulaTypeArt.vue';
-import { typePig, TYPE_INFO } from '@/Components/wizard/wizard-lib';
+import { TYPE_INFO } from '@/Components/wizard/wizard-lib';
 
 const props = defineProps({
     type: { type: Object, required: true },
@@ -17,7 +17,6 @@ const emit = defineEmits(['click']);
 const hover = ref(false);
 const tip = ref(null); // { cx, top } viewport coords, or null
 
-const P = typePig;
 const id = computed(() => props.type.id);
 const info = computed(() => TYPE_INFO[props.type.id]);
 
@@ -47,12 +46,14 @@ const tipBox = computed(() => {
             width: '100%',
             minWidth: 0,
             height: '116px',
-            background: selected ? P.tint(id) : 'var(--surface)',
-            color: selected ? P.inkDeep(id) : 'var(--ink)',
-            border: '1px solid ' + (selected ? P.line(id) : (hover ? P.line(id) : 'var(--line)')),
+            background: 'var(--surface)',
+            color: 'var(--ink)',
+            border: selected
+                ? '2px solid var(--accent)'
+                : '1px solid ' + (hover ? 'var(--line-strong)' : 'var(--line)'),
             boxShadow: selected
-                ? 'inset 0 0 0 1px ' + P.line(id)
-                : (hover ? '0 4px 12px -8px rgba(20,18,14,0.35)' : 'none'),
+                ? 'inset 0 0 0 1px var(--accent), 0 6px 16px -10px rgba(31,46,29,0.30)'
+                : (hover ? '0 4px 12px -8px rgba(20,18,14,0.30)' : 'none'),
             borderRadius: 'var(--r-card)',
             padding: '12px 8px 10px',
             cursor: 'pointer',
@@ -81,9 +82,9 @@ const tipBox = computed(() => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: selected ? '#fff' : 'var(--surface-sunk)',
-                border: '1px solid ' + (selected ? P.line(id) : 'var(--line)'),
-                color: selected ? P.ink(id) : 'var(--ink-3)',
+                background: 'var(--surface-sunk)',
+                border: '1px solid var(--line)',
+                color: 'var(--ink-3)',
                 cursor: 'help',
             }"
             @mouseenter="showTip"
@@ -97,8 +98,8 @@ const tipBox = computed(() => {
         <span
             :style="{
                 width: '58px', height: '58px', borderRadius: '15px', flexShrink: 0,
-                background: selected ? '#f1f0e4' : '#f8f7ef',
-                border: '1px solid ' + (selected ? P.line(id) : 'var(--line)'),
+                background: '#f8f7ef',
+                border: '1px solid var(--line)',
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             }"
         >
@@ -106,7 +107,7 @@ const tipBox = computed(() => {
         </span>
 
         <div style="text-align: center; line-height: 1.25; max-width: 100%">
-            <div :style="{ fontSize: '14px', fontWeight: selected ? 700 : 600, color: selected ? P.inkDeep(id) : 'var(--ink)', whiteSpace: 'nowrap' }">{{ type.heb }}</div>
+            <div :style="{ fontSize: '14px', fontWeight: selected ? 700 : 600, color: 'var(--ink)', whiteSpace: 'nowrap' }">{{ type.heb }}</div>
             <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ type.sub }}</div>
         </div>
 
