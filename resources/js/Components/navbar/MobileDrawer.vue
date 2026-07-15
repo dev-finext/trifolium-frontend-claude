@@ -7,9 +7,6 @@ import Icon from '@/Components/ui/Icon.vue';
 import GoldCoin from '@/Components/navbar/GoldCoin.vue';
 import { NAV_LINKS } from '@/Components/navbar/nav-links.js';
 import { useModal } from '@/composables/useModal';
-import { useThemeStore } from '@/stores/theme';
-
-const theme = useThemeStore();
 
 const props = defineProps({
     open: { type: Boolean, default: false },
@@ -124,21 +121,6 @@ watch(
                 <Icon :name="link.icon" :size="19" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
                 <span style="flex: 1">{{ link.label }}</span>
                 <span v-if="countFor(link) > 0" class="nav-drawer__count num">{{ countFor(link) }}</span>
-            </button>
-
-            <div class="nav-drawer__section">תצוגה</div>
-            <button
-                class="nav-drawer__item"
-                type="button"
-                role="switch"
-                :aria-checked="theme.state.theme === 'dark'"
-                @click="theme.toggle()"
-            >
-                <Icon :name="theme.state.theme === 'dark' ? 'eye' : 'sparkles'" :size="19" color="var(--ink-3)" :stroke="1.6" />
-                <span style="flex: 1">מצב כהה</span>
-                <span class="nav-drawer__count" style="background: var(--accent); min-width: 40px">
-                    {{ theme.state.theme === 'dark' ? 'פעיל' : 'כבוי' }}
-                </span>
             </button>
 
             <div class="divider" style="margin: 10px 0" />

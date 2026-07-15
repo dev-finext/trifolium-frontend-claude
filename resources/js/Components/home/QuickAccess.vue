@@ -16,7 +16,7 @@ const hoverId = ref(null);
 </script>
 
 <template>
-    <section style="padding: 0 24px; margin-top: -46px; position: relative; z-index: 2">
+    <section class="quick-access" style="padding: 0 24px; margin-top: -46px; position: relative; z-index: 2">
         <div
             :style="{
                 maxWidth: '1200px',

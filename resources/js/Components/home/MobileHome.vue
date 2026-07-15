@@ -10,6 +10,7 @@
 // Desktop renders the original Home composition untouched (see Pages/Home.vue).
 import { computed } from 'vue';
 import { HeroPanorama } from '@/Components/art';
+import QuickAccess from '@/Components/home/QuickAccess.vue';
 import HerbOfTheDay from '@/Components/home/HerbOfTheDay.vue';
 import HomeEvents from '@/Components/home/HomeEvents.vue';
 import HomeArticles from '@/Components/home/HomeArticles.vue';
@@ -52,6 +53,9 @@ const greeting = computed(() => {
                 <h1 class="mh-pano__greet">{{ greeting }}, {{ DEMO_USER.firstName }}</h1>
             </div>
         </section>
+
+        <!-- quick access — same destinations as the desktop home (content parity) -->
+        <QuickAccess />
 
         <!-- the daily monograph -->
         <div class="mhome__section"><HerbOfTheDay /></div>

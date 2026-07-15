@@ -28,11 +28,6 @@
                 var c = document.documentElement.classList;
                 if (matchMedia('(max-width: 760px)').matches) c.add('tf-mobile');
                 else if (matchMedia('(min-width: 761px) and (max-width: 1080px)').matches) c.add('tf-tablet');
-                // Theme (dark mode): saved choice, else OS preference. Set before
-                // paint so tokens are right immediately (no flash).
-                var t = localStorage.getItem('tf-theme');
-                if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', t);
             } catch (e) {}
         })();
     </script>

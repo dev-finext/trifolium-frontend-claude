@@ -127,7 +127,7 @@ const totalUses = computed(() => savedFormulas.state.list.reduce((s, f) => s + (
                         {{ search ? 'נקה חיפוש' : 'צור פורמולה ראשונה' }}
                     </button>
                 </div>
-                <div v-else style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px">
+                <div v-else class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px">
                     <MyFormulaCard
                         v-for="f in filtered"
                         :key="f.id"
@@ -168,7 +168,7 @@ const totalUses = computed(() => savedFormulas.state.list.reduce((s, f) => s + (
                 <div v-if="filteredSystem.length === 0" class="card" style="padding: 32px 24px; text-align: center">
                     <div class="small muted">לא נמצאו שבלונות מערכת מתאימות לחיפוש</div>
                 </div>
-                <div v-else style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px">
+                <div v-else class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px">
                     <SystemFormulaCard
                         v-for="f in filteredSystem"
                         :key="f.id"

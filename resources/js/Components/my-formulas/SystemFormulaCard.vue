@@ -1,8 +1,8 @@
 <script setup>
-// System-formula card — Trifolium-team templates. Same layout as the saved
-// card, but with a blue (oklch hue 240) accent stripe, chip and load button
-// to visually separate it from the practitioner's own formulas.
-import { ref, computed } from 'vue';
+// System-formula card — Trifolium-team templates. Same horizontal layout as
+// the saved-formula card (emblem · identity · side action rail) but with a
+// blue accent to set it apart from the practitioner's own formulas.
+import { computed } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 import { FORMULA_TYPES } from '@/data/mock';
 
@@ -12,69 +12,107 @@ const props = defineProps({
 
 const emit = defineEmits(['load']);
 
-const hover = ref(false);
-
 const count = computed(() => (props.formula.ingredients || []).length);
 const ftype = computed(() => FORMULA_TYPES.find((t) => t.id === props.formula.typeId));
 </script>
 
 <template>
-    <div
-        class="card"
-        :style="{
-            padding: 0, display: 'flex', flexDirection: 'column',
-            borderColor: hover ? 'oklch(0.60 0.10 240)' : 'var(--line)',
-            transition: 'border-color .15s, box-shadow .15s',
-            boxShadow: hover ? '0 10px 28px rgba(20,28,24,0.07)' : 'none',
-        }"
-        @mouseenter="hover = true"
-        @mouseleave="hover = false"
-    >
-        <!-- Top accent stripe -->
-        <div style="height: 3px; background: oklch(0.54 0.10 240); border-radius: 6px 6px 0 0; flex-shrink: 0" />
+    <div class="card sf-card">
+        <!-- leading side: blue type emblem + ingredient count -->
+        <div class="sf-card__emblem" aria-hidden="true">
+            <Icon name="flask" :size="24" color="var(--sf-blue)" :stroke="1.6" />
+            <span class="sf-card__emblem-count"><span class="num">{{ count }}</span> רכיבים</span>
+        </div>
 
-        <div style="padding: 16px 20px 14px; flex: 1">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px">
-                <span
-                    :style="{
-                        display: 'inline-flex', alignItems: 'center', gap: '6px',
-                        fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em',
-                        color: 'oklch(0.34 0.09 240)',
-                        background: 'oklch(0.95 0.03 240)',
-                        padding: '4px 10px', borderRadius: '999px',
-                    }"
-                >
-                    <Icon name="flask" :size="13" color="oklch(0.54 0.10 240)" />
-                    {{ ftype?.heb || formula.typeId }}
-                </span>
-                <span class="small muted" style="display: inline-flex; align-items: center; gap: 5px; white-space: nowrap">
-                    <Icon name="leaf" :size="13" /> <span class="num">{{ count }}</span> רכיבים
-                </span>
-            </div>
-
-            <h3 style="margin: 0 0 6px; font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em">{{ formula.name }}</h3>
-            <p class="small muted" style="margin: 0 0 10px; line-height: 1.65">{{ formula.description }}</p>
-
-            <div style="display: inline-flex; align-items: center; gap: 6px">
+        <!-- middle: identity -->
+        <div class="sf-card__body">
+            <span class="sf-card__type">{{ ftype?.heb || formula.typeId }}</span>
+            <h3 class="sf-card__name">{{ formula.name }}</h3>
+            <p class="sf-card__summary">{{ formula.description }}</p>
+            <div class="sf-card__ingredients">
                 <Icon name="leaf" :size="12" color="var(--ink-3)" />
-                <span class="small muted">{{ formula.summary }}</span>
+                <span>{{ formula.summary }}</span>
             </div>
         </div>
 
-        <!-- Action footer -->
-        <div style="display: flex; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line)">
-            <button
-                class="btn btn--sm"
-                :style="{
-                    flex: 1,
-                    background: 'oklch(0.54 0.10 240)',
-                    borderColor: 'oklch(0.54 0.10 240)',
-                    color: '#fff',
-                }"
-                @click="emit('load')"
-            >
+        <!-- trailing side: load action -->
+        <div class="sf-card__side">
+            <button class="btn btn--sm sf-card__load" type="button" @click="emit('load')">
                 <Icon name="flask" :size="15" color="#fff" /> טען למעבדה
             </button>
         </div>
     </div>
 </template>
+
+<style>
+.sf-card {
+    --sf-blue: oklch(0.54 0.10 240);
+    --sf-blue-tint: oklch(0.95 0.03 240);
+    --sf-blue-ink: oklch(0.34 0.09 240);
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 18px;
+    border-top: 3px solid var(--sf-blue);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.sf-card:hover,
+.sf-card:focus-within { box-shadow: 0 10px 28px rgba(20, 28, 24, 0.08); }
+
+.sf-card__emblem {
+    flex: none;
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--sf-blue-tint);
+    border-radius: var(--r-card);
+    padding: 10px 6px;
+}
+.sf-card__emblem-count { font-size: 10.5px; font-weight: 600; color: var(--sf-blue-ink); text-align: center; line-height: 1.2; }
+
+.sf-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.sf-card__type {
+    align-self: flex-start;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--sf-blue-ink); background: var(--sf-blue-tint);
+    padding: 3px 9px; border-radius: 999px;
+}
+.sf-card__name {
+    margin: 2px 0 0; font-size: 16px; font-weight: 600; letter-spacing: -0.005em; color: var(--ink);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sf-card__summary {
+    margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-3);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sf-card__ingredients { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+
+.sf-card__side {
+    flex: none;
+    width: 132px;
+    display: flex;
+    align-items: center;
+    border-inline-start: 1px solid var(--line);
+    padding-inline-start: 14px;
+}
+.sf-card__load {
+    width: 100%;
+    background: var(--sf-blue);
+    border-color: var(--sf-blue);
+    color: #fff;
+}
+.sf-card__load:hover { filter: brightness(0.94); }
+
+html.tf-mobile .sf-card { flex-wrap: wrap; }
+html.tf-mobile .sf-card__side {
+    width: 100%;
+    border-inline-start: none;
+    border-top: 1px solid var(--line);
+    padding-inline-start: 0;
+    padding-top: 12px;
+    margin-top: 2px;
+}
+</style>

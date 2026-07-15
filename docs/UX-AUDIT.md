@@ -118,7 +118,7 @@ Each finding has an ID, severity, location, the problem, and the fix. A **Status
 
 | ID | Sev | Area | Improvement | Status |
 |----|-----|------|-------------|--------|
-| D1 | Strategic | whole app | **Dark mode** — none today; high value for an installed PWA (OLED, night use); low cost given centralized `:root` tokens. | ✅ |
+| D1 | Strategic | whole app | **Dark mode** — implemented (opt-in token system + toggle), then **removed per user request** (2026-07-15). The token indirection it introduced (`--on-accent`, `--inverse-surface`) is kept as it cleaned up hard-coded `#fff`s. | ↩︎ reverted |
 | D2 | Low | a few rules | Remaining physical left/right → logical properties. | ✅ |
 | D6 | Med | scattered | Color escaping tokens (`#c93838` ≠ `--danger`, status dot hexes, `oklch`). Consolidate into semantic tokens. | ✅ |
 | D7 | Low | modals | Radius inconsistency (6px tokens vs 10/14px inline). | ✅ |

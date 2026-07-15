@@ -66,53 +66,6 @@ input[type="number"].no-spin {
   --summary-shadow: 0 20px 48px rgba(31, 46, 29, 0.28);
 }
 
-/* ═══════════════ DARK MODE (D1) ═══════════════
-   Opt-in via a data-theme attribute set on <html> before first paint
-   (stores/theme.js + the inline head script). Follows the OS on first
-   visit, then the user's toggle wins and persists. Only the tokens flip —
-   components style through them — so the whole app adapts from one block.
-   --accent goes lighter (legible as text on the dark ground) while
-   --on-accent goes dark so text on the accent FILL still passes AA.
-   --inverse-surface stays dark in both themes on purpose. */
-:root[data-theme="dark"] {
-  --bg: #10140d;
-  --surface: #191e14;
-  --surface-sunk: #10140d;
-  --ink: #e9ede0;
-  --ink-2: #c3cbb5;
-  --ink-3: #9aa48c;
-  --ink-4: #869077;
-  --line: #2b3324;
-  --line-strong: #3b4531;
-  --accent: #82a771;
-  --accent-ink: #a9c79a;
-  --accent-tint: #1e2917;
-  --accent-tint-strong: #29371f;
-  --danger: #e08072;
-  --danger-tint: #2f1a16;
-  --warning: #d6a45a;
-  --success: #82a771;
-  --status-prep: #6fae5a;
-  --status-ready: #6f9fd8;
-  --status-wait: #d6a45a;
-  --on-accent: #10140d;
-  --summary-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
-}
-
-/* Illustrated hero islands keep their light botanical palette in dark mode
-   (they're artwork, like a photo). Their overlaid brand text therefore must
-   stay DARK — pin it to the fixed deep-green, not the (flipped) tokens. */
-:root[data-theme="dark"] .mh-pano__wm,
-:root[data-theme="dark"] .mh-pano__dvd-dot { color: #3d5a3a; border-color: #3d5a3a; }
-:root[data-theme="dark"] .mh-pano__greet { color: #2a4028; }
-:root[data-theme="dark"] .mh-pano__dvd-line { background: #3d5a3a; }
-:root[data-theme="dark"] .mh-pano__tag { color: #2a4028; }
-/* Desktop hero lockup sits on the same light botanical banner — pin its text
-   dark in dark mode (its h1/p/divider use the flipped accent tokens). */
-:root[data-theme="dark"] .hero-lockup h1 { color: #3d5a3a !important; }
-:root[data-theme="dark"] .hero-lockup p { color: #2a4028 !important; }
-:root[data-theme="dark"] .hero-lockup span { background: #3d5a3a; border-color: #3d5a3a; }
-
 * { box-sizing: border-box; }
 
 html, body {
@@ -1284,5 +1237,18 @@ html.tf-mobile {
 
   /* M18 · Catalog search fills width */
   .catalog-search { width: 100% !important; }
+
+  /* My-formulas: the horizontal cards need a full-width single column on
+     phones (overrides the generic auto-fill→minmax(140) grid hammer). */
+  .formula-grid { grid-template-columns: 1fr !important; }
+
+  /* Quick-access on the phone home: drop the desktop hero-overlap, sit in-flow
+     under the panorama hero as a 2×2 tile card (the grid hammer makes the
+     inline repeat(4) → 2 cols). */
+  .quick-access { margin-top: 14px !important; padding: 0 14px !important; }
+  .quick-access > div > div { height: auto !important; }
+  .quick-access button { padding: 14px 12px !important; justify-content: flex-start !important; }
+  .quick-access button:nth-child(2) { border-inline-start: none !important; }
+  .quick-access button:nth-child(1), .quick-access button:nth-child(2) { border-bottom: 1px solid var(--line); }
 }
 
