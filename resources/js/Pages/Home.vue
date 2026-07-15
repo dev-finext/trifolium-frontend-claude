@@ -11,7 +11,6 @@ import { useIsMobile } from '@/composables/useIsMobile';
 import MobileHome from '@/Components/home/MobileHome.vue';
 import HeroPromo from '@/Components/home/HeroPromo.vue';
 import QuickAccess from '@/Components/home/QuickAccess.vue';
-import HerbOfTheDay from '@/Components/home/HerbOfTheDay.vue';
 import HomeEvents from '@/Components/home/HomeEvents.vue';
 import HomeArticles from '@/Components/home/HomeArticles.vue';
 import HomeVideos from '@/Components/home/HomeVideos.vue';
@@ -34,12 +33,6 @@ const isMobile = useIsMobile();
     <div v-else>
         <HeroPromo />
         <QuickAccess />
-        <!-- צמח היום — content parity with the mobile home (centered feature card) -->
-        <section style="padding: 44px 24px 0">
-            <div style="max-width: 680px; margin: 0 auto">
-                <HerbOfTheDay />
-            </div>
-        </section>
         <HomeEvents :events="events" />
         <HomeArticles :articles="articles" />
         <HomeVideos :videos="videos" />

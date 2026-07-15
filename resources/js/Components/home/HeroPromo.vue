@@ -3,9 +3,20 @@
 // The backdrop is HeroPanorama (an illustrated apothecary still-life in the
 // app's own art language — jars, herbs, a Chinese decoction pot); it replaced
 // the raster hero-bg.png, which only ever shipped as a placeholder gradient.
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { HeroPanorama } from '@/Components/art';
 import markGreenUrl from '@img/trifolium-mark-strong.png';
+import { DEMO_USER } from '@/data/user';
+
+// Personal, time-aware greeting — same as the mobile home hero, so the two
+// tiers present an identical brand lockup (perfect app/desktop parity).
+const greeting = computed(() => {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 12) return 'בוקר טוב';
+    if (h >= 12 && h < 17) return 'צהריים טובים';
+    if (h >= 17 && h < 22) return 'ערב טוב';
+    return 'לילה טוב';
+});
 
 const seen = ref(false);
 let raf = 0;
@@ -115,7 +126,7 @@ const rise = (delay) => ({
                     ...rise(0.27),
                 }"
             >
-                בית מרקחת לצמחי מרפא
+                {{ greeting }}, {{ DEMO_USER.firstName }}
             </p>
         </div>
     </section>

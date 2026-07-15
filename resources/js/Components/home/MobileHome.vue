@@ -11,7 +11,6 @@
 import { computed } from 'vue';
 import { HeroPanorama } from '@/Components/art';
 import QuickAccess from '@/Components/home/QuickAccess.vue';
-import HerbOfTheDay from '@/Components/home/HerbOfTheDay.vue';
 import HomeEvents from '@/Components/home/HomeEvents.vue';
 import HomeArticles from '@/Components/home/HomeArticles.vue';
 import HomeVideos from '@/Components/home/HomeVideos.vue';
@@ -56,9 +55,6 @@ const greeting = computed(() => {
 
         <!-- quick access — same destinations as the desktop home (content parity) -->
         <QuickAccess />
-
-        <!-- the daily monograph -->
-        <div class="mhome__section"><HerbOfTheDay /></div>
 
         <!-- shared content sections (same components as desktop) -->
         <HomeEvents :events="events" />
