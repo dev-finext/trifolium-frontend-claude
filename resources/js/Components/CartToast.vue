@@ -30,7 +30,7 @@ function view() {
         :style="{
             position: 'fixed', bottom: '28px', left: '50%', transform: 'translateX(-50%)',
             zIndex: 300, display: 'flex', alignItems: 'center', gap: '14px',
-            background: 'var(--ink)', color: '#fff',
+            background: 'var(--inverse-surface)', color: '#fff',
             padding: '12px 14px 12px 18px', borderRadius: '10px',
             boxShadow: '0 12px 32px rgba(20,28,24,0.32)',
             animation: 'tf-toast-in .22s ease',
@@ -57,7 +57,7 @@ function view() {
         <button
             :style="{
                 flexShrink: 0, marginInlineStart: '4px',
-                background: 'var(--accent)', color: '#fff', border: 'none',
+                background: 'var(--accent)', color: 'var(--on-accent)', border: 'none',
                 padding: '7px 14px', borderRadius: '7px', fontSize: '13px', fontWeight: 600,
                 cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
             }"

@@ -99,9 +99,9 @@ function onSelect(v) {
                     height: '32px',
                     padding: '0 12px',
                     borderRadius: '999px',
-                    border: '1px solid ' + (!otherMode && current === n ? 'var(--ink)' : 'var(--line-strong)'),
-                    background: !otherMode && current === n ? 'var(--ink)' : '#fff',
-                    color: !otherMode && current === n ? '#fff' : 'var(--ink-2)',
+                    border: '1px solid ' + (!otherMode && current === n ? 'var(--accent)' : 'var(--line-strong)'),
+                    background: !otherMode && current === n ? 'var(--accent)' : 'var(--surface)',
+                    color: !otherMode && current === n ? 'var(--on-accent)' : 'var(--ink-2)',
                     fontSize: '13px',
                     fontWeight: !otherMode && current === n ? 600 : 500,
                     cursor: 'pointer',
@@ -119,9 +119,9 @@ function onSelect(v) {
                     height: '32px',
                     padding: '0 14px',
                     borderRadius: '999px',
-                    border: '1px solid ' + (otherMode ? 'var(--ink)' : 'var(--line-strong)'),
-                    background: otherMode ? 'var(--ink)' : '#fff',
-                    color: otherMode ? '#fff' : 'var(--ink-2)',
+                    border: '1px solid ' + (otherMode ? 'var(--accent)' : 'var(--line-strong)'),
+                    background: otherMode ? 'var(--accent)' : 'var(--surface)',
+                    color: otherMode ? 'var(--on-accent)' : 'var(--ink-2)',
                     fontSize: '13px',
                     fontWeight: otherMode ? 600 : 500,
                     cursor: 'pointer',
@@ -146,7 +146,7 @@ function onSelect(v) {
                         :style="{
                             width: '96px', height: '32px', borderRadius: 'var(--r-control)',
                             border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
-                            padding: '0 38px 0 10px', background: '#fff', fontSize: '13px', textAlign: 'center', outline: 'none',
+                            padding: '0 38px 0 10px', background: 'var(--surface)', fontSize: '13px', textAlign: 'center', outline: 'none',
                         }"
                     />
                     <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--ink-3); pointer-events: none">{{ rules.unit }}</span>
@@ -185,7 +185,7 @@ function onSelect(v) {
                             :style="{
                                 width: '96px', height: '32px', borderRadius: 'var(--r-control)',
                                 border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
-                                padding: '0 38px 0 10px', background: '#fff', fontSize: '13px', textAlign: 'center', outline: 'none',
+                                padding: '0 38px 0 10px', background: 'var(--surface)', fontSize: '13px', textAlign: 'center', outline: 'none',
                             }"
                         />
                         <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--ink-3); pointer-events: none">{{ rules.unit }}</span>

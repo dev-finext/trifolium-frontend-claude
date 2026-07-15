@@ -181,7 +181,7 @@ function focusBorder(e, on) {
                                 :value="tagDraft"
                                 maxlength="15"
                                 placeholder="הקלד ולחץ Enter"
-                                style="height: 34px; padding-inline: 12px; border-radius: 999px; border: 1px solid var(--accent); outline: none; font-size: 13px; font-family: inherit; width: 160px; background: #fff; color: var(--ink)"
+                                style="height: 34px; padding-inline: 12px; border-radius: 999px; border: 1px solid var(--accent); outline: none; font-size: 13px; font-family: inherit; width: 160px; background: var(--surface); color: var(--ink)"
                                 @input="tagDraft = $event.target.value"
                                 @keydown="onTagKeydown"
                                 @blur="commitTag"
@@ -227,7 +227,7 @@ function focusBorder(e, on) {
                 <textarea
                     :value="formula.externalNotes || ''"
                     placeholder="הנחיות נוספות עבור המטופל/ת"
-                    style="display: block; width: 100%; min-height: 72px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: #fff; color: var(--ink); box-sizing: border-box"
+                    style="display: block; width: 100%; min-height: 72px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: var(--surface); color: var(--ink); box-sizing: border-box"
                     @input="setF({ externalNotes: $event.target.value })"
                     @focus="focusBorder($event, true)"
                     @blur="focusBorder($event, false)"
@@ -243,7 +243,7 @@ function focusBorder(e, on) {
             <div style="padding: 16px 20px 20px">
                 <textarea
                     :value="formula.internalNotes || ''"
-                    style="display: block; width: 100%; min-height: 110px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: #fff; color: var(--ink); box-sizing: border-box"
+                    style="display: block; width: 100%; min-height: 110px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: var(--surface); color: var(--ink); box-sizing: border-box"
                     @input="setF({ internalNotes: $event.target.value })"
                 />
             </div>

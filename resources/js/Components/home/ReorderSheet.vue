@@ -27,7 +27,7 @@ const confirmed = ref(false);
             :style="{
                 width: '100%',
                 maxWidth: '640px',
-                background: '#fff',
+                background: 'var(--surface)',
                 borderTopLeftRadius: '12px',
                 borderTopRightRadius: '12px',
                 border: '1px solid var(--line)',

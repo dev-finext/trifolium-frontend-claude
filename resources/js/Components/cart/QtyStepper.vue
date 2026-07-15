@@ -14,7 +14,7 @@ function btnStyle(disabled) {
         width: '30px', height: '30px', borderRadius: 'var(--r-control)',
         border: 'none', flexShrink: 0,
         background: disabled ? 'var(--surface-sunk)' : 'var(--accent)',
-        color: disabled ? 'var(--ink-4)' : '#fff',
+        color: disabled ? 'var(--ink-4)' : 'var(--on-accent)',
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'background .15s',
@@ -32,7 +32,7 @@ function btnStyle(disabled) {
             :style="btnStyle(qty <= 1)"
             @click="emit('change', qty - 1)"
         >
-            <Icon name="minus" :size="15" :color="qty <= 1 ? 'var(--ink-4)' : '#fff'" :stroke="2.2" />
+            <Icon name="minus" :size="15" :color="qty <= 1 ? 'var(--ink-4)' : 'var(--on-accent)'" :stroke="2.2" />
         </button>
         <span
             class="num qty-count"
@@ -52,7 +52,7 @@ function btnStyle(disabled) {
             :style="btnStyle(false)"
             @click="emit('change', qty + 1)"
         >
-            <Icon name="plus" :size="15" color="#fff" :stroke="2.2" />
+            <Icon name="plus" :size="15" color="var(--on-accent)" :stroke="2.2" />
         </button>
     </div>
 </template>

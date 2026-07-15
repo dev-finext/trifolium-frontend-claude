@@ -55,7 +55,7 @@ const hover = ref(false);
             :style="{
                 width: '18px', height: '18px', borderRadius: '50%',
                 border: '1.5px solid ' + (selected ? 'var(--accent)' : 'var(--line-strong)'),
-                background: '#fff',
+                background: 'var(--surface)',
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
             }"

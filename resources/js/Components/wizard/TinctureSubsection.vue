@@ -79,7 +79,7 @@ function toggle() {
                             width: '18px', height: '18px',
                             borderRadius: '50%',
                             border: '2px solid ' + ((formula.evaporation || 'none') === opt.id ? 'var(--accent)' : 'var(--line-strong)'),
-                            background: '#fff',
+                            background: 'var(--surface)',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',

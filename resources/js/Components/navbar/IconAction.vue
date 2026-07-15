@@ -39,7 +39,7 @@ const hover = ref(false);
                 :style="{
                     position: 'absolute', top: '-5px', left: '-5px',
                     minWidth: '18px', height: '18px', padding: '0 5px',
-                    borderRadius: '999px', background: 'var(--accent)', color: '#fff',
+                    borderRadius: '999px', background: 'var(--accent)', color: 'var(--on-accent)',
                     fontSize: '11px', fontWeight: 700, lineHeight: '18px', textAlign: 'center',
                     border: '2px solid var(--surface)',
                 }"

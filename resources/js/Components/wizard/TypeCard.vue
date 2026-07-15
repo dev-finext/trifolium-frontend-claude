@@ -121,7 +121,7 @@ const tipBox = computed(() => {
                     transform: 'translateY(-100%)',
                     width: tipBox.W + 'px',
                     background: 'var(--ink)',
-                    color: '#fff',
+                    color: 'var(--surface)',
                     padding: '11px 14px',
                     borderRadius: '9px',
                     fontSize: '12.5px',

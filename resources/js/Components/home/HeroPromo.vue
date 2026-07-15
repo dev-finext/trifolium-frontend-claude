@@ -49,6 +49,7 @@ const rise = (delay) => ({
 
         <!-- centered brand lockup -->
         <div
+            class="hero-lockup"
             :style="{
                 position: 'relative', zIndex: 2, height: '100%',
                 display: 'flex', flexDirection: 'column',

@@ -100,7 +100,7 @@ function clear() {
             :style="{
                 position: 'absolute', top: '8px', left: '8px', zIndex: 2,
                 width: '30px', height: '30px', borderRadius: '8px', border: '1px solid var(--line)',
-                background: '#fff', cursor: 'pointer', display: 'inline-flex',
+                background: 'var(--surface)', cursor: 'pointer', display: 'inline-flex',
                 alignItems: 'center', justifyContent: 'center',
             }"
             @click="clear"

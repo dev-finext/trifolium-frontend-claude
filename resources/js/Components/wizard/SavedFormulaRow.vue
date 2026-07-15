@@ -68,7 +68,7 @@ const itemCount = computed(() => props.saved.ingredients.length);
                 width: '20px', height: '20px',
                 borderRadius: '50%',
                 border: '2px solid ' + (selected ? 'var(--accent)' : 'var(--line-strong)'),
-                background: '#fff',
+                background: 'var(--surface)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',

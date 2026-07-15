@@ -15,7 +15,7 @@ const hover = ref(false);
 <template>
     <div
         :style="{
-            background: '#fff',
+            background: 'var(--surface)',
             border: '1px solid ' + (hover ? 'var(--ink-2)' : 'var(--line)'),
             borderRadius: 'var(--r-card)',
             overflow: 'hidden',

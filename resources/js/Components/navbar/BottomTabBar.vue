@@ -165,7 +165,7 @@ html.tf-mobile .tabbar {
     padding: 0 4px;
     border-radius: 999px;
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     font-size: 10px;
     font-weight: 700;
     line-height: 16px;

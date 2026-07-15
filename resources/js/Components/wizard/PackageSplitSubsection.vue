@@ -97,7 +97,7 @@ const split = computed(() => {
                                 borderRadius: 'var(--r-control)',
                                 overflow: 'hidden',
                                 height: '40px',
-                                background: '#fff',
+                                background: 'var(--surface)',
                             }"
                         >
                             <StepBtn label="−" :disabled="count <= 2" @click="dec" />

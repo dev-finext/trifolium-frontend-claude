@@ -73,7 +73,7 @@ function onFocus() {
             class="ingredient-search-row"
             style="position: relative; padding: 12px 14px; background: var(--accent-tint); border-bottom: 1px solid var(--line); border-top-left-radius: var(--r-card); border-top-right-radius: var(--r-card); display: flex; gap: 10px; align-items: center"
         >
-            <div style="flex: 1; position: relative; display: flex; align-items: center; background: #fff; border: 1.5px solid var(--accent); border-radius: var(--r-control); box-shadow: 0 1px 4px rgba(20, 18, 14, 0.06)">
+            <div style="flex: 1; position: relative; display: flex; align-items: center; background: var(--surface); border: 1.5px solid var(--accent); border-radius: var(--r-control); box-shadow: 0 1px 4px rgba(20, 18, 14, 0.06)">
                 <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--accent); pointer-events: none; display: inline-flex">
                     <Icon name="search" :size="20" />
                 </span>
@@ -89,7 +89,7 @@ function onFocus() {
             </div>
             <button
                 class="tf-preset-btn"
-                style="position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 8px; height: 50px; padding-inline-start: 18px; padding-inline-end: 44px; border: 1.5px solid var(--accent); border-radius: var(--r-control); background: #fff; color: var(--accent); font-size: 13.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; white-space: nowrap; font-family: inherit; transition: background .12s, color .12s"
+                style="position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 8px; height: 50px; padding-inline-start: 18px; padding-inline-end: 44px; border: 1.5px solid var(--accent); border-radius: var(--r-control); background: var(--surface); color: var(--accent); font-size: 13.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; white-space: nowrap; font-family: inherit; transition: background .12s, color .12s"
                 @click="emit('open-preset')"
             >
                 <NewRibbonMark :top="9" :left="-32" />
@@ -126,5 +126,5 @@ function onFocus() {
 </template>
 
 <style>
-.tf-preset-btn:hover { background: var(--accent) !important; color: #fff !important; }
+.tf-preset-btn:hover { background: var(--accent) !important; color: var(--on-accent) !important; }
 </style>

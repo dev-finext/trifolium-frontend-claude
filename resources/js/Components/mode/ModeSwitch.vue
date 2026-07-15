@@ -25,7 +25,7 @@ function labelStyle(active) {
         justifyContent: 'center',
         fontSize: '12.5px',
         fontWeight: active ? 700 : 500,
-        color: active ? '#fff' : 'var(--ink-3)',
+        color: active ? 'var(--surface)' : 'var(--ink-3)',
         transition: 'color .18s',
         letterSpacing: '0.02em',
     };

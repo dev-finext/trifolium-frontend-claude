@@ -29,7 +29,7 @@ function onInput(e) {
 const btnStyle = {
     width: '28px', height: '32px',
     border: '1px solid var(--line-strong)',
-    background: '#fff',
+    background: 'var(--surface)',
     color: 'var(--ink-2)',
     cursor: 'pointer',
     display: 'inline-flex',
@@ -63,7 +63,7 @@ const btnStyle = {
                 border: '1px solid var(--line-strong)',
                 borderRadius: 0,
                 padding: 0,
-                background: '#fff',
+                background: 'var(--surface)',
                 textAlign: 'center',
                 fontSize: '14px',
                 fontWeight: 600,
