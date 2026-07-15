@@ -583,6 +583,11 @@ input, select, textarea { font-family: inherit; color: inherit; }
    beside a button's label so it never floats or collides. */
 .tf-new-badge { display: none; }
 
+/* Compact name+points identity — phones only. On desktop the full user menu
+   already carries the name and points, so this stays hidden (otherwise it
+   duplicates both in the left cluster). Shown in the mobile nav block. */
+.nav__mobile-id { display: none; }
+
 /* ═════════════════════════════════════════════════════════════
    MOBILE LAYOUT — everything ≤760px
    ═════════════════════════════════════════════════════════════ */
