@@ -250,3 +250,6 @@ const ICON_INK = [0xf6, 0xf2, 0xe4];    // warm cream mark
 write('public/icons/icon-512.png', iconifyInverted(mark, 512, ICON_TOP, ICON_BOTTOM, ICON_INK));
 write('public/icons/icon-192.png', iconifyInverted(mark, 192, ICON_TOP, ICON_BOTTOM, ICON_INK));
 write('public/icons/icon-180.png', iconifyInverted(mark, 180, ICON_TOP, ICON_BOTTOM, ICON_INK));
+// Maskable variant: the mark at 56% of the canvas so it survives Android's
+// adaptive-icon crop (the safe zone is the central ~80% circle).
+write('public/icons/icon-maskable-512.png', iconifyInverted(mark, 512, ICON_TOP, ICON_BOTTOM, ICON_INK, 0.56));

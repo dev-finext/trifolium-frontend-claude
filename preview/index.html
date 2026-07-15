@@ -14,6 +14,23 @@
     <meta name="theme-color" content="#f6f8f5" />
     <meta name="apple-mobile-web-app-title" content="Trifolium" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <!-- iOS standalone launch (Add to Home Screen): full-screen, and a status
+         bar style that works with the safe-area top padding on .nav. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <!-- Set the responsive tier class BEFORE the bundle loads, so the mobile
+         stylesheet (incl. the 16px input-zoom guard) applies on first paint —
+         no flash of the desktop layout. lib/mobile-layout.js re-applies + adds
+         resize listeners after hydration. -->
+    <script>
+        (function () {
+            try {
+                var c = document.documentElement.classList;
+                if (matchMedia('(max-width: 760px)').matches) c.add('tf-mobile');
+                else if (matchMedia('(min-width: 761px) and (max-width: 1080px)').matches) c.add('tf-tablet');
+            } catch (e) {}
+        })();
+    </script>
     <!-- PWA: %BASE_URL% is substituted by Vite at build time, so these resolve
          correctly under the GitHub Pages subpath as well as at a domain root. -->
     <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
