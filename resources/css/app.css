@@ -920,6 +920,18 @@ html.tf-mobile {
     border-radius: var(--r-pill);
     box-shadow: 0 2px 6px -2px rgba(42, 64, 40, 0.5);
   }
+  /* Corner variant — the flag tucks into the card's top-inline-start (right,
+     RTL) corner instead of flowing after the label. The round icon leaves that
+     corner empty, so it clears the emblem; the label sits to the inline-end, so
+     it clears the text too. Used on the "ללא מטופל" secondary action. */
+  .tf-new-badge--corner {
+    position: absolute;
+    top: 5px;
+    inset-inline-start: 5px;
+    z-index: 3;
+    font-size: 8.5px;
+    padding: 2px 7px 3px;
+  }
 
   /* ---- Daily-dose card (מינון יומי): compact + professional ----
      The decorative column icons are dropped; labels tighten; the timing
