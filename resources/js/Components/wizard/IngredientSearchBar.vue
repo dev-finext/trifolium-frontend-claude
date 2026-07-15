@@ -99,6 +99,8 @@ function onFocus() {
                     <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
                 </svg>
                 בחר פורמולה מוכנה
+                <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon above) -->
+                <span class="tf-new-badge">חדש</span>
             </button>
         </div>
 

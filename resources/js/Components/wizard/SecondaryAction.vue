@@ -8,6 +8,9 @@ defineProps({
     label: { type: String, required: true },
     sub: { type: String, default: '' },
     active: { type: Boolean, default: false },
+    // Optional "חדש"-style inline pill shown beside the label (phones only —
+    // hidden on desktop via .tf-new-badge, where a corner ribbon is used).
+    badge: { type: String, default: '' },
 });
 
 const emit = defineEmits(['click']);
@@ -54,9 +57,14 @@ const emit = defineEmits(['click']);
                     display: 'block',
                     fontSize: '13.5px',
                     fontWeight: 600,
+                    lineHeight: 1.3,
                     color: active ? 'var(--accent-ink)' : 'var(--ink)',
                 }"
-            >{{ label }}</span>
+            >{{ label }}<span
+                v-if="badge"
+                class="tf-new-badge"
+                style="margin-inline-start: 6px; vertical-align: 2px"
+            >{{ badge }}</span></span>
             <span style="display: block; font-size: 11.5px; color: var(--ink-3); font-weight: 300">{{ sub }}</span>
         </span>
     </button>

@@ -183,6 +183,7 @@ function patientToForm(p, edit) {
                     icon="save"
                     label="ללא מטופל"
                     sub="שמירה בטיוטות בלבד"
+                    badge="חדש"
                     :active="option === 'none'"
                     @click="emit('update:option', 'none')"
                 />

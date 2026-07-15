@@ -99,8 +99,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
             <!-- Tabs -->
             <div style="position: relative; border-bottom: 1px solid var(--line); background: var(--surface-sunk); flex-shrink: 0">
                 <div class="preset-picker-tabs" style="display: flex; gap: 4px; padding: 0 16px">
-                    <div v-for="t in PICKER_TABS" :key="t.id" style="display: flex; align-items: center; gap: 4px">
+                    <div
+                        v-for="t in PICKER_TABS"
+                        :key="t.id"
+                        class="ppt-item"
+                        :class="{ 'ppt-item--active': t.id === tabId }"
+                        style="display: flex; align-items: center; gap: 4px"
+                    >
                         <button
+                            class="ppt-tab"
                             :style="{
                                 appearance: 'none', background: 'none', border: 'none', cursor: 'pointer',
                                 padding: '13px 4px 11px', fontSize: '14px',
@@ -113,6 +120,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
                             @click="switchTab(t.id)"
                         >{{ t.label }}</button>
                         <button
+                            class="ppt-info"
                             :aria-label="'מידע על ' + t.label"
                             title="הסבר"
                             :style="{
