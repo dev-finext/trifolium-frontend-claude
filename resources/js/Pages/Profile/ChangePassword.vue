@@ -3,21 +3,20 @@
 // Reached from the profile editor ("שינוי סיסמה" button). Independent screen:
 // current password, new password (with live rule checklist) + confirmation.
 // Display-only sketch: local state, no real persistence.
-import { computed, reactive, ref } from 'vue';
+import { computed, nextTick, reactive, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { visit } from '@/lib/routes';
 import Icon from '@/Components/ui/Icon.vue';
 import CPPasswordField from '@/Components/profile/CPPasswordField.vue';
+import { PASSWORD_RULES, validate } from '@/Components/auth/password-rules';
 
 // This screen renders full-bleed without the navbar/footer chrome, so it
 // opts out of the default app layout (see resources/js/app.js).
 defineOptions({ layout: null });
 
-const CP_RULES = [
-    { id: 'len', label: 'לפחות 8 תווים', test: (v) => v.length >= 8 },
-    { id: 'letter', label: 'אות אחת לפחות', test: (v) => /[a-zA-Zא-ת]/.test(v) },
-    { id: 'digit', label: 'ספרה אחת לפחות', test: (v) => /\d/.test(v) },
-];
+// F13 — shared password policy (was a duplicated local CP_RULES); also drives
+// the live checklist below.
+const CP_RULES = PASSWORD_RULES;
 
 const current = ref('');
 const next = ref('');
@@ -25,7 +24,11 @@ const confirm = ref('');
 const err = reactive({ current: undefined, next: undefined, confirm: undefined });
 const done = ref(false);
 
-const allRulesPass = computed(() => CP_RULES.every(r => r.test(next.value)));
+const currentField = ref(null);
+const nextField = ref(null);
+const confirmField = ref(null);
+
+const allRulesPass = computed(() => validate(next.value).valid);
 
 // Inertia resets scroll on visit, so no explicit scrollTo here.
 function goProfile() {
@@ -44,6 +47,8 @@ function submit() {
     if (!current.value) nx.current = 'נא להזין את הסיסמה הנוכחית';
     if (!next.value) nx.next = 'נא להזין סיסמה חדשה';
     else if (!allRulesPass.value) nx.next = 'הסיסמה אינה עומדת בדרישות';
+    // F13 — the new password must differ from the current one.
+    else if (current.value && next.value === current.value) nx.next = 'הסיסמה החדשה חייבת להיות שונה מהנוכחית';
     if (!confirm.value) nx.confirm = 'נא לאשר את הסיסמה';
     else if (next.value && confirm.value !== next.value) nx.confirm = 'הסיסמאות אינן תואמות';
     err.current = nx.current;
@@ -52,7 +57,14 @@ function submit() {
     if (Object.keys(nx).length === 0) {
         done.value = true;
         window.scrollTo(0, 0);
+        return;
     }
+    // Focus the first invalid field.
+    nextTick(() => {
+        if (nx.current) currentField.value?.focus();
+        else if (nx.next) nextField.value?.focus();
+        else if (nx.confirm) confirmField.value?.focus();
+    });
 }
 </script>
 
@@ -86,7 +98,7 @@ function submit() {
                 </button>
             </div>
 
-            <form v-else @submit.prevent="submit">
+            <form novalidate v-else @submit.prevent="submit">
                 <a
                     style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); cursor: pointer; margin-bottom: 22px"
                     @click="goProfile"
@@ -111,10 +123,12 @@ function submit() {
 
                 <div style="display: flex; flex-direction: column; gap: 18px">
                     <CPPasswordField
+                        ref="currentField"
                         label="סיסמה נוכחית"
                         :model-value="current"
                         placeholder="••••••••"
                         autocomplete="current-password"
+                        enterkeyhint="next"
                         :error="err.current"
                         @update:model-value="setCurrent"
                     />
@@ -122,9 +136,11 @@ function submit() {
                     <div style="height: 1px; background: var(--line); margin: 2px 0" />
 
                     <CPPasswordField
+                        ref="nextField"
                         label="סיסמה חדשה"
                         :model-value="next"
                         placeholder="הזן סיסמה חדשה"
+                        enterkeyhint="next"
                         :error="err.next"
                         @update:model-value="setNext"
                     />
@@ -152,9 +168,11 @@ function submit() {
                     </div>
 
                     <CPPasswordField
+                        ref="confirmField"
                         label="אימות סיסמה חדשה"
                         :model-value="confirm"
                         placeholder="הזן שוב את הסיסמה החדשה"
+                        enterkeyhint="done"
                         :error="err.confirm"
                         @update:model-value="setConfirm"
                     />

@@ -1,26 +1,26 @@
 <script setup>
 // A6 בחירת סיסמה חדשה — set new / initial password ("החלפת סיסמה ראשונית").
 // Reached from the email reset link, and used for first-time password setup.
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Icon from '@/Components/ui/Icon.vue';
 import AuthSplitCard from '@/Components/auth/AuthSplitCard.vue';
 import BackToLogin from '@/Components/auth/BackToLogin.vue';
 import PasswordField from '@/Components/auth/PasswordField.vue';
+import { PASSWORD_RULES, validate } from '@/Components/auth/password-rules';
 import { visit } from '@/lib/routes';
 
-// Live password-requirement checklist rules.
-const RULES = [
-    { id: 'len', label: 'לפחות 8 תווים', test: (v) => v.length >= 8 },
-    { id: 'letter', label: 'אות אחת לפחות', test: (v) => /[a-zA-Zא-ת]/.test(v) },
-    { id: 'digit', label: 'ספרה אחת לפחות', test: (v) => /\d/.test(v) },
-];
+// F11 — shared password policy; RULES also drive the live checklist below.
+const RULES = PASSWORD_RULES;
 
 const pw = ref('');
 const confirm = ref('');
 const err = ref({});
 
-const allRulesPass = computed(() => RULES.every(r => r.test(pw.value)));
+const pwField = ref(null);
+const confirmField = ref(null);
+
+const allRulesPass = computed(() => validate(pw.value).valid);
 
 // TODO(backend): POST /reset-password with the token from the email link;
 // server-side errors replace this local gating.
@@ -31,7 +31,12 @@ function submit() {
     if (!confirm.value) next.confirm = 'נא לאשר את הסיסמה';
     else if (pw.value && confirm.value !== pw.value) next.confirm = 'הסיסמאות אינן תואמות';
     err.value = next;
-    if (Object.keys(next).length === 0) visit('reset-done');
+    if (Object.keys(next).length === 0) { visit('reset-done'); return; }
+    // Focus the first invalid field.
+    nextTick(() => {
+        if (next.pw) pwField.value?.focus();
+        else if (next.confirm) confirmField.value?.focus();
+    });
 }
 
 function onPw(v) { pw.value = v; err.value = { ...err.value, pw: undefined }; }
@@ -42,7 +47,7 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
     <Head title="בחירת סיסמה חדשה" />
     <!-- data-screen-label falls through to AuthSplitCard's root element -->
     <AuthSplitCard data-screen-label="A6 בחירת סיסמה חדשה">
-        <form @submit.prevent="submit">
+        <form novalidate @submit.prevent="submit">
             <span
                 :style="{
                     width: '46px', height: '46px', borderRadius: '50%',
@@ -59,8 +64,10 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
 
             <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
                 <PasswordField
+                    ref="pwField"
                     label="סיסמה חדשה" :model-value="pw"
                     placeholder="הזינו סיסמה" :error="err.pw || ''"
+                    enterkeyhint="next"
                     @update:model-value="onPw"
                 />
 
@@ -83,8 +90,10 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
                 </div>
 
                 <PasswordField
+                    ref="confirmField"
                     label="אימות סיסמה" :model-value="confirm"
                     placeholder="הזינו שוב את הסיסמה" :error="err.confirm || ''"
+                    enterkeyhint="done"
                     @update:model-value="onConfirm"
                 />
 

@@ -60,6 +60,7 @@ const activeForms = ref([]);
 const activeTags = ref([]);
 const priceMax = ref(150);
 const search = ref('');
+const sortBy = ref('pop'); // 'pop' | 'price-asc' | 'price-desc' | 'new'
 // Per-product added quantity — drives each card's "בסל" badge.
 const cart = ref({});
 
@@ -71,6 +72,17 @@ const filtered = computed(() => props.products.filter((p) => {
     if (p.price > priceMax.value) return false;
     return true;
 }));
+
+// A12 — the sort control is now wired (was a dead <select>). Sorts a copy so
+// the source order is preserved. "Popularity" floats best-sellers first;
+// "new" floats the חדש items first.
+const sorted = computed(() => {
+    const arr = [...filtered.value];
+    if (sortBy.value === 'price-asc') return arr.sort((a, b) => a.price - b.price);
+    if (sortBy.value === 'price-desc') return arr.sort((a, b) => b.price - a.price);
+    if (sortBy.value === 'new') return arr.sort((a, b) => (b.tag === 'חדש') - (a.tag === 'חדש'));
+    return arr.sort((a, b) => (b.tag === 'נמכר ביותר') - (a.tag === 'נמכר ביותר'));
+});
 
 // Sidebar option lists with counts; zero-count options are hidden (except 'הכל').
 const categoryRows = computed(() => props.categories
@@ -147,7 +159,7 @@ function clearAll() {
                     <p class="page-sub">פורמולות מוכנות, תמיסות ותערובות · הנחת מטפל 20% כלולה</p>
                 </div>
                 <div class="row gap-8">
-                    <div style="width: 260px">
+                    <div class="catalog-search" style="width: 260px">
                         <SearchInput v-model="search" placeholder="חיפוש מוצר…" />
                     </div>
                 </div>
@@ -242,6 +254,8 @@ function clearAll() {
                                 :min="30"
                                 :max="150"
                                 :step="5"
+                                aria-label="מחיר מקסימלי"
+                                :aria-valuetext="`עד ${priceMax} שקלים`"
                                 style="width: 100%; accent-color: var(--accent); cursor: pointer"
                             />
                             <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-3); margin-top: 4px">
@@ -278,13 +292,17 @@ function clearAll() {
                             </span>
                         </span>
                         <div style="display: flex; align-items: center; gap: 6px">
-                            <span style="font-size: 12px">מיון:</span>
-                            <!-- Static in the prototype too — sorting is not wired up. -->
-                            <select class="select" style="height: 32px; font-size: 13px; width: auto; padding: 0 8px">
-                                <option>פופולריות</option>
-                                <option>מחיר נמוך לגבוה</option>
-                                <option>מחיר גבוה לנמוך</option>
-                                <option>חדשים</option>
+                            <label for="catalog-sort" style="font-size: 12px">מיון:</label>
+                            <select
+                                id="catalog-sort"
+                                v-model="sortBy"
+                                class="select"
+                                style="height: 36px; font-size: 13px; width: auto; padding: 0 8px"
+                            >
+                                <option value="pop">פופולריות</option>
+                                <option value="price-asc">מחיר נמוך לגבוה</option>
+                                <option value="price-desc">מחיר גבוה לנמוך</option>
+                                <option value="new">חדשים</option>
                             </select>
                         </div>
                     </div>
@@ -302,7 +320,7 @@ function clearAll() {
                     </div>
                     <div v-else style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px">
                         <ProductCard
-                            v-for="p in filtered"
+                            v-for="p in sorted"
                             :key="p.id"
                             :product="p"
                             :in-cart="cart[p.id] || 0"

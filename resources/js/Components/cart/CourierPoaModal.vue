@@ -6,12 +6,16 @@ import Icon from '@/Components/ui/Icon.vue';
 import FieldLabel from '@/Components/ui/FieldLabel.vue';
 import { PATIENTS } from '@/data/mock';
 import SignaturePad from '@/Components/cart/SignaturePad.vue';
+import { isIsraeliID } from '@/Components/auth/validators';
+import { useModal } from '@/composables/useModal';
 
 const props = defineProps({
     open: { type: Boolean, default: false },
     patientName: { type: String, default: '' },
 });
 const emit = defineEmits(['close', 'confirm']);
+
+const { dialogRef } = useModal(() => emit('close'));
 
 const today = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy
 const name = ref('');
@@ -28,7 +32,11 @@ watch(() => props.open, (open) => {
     hasSig.value = false;
 });
 
-const canSubmit = computed(() => name.value.trim() && tz.value.trim().length >= 5 && hasSig.value);
+// F33 — the ID must be a structurally valid Israeli ת.ז. (check-digit), not
+// merely "long enough". The inline error only surfaces once digits are typed.
+const tzValid = computed(() => isIsraeliID(tz.value));
+const tzError = computed(() => tz.value.trim().length > 0 && !tzValid.value);
+const canSubmit = computed(() => name.value.trim() && tzValid.value && hasSig.value);
 
 // Digits only, max 9 — write the sanitised value back so the DOM never drifts.
 function onTzInput(e) {
@@ -50,7 +58,12 @@ function onTzInput(e) {
         @click="emit('close')"
     >
         <div
+            ref="dialogRef"
             dir="rtl"
+            role="dialog"
+            aria-modal="true"
+            tabindex="-1"
+            aria-labelledby="poa-title"
             :style="{
                 width: '100%', maxWidth: '720px', background: 'var(--surface)',
                 borderRadius: 'var(--r-card)', overflow: 'hidden',
@@ -65,7 +78,7 @@ function onTzInput(e) {
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px',
                 }"
             >
-                <h3 :style="{ margin: 0, fontSize: '17px', fontWeight: 600, textWrap: 'pretty' }">
+                <h3 id="poa-title" :style="{ margin: 0, fontSize: '17px', fontWeight: 600, textWrap: 'pretty' }">
                     טופס ייפוי כוח לקבלת תכשירים מבית מרקחת טריפוליום באמצעות שליח
                 </h3>
                 <button
@@ -85,20 +98,33 @@ function onTzInput(e) {
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px">
                     <div>
-                        <FieldLabel>שם מלא</FieldLabel>
-                        <input class="input" :value="name" placeholder="שם מלא" @input="name = $event.target.value" />
+                        <FieldLabel for="poa-name">שם מלא</FieldLabel>
+                        <input id="poa-name" class="input" :value="name" placeholder="שם מלא" @input="name = $event.target.value" />
                     </div>
                     <div>
-                        <FieldLabel>מספר ת.ז.</FieldLabel>
+                        <FieldLabel for="poa-tz">מספר ת.ז.</FieldLabel>
                         <input
+                            id="poa-tz"
                             class="input num" :value="tz" placeholder="000000000" dir="ltr"
+                            inputmode="numeric" maxlength="9"
                             style="text-align: center"
+                            :aria-invalid="tzError"
+                            :aria-describedby="tzError ? 'poa-tz-error' : undefined"
                             @input="onTzInput"
                         />
+                        <div
+                            v-if="tzError"
+                            id="poa-tz-error"
+                            role="alert"
+                            :style="{ marginTop: '6px', fontSize: '12px', lineHeight: 1.4, color: 'var(--danger)' }"
+                        >
+                            מספר ת.ז. אינו תקין
+                        </div>
                     </div>
                     <div>
-                        <FieldLabel>תאריך חתימה</FieldLabel>
+                        <FieldLabel for="poa-date">תאריך חתימה</FieldLabel>
                         <input
+                            id="poa-date"
                             class="input num" :value="today" readonly tabindex="-1" dir="ltr"
                             style="text-align: center; background: var(--surface-sunk); color: var(--ink-2)"
                         />

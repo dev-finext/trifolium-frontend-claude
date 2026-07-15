@@ -93,7 +93,7 @@ const split = computed(() => {
                             :style="{
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                border: '1px solid ' + (invalid ? '#c93838' : 'var(--line-strong)'),
+                                border: '1px solid ' + (invalid ? 'var(--danger)' : 'var(--line-strong)'),
                                 borderRadius: 'var(--r-control)',
                                 overflow: 'hidden',
                                 height: '40px',
@@ -116,7 +116,7 @@ const split = computed(() => {
                     </div>
 
                     <!-- Validation messaging -->
-                    <div v-if="invalid" style="font-size: 12px; color: #c93838; margin-top: 8px; font-weight: 500">
+                    <div v-if="invalid" style="font-size: 12px; color: var(--danger); margin-top: 8px; font-weight: 500">
                         <template v-if="belowMin">יש לחלק ל-<span class="num">2</span> שקיות לפחות</template>
                         <template v-else>מקסימום <span class="num">{{ maxPacks }}</span> שקיות — כל שקית חייבת להכיל לפחות <span class="num">{{ MIN_PER_PACKAGE }}</span> {{ unit }}</template>
                     </div>

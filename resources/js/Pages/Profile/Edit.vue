@@ -9,7 +9,7 @@
 //   • שם המרפאה / מספר רישיון — editable
 //   • עדכון סיסמה
 //   …nothing more, nothing less.
-import { reactive, ref } from 'vue';
+import { reactive, ref, provide, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { visit } from '@/lib/routes';
 import Icon from '@/Components/ui/Icon.vue';
@@ -19,6 +19,7 @@ import ProfileSelect from '@/Components/profile/ProfileSelect.vue';
 import AddressesEditor from '@/Components/profile/AddressesEditor.vue';
 import ProfileSection from '@/Components/profile/ProfileSection.vue';
 import { tfLoadAddresses, tfSaveAddresses } from '@/composables/useAddresses';
+import { isPhone } from '@/Components/auth/validators';
 
 // Specialization option lists — mirrored from the registration screen.
 const TF_TREATMENTS_OPTS = [
@@ -45,13 +46,22 @@ const form = reactive({
 const addresses = ref(tfLoadAddresses());
 const saved = ref(false);
 
+// Field-level validation errors. Address errors are keyed by address id and
+// provided down to AddressCardEditor (skipping the AddressesEditor middleman).
+const errors = reactive({ firstName: '', lastName: '' });
+const addrErrors = reactive({});
+provide('tfAddrErrors', addrErrors);
+
 // Any edit invalidates the "saved" banner until the next save.
 function setField(key, value) {
     form[key] = value;
+    if (errors[key] !== undefined) errors[key] = '';
     saved.value = false;
 }
 function setAddrs(next) {
     addresses.value = next;
+    // Clear stale address errors as the user edits; re-validated on save.
+    Object.keys(addrErrors).forEach((k) => delete addrErrors[k]);
     saved.value = false;
 }
 
@@ -60,9 +70,36 @@ function goBack() {
     visit('home');
 }
 
+// Required-field + phone-format validation. Returns true when the profile may
+// be saved. Contact email/phone are read-only and therefore not validated.
+function validate() {
+    errors.firstName = form.firstName.trim() ? '' : 'יש להזין שם פרטי';
+    errors.lastName = form.lastName.trim() ? '' : 'יש להזין שם משפחה';
+    let ok = !errors.firstName && !errors.lastName;
+
+    Object.keys(addrErrors).forEach((k) => delete addrErrors[k]);
+    addresses.value.forEach((a) => {
+        const e = {};
+        if (!(a.street || '').trim()) e.street = 'יש להזין רחוב ומספר';
+        if (!(a.city || '').trim()) e.city = 'יש להזין עיר';
+        if (!(a.phone || '').trim()) e.phone = 'יש להזין טלפון';
+        else if (!isPhone(a.phone)) e.phone = 'מספר הטלפון אינו תקין';
+        if (Object.keys(e).length) {
+            addrErrors[a.id] = e;
+            ok = false;
+        }
+    });
+    return ok;
+}
+
 // TODO(backend): also persist the form fields (name, specialization, clinic,
 // license) once a profile endpoint exists; only addresses persist for now.
 function save() {
+    if (!validate()) {
+        saved.value = false;
+        nextTick(() => { document.querySelector('[aria-invalid="true"]')?.focus(); });
+        return;
+    }
     addresses.value = tfSaveAddresses(addresses.value);
     saved.value = true;
     window.scrollTo(0, 0);
@@ -108,8 +145,8 @@ function save() {
                 <!-- Personal -->
                 <ProfileSection title="פרטים אישיים" desc="השם יוצג במסמכי ההזמנה ובתקשורת עם המטופלים.">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
-                        <ProfileField label="שם פרטי" :model-value="form.firstName" @update:model-value="setField('firstName', $event)" />
-                        <ProfileField label="שם משפחה" :model-value="form.lastName" @update:model-value="setField('lastName', $event)" />
+                        <ProfileField label="שם פרטי" required autocomplete="given-name" :error="errors.firstName" :model-value="form.firstName" @update:model-value="setField('firstName', $event)" />
+                        <ProfileField label="שם משפחה" required autocomplete="family-name" :error="errors.lastName" :model-value="form.lastName" @update:model-value="setField('lastName', $event)" />
                     </div>
                 </ProfileSection>
 

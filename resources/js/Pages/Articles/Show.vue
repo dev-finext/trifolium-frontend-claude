@@ -69,7 +69,7 @@ const crumbLink = {
                         background: 'linear-gradient(180deg, rgba(20,30,18,0.18) 0%, rgba(20,30,18,0.62) 62%, rgba(15,24,14,0.86) 100%)',
                     }"
                 />
-                <div style="position: relative; padding: 40px 44px; color: #fff; width: 100%">
+                <div class="article-hero" style="position: relative; padding: 40px 44px; color: #fff; width: 100%">
                     <span
                         :style="{
                             display: 'inline-block',

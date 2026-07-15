@@ -2,10 +2,11 @@
 // Edit-patient modal — reuses NewPatientForm, pre-filled with the
 // selected patient's details. Same fields as "new patient", but the
 // data is already populated and the CTA saves the changes.
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 import NewPatientForm from '@/Components/wizard/NewPatientForm.vue';
 import PatientAvatar from '@/Components/wizard/PatientAvatar.vue';
+import { useModal } from '@/composables/useModal';
 
 const props = defineProps({
     /** Raw patient record (for the header avatar/name fallback). */
@@ -24,17 +25,13 @@ const canSave = computed(() => {
     const ageNum = Number(f.age);
     const ageValid = f.age !== '' && ageNum >= 0 && ageNum <= 120;
     const needsRepro = f.sex === 'female' && ageValid && ageNum >= 15 && ageNum <= 60;
-    return !!(f.firstName && f.lastName && f.phone && ageValid && f.sex
+    return !!(f.firstName?.trim() && f.lastName?.trim() && f.phone?.trim() && ageValid && f.sex
         && f.onMeds !== null
         && (!needsRepro || (f.pregnant !== null && f.breastfeeding !== null))
         && (f.onMeds !== true || f.medsDeclarationAck === true));
 });
 
-function onKey(e) {
-    if (e.key === 'Escape') emit('close');
-}
-onMounted(() => document.addEventListener('keydown', onKey));
-onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
+const { dialogRef } = useModal(() => emit('close'));
 </script>
 
 <template>
@@ -43,6 +40,11 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
         @click="emit('close')"
     >
         <div
+            ref="dialogRef"
+            role="dialog"
+            aria-modal="true"
+            tabindex="-1"
+            aria-labelledby="edit-patient-title"
             style="width: 560px; max-width: 100%; background: var(--surface); border-radius: 12px; overflow: hidden; margin: auto; box-shadow: 0 40px 80px -30px rgba(20,30,18,0.6)"
             @click.stop
         >
@@ -53,7 +55,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
                     <div style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px">
                         עריכת פרטי מטופל
                     </div>
-                    <div style="font-size: 17px; font-weight: 700; color: var(--ink)">
+                    <div id="edit-patient-title" style="font-size: 17px; font-weight: 700; color: var(--ink)">
                         {{ `${form.firstName} ${form.lastName}`.trim() || patient.heb }}
                     </div>
                 </div>

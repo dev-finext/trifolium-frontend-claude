@@ -1,11 +1,14 @@
 <script setup>
 // Video lightbox modal — dark scrim, simulated 16:9 player, meta below.
 import Icon from '@/Components/ui/Icon.vue';
+import { useModal } from '@/composables/useModal';
 
 defineProps({
     video: { type: Object, required: true },
 });
 const emit = defineEmits(['close']);
+
+const { dialogRef } = useModal(() => emit('close'));
 </script>
 
 <template>
@@ -21,6 +24,11 @@ const emit = defineEmits(['close']);
         @click="emit('close')"
     >
         <div
+            ref="dialogRef"
+            role="dialog"
+            aria-modal="true"
+            tabindex="-1"
+            aria-labelledby="tf-video-title"
             :style="{
                 width: '100%',
                 maxWidth: '1000px',
@@ -33,7 +41,7 @@ const emit = defineEmits(['close']);
         >
             <!-- Close -->
             <button
-                title="סגור (Esc)"
+                aria-label="סגור"
                 :style="{
                     position: 'absolute', top: '16px', left: '16px',
                     width: '36px', height: '36px', borderRadius: '50%',
@@ -67,12 +75,15 @@ const emit = defineEmits(['close']);
                         backgroundImage: 'repeating-linear-gradient(115deg, transparent 0, transparent 16px, rgba(255,255,255,0.04) 16px, rgba(255,255,255,0.04) 17px)',
                     }"
                 />
-                <div
+                <button
+                    type="button"
+                    aria-label="נגן"
                     :style="{
                         width: '72px', height: '72px',
                         borderRadius: '50%',
                         background: '#fff',
                         color: 'var(--ink)',
+                        border: 'none',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -81,13 +92,14 @@ const emit = defineEmits(['close']);
                         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
                     }"
                 >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 4l14 8-14 8V4z" />
                     </svg>
-                </div>
+                </button>
 
                 <!-- Progress bar -->
                 <div
+                    aria-hidden="true"
                     :style="{
                         position: 'absolute', bottom: 0, left: 0, right: 0,
                         padding: '16px 20px',
@@ -120,7 +132,7 @@ const emit = defineEmits(['close']);
                         fontFamily: 'var(--font-latin)',
                     }"
                 >{{ video.chapter }}</div>
-                <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px">{{ video.title }}</div>
+                <div id="tf-video-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px">{{ video.title }}</div>
                 <div style="font-size: 13px; color: #a8a89c; line-height: 1.5">{{ video.desc }}</div>
             </div>
         </div>

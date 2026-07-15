@@ -29,6 +29,10 @@ const ship = ref('patient');    // 'me' | 'patient' | 'pickup'
 const payer = ref('me');        // 'me' | 'patient'
 const benefit = ref('points');  // 'points' | 'discount'  (only when payer === 'me')
 
+// Free-text delivery/pickup notes (F32) — bound so the value is actually kept.
+// TODO(backend): submit alongside the order payload.
+const deliveryNotes = ref('');
+
 // Practitioner's saved addresses (source of truth = profile).
 // NOTE: useAddresses() returns a ref — script access goes through .value
 // (templates auto-unwrap it).
@@ -119,14 +123,17 @@ watch([ship, () => activePatient.value && activePatient.value.name], () => {
 function setQty(item, q) {
     item.qty = Math.max(1, q);
 }
+// U1 · explicit removal is undo-able via the store (toast offers "ביטול").
 function removeItem(item) {
-    const i = items.indexOf(item);
-    if (i !== -1) items.splice(i, 1);
+    cart.removeFromCart(item);
 }
 // The prototype removed the line AND broadcast tf:moveToPending; the store's
 // moveToPending only adds to the on-hold list, so remove the line here too.
+// (Silent splice — moveToPending shows its own toast; no undo needed since the
+// line isn't lost, just parked.)
 function hold(item) {
-    removeItem(item);
+    const i = items.indexOf(item);
+    if (i !== -1) items.splice(i, 1);
     cart.moveToPending(item);
 }
 
@@ -149,6 +156,19 @@ const pointsEarned = computed(() => (benefit.value === 'points' ? Math.round(sub
 
 const total = computed(() => subtotal.value - customerDiscount.value + shipping.value);
 const unitCount = computed(() => items.reduce((s, it) => s + it.qty, 0));
+
+// Checkout gate (F36) — the "continue to payment" action must not fire while
+// the payer/shipping selection is incomplete (e.g. ship='patient' with no
+// patient assigned, ship='me' with no address, or payer='patient' with no
+// paying patient chosen).
+const payerValid = computed(() => (payer.value === 'patient' ? !!payPatient.value : true));
+const shipValid = computed(() => {
+    if (ship.value === 'pickup') return true;
+    if (ship.value === 'me') return !!meAddrId.value;
+    if (ship.value === 'patient') return !!effectivePatientName.value;
+    return false;
+});
+const canCheckout = computed(() => items.length > 0 && payerValid.value && shipValid.value);
 
 // Self-pickup collection point at the pharmacy (איסוף עצמי).
 const TF_PICKUP_LOCATION = {
@@ -383,8 +403,12 @@ const TF_PICKUP_LOCATION = {
                             @view="poaOpen = true"
                         />
 
-                        <FieldGroupLabel>{{ ship === 'pickup' ? 'הערות לאיסוף:' : 'הערות למשלוח:' }}</FieldGroupLabel>
+                        <FieldGroupLabel id="cart-delivery-notes-label">{{ ship === 'pickup' ? 'הערות לאיסוף:' : 'הערות למשלוח:' }}</FieldGroupLabel>
                         <textarea
+                            id="cart-delivery-notes"
+                            v-model="deliveryNotes"
+                            aria-labelledby="cart-delivery-notes-label"
+                            maxlength="300"
                             placeholder="הערות (לא חובה)"
                             rows="3"
                             :style="{
@@ -442,8 +466,13 @@ const TF_PICKUP_LOCATION = {
                              benefit) to checkout; the success popup keys off the response. -->
                         <button
                             class="btn btn--accent"
-                            style="width: 100%; height: 48px; font-size: 16px; font-weight: 600; margin-top: 16px"
-                            @click="placed = true"
+                            :disabled="!canCheckout"
+                            :style="{
+                                width: '100%', height: '48px', fontSize: '16px', fontWeight: 600, marginTop: '16px',
+                                opacity: canCheckout ? 1 : 0.5,
+                                cursor: canCheckout ? 'pointer' : 'not-allowed',
+                            }"
+                            @click="canCheckout && (placed = true)"
                         >
                             <Icon :name="payer === 'patient' ? 'whatsapp' : 'check'" :size="18" color="#fff" />
                             {{ payer === 'patient' ? 'שלח לתשלום למטופל/ת' : 'המשך לתשלום' }}
@@ -456,7 +485,9 @@ const TF_PICKUP_LOCATION = {
                 </div>
             </div>
 
-            <!-- Order-placed success popup -->
+            <!-- Order-placed success popup. U3: the backdrop is NOT a navigate
+                 target — an accidental scrim tap must not whisk the user away
+                 from the confirmation. They use the explicit action inside. -->
             <div
                 v-if="placed"
                 :style="{
@@ -465,10 +496,12 @@ const TF_PICKUP_LOCATION = {
                     alignItems: 'center', justifyContent: 'center',
                     padding: '24px 20px', overflowY: 'auto',
                 }"
-                @click="goToOrder"
             >
                 <div
                     dir="rtl"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="ההזמנה נשלחה"
                     :style="{
                         width: '100%', maxWidth: '440px', background: 'var(--surface)',
                         borderRadius: 'var(--r-card)', overflow: 'hidden',

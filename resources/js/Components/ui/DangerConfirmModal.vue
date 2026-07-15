@@ -2,7 +2,7 @@
 // Destructive-action confirmation dialog (red icon + cancel / confirm pair).
 // Shared chrome for the mode-switch and formula-type-switch confirmations —
 // pass the message as the default slot.
-import { onBeforeUnmount, onMounted } from 'vue';
+import { useModal } from '@/composables/useModal';
 
 defineProps({
     title: { type: String, required: true },
@@ -11,12 +11,7 @@ defineProps({
 
 const emit = defineEmits(['confirm', 'cancel']);
 
-function onKeydown(e) {
-    if (e.key === 'Escape') emit('cancel');
-}
-
-onMounted(() => window.addEventListener('keydown', onKeydown));
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+const { dialogRef } = useModal(() => emit('cancel'));
 </script>
 
 <template>
@@ -35,6 +30,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             @click="emit('cancel')"
         >
             <div
+                ref="dialogRef"
+                role="dialog"
+                aria-modal="true"
+                tabindex="-1"
+                aria-labelledby="tf-danger-title"
                 :style="{
                     background: 'var(--surface)',
                     borderRadius: 'var(--r-card)',
@@ -62,7 +62,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                             <path d="M12 10v5M12 18v.5" />
                         </svg>
                     </span>
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.005em">
+                    <h3 id="tf-danger-title" style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.005em">
                         {{ title }}
                     </h3>
                 </div>

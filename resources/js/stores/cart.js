@@ -67,6 +67,30 @@ function moveToPending(item) {
     });
 }
 
+// U1 · Undo-able removal. Removing a cart line is destructive with no confirm;
+// instead we remove immediately and offer "ביטול" in the toast for a few
+// seconds. Restores to the original position if undone.
+let lastRemoved = null; // { item, index }
+function removeFromCart(item) {
+    const i = state.items.indexOf(item);
+    if (i === -1) return;
+    lastRemoved = { item, index: i };
+    state.items.splice(i, 1);
+    showToast({
+        title: 'הפריט הוסר מהסל',
+        name: item.name,
+        actionLabel: 'ביטול',
+        action: 'undo',
+    });
+}
+function undoRemove() {
+    if (!lastRemoved) return;
+    const { item, index } = lastRemoved;
+    state.items.splice(Math.min(index, state.items.length), 0, item);
+    lastRemoved = null;
+    dismissToast();
+}
+
 function dismissToast() {
     clearTimeout(toastTimer);
     state.toast = null;
@@ -77,5 +101,5 @@ function dismissToast() {
  * list view (Cart, Pending) edit lines in place, mirroring the prototype.
  */
 export function useCartStore() {
-    return { state, addToCart, moveToPending, showToast, dismissToast };
+    return { state, addToCart, moveToPending, removeFromCart, undoRemove, showToast, dismissToast };
 }

@@ -25,7 +25,7 @@ const fill = computed(() => Math.max(0, Math.min(100, sumPct.value)));
 // Per-layer style: share within the liquid + a glassy horizontal gradient.
 function layerStyle(seg) {
     const within = sumPct.value > 0 ? (seg.pct / sumPct.value) * 100 : 0;
-    const c = seg.overflowed ? '#c93838' : seg.color;
+    const c = seg.overflowed ? 'var(--danger)' : seg.color;
     return {
         position: 'relative',
         flex: `0 0 ${within}%`,
@@ -37,7 +37,7 @@ function layerStyle(seg) {
 
 // The wavy crest sitting on top of each layer.
 function crestStyle(seg, i) {
-    const c = seg.overflowed ? '#c93838' : seg.color;
+    const c = seg.overflowed ? 'var(--danger)' : seg.color;
     const isTop = i === props.segments.length - 1;
     return {
         position: 'absolute',
@@ -74,9 +74,9 @@ function crestStyle(seg, i) {
                 <div style="position: absolute; top: 0; width: 55%; height: 100%; z-index: 2; pointer-events: none; background: linear-gradient(115deg,transparent 0%,rgba(255,255,255,.42) 50%,transparent 100%); transform: skewX(-14deg); animation: tfBottleShimmer 5.5s ease-in-out infinite" />
             </div>
             <!-- fill caption -->
-            <div :style="{ marginTop: '10px', fontSize: '12px', fontWeight: 600, color: isOver ? '#c93838' : 'var(--ink-3)', display: 'flex', alignItems: 'baseline', gap: '6px' }">
+            <div :style="{ marginTop: '10px', fontSize: '12px', fontWeight: 600, color: isOver ? 'var(--danger)' : 'var(--ink-3)', display: 'flex', alignItems: 'baseline', gap: '6px' }">
                 <span v-if="isDone" style="display: inline-flex"><Icon name="check" :size="12" color="var(--accent)" :stroke="3" /></span>
-                <span class="num" :style="{ fontSize: '15px', fontWeight: 700, color: isOver ? '#c93838' : isDone ? 'var(--accent)' : 'var(--ink)' }">{{ fmtPct(totalPct) }}%</span>
+                <span class="num" :style="{ fontSize: '15px', fontWeight: 700, color: isOver ? 'var(--danger)' : isDone ? 'var(--accent)' : 'var(--ink)' }">{{ fmtPct(totalPct) }}%</span>
                 {{ isDone ? 'הפורמולה מלאה' : isOver ? 'מעל 100%' : 'מתוך 100%' }}
             </div>
         </div>

@@ -84,6 +84,7 @@ const emit = defineEmits(['update:checked']);
             </div>
             <label
                 v-if="confirmable"
+                class="meds-ack"
                 :style="{
                     display: 'flex',
                     alignItems: 'center',
@@ -93,9 +94,20 @@ const emit = defineEmits(['update:checked']);
                     borderTop: '1px solid #e7d4ad',
                     cursor: 'pointer',
                 }"
-                @click.prevent="emit('update:checked', !checked)"
             >
+                <!-- Real, keyboard-operable native checkbox (visually hidden;
+                     Space toggles it natively). The styled box below is the
+                     visual indicator only. -->
+                <input
+                    type="checkbox"
+                    class="meds-ack__input"
+                    :checked="checked"
+                    aria-required="true"
+                    @change="emit('update:checked', $event.target.checked)"
+                />
                 <span
+                    class="meds-ack__box"
+                    aria-hidden="true"
                     :style="{
                         width: '22px', height: '22px',
                         borderRadius: '6px',
@@ -120,3 +132,23 @@ const emit = defineEmits(['update:checked']);
         </div>
     </div>
 </template>
+
+<style scoped>
+/* Native checkbox: focusable and operable, but visually replaced by the
+   styled .meds-ack__box. Keep it in the layout (not display:none) so it stays
+   keyboard-reachable. */
+.meds-ack__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+/* Visible focus indicator on the styled box when the hidden input is focused. */
+.meds-ack__input:focus-visible + .meds-ack__box {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+</style>

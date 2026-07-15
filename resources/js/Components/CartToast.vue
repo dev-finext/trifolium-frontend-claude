@@ -8,13 +8,23 @@ import { visit } from '@/lib/routes';
 const cart = useCartStore();
 
 function view() {
-    const target = cart.state.toast?.target || 'cart';
+    const toast = cart.state.toast;
+    // Undo toast (item removed): the action restores the line instead of navigating.
+    if (toast?.action === 'undo') {
+        cart.undoRemove();
+        return;
+    }
+    const target = toast?.target || 'cart';
     cart.dismissToast();
     visit(target);
 }
 </script>
 
 <template>
+    <!-- A5 · Persistent polite live region so the toast text is announced to
+         screen readers when it appears (a live region must exist before its
+         content changes). The visible toast lives inside it. -->
+    <div role="status" aria-live="polite" aria-atomic="true">
     <div
         v-if="cart.state.toast"
         :style="{
@@ -62,5 +72,6 @@ function view() {
             }"
             @click="cart.dismissToast()"
         ><Icon name="x" :size="15" color="rgba(255,255,255,0.6)" /></button>
+    </div>
     </div>
 </template>

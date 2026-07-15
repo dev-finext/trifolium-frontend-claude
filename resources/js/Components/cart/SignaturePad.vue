@@ -1,7 +1,7 @@
 <script setup>
 // Freehand signature canvas for the courier power-of-attorney form.
 // Emits `ink-change` (bool) when the pad transitions between empty and inked.
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 
 const emit = defineEmits(['ink-change']);
@@ -12,17 +12,62 @@ let ctx = null;
 let drawing = false;
 let last = { x: 0, y: 0 };
 let inked = false;
+let ro = null;
 
-onMounted(() => {
+// (Re)size the canvas backing store to match its CSS box at the current DPR.
+// (F35) Sizing only in onMounted meant an orientation change or a late layout
+// shift left the backing store the wrong size and distorted the stroke. This
+// re-fits on demand and repaints any existing signature scaled to the new box.
+function fitCanvas() {
     const c = canvasRef.value;
+    if (!c) return;
     const rect = c.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
     const dpr = window.devicePixelRatio || 1;
-    c.width = Math.round(rect.width * dpr);
-    c.height = Math.round(rect.height * dpr);
+    const w = Math.round(rect.width * dpr);
+    const h = Math.round(rect.height * dpr);
+    // Nothing changed — avoid a needless clear (setting width/height wipes the canvas).
+    if (ctx && c.width === w && c.height === h) return;
+
+    // Snapshot the current drawing so a resize does not erase the signature.
+    let snapshot = null;
+    if (ctx && inked && c.width > 0 && c.height > 0) {
+        try { snapshot = c.toDataURL(); } catch (e) { snapshot = null; }
+    }
+
+    c.width = w;
+    c.height = h;
     ctx = c.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.strokeStyle = '#1f2e1d';
+
+    if (snapshot) {
+        const img = new Image();
+        img.onload = () => { if (ctx) ctx.drawImage(img, 0, 0, rect.width, rect.height); };
+        img.src = snapshot;
+    }
+}
+
+const onOrientation = () => fitCanvas();
+
+onMounted(() => {
+    fitCanvas();
+    // ResizeObserver catches both viewport resizes and late layout shifts;
+    // orientationchange is kept as an explicit fallback for older WebViews.
+    if (typeof ResizeObserver !== 'undefined' && canvasRef.value) {
+        ro = new ResizeObserver(() => fitCanvas());
+        ro.observe(canvasRef.value);
+    } else {
+        window.addEventListener('resize', onOrientation);
+    }
+    window.addEventListener('orientationchange', onOrientation);
+});
+
+onBeforeUnmount(() => {
+    if (ro) { ro.disconnect(); ro = null; }
+    window.removeEventListener('resize', onOrientation);
+    window.removeEventListener('orientationchange', onOrientation);
 });
 
 function pos(e) {
@@ -64,6 +109,8 @@ function clear() {
         </button>
         <canvas
             ref="canvasRef"
+            role="img"
+            aria-label="אזור חתימה — חתמו כאן באמצעות העכבר או האצבע"
             :style="{
                 width: '100%', height: '230px', display: 'block',
                 border: '1px solid var(--line)', borderRadius: 'var(--r-card)',

@@ -140,9 +140,12 @@ function onSelect(v) {
                         v-model="otherDraft"
                         :placeholder="stepOther > 1 ? `${minOther}, ${minOther + stepOther}…` : `${minOther}+`"
                         class="num no-spin"
+                        aria-label="נפח אחר"
+                        :aria-invalid="otherInvalid"
+                        :aria-describedby="otherInvalid ? 'vol-other-error' : undefined"
                         :style="{
                             width: '96px', height: '32px', borderRadius: 'var(--r-control)',
-                            border: '1px solid ' + (otherInvalid ? '#c93838' : 'var(--line-strong)'),
+                            border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
                             padding: '0 38px 0 10px', background: '#fff', fontSize: '13px', textAlign: 'center', outline: 'none',
                         }"
                     />
@@ -181,7 +184,7 @@ function onSelect(v) {
                             class="num no-spin"
                             :style="{
                                 width: '96px', height: '32px', borderRadius: 'var(--r-control)',
-                                border: '1px solid ' + (otherInvalid ? '#c93838' : 'var(--line-strong)'),
+                                border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
                                 padding: '0 38px 0 10px', background: '#fff', fontSize: '13px', textAlign: 'center', outline: 'none',
                             }"
                         />
@@ -209,7 +212,7 @@ function onSelect(v) {
             נא לבחור נפח פורמולה
         </div>
 
-        <div v-if="otherInvalid" style="font-size: 12px; color: #c93838; margin-top: 6px">
+        <div v-if="otherInvalid" id="vol-other-error" role="alert" style="font-size: 12px; color: var(--danger); margin-top: 6px">
             <template v-if="otherBadStep">הערך חייב להיות בכפולות של <span class="num">{{ stepOther }}</span> {{ rules.unit }}</template>
             <template v-else>כמות מינימלית היא <span class="num">{{ minOther }}</span> {{ rules.unit }}</template>
         </div>

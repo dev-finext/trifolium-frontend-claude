@@ -1,7 +1,7 @@
 <script setup>
 // A1 כניסה — login screen: split card with the form on the start side and the
 // brand panel on the accent side, over the soft auth backdrop.
-import { ref } from 'vue';
+import { nextTick, ref, useId } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Icon from '@/Components/ui/Icon.vue';
 import AuthBg from '@/Components/auth/AuthBg.vue';
@@ -10,11 +10,20 @@ import AuthInput from '@/Components/auth/AuthInput.vue';
 import ErrMsg from '@/Components/auth/ErrMsg.vue';
 import { visit } from '@/lib/routes';
 
-// Prototype demo credentials pre-filled; the backend will drop these defaults.
-const username = ref('10038617');
-const password = ref('1234');
+// F1 — start empty; no credentials are shipped in the bundle.
+const username = ref('');
+const password = ref('');
 const show = ref(false);
 const err = ref({});
+
+// Field refs for F2 (move focus to the first invalid field on failed submit).
+const usernameField = ref(null);
+const passwordEl = ref(null);
+
+// X1/X2 — id to wire the inline password label/input/error.
+const pwUid = useId();
+const pwId = `${pwUid}-input`;
+const pwErrId = `${pwUid}-error`;
 
 // TODO(backend): replace with Inertia useForm().post('/login'); on success the
 // server redirects home and errors come back as validation props.
@@ -24,7 +33,12 @@ function submit() {
     else if (!/^\d+$/.test(username.value.trim())) next.username = 'שם המשתמש מורכב מספרות בלבד';
     if (!password.value) next.password = 'נא להזין סיסמה';
     err.value = next;
-    if (Object.keys(next).length === 0) visit('home');
+    if (Object.keys(next).length === 0) { visit('home'); return; }
+    // F2 — focus the first invalid field so the user lands on the problem.
+    nextTick(() => {
+        if (next.username) usernameField.value?.focus();
+        else if (next.password) passwordEl.value?.focus();
+    });
 }
 </script>
 
@@ -47,7 +61,7 @@ function submit() {
             }"
         >
             <!-- Form side -->
-            <form style="padding: 46px 48px 44px" @submit.prevent="submit">
+            <form novalidate style="padding: 46px 48px 44px" @submit.prevent="submit">
                 <h1 :style="{ margin: 0, fontSize: '23px', fontWeight: 600, letterSpacing: '-0.01em', lineHeight: 1.3 }">
                     מערכת רוקחית – בית מרקחת טריפוליום
                 </h1>
@@ -57,18 +71,25 @@ function submit() {
 
                 <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
                     <AuthInput
+                        ref="usernameField"
                         v-model="username"
                         label="שם משתמש" icon="user" numeric placeholder="מספר לקוח"
-                        input-mode="numeric" auto-complete="username" :error="err.username || ''"
+                        input-mode="numeric" auto-complete="username" enterkeyhint="next"
+                        :error="err.username || ''"
                     />
                     <div>
-                        <label class="field-label">סיסמה</label>
+                        <label class="field-label" :for="pwId">סיסמה</label>
                         <div class="input-wrap">
                             <span class="lead-icon"><Icon name="lock" :size="16" /></span>
                             <input
+                                :id="pwId"
+                                ref="passwordEl"
                                 v-model="password"
                                 class="input with-icon" :type="show ? 'text' : 'password'"
                                 placeholder="הסיסמה שלכם" autocomplete="current-password"
+                                enterkeyhint="go"
+                                :aria-invalid="err.password ? 'true' : undefined"
+                                :aria-describedby="err.password ? pwErrId : undefined"
                                 :style="{ paddingLeft: '40px', ...(err.password ? { borderColor: 'var(--danger)' } : {}) }"
                             />
                             <button
@@ -82,7 +103,7 @@ function submit() {
                                 @click="show = !show"
                             ><Icon :name="show ? 'eye_off' : 'eye'" :size="17" /></button>
                         </div>
-                        <ErrMsg v-if="err.password">{{ err.password }}</ErrMsg>
+                        <ErrMsg v-if="err.password" :id="pwErrId" role="alert">{{ err.password }}</ErrMsg>
                     </div>
 
                     <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 6px">

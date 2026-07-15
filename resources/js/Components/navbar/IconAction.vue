@@ -29,6 +29,8 @@ const hover = ref(false);
             @click="$emit('click')"
             @mouseenter="hover = true"
             @mouseleave="hover = false"
+            @focus="hover = true"
+            @blur="hover = false"
         >
             <Icon :name="icon" :size="19" :color="active ? 'var(--accent)' : 'var(--ink-2)'" :stroke="1.6" />
             <span

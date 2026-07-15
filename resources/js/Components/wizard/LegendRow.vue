@@ -18,7 +18,7 @@ defineProps({
             :style="{
                 width: '10px', height: '10px',
                 borderRadius: '3px',
-                background: seg.overflowed ? '#c93838' : seg.color,
+                background: seg.overflowed ? 'var(--danger)' : seg.color,
                 flexShrink: 0,
             }"
         />
@@ -32,7 +32,7 @@ defineProps({
                     display: 'block',
                     height: '100%',
                     width: `${Math.min(100, seg.pct)}%`,
-                    background: seg.overflowed ? '#c93838' : seg.color,
+                    background: seg.overflowed ? 'var(--danger)' : seg.color,
                     borderRadius: '999px',
                     transition: 'width .4s ease',
                 }"

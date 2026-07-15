@@ -1,11 +1,12 @@
 <script setup>
 // צור קשר — Contact page. Two-column: contact form (start) + contact details (end).
-import { ref } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Icon from '@/Components/ui/Icon.vue';
 import ContactField from '@/Components/contact/ContactField.vue';
 import InfoRow from '@/Components/contact/InfoRow.vue';
 import SocialGlyph from '@/Components/contact/SocialGlyph.vue';
+import { isEmail, isPhone } from '@/Components/auth/validators';
 
 const CONTACT_INFO = {
     company: 'טריפוליום בע"מ',
@@ -22,14 +23,49 @@ const SOCIALS = [
     { id: 'youtube', label: 'יוטיוב' },
 ];
 
-const form = ref({ name: '', business: '', email: '', phone: '', message: '' });
-const sent = ref(false);
+const MESSAGE_MAX = 1000;
 
-// TODO(backend): replace with Inertia's useForm().post('/contact') once the
-// Laravel endpoint exists; `sent` then keys off the server response.
+const form = ref({ name: '', business: '', email: '', phone: '', message: '' });
+const errors = reactive({ name: '', email: '', phone: '', message: '' });
+const sent = ref(false);
+const sending = ref(false);
+
+// Validate; returns true when the form may be submitted. Requires a name, a
+// message, and at least one contact channel; validates each channel's format.
+function validate() {
+    errors.name = form.value.name.trim() ? '' : 'יש להזין שם מלא';
+    errors.email = '';
+    errors.phone = '';
+
+    const hasEmail = form.value.email.trim();
+    const hasPhone = form.value.phone.trim();
+    if (!hasEmail && !hasPhone) {
+        errors.email = 'יש להזין דואר אלקטרוני או טלפון';
+        errors.phone = 'יש להזין דואר אלקטרוני או טלפון';
+    } else {
+        if (hasEmail && !isEmail(form.value.email)) errors.email = 'כתובת הדוא"ל אינה תקינה';
+        if (hasPhone && !isPhone(form.value.phone)) errors.phone = 'מספר הטלפון אינו תקין';
+    }
+
+    errors.message = form.value.message.trim() ? '' : 'יש להזין הודעה';
+
+    return !errors.name && !errors.email && !errors.phone && !errors.message;
+}
+
+// TODO(backend): replace the setTimeout with Inertia's useForm().post('/contact')
+// once the Laravel endpoint exists; `sent` then keys off the server response.
 function submit() {
-    sent.value = true;
-    setTimeout(() => { sent.value = false; }, 3200);
+    if (sending.value) return; // guard double-submit
+    if (!validate()) {
+        nextTick(() => { document.querySelector('.card [aria-invalid="true"]')?.focus(); });
+        return;
+    }
+    sending.value = true;
+    setTimeout(() => {
+        sending.value = false;
+        sent.value = true;
+        setTimeout(() => { sent.value = false; }, 3200);
+    }, 3200);
 }
 </script>
 
@@ -60,7 +96,7 @@ function submit() {
                 }"
             >
                 <!-- Form card (start side) -->
-                <form class="card" style="padding: 28px 32px 32px" @submit.prevent="submit">
+                <form novalidate class="card" style="padding: 28px 32px 32px" @submit.prevent="submit">
                     <h2 style="margin: 0 0 4px; font-size: 19px; font-weight: 600; color: var(--ink)">
                         טופס יצירת קשר
                     </h2>
@@ -69,18 +105,57 @@ function submit() {
                     </p>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px">
-                        <ContactField v-model="form.name" label="שם מלא" />
-                        <ContactField v-model="form.business" label="שם העסק" />
-                        <ContactField v-model="form.email" label="דואר אלקטרוני" type="email" />
-                        <ContactField v-model="form.phone" label="טלפון" type="tel" />
+                        <ContactField
+                            id="contact-name"
+                            v-model="form.name"
+                            label="שם מלא"
+                            required
+                            autocomplete="name"
+                            enterkeyhint="next"
+                            :error="errors.name"
+                        />
+                        <ContactField
+                            id="contact-business"
+                            v-model="form.business"
+                            label="שם העסק"
+                            autocomplete="organization"
+                            enterkeyhint="next"
+                        />
+                        <ContactField
+                            id="contact-email"
+                            v-model="form.email"
+                            label="דואר אלקטרוני"
+                            type="email"
+                            autocomplete="email"
+                            enterkeyhint="next"
+                            :error="errors.email"
+                        />
+                        <ContactField
+                            id="contact-phone"
+                            v-model="form.phone"
+                            label="טלפון"
+                            type="tel"
+                            autocomplete="tel"
+                            enterkeyhint="next"
+                            :error="errors.phone"
+                        />
                         <div style="grid-column: 1 / -1">
-                            <ContactField v-model="form.message" label="הודעה" textarea />
+                            <ContactField
+                                id="contact-message"
+                                v-model="form.message"
+                                label="הודעה"
+                                textarea
+                                required
+                                enterkeyhint="send"
+                                :maxlength="MESSAGE_MAX"
+                                :error="errors.message"
+                            />
                         </div>
                     </div>
 
                     <div style="margin-top: 26px; display: flex; align-items: center; gap: 16px">
-                        <button type="submit" class="btn btn--primary" style="min-width: 96px">
-                            שלחי
+                        <button type="submit" class="btn btn--primary" style="min-width: 96px" :disabled="sending">
+                            {{ sending ? 'שולח…' : 'שלחי' }}
                         </button>
                         <span
                             v-if="sent"

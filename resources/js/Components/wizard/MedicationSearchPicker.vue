@@ -2,7 +2,7 @@
 // Medication search & picker — searchable dropdown + removable tags.
 // Suggests from a common-medications list; free-text entries can be added
 // manually ("הוסף ידנית") when no exact match exists.
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 
 const COMMON_MEDS = [
@@ -53,30 +53,63 @@ function onDocMouseDown(e) {
 onMounted(() => document.addEventListener('mousedown', onDocMouseDown));
 onBeforeUnmount(() => document.removeEventListener('mousedown', onDocMouseDown));
 
+// Case-insensitive membership test (dedupe against already-selected meds).
+const hasMed = (arr, m) => arr.some((x) => x.toLowerCase() === m.toLowerCase());
+
 const q = computed(() => query.value.trim());
-const matches = computed(() => (
-    q.value
-        ? COMMON_MEDS.filter((m) => m.includes(q.value) && !props.modelValue.includes(m)).slice(0, 8)
-        : COMMON_MEDS.filter((m) => !props.modelValue.includes(m)).slice(0, 8)
+// Match case-insensitively (lowercase both sides) and hide already-selected meds.
+const matches = computed(() => {
+    const ql = q.value.toLowerCase();
+    return COMMON_MEDS
+        .filter((m) => (!ql || m.toLowerCase().includes(ql)) && !hasMed(props.modelValue, m))
+        .slice(0, 8);
+});
+const exactExists = computed(() => !!q.value && COMMON_MEDS.some((m) => m.toLowerCase() === q.value.toLowerCase()));
+const showManualOption = computed(() => !!q.value && !exactExists.value && !hasMed(props.modelValue, q.value));
+
+// Flat option list backing keyboard navigation + aria-activedescendant. The
+// manual ("הוסף ידנית") row, when shown, is the last option.
+const options = computed(() => {
+    const list = matches.value.map((m) => ({ type: 'med', value: m }));
+    if (showManualOption.value) list.push({ type: 'manual', value: q.value });
+    return list;
+});
+const activeIndex = ref(-1);
+const activeId = computed(() => (
+    activeIndex.value >= 0 && activeIndex.value < options.value.length ? `medpick-opt-${activeIndex.value}` : undefined
 ));
-const exactExists = computed(() => !!q.value && COMMON_MEDS.some((m) => m === q.value));
-const showManualOption = computed(() => !!q.value && !exactExists.value && !props.modelValue.includes(q.value));
+// Reset the highlighted option whenever the query or open state changes.
+watch([q, open], () => { activeIndex.value = -1; });
 
 function add(med) {
-    if (!med) return;
-    if (!props.modelValue.includes(med)) emit('update:modelValue', [...props.modelValue, med]);
+    const name = (med || '').trim();
+    if (!name) return;
+    if (!hasMed(props.modelValue, name)) emit('update:modelValue', [...props.modelValue, name]);
     query.value = '';
     open.value = false;
+    activeIndex.value = -1;
 }
 
 function remove(med) {
     emit('update:modelValue', props.modelValue.filter((m) => m !== med));
 }
 
-function onEnter(e) {
-    e.preventDefault();
-    if (matches.value[0]) add(matches.value[0]);
-    else if (showManualOption.value) add(q.value);
+function onKeydown(e) {
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!open.value) { open.value = true; return; }
+        if (options.value.length) activeIndex.value = (activeIndex.value + 1) % options.value.length;
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (options.value.length) activeIndex.value = (activeIndex.value - 1 + options.value.length) % options.value.length;
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const opt = activeIndex.value >= 0 ? options.value[activeIndex.value] : options.value[0];
+        if (opt) add(opt.value);
+    } else if (e.key === 'Escape') {
+        open.value = false;
+        activeIndex.value = -1;
+    }
 }
 </script>
 
@@ -87,31 +120,48 @@ function onEnter(e) {
             <span class="lead-icon"><Icon name="search" :size="14" /></span>
             <input
                 class="input with-icon"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls="medpick-listbox"
+                :aria-expanded="open && (matches.length > 0 || showManualOption)"
+                :aria-activedescendant="activeId"
                 :value="query"
                 placeholder="חפש תרופה..."
                 @input="query = $event.target.value; open = true"
                 @focus="open = true"
-                @keydown.enter="onEnter"
+                @keydown="onKeydown"
             />
         </div>
 
         <!-- Dropdown -->
         <div
             v-if="open && (matches.length > 0 || showManualOption)"
+            id="medpick-listbox"
+            role="listbox"
             style="position: absolute; top: calc(100% + 4px); inset-inline-start: 0; inset-inline-end: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-control); box-shadow: 0 12px 28px -16px rgba(20,18,14,0.28); z-index: 20; max-height: 280px; overflow: auto; padding: 4px"
         >
             <div
-                v-for="m in matches"
+                v-for="(m, i) in matches"
                 :key="m"
+                :id="`medpick-opt-${i}`"
+                role="option"
+                :aria-selected="activeIndex === i"
                 class="tf-medpick-option"
+                :class="{ 'is-active': activeIndex === i }"
                 style="padding: 9px 12px; border-radius: 6px; font-size: 13.5px; color: var(--ink); cursor: pointer; display: flex; align-items: center; gap: 8px"
                 @click="add(m)"
+                @mousemove="activeIndex = i"
             >
                 <span>{{ m }}</span>
             </div>
             <div
                 v-if="showManualOption"
+                :id="`medpick-opt-${matches.length}`"
+                role="option"
+                :aria-selected="activeIndex === matches.length"
                 class="tf-medpick-manual"
+                :class="{ 'is-active': activeIndex === matches.length }"
+                @mousemove="activeIndex = matches.length"
                 :style="{
                     padding: '9px 12px',
                     borderRadius: '6px',
@@ -157,10 +207,12 @@ function onEnter(e) {
 
 <style>
 /* Hover states ported from the prototype's onMouseEnter/Leave style swaps. */
-.tf-medpick-option:hover {
+.tf-medpick-option:hover,
+.tf-medpick-option.is-active {
     background: var(--surface-sunk);
 }
-.tf-medpick-manual:hover {
+.tf-medpick-manual:hover,
+.tf-medpick-manual.is-active {
     background: var(--accent-tint);
 }
 .tf-medpick-remove:hover {

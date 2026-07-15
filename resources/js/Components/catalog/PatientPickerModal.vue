@@ -2,12 +2,13 @@
 // Patient picker — opens after "הוסף". Pick a patient or "ללא מטופל".
 // Two modes: 'pick' (search existing patients) and 'new' (inline new-patient
 // form, identical to the formula wizard's create-patient flow).
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 import SearchInput from '@/Components/ui/SearchInput.vue';
 import PatientRow from '@/Components/catalog/PatientRow.vue';
 // The prototype resolved this from window.NewPatientForm (shared with the wizard).
 import NewPatientForm from '@/Components/wizard/NewPatientForm.vue';
+import { useModal } from '@/composables/useModal';
 
 const props = defineProps({
     product: { type: Object, required: true },
@@ -53,12 +54,7 @@ function handleCreate() {
     emit('pick', { id: 'new-' + Date.now(), heb, initials, isNew: true });
 }
 
-function onKeydown(e) {
-    if (e.key === 'Escape') emit('close');
-}
-
-onMounted(() => window.addEventListener('keydown', onKeydown));
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+const { dialogRef } = useModal(() => emit('close'));
 </script>
 
 <template>
@@ -75,6 +71,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             @click="emit('close')"
         >
             <div
+                ref="dialogRef"
+                role="dialog"
+                aria-modal="true"
+                tabindex="-1"
+                aria-labelledby="tf-picker-title"
                 :style="{
                     background: 'var(--surface)',
                     borderRadius: 'var(--r-card)',
@@ -101,7 +102,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                         <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 4px">
                             {{ mode === 'new' ? 'מטופל חדש' : 'שיוך הזמנה' }}
                         </div>
-                        <h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.005em">
+                        <h3 id="tf-picker-title" style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.005em">
                             {{ mode === 'new' ? 'פרטי המטופל' : 'לאיזה מטופל לשייך?' }}
                         </h3>
                         <p class="muted" style="margin: 4px 0 0; font-size: 13px">

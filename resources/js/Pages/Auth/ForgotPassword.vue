@@ -1,6 +1,6 @@
 <script setup>
 // A4 שכחתי סיסמה — request a password-reset link by email.
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Icon from '@/Components/ui/Icon.vue';
 import AuthInput from '@/Components/auth/AuthInput.vue';
@@ -11,12 +11,19 @@ import { visit } from '@/lib/routes';
 
 const email = ref('');
 const err = ref('');
+const emailField = ref(null);
+
+// F10 — surface the error and move focus back to the email field.
+function fail(message) {
+    err.value = message;
+    nextTick(() => emailField.value?.focus());
+}
 
 // TODO(backend): POST /forgot-password; the server sends the reset mail and
 // redirects to the confirmation screen with the email echoed back.
 function submit() {
-    if (!email.value.trim()) { err.value = 'נא להזין כתובת דוא״ל'; return; }
-    if (!isEmail(email.value)) { err.value = 'כתובת דוא״ל אינה תקינה'; return; }
+    if (!email.value.trim()) { fail('נא להזין כתובת דוא״ל'); return; }
+    if (!isEmail(email.value)) { fail('כתובת דוא״ל אינה תקינה'); return; }
     err.value = '';
     // For security we never reveal whether the account exists — always advance
     // to the same confirmation screen.
@@ -30,7 +37,7 @@ function onInput(v) { email.value = v; err.value = ''; }
     <Head title="שחזור סיסמה" />
     <!-- data-screen-label falls through to AuthSplitCard's root element -->
     <AuthSplitCard data-screen-label="A4 שכחתי סיסמה">
-        <form @submit.prevent="submit">
+        <form novalidate @submit.prevent="submit">
             <span
                 :style="{
                     width: '46px', height: '46px', borderRadius: '50%',
@@ -47,9 +54,10 @@ function onInput(v) { email.value = v; err.value = ''; }
 
             <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
                 <AuthInput
+                    ref="emailField"
                     label="כתובת דוא״ל" icon="mail" type="email"
                     :model-value="email" placeholder="name@example.com"
-                    auto-complete="email" :error="err"
+                    auto-complete="email" enterkeyhint="go" :error="err"
                     @update:model-value="onInput"
                 />
                 <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 6px">

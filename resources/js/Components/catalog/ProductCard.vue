@@ -1,7 +1,6 @@
 <script setup>
 // Product tile — photo with optional tag pill, name/description/volume, and a
 // price row with the add-to-cart button ("בסל" badge once added).
-import { ref } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
 // TODO(assets): the design prototype hotlinked a real product photo (external
 // news-site image, overridable via window.__resources.productImg). Replace
@@ -16,44 +15,26 @@ defineProps({
 });
 
 const emit = defineEmits(['add']);
-
-const hover = ref(false);
+// A8: the card is not itself a link/action (adding happens via the button),
+// so hover/focus lift is CSS-driven (:hover + :focus-within) — keyboard focus
+// on the inner button lifts the card too — and there is no misleading pointer.
 </script>
 
 <template>
-    <div
-        class="card"
-        :style="{
-            display: 'flex',
-            flexDirection: 'column',
-            cursor: 'pointer',
-            borderColor: hover ? 'var(--ink-2)' : 'var(--line)',
-            transform: hover ? 'translateY(-3px)' : 'none',
-            boxShadow: hover ? '0 8px 24px -8px rgba(31, 46, 29, 0.18)' : 'none',
-            transition: 'transform .25s ease, box-shadow .25s ease, border-color .15s ease',
-        }"
-        @mouseenter="hover = true"
-        @mouseleave="hover = false"
-    >
-        <div style="height: 180px; position: relative; border-bottom: 1px solid var(--line); overflow: hidden; background: var(--surface-sunk)">
+    <div class="card product-card">
+        <div class="product-card__media" style="height: 180px; position: relative; border-bottom: 1px solid var(--line); overflow: hidden; background: var(--surface-sunk)">
             <img
                 :src="PRODUCT_IMG_URL"
                 :alt="product.heb"
                 loading="lazy"
-                :style="{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transition: 'transform .5s ease',
-                    transform: hover ? 'scale(1.04)' : 'scale(1)',
-                }"
+                class="product-card__img"
+                style="width: 100%; height: 100%; object-fit: cover; display: block"
             />
             <span
                 v-if="product.tag"
                 :style="{
-                    position: 'absolute', top: '12px', right: '12px',
-                    background: '#fff',
+                    position: 'absolute', top: '12px', insetInlineEnd: '12px',
+                    background: 'var(--surface)',
                     border: '1px solid var(--line)',
                     padding: '3px 10px',
                     borderRadius: '999px',
@@ -74,7 +55,11 @@ const hover = ref(false);
                     <span class="num" style="font-size: 20px; font-weight: 600">{{ product.price }}</span>
                     <span style="font-size: 13px; color: var(--ink-3); margin-right: 2px"> ₪</span>
                 </div>
-                <button class="btn btn--ghost btn--sm" @click.stop="emit('add')">
+                <button
+                    class="btn btn--ghost btn--sm"
+                    :aria-label="inCart > 0 ? `${product.heb} — ${inCart} בסל, הוסף עוד` : `הוסף ${product.heb} לסל`"
+                    @click.stop="emit('add')"
+                >
                     <template v-if="inCart > 0">
                         <span class="num">{{ inCart }}</span> בסל
                     </template>
@@ -86,3 +71,23 @@ const hover = ref(false);
         </div>
     </div>
 </template>
+
+<style>
+.product-card {
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .15s ease;
+}
+.product-card:hover,
+.product-card:focus-within {
+    border-color: var(--ink-2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px -8px rgba(31, 46, 29, 0.18);
+}
+.product-card__img { transition: transform .5s ease; }
+.product-card:hover .product-card__img,
+.product-card:focus-within .product-card__img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) {
+    .product-card, .product-card:hover, .product-card:focus-within { transform: none; }
+}
+</style>

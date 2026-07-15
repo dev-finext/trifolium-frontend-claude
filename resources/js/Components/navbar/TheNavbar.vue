@@ -9,7 +9,7 @@ import PointsBadge from '@/Components/navbar/PointsBadge.vue';
 import UserMenu from '@/Components/navbar/UserMenu.vue';
 import MobileDrawer from '@/Components/navbar/MobileDrawer.vue';
 import { NAV_LINKS } from '@/Components/navbar/nav-links.js';
-import { visit } from '@/lib/routes';
+import { visit, routeUrl } from '@/lib/routes';
 import logoUrl from '@img/trifolium-logo.png';
 import markUrl from '@img/trifolium-mark.png';
 
@@ -52,7 +52,8 @@ function go(id) {
                     <a
                         :class="['nav__link', { 'nav__link--active': route === link.id }]"
                         style="display: inline-flex; align-items: center; gap: 7px"
-                        @click="go(link.id)"
+                        :href="routeUrl(link.id)"
+                        @click.prevent="go(link.id)"
                     >
                         <Icon :name="link.icon" :size="17" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
                         {{ link.label }}
@@ -62,7 +63,8 @@ function go(id) {
                     v-else
                     :class="['nav__link', { 'nav__link--active': route === link.id }]"
                     style="display: inline-flex; align-items: center; gap: 7px"
-                    @click="go(link.id)"
+                    :href="routeUrl(link.id)"
+                    @click.prevent="go(link.id)"
                 >
                     <Icon :name="link.icon" :size="17" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
                     {{ link.label }}
@@ -73,10 +75,12 @@ function go(id) {
         <!-- Center: official Trifolium logo (typographic fallback if it fails to load).
              .nav__center: on phones the mobile stylesheet absolutely centers this
              so uneven side clusters can't push the logo off-center. -->
-        <div
+        <a
             class="nav__center"
+            :href="routeUrl('home')"
+            aria-label="Trifolium — דף הבית"
             style="display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%"
-            @click="go('home')"
+            @click.prevent="go('home')"
         >
             <img
                 v-if="!logoFailed"
@@ -112,7 +116,7 @@ function go(id) {
                     }"
                 >Trifolium</span>
             </div>
-        </div>
+        </a>
 
         <!-- Left column: actions + user -->
         <div

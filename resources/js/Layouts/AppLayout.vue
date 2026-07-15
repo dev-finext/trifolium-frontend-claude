@@ -47,6 +47,9 @@ const screenLabel = computed(() => SCREEN_LABELS[currentRoute.value] || currentR
 
 <template>
     <div :data-screen-label="screenLabel">
+        <!-- A11 · Skip to content — first focusable element, visible on focus. -->
+        <a href="#main" class="skip-link">דלג לתוכן</a>
+
         <TheNavbar
             :route="navRoute"
             :user="USER"
@@ -54,7 +57,9 @@ const screenLabel = computed(() => SCREEN_LABELS[currentRoute.value] || currentR
             :pending-count="cart.state.pendingItems.length"
         />
 
-        <slot />
+        <main id="main">
+            <slot />
+        </main>
 
         <TheFooter />
 

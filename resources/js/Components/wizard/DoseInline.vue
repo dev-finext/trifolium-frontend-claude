@@ -23,6 +23,10 @@ watch(() => props.formula.typeId, () => {
 });
 
 const PRESETS = [1, 2, 3, 4];
+// F30 — sane upper bound for the daily quantity; values above this are almost
+// certainly a typo, so we surface a hint rather than accepting them silently.
+const MAX_QTY = 20;
+const qtyError = computed(() => dose.value.qty > MAX_QTY || dose.value.qty < 0);
 const customPerDay = ref(false);
 const isCustom = computed(() => customPerDay.value || (dose.value.perDay > 0 && !PRESETS.includes(dose.value.perDay)));
 const unitLabel = computed(() => DOSE_UNIT_LABELS[dose.value.unit] || dose.value.unit);
@@ -42,14 +46,20 @@ const singleUnit = computed(() => rules.value.units.length === 1);
 
             <!-- Daily quantity + adaptive unit -->
             <div>
-                <div class="field-label" style="margin-bottom: 6px">כמות יומית</div>
+                <div class="field-label" style="margin-bottom: 6px">
+                    <label for="dose-qty">כמות יומית</label>
+                </div>
                 <div style="display: flex; align-items: center; gap: 8px">
                     <input
+                        id="dose-qty"
                         type="number"
                         min="0"
+                        :max="MAX_QTY"
                         class="input num"
                         :value="dose.qty"
                         style="width: 72px; height: 36px; text-align: center; font-size: 15px; font-weight: 600"
+                        :aria-invalid="qtyError"
+                        :aria-describedby="qtyError ? 'dose-qty-hint' : undefined"
                         @input="setDose({ qty: +$event.target.value || 0 })"
                     />
                     <span
@@ -65,6 +75,9 @@ const singleUnit = computed(() => rules.value.units.length === 1);
                     >
                         <option v-for="u in rules.units" :key="u" :value="u">{{ DOSE_UNIT_LABELS[u] }}</option>
                     </select>
+                </div>
+                <div v-if="qtyError" id="dose-qty-hint" role="alert" class="small" style="color: var(--danger); font-weight: 600; margin-top: 6px">
+                    יש להזין כמות בין <span class="num">0</span> ל־<span class="num">{{ MAX_QTY }}</span>.
                 </div>
             </div>
 

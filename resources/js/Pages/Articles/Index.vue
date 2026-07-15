@@ -46,7 +46,7 @@ const groups = computed(() => {
     <div class="page">
         <div class="page__inner">
             <!-- Header -->
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px">
+            <div class="articles-head" style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px">
                 <span
                     :style="{
                         width: '44px', height: '44px', borderRadius: '12px',

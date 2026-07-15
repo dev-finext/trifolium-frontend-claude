@@ -8,6 +8,7 @@ defineProps({
 const emit = defineEmits(['change']);
 
 // Shared look of the two stepper buttons (disabled = sunk, grey).
+// 30px on desktop; the mobile stylesheet bumps .qty-step to 40px (M7).
 function btnStyle(disabled) {
     return {
         width: '30px', height: '30px', borderRadius: 'var(--r-control)',
@@ -22,19 +23,35 @@ function btnStyle(disabled) {
 </script>
 
 <template>
-    <div style="display: flex; align-items: center; gap: 8px">
-        <button :disabled="qty <= 1" :style="btnStyle(qty <= 1)" @click="emit('change', qty - 1)">
+    <div class="qty-stepper" style="display: flex; align-items: center; gap: 8px" role="group" aria-label="כמות">
+        <button
+            class="qty-step"
+            type="button"
+            aria-label="הפחת כמות"
+            :disabled="qty <= 1"
+            :style="btnStyle(qty <= 1)"
+            @click="emit('change', qty - 1)"
+        >
             <Icon name="minus" :size="15" :color="qty <= 1 ? 'var(--ink-4)' : '#fff'" :stroke="2.2" />
         </button>
         <span
-            class="num"
+            class="num qty-count"
+            role="status"
+            aria-live="polite"
+            :aria-label="`כמות: ${qty}`"
             :style="{
                 minWidth: '40px', textAlign: 'center', fontSize: '15px', fontWeight: 600,
                 border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
                 height: '30px', lineHeight: '28px', background: 'var(--surface)',
             }"
         >{{ qty }}</span>
-        <button :style="btnStyle(false)" @click="emit('change', qty + 1)">
+        <button
+            class="qty-step"
+            type="button"
+            aria-label="הוסף כמות"
+            :style="btnStyle(false)"
+            @click="emit('change', qty + 1)"
+        >
             <Icon name="plus" :size="15" color="#fff" :stroke="2.2" />
         </button>
     </div>

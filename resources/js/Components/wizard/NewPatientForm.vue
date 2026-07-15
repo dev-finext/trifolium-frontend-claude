@@ -4,12 +4,14 @@
 // object lives in the parent; every change emits the full next object via
 // `update:value` (the prototype's onChange(next)), so it is `v-model:value`
 // compatible.
+import { computed, ref } from 'vue';
 import Field from '@/Components/ui/Field.vue';
 import Icon from '@/Components/ui/Icon.vue';
 import MedsSafetyDeclaration from '@/Components/ui/MedsSafetyDeclaration.vue';
 import MedicationSearchPicker from '@/Components/wizard/MedicationSearchPicker.vue';
 import SegmentedControl from '@/Components/wizard/SegmentedControl.vue';
 import YesNoToggle from '@/Components/wizard/YesNoToggle.vue';
+import { isPhone } from '@/Components/auth/validators';
 
 const props = defineProps({
     /** Form state: firstName/lastName/phone/age/ageEstimated/sex/pregnant/
@@ -24,21 +26,63 @@ const emit = defineEmits(['update:value', 'continue']);
 
 const set = (k, v) => emit('update:value', { ...props.value, [k]: v });
 
+// F23 — phone format validation. Show the inline error only once the field has
+// content (don't shout at an empty field), but always block continue until valid.
+const phoneValid = computed(() => isPhone(props.value.phone || ''));
+const phoneError = computed(() => (props.value.phone || '').trim() !== '' && !phoneValid.value);
+
+// F24 — age range feedback. `age` is clamped to 0–120; surface a hint when the
+// raw input falls outside the range so the silent clamp is explained.
+const ageError = ref(false);
+
+// F22/F23 — the parent computes `canContinue` on raw truthiness (whitespace
+// passes). Gate the button and the continue emit locally on trimmed required
+// fields + a valid phone so whitespace-only / malformed phones can't proceed.
+const canProceed = computed(() => props.canContinue
+    && (props.value.firstName || '').trim() !== ''
+    && (props.value.lastName || '').trim() !== ''
+    && phoneValid.value);
+
+function tryContinue() {
+    if (canProceed.value) emit('continue');
+}
+
 // Age is clamped to 0–120 (whole years); leaving the reproductive range
 // (female 15–60) clears the pregnancy/breastfeeding answers so stale answers
 // never gate or leak into the flow.
 function onAgeInput(e) {
-    let v = e.target.value;
+    const raw = e.target.value;
+    let v = raw;
     if (v !== '') {
         const n = Math.floor(Number(v));
         if (isNaN(n)) v = '';
         else v = String(Math.max(0, Math.min(120, n)));
     }
+    // Flag out-of-range so the user understands why the value was clamped.
+    const rawNum = Number(raw);
+    ageError.value = raw !== '' && (isNaN(rawNum) || rawNum < 0 || rawNum > 120);
     const ageNum = Number(v);
     const inRepro = props.value.sex === 'female' && v !== '' && ageNum >= 15 && ageNum <= 60;
     const next = { ...props.value, age: v };
     if (!inRepro) { next.pregnant = null; next.breastfeeding = null; }
     emit('update:value', next);
+}
+
+// F24 — also clamp on blur (not only on input) and clear the range hint.
+function onAgeBlur(e) {
+    let v = e.target.value;
+    if (v !== '') {
+        const n = Math.floor(Number(v));
+        v = isNaN(n) ? '' : String(Math.max(0, Math.min(120, n)));
+    }
+    ageError.value = false;
+    if (v !== (props.value.age ?? '')) {
+        const ageNum = Number(v);
+        const inRepro = props.value.sex === 'female' && v !== '' && ageNum >= 15 && ageNum <= 60;
+        const next = { ...props.value, age: v };
+        if (!inRepro) { next.pregnant = null; next.breastfeeding = null; }
+        emit('update:value', next);
+    }
 }
 
 function onSexChange(v) {
@@ -59,10 +103,10 @@ function onMedsChange(v) {
         <!-- Names + phone — name fields first, then required phone -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
             <Field label="שם פרטי *">
-                <input class="input" :value="value.firstName" placeholder="יוסי" @input="set('firstName', $event.target.value)" />
+                <input id="np-firstName" class="input" :value="value.firstName" placeholder="יוסי" @input="set('firstName', $event.target.value)" />
             </Field>
             <Field label="שם משפחה *">
-                <input class="input" :value="value.lastName" placeholder="כהן" @input="set('lastName', $event.target.value)" />
+                <input id="np-lastName" class="input" :value="value.lastName" placeholder="כהן" @input="set('lastName', $event.target.value)" />
             </Field>
         </div>
 
@@ -70,14 +114,20 @@ function onMedsChange(v) {
             <div class="input-wrap">
                 <span class="lead-icon"><Icon name="phone" :size="14" /></span>
                 <input
+                    id="np-phone"
                     class="input with-icon num"
                     type="tel"
                     dir="ltr"
                     :value="value.phone"
                     placeholder="050-1234567"
                     style="text-align: right"
+                    :aria-invalid="phoneError"
+                    :aria-describedby="phoneError ? 'np-phone-error' : undefined"
                     @input="set('phone', $event.target.value)"
                 />
+            </div>
+            <div v-if="phoneError" id="np-phone-error" role="alert" class="small mt-8" style="color: var(--danger); font-weight: 600">
+                מספר טלפון לא תקין — יש להזין מספר בן 9–10 ספרות (לדוגמה: 050-1234567).
             </div>
         </Field>
 
@@ -86,6 +136,7 @@ function onMedsChange(v) {
             <Field label="גיל *">
                 <div style="display: flex; align-items: center; gap: 12px">
                     <input
+                        id="np-age"
                         class="input num"
                         type="number"
                         min="0"
@@ -94,7 +145,10 @@ function onMedsChange(v) {
                         :value="value.age"
                         placeholder="42"
                         style="width: 84px; text-align: center"
+                        :aria-invalid="ageError"
+                        :aria-describedby="ageError ? 'np-age-hint' : undefined"
                         @input="onAgeInput"
+                        @blur="onAgeBlur"
                     />
                     <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--ink-2); white-space: nowrap">
                         <input
@@ -105,6 +159,9 @@ function onMedsChange(v) {
                         />
                         גיל משוער
                     </label>
+                </div>
+                <div v-if="ageError" id="np-age-hint" role="alert" class="small mt-8" style="color: var(--danger); font-weight: 600">
+                    יש להזין גיל בין <span class="num">0</span> ל־<span class="num">120</span>.
                 </div>
             </Field>
 
@@ -159,13 +216,13 @@ function onMedsChange(v) {
         <!-- Submit -->
         <button
             class="btn btn--primary"
-            :disabled="!canContinue"
+            :disabled="!canProceed"
             :style="{
                 width: '100%',
-                opacity: canContinue ? 1 : 0.4,
-                cursor: canContinue ? 'pointer' : 'not-allowed',
+                opacity: canProceed ? 1 : 0.4,
+                cursor: canProceed ? 'pointer' : 'not-allowed',
             }"
-            @click="emit('continue')"
+            @click="tryContinue"
         >
             {{ submitLabel || 'שמור מטופל והמשך' }}
             <Icon name="arrow_left" :size="16" />

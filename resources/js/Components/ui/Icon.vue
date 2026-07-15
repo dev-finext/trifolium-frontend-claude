@@ -70,6 +70,13 @@ const props = defineProps({
     size: { type: Number, default: 18 },
     stroke: { type: Number, default: 1.5 },
     color: { type: String, default: 'currentColor' },
+    /**
+     * Accessible name. Icons are DECORATIVE by default (aria-hidden — most sit
+     * inside an already-labeled button/link, so announcing them is noise). Set
+     * `label` only for the rare icon that is the sole meaning of its control;
+     * it then becomes role="img" with that label. (A6)
+     */
+    label: { type: String, default: '' },
 });
 
 const markup = computed(() => PATHS[props.name] || null);
@@ -87,6 +94,10 @@ const markup = computed(() => PATHS[props.name] || null);
         stroke-linecap="round"
         stroke-linejoin="round"
         style="flex-shrink: 0"
+        :role="label ? 'img' : undefined"
+        :aria-label="label || undefined"
+        :aria-hidden="label ? undefined : 'true'"
+        focusable="false"
         v-html="markup"
     />
 </template>
