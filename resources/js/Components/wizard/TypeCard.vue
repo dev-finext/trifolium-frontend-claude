@@ -5,7 +5,7 @@
 // the card's / section's overflow never clips it).
 import { ref, computed } from 'vue';
 import Icon from '@/Components/ui/Icon.vue';
-import FormulaTypeIcon from '@/Components/wizard/FormulaTypeIcon.vue';
+import FormulaTypeArt from '@/Components/wizard/FormulaTypeArt.vue';
 import { typePig, TYPE_INFO } from '@/Components/wizard/wizard-lib';
 
 const props = defineProps({
@@ -46,7 +46,7 @@ const tipBox = computed(() => {
             position: 'relative',
             width: '100%',
             minWidth: 0,
-            height: '108px',
+            height: '116px',
             background: selected ? P.tint(id) : 'var(--surface)',
             color: selected ? P.inkDeep(id) : 'var(--ink)',
             border: '1px solid ' + (selected ? P.line(id) : (hover ? P.line(id) : 'var(--line)')),
@@ -96,12 +96,13 @@ const tipBox = computed(() => {
 
         <span
             :style="{
-                width: '46px', height: '46px', borderRadius: '13px', flexShrink: 0,
-                background: selected ? P.tintStrong(id) : P.tintMid(id),
+                width: '58px', height: '58px', borderRadius: '15px', flexShrink: 0,
+                background: selected ? '#f1f0e4' : '#f8f7ef',
+                border: '1px solid ' + (selected ? P.line(id) : 'var(--line)'),
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             }"
         >
-            <FormulaTypeIcon :id="id" :size="25" :color="P.ink(id)" />
+            <FormulaTypeArt :id="id" :size="50" />
         </span>
 
         <div style="text-align: center; line-height: 1.25; max-width: 100%">
