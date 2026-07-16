@@ -14,6 +14,8 @@ defineProps({
             <Icon name="user" :size="15" color="var(--accent)" />
             <span class="text-[16px] font-semibold">{{ name }}</span>
         </div>
-        <div v-if="phone" class="small muted num mt-[2px] text-right" dir="ltr">{{ phone }}</div>
+        <div v-if="phone" class="small muted num mt-[2px] text-right" dir="ltr">
+            {{ phone }}
+        </div>
     </div>
 </template>

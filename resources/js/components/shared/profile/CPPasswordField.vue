@@ -3,7 +3,7 @@
 import { ref, useId } from 'vue';
 import Icon from '@/components/ui/Icon.vue';
 
-const props = defineProps({
+defineProps({
     label: { type: String, default: '' },
     modelValue: { type: String, default: '' },
     error: { type: String, default: '' },
@@ -30,7 +30,9 @@ defineExpose({ focus: () => inputEl.value?.focus() });
 <template>
     <div>
         <!-- plain label (with `for`) mirrors FieldLabel's .field-label styling -->
-        <label v-if="label" class="field-label" :for="inputId">{{ label }}</label>
+        <label v-if="label" class="field-label" :for="inputId">{{
+            label
+        }}</label>
         <div class="input-wrap">
             <span class="lead-icon"><Icon name="lock" :size="16" /></span>
             <input
@@ -53,7 +55,7 @@ defineExpose({ focus: () => inputEl.value?.focus() });
             <button
                 type="button"
                 :aria-label="show ? 'הסתר סיסמה' : 'הצג סיסמה'"
-                class="absolute left-[8px] top-[50%] [transform:translateY(-50%)] inline-flex p-[4px] cursor-pointer bg-transparent border-0 text-ink-3"
+                class="absolute top-[50%] left-[8px] inline-flex [transform:translateY(-50%)] cursor-pointer border-0 bg-transparent p-[4px] text-ink-3"
                 @click="show = !show"
             >
                 <Icon :name="show ? 'eye_off' : 'eye'" :size="17" />
@@ -63,9 +65,10 @@ defineExpose({ focus: () => inputEl.value?.focus() });
             v-if="error"
             :id="errorId"
             role="alert"
-            class="flex items-center gap-[5px] mt-[6px] text-[12px] font-medium text-danger"
+            class="mt-[6px] flex items-center gap-[5px] text-[12px] font-medium text-danger"
         >
-            <Icon name="alert" :size="13" color="var(--danger)" :stroke="1.8" /> {{ error }}
+            <Icon name="alert" :size="13" color="var(--danger)" :stroke="1.8" />
+            {{ error }}
         </div>
     </div>
 </template>

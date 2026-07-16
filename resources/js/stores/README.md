@@ -20,10 +20,12 @@ If Pinia is added, one store per file:
 import { defineStore } from 'pinia';
 
 export const useSidebarStore = defineStore('sidebar', {
-  state: () => ({ open: false }),
-  actions: {
-    toggle() { this.open = !this.open; },
-  },
+    state: () => ({ open: false }),
+    actions: {
+        toggle() {
+            this.open = !this.open;
+        },
+    },
 });
 ```
 
@@ -33,8 +35,10 @@ Otherwise a lightweight `reactive()` singleton works too:
 import { reactive } from 'vue';
 
 export const sidebarStore = reactive({
-  open: false,
-  toggle() { this.open = !this.open; },
+    open: false,
+    toggle() {
+        this.open = !this.open;
+    },
 });
 ```
 
@@ -58,10 +62,10 @@ export const sidebarStore = reactive({
 import { reactive } from 'vue';
 
 export const sidebarStore = reactive({
-  open: false,
-  toggle() {
-    this.open = !this.open;
-  },
+    open: false,
+    toggle() {
+        this.open = !this.open;
+    },
 });
 ```
 
@@ -74,8 +78,8 @@ import { sidebarStore } from '@/stores/sidebar';
 </script>
 
 <template>
-  <Button @click="sidebarStore.toggle()">Menu</Button>
-  <aside v-if="sidebarStore.open" class="w-64 border-r">…</aside>
+    <Button @click="sidebarStore.toggle()">Menu</Button>
+    <aside v-if="sidebarStore.open" class="w-64 border-r">…</aside>
 </template>
 ```
 

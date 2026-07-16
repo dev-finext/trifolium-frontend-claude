@@ -1,17 +1,16 @@
 <script setup>
 // מוצרי מדף — Shelf products catalog with right-side filter sidebar
-import { computed, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import Icon from '@/components/ui/Icon.vue';
-import SearchInput from '@/components/ui/SearchInput.vue';
+import { computed, ref } from 'vue';
 import FilterGroup from '@/components/shared/catalog/FilterGroup.vue';
 import FilterRow from '@/components/shared/catalog/FilterRow.vue';
-import ProductCard from '@/components/shared/catalog/ProductCard.vue';
 import PatientPickerModal from '@/components/shared/catalog/PatientPickerModal.vue';
-import { visit } from '@/lib/routes';
-import { useCartStore } from '@/stores/cart';
+import ProductCard from '@/components/shared/catalog/ProductCard.vue';
+import Icon from '@/components/ui/Icon.vue';
+import SearchInput from '@/components/ui/SearchInput.vue';
 import { useIsMobile } from '@/composables/useIsMobile';
 import { PRODUCTS, CATEGORIES, PATIENTS } from '@/data/mock';
+import { useCartStore } from '@/stores/cart';
 
 const props = defineProps({
     products: { type: Array, default: () => PRODUCTS },
@@ -24,24 +23,62 @@ const cartStore = useCartStore();
 // Map product → category by keyword (products don't carry an explicit cat)
 const productCat = (p) => {
     const s = p.heb + ' ' + p.sub;
-    if (/שינה|מצב רוח|הרגעה|חרדה|ערב/.test(s)) return 'nerv';
-    if (/חיסון|אכינצאה|אסטרגלוס/.test(s)) return 'immune';
-    if (/אדפטוגן|אשווגנדה|רודיולה/.test(s)) return 'adapt';
-    if (/עיכול|כורכום|זנגביל/.test(s)) return 'digest';
-    if (/לב|לחץ|עוזרר|עלי זית/.test(s)) return 'circ';
-    if (/קלנדולה|משחה|עור/.test(s)) return 'skin';
-    if (/כבד|גדילן|שן הארי/.test(s)) return 'liver';
+
+    if (/שינה|מצב רוח|הרגעה|חרדה|ערב/.test(s)) {
+        return 'nerv';
+    }
+
+    if (/חיסון|אכינצאה|אסטרגלוס/.test(s)) {
+        return 'immune';
+    }
+
+    if (/אדפטוגן|אשווגנדה|רודיולה/.test(s)) {
+        return 'adapt';
+    }
+
+    if (/עיכול|כורכום|זנגביל/.test(s)) {
+        return 'digest';
+    }
+
+    if (/לב|לחץ|עוזרר|עלי זית/.test(s)) {
+        return 'circ';
+    }
+
+    if (/קלנדולה|משחה|עור/.test(s)) {
+        return 'skin';
+    }
+
+    if (/כבד|גדילן|שן הארי/.test(s)) {
+        return 'liver';
+    }
+
     return 'other';
 };
 
 // Derive a product form (תמיסה, כמוסות, etc.) from the vol/heb fields
 const productForm = (p) => {
     const s = p.heb + ' ' + p.vol;
-    if (/כמוסות/.test(s)) return 'כמוסות';
-    if (/אבקה/.test(s)) return 'אבקה';
-    if (/^משחת|משחה/.test(p.heb)) return 'משחה';
-    if (/תה|שקיות/.test(s)) return 'תה';
-    if (/מ"ל|תמיסת|תמצית|משקה/.test(s)) return 'תמיסה';
+
+    if (/כמוסות/.test(s)) {
+        return 'כמוסות';
+    }
+
+    if (/אבקה/.test(s)) {
+        return 'אבקה';
+    }
+
+    if (/^משחת|משחה/.test(p.heb)) {
+        return 'משחה';
+    }
+
+    if (/תה|שקיות/.test(s)) {
+        return 'תה';
+    }
+
+    if (/מ"ל|תמיסת|תמצית|משקה/.test(s)) {
+        return 'תמיסה';
+    }
+
     return 'אחר';
 };
 
@@ -64,53 +101,104 @@ const sortBy = ref('pop'); // 'pop' | 'price-asc' | 'price-desc' | 'new'
 // Per-product added quantity — drives each card's "בסל" badge.
 const cart = ref({});
 
-const filtered = computed(() => props.products.filter((p) => {
-    if (search.value && !p.heb.includes(search.value) && !p.sub.includes(search.value)) return false;
-    if (activeCat.value !== 'all' && productCat(p) !== activeCat.value) return false;
-    if (activeForms.value.length && !activeForms.value.includes(productForm(p))) return false;
-    if (activeTags.value.length && !activeTags.value.includes(p.tag)) return false;
-    if (p.price > priceMax.value) return false;
-    return true;
-}));
+const filtered = computed(() =>
+    props.products.filter((p) => {
+        if (
+            search.value &&
+            !p.heb.includes(search.value) &&
+            !p.sub.includes(search.value)
+        ) {
+            return false;
+        }
+
+        if (activeCat.value !== 'all' && productCat(p) !== activeCat.value) {
+            return false;
+        }
+
+        if (
+            activeForms.value.length &&
+            !activeForms.value.includes(productForm(p))
+        ) {
+            return false;
+        }
+
+        if (activeTags.value.length && !activeTags.value.includes(p.tag)) {
+            return false;
+        }
+
+        if (p.price > priceMax.value) {
+            return false;
+        }
+
+        return true;
+    }),
+);
 
 // A12 — the sort control is now wired (was a dead <select>). Sorts a copy so
 // the source order is preserved. "Popularity" floats best-sellers first;
 // "new" floats the חדש items first.
 const sorted = computed(() => {
     const arr = [...filtered.value];
-    if (sortBy.value === 'price-asc') return arr.sort((a, b) => a.price - b.price);
-    if (sortBy.value === 'price-desc') return arr.sort((a, b) => b.price - a.price);
-    if (sortBy.value === 'new') return arr.sort((a, b) => (b.tag === 'חדש') - (a.tag === 'חדש'));
-    return arr.sort((a, b) => (b.tag === 'נמכר ביותר') - (a.tag === 'נמכר ביותר'));
+
+    if (sortBy.value === 'price-asc') {
+        return arr.sort((a, b) => a.price - b.price);
+    }
+
+    if (sortBy.value === 'price-desc') {
+        return arr.sort((a, b) => b.price - a.price);
+    }
+
+    if (sortBy.value === 'new') {
+        return arr.sort((a, b) => (b.tag === 'חדש') - (a.tag === 'חדש'));
+    }
+
+    return arr.sort(
+        (a, b) => (b.tag === 'נמכר ביותר') - (a.tag === 'נמכר ביותר'),
+    );
 });
 
 // Sidebar option lists with counts; zero-count options are hidden (except 'הכל').
-const categoryRows = computed(() => props.categories
-    .map((c) => ({
-        ...c,
-        count: c.id === 'all'
-            ? props.products.length
-            : props.products.filter((p) => productCat(p) === c.id).length,
-    }))
-    .filter((c) => c.id === 'all' || c.count > 0));
+const categoryRows = computed(() =>
+    props.categories
+        .map((c) => ({
+            ...c,
+            count:
+                c.id === 'all'
+                    ? props.products.length
+                    : props.products.filter((p) => productCat(p) === c.id)
+                          .length,
+        }))
+        .filter((c) => c.id === 'all' || c.count > 0),
+);
 
-const formRows = computed(() => FORMS
-    .map((f) => ({ label: f, count: props.products.filter((p) => productForm(p) === f).length }))
-    .filter((f) => f.count > 0));
+const formRows = computed(() =>
+    FORMS.map((f) => ({
+        label: f,
+        count: props.products.filter((p) => productForm(p) === f).length,
+    })).filter((f) => f.count > 0),
+);
 
-const tagRows = computed(() => PRODUCT_TAGS
-    .map((t) => ({ label: t, count: props.products.filter((p) => p.tag === t).length }))
-    .filter((t) => t.count > 0));
+const tagRows = computed(() =>
+    PRODUCT_TAGS.map((t) => ({
+        label: t,
+        count: props.products.filter((p) => p.tag === t).length,
+    })).filter((t) => t.count > 0),
+);
 
-const activeCount = computed(() =>
-    (activeCat.value !== 'all' ? 1 : 0)
-    + activeForms.value.length
-    + activeTags.value.length
-    + (priceMax.value < 150 ? 1 : 0));
+const activeCount = computed(
+    () =>
+        (activeCat.value !== 'all' ? 1 : 0) +
+        activeForms.value.length +
+        activeTags.value.length +
+        (priceMax.value < 150 ? 1 : 0),
+);
 
 // Clicking "הוסף" opens the patient picker; the order is then tied to a patient (or none).
 function confirmAdd(product, patient) {
-    cart.value = { ...cart.value, [product.id]: (cart.value[product.id] || 0) + 1 };
+    cart.value = {
+        ...cart.value,
+        [product.id]: (cart.value[product.id] || 0) + 1,
+    };
     cartStore.addToCart({
         id: 'shelf-' + product.id + '-' + (patient ? patient.id : 'none'),
         kind: 'shelf',
@@ -127,8 +215,6 @@ function confirmAdd(product, patient) {
 }
 
 // Kept from the prototype (it defined but never wired this in the markup).
-// eslint-disable-next-line no-unused-vars
-const goCart = () => visit('cart');
 
 // Toggle a value in a multi-select filter list (forms / tags). Kept in script
 // scope because template expressions auto-unwrap refs.
@@ -152,25 +238,42 @@ function clearAll() {
     <Head title="מוצרי מדף" />
     <div class="page">
         <div class="page__inner page__inner--wide">
-
             <div class="page-head">
                 <div>
                     <h1 class="page-title">מוצרי מדף</h1>
-                    <p class="page-sub">פורמולות מוכנות, תמיסות ותערובות · הנחת מטפל 20% כלולה</p>
+                    <p class="page-sub">
+                        פורמולות מוכנות, תמיסות ותערובות · הנחת מטפל 20% כלולה
+                    </p>
                 </div>
                 <div class="row gap-[8px]">
                     <div class="catalog-search w-[260px]">
-                        <SearchInput v-model="search" placeholder="חיפוש מוצר…" />
+                        <SearchInput
+                            v-model="search"
+                            placeholder="חיפוש מוצר…"
+                        />
                     </div>
                 </div>
             </div>
 
             <!-- Mobile: filters collapse behind this toggle (hidden on desktop) -->
-            <button v-if="isMobile" class="catalog-filters-toggle" @click="filtersOpen = !filtersOpen">
+            <button
+                v-if="isMobile"
+                class="catalog-filters-toggle"
+                @click="filtersOpen = !filtersOpen"
+            >
                 <Icon name="filter" :size="15" color="var(--ink-2)" />
                 סינון
-                <span v-if="activeCount > 0" class="catalog-filters-toggle__count num">{{ activeCount }}</span>
-                <Icon :name="filtersOpen ? 'chevron_down' : 'chevron_left'" :size="15" color="var(--ink-3)" class="ms-auto" />
+                <span
+                    v-if="activeCount > 0"
+                    class="catalog-filters-toggle__count num"
+                    >{{ activeCount }}</span
+                >
+                <Icon
+                    :name="filtersOpen ? 'chevron_down' : 'chevron_left'"
+                    :size="15"
+                    color="var(--ink-3)"
+                    class="ms-auto"
+                />
             </button>
 
             <!-- Two-column layout: sidebar (right in RTL) + grid -->
@@ -178,16 +281,25 @@ function clearAll() {
                 <!-- FILTER SIDEBAR -->
                 <aside
                     v-show="!isMobile || filtersOpen"
-                    class="catalog-filters sticky top-[80px] py-[20px] px-[18px] bg-surface border border-line rounded-card"
+                    class="catalog-filters sticky top-[80px] rounded-card border border-line bg-surface px-[18px] py-[20px]"
                 >
-                    <div class="flex items-center justify-between mb-[16px] pb-[14px] border-b border-b-line">
+                    <div
+                        class="mb-[16px] flex items-center justify-between border-b border-b-line pb-[14px]"
+                    >
                         <div class="flex items-center gap-[8px]">
-                            <Icon name="filter" :size="15" color="var(--ink-2)" />
-                            <span class="text-[14px] font-semibold text-ink">סינון</span>
+                            <Icon
+                                name="filter"
+                                :size="15"
+                                color="var(--ink-2)"
+                            />
+                            <span class="text-[14px] font-semibold text-ink"
+                                >סינון</span
+                            >
                             <span
                                 v-if="activeCount > 0"
-                                class="num inline-flex items-center justify-center min-w-[18px] h-[18px] py-0 px-[5px] text-[10px] font-bold text-white bg-accent rounded-[999px]"
-                            >{{ activeCount }}</span>
+                                class="num inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-[999px] bg-accent px-[5px] py-0 text-[10px] font-bold text-white"
+                                >{{ activeCount }}</span
+                            >
                         </div>
                         <button
                             v-if="activeCount > 0"
@@ -225,7 +337,7 @@ function clearAll() {
 
                     <!-- PRICE -->
                     <FilterGroup label="מחיר מקסימלי">
-                        <div class="pt-[4px] px-[4px] pb-0">
+                        <div class="px-[4px] pt-[4px] pb-0">
                             <input
                                 v-model.number="priceMax"
                                 type="range"
@@ -236,9 +348,13 @@ function clearAll() {
                                 :aria-valuetext="`עד ${priceMax} שקלים`"
                                 class="w-full cursor-pointer accent-(--accent)"
                             />
-                            <div class="flex justify-between mt-[4px] text-[11px] text-ink-3">
+                            <div
+                                class="mt-[4px] flex justify-between text-[11px] text-ink-3"
+                            >
                                 <span class="num">₪30</span>
-                                <span class="text-[13px] font-semibold text-ink">
+                                <span
+                                    class="text-[13px] font-semibold text-ink"
+                                >
                                     עד <span class="num">₪{{ priceMax }}</span>
                                 </span>
                                 <span class="num">₪150</span>
@@ -261,24 +377,40 @@ function clearAll() {
 
                 <!-- GRID -->
                 <div>
-                    <div class="flex justify-between items-center mb-[16px] text-[13px] text-ink-3">
+                    <div
+                        class="mb-[16px] flex items-center justify-between text-[13px] text-ink-3"
+                    >
                         <span>
-                            <span class="num font-semibold text-ink">{{ filtered.length }}</span>
+                            <span class="num font-semibold text-ink">{{
+                                filtered.length
+                            }}</span>
                             מוצרים
-                            <span v-if="filtered.length !== props.products.length" class="text-ink-3">
-                                מתוך <span class="num">{{ props.products.length }}</span>
+                            <span
+                                v-if="filtered.length !== props.products.length"
+                                class="text-ink-3"
+                            >
+                                מתוך
+                                <span class="num">{{
+                                    props.products.length
+                                }}</span>
                             </span>
                         </span>
                         <div class="flex items-center gap-[6px]">
-                            <label for="catalog-sort" class="text-[12px]">מיון:</label>
+                            <label for="catalog-sort" class="text-[12px]"
+                                >מיון:</label
+                            >
                             <select
                                 id="catalog-sort"
                                 v-model="sortBy"
-                                class="select h-[36px] w-auto py-0 px-[8px] text-[13px]"
+                                class="select h-[36px] w-auto px-[8px] py-0 text-[13px]"
                             >
                                 <option value="pop">פופולריות</option>
-                                <option value="price-asc">מחיר נמוך לגבוה</option>
-                                <option value="price-desc">מחיר גבוה לנמוך</option>
+                                <option value="price-asc">
+                                    מחיר נמוך לגבוה
+                                </option>
+                                <option value="price-desc">
+                                    מחיר גבוה לנמוך
+                                </option>
                                 <option value="new">חדשים</option>
                             </select>
                         </div>
@@ -286,11 +418,16 @@ function clearAll() {
 
                     <div
                         v-if="filtered.length === 0"
-                        class="card py-[60px] px-[24px] text-center text-ink-3"
+                        class="card px-[24px] py-[60px] text-center text-ink-3"
                     >
                         <Icon name="filter" :size="28" color="var(--ink-4)" />
-                        <div class="mt-[12px] text-[14px]">לא נמצאו מוצרים לפי הסינון</div>
-                        <button class="btn btn--ghost btn--sm mt-[16px]" @click="clearAll">
+                        <div class="mt-[12px] text-[14px]">
+                            לא נמצאו מוצרים לפי הסינון
+                        </div>
+                        <button
+                            class="btn btn--ghost btn--sm mt-[16px]"
+                            @click="clearAll"
+                        >
                             נקה סינון
                         </button>
                     </div>
@@ -351,5 +488,7 @@ function clearAll() {
 }
 /* When stacked above the grid on phones, the panel must scroll with the page
    (its desktop position:sticky is an inline style, hence the !important). */
-html.tf-mobile .catalog-filters { position: static !important; }
+html.tf-mobile .catalog-filters {
+    position: static !important;
+}
 </style>

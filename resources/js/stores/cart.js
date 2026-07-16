@@ -25,7 +25,9 @@ const TOAST_DURATION_MS = 3600;
 function showToast(toast) {
     state.toast = toast;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { state.toast = null; }, TOAST_DURATION_MS);
+    toastTimer = setTimeout(() => {
+        state.toast = null;
+    }, TOAST_DURATION_MS);
 }
 
 /**
@@ -33,15 +35,23 @@ function showToast(toast) {
  * formula items (kind === 'formula') always append as a new line.
  */
 function addToCart(incoming) {
-    if (!incoming) return;
+    if (!incoming) {
+        return;
+    }
+
     const existing = state.items.find((x) => x.id === incoming.id);
+
     if (existing) {
         existing.qty += incoming.qty || 1;
     } else {
         state.items.push(incoming);
     }
+
     showToast({
-        title: incoming.kind === 'formula' ? 'הפורמולה נוספה לסל' : 'המוצר נוסף לסל',
+        title:
+            incoming.kind === 'formula'
+                ? 'הפורמולה נוספה לסל'
+                : 'המוצר נוסף לסל',
         name: incoming.name,
         actionLabel: 'צפה בסל',
         target: 'cart',
@@ -50,7 +60,10 @@ function addToCart(incoming) {
 
 /** Move a cart line to the on-hold list (deduplicated by id). */
 function moveToPending(item) {
-    if (!item) return;
+    if (!item) {
+        return;
+    }
+
     if (!state.pendingItems.some((x) => x.id === item.id)) {
         state.pendingItems.unshift({
             heldAt: 'הרגע',
@@ -59,6 +72,7 @@ function moveToPending(item) {
             ...item,
         });
     }
+
     showToast({
         title: 'הועבר להזמנות בהמתנה',
         name: item.name,
@@ -73,7 +87,11 @@ function moveToPending(item) {
 let lastRemoved = null; // { item, index }
 function removeFromCart(item) {
     const i = state.items.indexOf(item);
-    if (i === -1) return;
+
+    if (i === -1) {
+        return;
+    }
+
     lastRemoved = { item, index: i };
     state.items.splice(i, 1);
     showToast({
@@ -84,7 +102,10 @@ function removeFromCart(item) {
     });
 }
 function undoRemove() {
-    if (!lastRemoved) return;
+    if (!lastRemoved) {
+        return;
+    }
+
     const { item, index } = lastRemoved;
     state.items.splice(Math.min(index, state.items.length), 0, item);
     lastRemoved = null;
@@ -101,5 +122,13 @@ function dismissToast() {
  * list view (Cart, Pending) edit lines in place, mirroring the prototype.
  */
 export function useCartStore() {
-    return { state, addToCart, moveToPending, removeFromCart, undoRemove, showToast, dismissToast };
+    return {
+        state,
+        addToCart,
+        moveToPending,
+        removeFromCart,
+        undoRemove,
+        showToast,
+        dismissToast,
+    };
 }

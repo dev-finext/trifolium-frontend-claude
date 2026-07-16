@@ -10,10 +10,13 @@ defineProps({
 <template>
     <div
         dir="rtl"
-        class="flex items-center gap-[10px] px-[14px] pb-[7px] bg-surface-sunk"
-        :class="first ? 'pt-[10px]' : 'pt-[11px] border-t border-line'"
+        class="flex items-center gap-[10px] bg-surface-sunk px-[14px] pb-[7px]"
+        :class="first ? 'pt-[10px]' : 'border-t border-line pt-[11px]'"
     >
-        <span class="text-[11px] tracking-[.08em] font-bold text-ink-3 whitespace-nowrap">{{ label }}</span>
-        <span class="flex-1 h-[1px] bg-(--line)" />
+        <span
+            class="text-[11px] font-bold tracking-[.08em] whitespace-nowrap text-ink-3"
+            >{{ label }}</span
+        >
+        <span class="h-[1px] flex-1 bg-(--line)" />
     </div>
 </template>

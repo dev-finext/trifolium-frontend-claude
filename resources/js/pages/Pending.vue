@@ -3,9 +3,9 @@
 // cart: awaiting payment, patient approval, or still a draft. Each can be
 // returned to the cart or removed.
 import { Head } from '@inertiajs/vue3';
-import { useCartStore } from '@/stores/cart';
-import PendingCard from '@/components/shared/pending/PendingCard.vue';
 import EmptyPending from '@/components/shared/pending/EmptyPending.vue';
+import PendingCard from '@/components/shared/pending/PendingCard.vue';
+import { useCartStore } from '@/stores/cart';
 
 // The prototype received `items`/`setItems` as props from the app shell; the
 // held lines now live in the cart store and are edited in place.
@@ -16,11 +16,15 @@ const cart = useCartStore();
 function onReturn(item) {
     const { heldAt, reason, reasonTone, orderId, ...rest } = item;
     cart.addToCart({ ...rest });
-    cart.state.pendingItems = cart.state.pendingItems.filter((x) => x.id !== item.id);
+    cart.state.pendingItems = cart.state.pendingItems.filter(
+        (x) => x.id !== item.id,
+    );
 }
 
 function onRemove(id) {
-    cart.state.pendingItems = cart.state.pendingItems.filter((x) => x.id !== id);
+    cart.state.pendingItems = cart.state.pendingItems.filter(
+        (x) => x.id !== id,
+    );
 }
 </script>
 
@@ -33,7 +37,8 @@ function onRemove(id) {
                 <div>
                     <h1 class="page-title">הזמנות בהמתנה</h1>
                     <p class="page-sub">
-                        הזמנות וטיוטות שהוקפאו — ממתינות לתשלום, לאישור המטופל או להשלמה.
+                        הזמנות וטיוטות שהוקפאו — ממתינות לתשלום, לאישור המטופל
+                        או להשלמה.
                     </p>
                 </div>
             </div>

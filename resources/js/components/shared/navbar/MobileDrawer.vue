@@ -3,9 +3,9 @@
 // RTL). Holds the four destinations, points, pending orders, profile and
 // logout — everything hidden from the compact top bar on phones.
 import { ref, watch, nextTick } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
 import GoldCoin from '@/components/shared/navbar/GoldCoin.vue';
 import { NAV_LINKS } from '@/components/shared/navbar/nav-links.js';
+import Icon from '@/components/ui/Icon.vue';
 import { useModal } from '@/composables/useModal';
 
 const props = defineProps({
@@ -20,7 +20,12 @@ const emit = defineEmits(['close', 'navigate']);
 
 const secondaryLinks = [
     { id: 'cart', label: 'סל הקניות', icon: 'cart', countKey: 'cartCount' },
-    { id: 'pending', label: 'הזמנות בהמתנה', icon: 'cart_clock', countKey: 'pendingCount' },
+    {
+        id: 'pending',
+        label: 'הזמנות בהמתנה',
+        icon: 'cart_clock',
+        countKey: 'pendingCount',
+    },
     { id: 'contact', label: 'צור קשר', icon: 'mail' },
     { id: 'profile', label: 'עריכת פרטים אישיים', icon: 'user' },
 ];
@@ -53,7 +58,12 @@ watch(
             });
         } else {
             dialogRef.value = null; // disarm while closed
-            if (opener && typeof opener.focus === 'function' && document.contains(opener)) {
+
+            if (
+                opener &&
+                typeof opener.focus === 'function' &&
+                document.contains(opener)
+            ) {
                 opener.focus(); // return focus to the burger
             }
         }
@@ -62,7 +72,10 @@ watch(
 </script>
 
 <template>
-    <div :class="['nav-drawer', { 'nav-drawer--open': open }]" :aria-hidden="!open">
+    <div
+        :class="['nav-drawer', { 'nav-drawer--open': open }]"
+        :aria-hidden="!open"
+    >
         <div class="nav-drawer__scrim" @click="emit('close')" />
         <aside
             ref="panel"
@@ -76,19 +89,35 @@ watch(
             <!-- Header — user + close -->
             <div class="nav-drawer__head">
                 <div class="flex flex-row-reverse items-center gap-[11px]">
-                    <span class="inline-flex items-center justify-center w-[40px] h-[40px] shrink-0 bg-accent-tint border border-line rounded-full">
-                        <Icon name="user" :size="21" color="var(--accent)" :stroke="1.7" />
+                    <span
+                        class="inline-flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full border border-line bg-accent-tint"
+                    >
+                        <Icon
+                            name="user"
+                            :size="21"
+                            color="var(--accent)"
+                            :stroke="1.7"
+                        />
                     </span>
                     <span class="text-right">
-                        <span class="block text-[14.5px] font-bold text-ink">{{ user.name }}</span>
-                        <span class="flex items-center gap-[6px] mt-[2px]">
+                        <span class="block text-[14.5px] font-bold text-ink">{{
+                            user.name
+                        }}</span>
+                        <span class="mt-[2px] flex items-center gap-[6px]">
                             <GoldCoin :size="15" />
-                            <span class="num text-[12.5px] font-bold text-ink-2">{{ user.points }}</span>
+                            <span
+                                class="num text-[12.5px] font-bold text-ink-2"
+                                >{{ user.points }}</span
+                            >
                             <span class="text-[11.5px] text-ink-3">נקודות</span>
                         </span>
                     </span>
                 </div>
-                <button class="btn--icon" aria-label="סגור" @click="emit('close')">
+                <button
+                    class="btn--icon"
+                    aria-label="סגור"
+                    @click="emit('close')"
+                >
                     <Icon name="x" :size="20" color="var(--ink-2)" />
                 </button>
             </div>
@@ -97,29 +126,62 @@ watch(
             <button
                 v-for="link in NAV_LINKS"
                 :key="link.id"
-                :class="['nav-drawer__item', { 'nav-drawer__item--active': route === link.id }]"
+                :class="[
+                    'nav-drawer__item',
+                    { 'nav-drawer__item--active': route === link.id },
+                ]"
                 @click="emit('navigate', link.id)"
             >
-                <Icon :name="link.icon" :size="19" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
+                <Icon
+                    :name="link.icon"
+                    :size="19"
+                    :color="
+                        route === link.id ? 'var(--accent)' : 'var(--ink-3)'
+                    "
+                    :stroke="1.6"
+                />
                 <span class="flex-1">{{ link.label }}</span>
-                <span v-if="link.id === 'my-formulas'" class="nav-drawer__badge">חדש</span>
+                <span v-if="link.id === 'my-formulas'" class="nav-drawer__badge"
+                    >חדש</span
+                >
             </button>
 
             <div class="nav-drawer__section">החשבון שלי</div>
             <button
                 v-for="link in secondaryLinks"
                 :key="link.id"
-                :class="['nav-drawer__item', { 'nav-drawer__item--active': route === link.id }]"
+                :class="[
+                    'nav-drawer__item',
+                    { 'nav-drawer__item--active': route === link.id },
+                ]"
                 @click="emit('navigate', link.id)"
             >
-                <Icon :name="link.icon" :size="19" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
+                <Icon
+                    :name="link.icon"
+                    :size="19"
+                    :color="
+                        route === link.id ? 'var(--accent)' : 'var(--ink-3)'
+                    "
+                    :stroke="1.6"
+                />
                 <span class="flex-1">{{ link.label }}</span>
-                <span v-if="countFor(link) > 0" class="nav-drawer__count num">{{ countFor(link) }}</span>
+                <span v-if="countFor(link) > 0" class="nav-drawer__count num">{{
+                    countFor(link)
+                }}</span>
             </button>
 
-            <div class="divider my-[10px] mx-0" />
-            <button class="nav-drawer__item text-danger" type="button" @click="emit('navigate', 'login')">
-                <Icon name="logout" :size="19" color="var(--danger)" :stroke="1.6" />
+            <div class="divider mx-0 my-[10px]" />
+            <button
+                class="nav-drawer__item text-danger"
+                type="button"
+                @click="emit('navigate', 'login')"
+            >
+                <Icon
+                    name="logout"
+                    :size="19"
+                    color="var(--danger)"
+                    :stroke="1.6"
+                />
                 <span class="flex-1">התנתק</span>
             </button>
         </aside>

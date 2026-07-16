@@ -26,43 +26,72 @@ export const FALLBACK_ORDER = {
         totalVol: '200 מ״ל',
         ingredients: [
             { heb: 'פסיפלורה', lat: 'Passiflora incarnata', qty: 56, pct: 28 },
-            { heb: 'מליסה רפואית', lat: 'Melissa officinalis', qty: 44, pct: 22 },
+            {
+                heb: 'מליסה רפואית',
+                lat: 'Melissa officinalis',
+                qty: 44,
+                pct: 22,
+            },
             { heb: 'אשווגנדה', lat: 'Withania somnifera', qty: 66, pct: 33 },
             { heb: 'לבנדר', lat: 'Lavandula angustifolia', qty: 34, pct: 17 },
         ],
-        externalNotes: 'יש לטלטל את הבקבוק היטב לפני כל שימוש. לשמור במקרר. מנה ראשונה: ערב, חצי שעה לפני השינה.',
-        internalNotes: 'אריזת זכוכית כהה עם מטפטף שחור. תווית לבנה — הדפס שם הפורמולה ב־14pt.',
+        externalNotes:
+            'יש לטלטל את הבקבוק היטב לפני כל שימוש. לשמור במקרר. מנה ראשונה: ערב, חצי שעה לפני השינה.',
+        internalNotes:
+            'אריזת זכוכית כהה עם מטפטף שחור. תווית לבנה — הדפס שם הפורמולה ב־14pt.',
     },
-    pricing: { base: 280, practitionerDisc: 56, patientDisc: 22, pointsApplied: 0, subtotal: 202, total: 202 },
+    pricing: {
+        base: 280,
+        practitionerDisc: 56,
+        patientDisc: 22,
+        pointsApplied: 0,
+        subtotal: 202,
+        total: 202,
+    },
 };
 
 // Deterministic Israeli phone from a name, matching the wizard's style.
 export function phoneFromName(name) {
     let h = 0;
-    for (let i = 0; i < (name || '').length; i++) h = (h << 5) - h + name.charCodeAt(i);
+
+    for (let i = 0; i < (name || '').length; i++) {
+        h = (h << 5) - h + name.charCodeAt(i);
+    }
+
     h = Math.abs(h);
     const carriers = ['050', '052', '053', '054', '058'];
+
     return `${carriers[h % carriers.length]}-${String(100 + (Math.floor(h / 7) % 900))}-${String(1000 + (h % 9000))}`;
 }
 
 export const initialsFromName = (name) =>
-    (name || '—').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('');
+    (name || '—')
+        .trim()
+        .split(/\s+/)
+        .map((w) => w[0])
+        .slice(0, 2)
+        .join('');
 
 // Map a dashboard order's status text → pipeline stage + tone, then build a
 // full order object the Order view can render. Shelf/recent orders don't carry
 // ingredient detail, so we reuse the fallback formula body with the row's name.
 const STATUS_MAP = {
-    'ממתין לתשלום': { stage: 1, route: 'patient',       tone: 'amber' },
-    'בהכנה':        { stage: 2, route: 'practitioner',  tone: 'amber' },
-    'נשלח':         { stage: 3, route: 'practitioner',  tone: 'blue' },
-    'הושלם':        { stage: 4, route: 'practitioner',  tone: 'green' },
-    'נמסר':         { stage: 4, route: 'practitioner',  tone: 'green' },
-    'בוטל':         { stage: -1, route: 'practitioner', tone: 'red', cancelled: true },
+    'ממתין לתשלום': { stage: 1, route: 'patient', tone: 'amber' },
+    בהכנה: { stage: 2, route: 'practitioner', tone: 'amber' },
+    נשלח: { stage: 3, route: 'practitioner', tone: 'blue' },
+    הושלם: { stage: 4, route: 'practitioner', tone: 'green' },
+    נמסר: { stage: 4, route: 'practitioner', tone: 'green' },
+    בוטל: { stage: -1, route: 'practitioner', tone: 'red', cancelled: true },
 };
 
 export function buildOrderFromRow(o) {
-    const m = STATUS_MAP[o.status] || { stage: 2, route: 'practitioner', tone: 'amber' };
+    const m = STATUS_MAP[o.status] || {
+        stage: 2,
+        route: 'practitioner',
+        tone: 'amber',
+    };
     const isShelf = o.type === 'מדף';
+
     return {
         id: o.id,
         date: o.date,

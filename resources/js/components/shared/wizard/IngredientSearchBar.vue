@@ -4,10 +4,10 @@
 // shadow. Add → close → clear → refocus, so the practitioner can chain
 // additions quickly.
 import { ref, computed, watch, onBeforeUnmount } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
 import NewRibbonMark from '@/components/shared/NewRibbonMark.vue';
 import SearchGroupHeader from '@/components/shared/wizard/SearchGroupHeader.vue';
 import SearchResultRow from '@/components/shared/wizard/SearchResultRow.vue';
+import Icon from '@/components/ui/Icon.vue';
 import { useModeStore } from '@/stores/mode';
 
 const props = defineProps({
@@ -28,21 +28,39 @@ const inputRef = ref(null);
 const skipOpen = ref(false);
 
 // Results not yet in the formula — searching is for adding the NEXT ingredient.
-const available = computed(() => props.results.filter((h) => !props.inFormula(h.id)));
+const available = computed(() =>
+    props.results.filter((h) => !props.inFormula(h.id)),
+);
 // Chinese mode: surface the Chinese materia medica first, then the Western
 // herbs, split by a labeled divider. (Western mode keeps a single flat list.)
-const cnHerbs = computed(() => available.value.filter((h) => h.origin === 'cn'));
-const westHerbs = computed(() => available.value.filter((h) => h.origin !== 'cn'));
-const grouped = computed(() => isChinese.value && cnHerbs.value.length > 0 && westHerbs.value.length > 0);
-const ordered = computed(() => (isChinese.value ? [...cnHerbs.value, ...westHerbs.value] : available.value));
+const cnHerbs = computed(() =>
+    available.value.filter((h) => h.origin === 'cn'),
+);
+const westHerbs = computed(() =>
+    available.value.filter((h) => h.origin !== 'cn'),
+);
+const grouped = computed(
+    () =>
+        isChinese.value &&
+        cnHerbs.value.length > 0 &&
+        westHerbs.value.length > 0,
+);
+const ordered = computed(() =>
+    isChinese.value ? [...cnHerbs.value, ...westHerbs.value] : available.value,
+);
 
 // Close the dropdown when clicking anywhere outside the search area.
 function onDown(e) {
-    if (wrapRef.value && !wrapRef.value.contains(e.target)) open.value = false;
+    if (wrapRef.value && !wrapRef.value.contains(e.target)) {
+        open.value = false;
+    }
 }
 watch(open, (isOpen) => {
-    if (isOpen) document.addEventListener('mousedown', onDown);
-    else document.removeEventListener('mousedown', onDown);
+    if (isOpen) {
+        document.addEventListener('mousedown', onDown);
+    } else {
+        document.removeEventListener('mousedown', onDown);
+    }
 });
 onBeforeUnmount(() => document.removeEventListener('mousedown', onDown));
 
@@ -61,7 +79,12 @@ function onInput(e) {
     open.value = true;
 }
 function onFocus() {
-    if (skipOpen.value) { skipOpen.value = false; return; }
+    if (skipOpen.value) {
+        skipOpen.value = false;
+
+        return;
+    }
+
     open.value = true;
 }
 </script>
@@ -70,29 +93,44 @@ function onFocus() {
     <div ref="wrapRef" class="relative z-[20]">
         <!-- Search field — prominent accent-bordered box -->
         <div
-            class="ingredient-search-row relative flex items-center gap-[10px] py-[12px] px-[14px] bg-accent-tint border-b border-line rounded-tl-card rounded-tr-card"
+            class="ingredient-search-row relative flex items-center gap-[10px] rounded-tl-card rounded-tr-card border-b border-line bg-accent-tint px-[14px] py-[12px]"
         >
-            <div class="relative flex flex-1 items-center bg-surface border-[1.5px] border-accent rounded-control shadow-[0_1px_4px_rgba(20,18,14,0.06)]">
-                <span class="absolute left-[14px] top-[50%] -translate-y-1/2 inline-flex text-accent pointer-events-none">
+            <div
+                class="relative flex flex-1 items-center rounded-control border-[1.5px] border-accent bg-surface shadow-[0_1px_4px_rgba(20,18,14,0.06)]"
+            >
+                <span
+                    class="pointer-events-none absolute top-[50%] left-[14px] inline-flex -translate-y-1/2 text-accent"
+                >
                     <Icon name="search" :size="20" />
                 </span>
                 <input
                     ref="inputRef"
                     :value="query"
                     placeholder="חיפוש רכיב להוספה..."
-                    class="ingredient-search-input w-full h-[50px] ps-[50px] pe-[18px] border-none outline-none bg-transparent text-[16px] font-semibold [font-family:inherit] text-ink rounded-control"
+                    class="ingredient-search-input h-[50px] w-full rounded-control border-none bg-transparent ps-[50px] pe-[18px] [font-family:inherit] text-[16px] font-semibold text-ink outline-none"
                     @input="onInput"
                     @focus="onFocus"
                 />
             </div>
             <button
-                class="tf-preset-btn relative overflow-hidden inline-flex items-center gap-[8px] shrink-0 h-[50px] ps-[18px] pe-[44px] text-[13.5px] font-bold [font-family:inherit] whitespace-nowrap text-accent bg-surface border-[1.5px] border-accent rounded-control cursor-pointer transition-[background,color] duration-[120ms] ease-[ease]"
+                class="tf-preset-btn relative inline-flex h-[50px] shrink-0 cursor-pointer items-center gap-[8px] overflow-hidden rounded-control border-[1.5px] border-accent bg-surface ps-[18px] pe-[44px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent transition-[background,color] duration-[120ms] ease-[ease]"
                 @click="emit('open-preset')"
             >
                 <NewRibbonMark :top="9" :left="-32" />
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                    />
                     <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
                 </svg>
                 בחר פורמולה מוכנה
@@ -104,24 +142,52 @@ function onFocus() {
         <!-- Floating results dropdown — overlays the table below -->
         <div
             v-if="open"
-            class="absolute top-full left-0 right-0 max-h-[360px] overflow-y-auto bg-surface border border-line border-t-0 rounded-bl-card rounded-br-card shadow-[0_18px_40px_rgba(20,18,14,0.16)] z-[60]"
+            class="absolute top-full right-0 left-0 z-[60] max-h-[360px] overflow-y-auto rounded-br-card rounded-bl-card border border-t-0 border-line bg-surface shadow-[0_18px_40px_rgba(20,18,14,0.16)]"
         >
-            <div v-if="available.length === 0" class="muted py-[20px] px-[18px] text-[14px] text-center">
-                {{ query ? 'לא נמצאו רכיבים מתאימים' : 'כל הרכיבים המתאימים כבר נוספו' }}
+            <div
+                v-if="available.length === 0"
+                class="muted px-[18px] py-[20px] text-center text-[14px]"
+            >
+                {{
+                    query
+                        ? 'לא נמצאו רכיבים מתאימים'
+                        : 'כל הרכיבים המתאימים כבר נוספו'
+                }}
             </div>
             <template v-else-if="grouped">
                 <SearchGroupHeader label="רפואה סינית" first />
-                <SearchResultRow v-for="h in cnHerbs" :key="h.id" :herb="h" :patient-meds="patientMeds" @add="handleAdd(h)" />
+                <SearchResultRow
+                    v-for="h in cnHerbs"
+                    :key="h.id"
+                    :herb="h"
+                    :patient-meds="patientMeds"
+                    @add="handleAdd(h)"
+                />
                 <SearchGroupHeader label="רפואה מערבית" />
-                <SearchResultRow v-for="h in westHerbs" :key="h.id" :herb="h" :patient-meds="patientMeds" @add="handleAdd(h)" />
+                <SearchResultRow
+                    v-for="h in westHerbs"
+                    :key="h.id"
+                    :herb="h"
+                    :patient-meds="patientMeds"
+                    @add="handleAdd(h)"
+                />
             </template>
             <template v-else>
-                <SearchResultRow v-for="h in ordered" :key="h.id" :herb="h" :patient-meds="patientMeds" @add="handleAdd(h)" />
+                <SearchResultRow
+                    v-for="h in ordered"
+                    :key="h.id"
+                    :herb="h"
+                    :patient-meds="patientMeds"
+                    @add="handleAdd(h)"
+                />
             </template>
         </div>
     </div>
 </template>
 
 <style>
-.tf-preset-btn:hover { background: var(--accent) !important; color: var(--on-accent) !important; }
+.tf-preset-btn:hover {
+    background: var(--accent) !important;
+    color: var(--on-accent) !important;
+}
 </style>

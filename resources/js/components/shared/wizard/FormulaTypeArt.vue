@@ -19,14 +19,14 @@ const props = defineProps({
 // The natural colour of what's inside each vessel — the only per-type wash.
 const CONTENT = {
     tincture: '#cf9540', // amber extract
-    capsule: '#6f9a4e',  // green herb powder
-    powder: '#caa267',   // sand
-    tea: '#b0743c',      // steeped brew
-    decoction: '#a6503a',// dark simmered decoction
-    gel: '#57ab7d',      // fresh gel
-    cream: '#d59a7a',     // soft balm
-    eoil: '#9a86b5',     // aromatic distillate
-    ioil: '#b7913f',     // golden infused oil
+    capsule: '#6f9a4e', // green herb powder
+    powder: '#caa267', // sand
+    tea: '#b0743c', // steeped brew
+    decoction: '#a6503a', // dark simmered decoction
+    gel: '#57ab7d', // fresh gel
+    cream: '#d59a7a', // soft balm
+    eoil: '#9a86b5', // aromatic distillate
+    ioil: '#b7913f', // golden infused oil
 };
 const content = computed(() => CONTENT[props.id] || '#7d9a63');
 </script>
@@ -62,8 +62,14 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
         <g v-else-if="id === 'capsule'">
             <g class="sprig">
                 <path class="stem" d="M17 64 C15 55 15 48 20 42" />
-                <path class="leaf" d="M16 53 c-6 -1 -9 -5 -8 -10 c6 0 9 4 8 10 z" />
-                <path class="leaf" d="M19 47 c5 -2 9 0 10 4 c-5 2 -9 0 -10 -4 z" />
+                <path
+                    class="leaf"
+                    d="M16 53 c-6 -1 -9 -5 -8 -10 c6 0 9 4 8 10 z"
+                />
+                <path
+                    class="leaf"
+                    d="M19 47 c5 -2 9 0 10 4 c-5 2 -9 0 -10 -4 z"
+                />
                 <circle class="berryRed" cx="20" cy="41" r="2.3" />
             </g>
             <g transform="rotate(15 40 30)">
@@ -82,7 +88,10 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
         <g v-else-if="id === 'powder'">
             <g class="sprig">
                 <path class="stem" d="M13 64 C12 56 13 50 16 45" />
-                <path class="leaf" d="M16 45 c-8 2 -12 9 -10 17 c8 -1 13 -8 10 -17 z" />
+                <path
+                    class="leaf"
+                    d="M16 45 c-8 2 -12 9 -10 17 c8 -1 13 -8 10 -17 z"
+                />
                 <path class="vein" d="M14 61 C14 54 15 49 16 45" />
             </g>
             <rect class="b" x="15" y="30" width="36" height="33" rx="6" />
@@ -100,11 +109,35 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
                 <path class="stem" d="M15 64 C13 56 14 49 18 44" />
                 <g class="petals">
                     <ellipse cx="18" cy="39.6" rx="1.3" ry="2.6" />
-                    <ellipse cx="21.8" cy="41.8" rx="1.3" ry="2.6" transform="rotate(60 21.8 41.8)" />
-                    <ellipse cx="21.8" cy="46.2" rx="1.3" ry="2.6" transform="rotate(120 21.8 46.2)" />
+                    <ellipse
+                        cx="21.8"
+                        cy="41.8"
+                        rx="1.3"
+                        ry="2.6"
+                        transform="rotate(60 21.8 41.8)"
+                    />
+                    <ellipse
+                        cx="21.8"
+                        cy="46.2"
+                        rx="1.3"
+                        ry="2.6"
+                        transform="rotate(120 21.8 46.2)"
+                    />
                     <ellipse cx="18" cy="48.4" rx="1.3" ry="2.6" />
-                    <ellipse cx="14.2" cy="46.2" rx="1.3" ry="2.6" transform="rotate(60 14.2 46.2)" />
-                    <ellipse cx="14.2" cy="41.8" rx="1.3" ry="2.6" transform="rotate(120 14.2 41.8)" />
+                    <ellipse
+                        cx="14.2"
+                        cy="46.2"
+                        rx="1.3"
+                        ry="2.6"
+                        transform="rotate(60 14.2 46.2)"
+                    />
+                    <ellipse
+                        cx="14.2"
+                        cy="41.8"
+                        rx="1.3"
+                        ry="2.6"
+                        transform="rotate(120 14.2 41.8)"
+                    />
                 </g>
                 <circle class="pollen" cx="18" cy="44" r="2.1" />
             </g>
@@ -120,30 +153,64 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
         <g v-else-if="id === 'decoction'">
             <g class="sprig">
                 <path class="stem" d="M13 62 C12 54 14 47 19 42" />
-                <path class="leaf" d="M13 52 c-5 0 -8 -4 -7 -8 c5 0 8 3 7 8 z" />
-                <path class="leaf" d="M17 46 c4 -2 8 0 8 3 c-4 2 -8 0 -8 -3 z" />
+                <path
+                    class="leaf"
+                    d="M13 52 c-5 0 -8 -4 -7 -8 c5 0 8 3 7 8 z"
+                />
+                <path
+                    class="leaf"
+                    d="M17 46 c4 -2 8 0 8 3 c-4 2 -8 0 -8 -3 z"
+                />
                 <path class="vein" d="M11 58 v-2 M15 60 v-2 M19 56 v-2" />
                 <ellipse class="berryGoji" cx="11" cy="59" rx="1.7" ry="2.5" />
                 <ellipse class="berryGoji" cx="15" cy="61" rx="1.7" ry="2.5" />
-                <ellipse class="berryGoji" cx="19" cy="57.5" rx="1.7" ry="2.5" />
+                <ellipse
+                    class="berryGoji"
+                    cx="19"
+                    cy="57.5"
+                    rx="1.7"
+                    ry="2.5"
+                />
             </g>
             <!-- slow simmer -->
             <path class="steam" d="M31 20 q-3 -4 0 -8 q3 -4 0 -8" />
             <path class="steam" d="M40 20 q-3 -4 0 -8 q3 -4 0 -8" />
             <!-- pot -->
-            <rect class="b handle" x="54" y="37.5" width="14" height="5" rx="2.5" />
-            <path class="b" d="M16 38 C16 51 24 59 36 59 C48 59 56 51 56 38 z" />
-            <path class="c" d="M20 40 C20.5 49 27 55 36 55 C45 55 51.5 49 52 40 z" />
+            <rect
+                class="b handle"
+                x="54"
+                y="37.5"
+                width="14"
+                height="5"
+                rx="2.5"
+            />
+            <path
+                class="b"
+                d="M16 38 C16 51 24 59 36 59 C48 59 56 51 56 38 z"
+            />
+            <path
+                class="c"
+                d="M20 40 C20.5 49 27 55 36 55 C45 55 51.5 49 52 40 z"
+            />
             <rect class="k" x="13" y="34" width="46" height="5" rx="2" />
-            <path class="b" d="M22 34 C22 26 29 22 36 22 C43 22 50 26 50 34 z" />
+            <path
+                class="b"
+                d="M22 34 C22 26 29 22 36 22 C43 22 50 26 50 34 z"
+            />
             <ellipse class="k" cx="36" cy="21" rx="3.2" ry="2.2" />
         </g>
 
         <!-- ─────────── ג׳ל · tube + gel bead + twin succulent leaves ─────────── -->
         <g v-else-if="id === 'gel'">
             <g class="sprig">
-                <path class="succ" d="M18 64 C10 53 10 41 16 35 C20 43 22 55 18 64 z" />
-                <path class="succ" d="M20 64 C26 55 27 45 23 38 C19 46 17 56 20 64 z" />
+                <path
+                    class="succ"
+                    d="M18 64 C10 53 10 41 16 35 C20 43 22 55 18 64 z"
+                />
+                <path
+                    class="succ"
+                    d="M20 64 C26 55 27 45 23 38 C19 46 17 56 20 64 z"
+                />
             </g>
             <rect class="k" x="32" y="9" width="8" height="8" rx="1.5" />
             <ellipse class="c" cx="36" cy="8" rx="4.2" ry="3.2" />
@@ -159,7 +226,10 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
         <g v-else-if="id === 'cream'">
             <g class="sprig">
                 <path class="stem" d="M15 64 C14 56 15 50 18 45" />
-                <path class="leaf" d="M13 51 c-5 0 -8 -4 -7 -8 c5 0 8 3 7 8 z" />
+                <path
+                    class="leaf"
+                    d="M13 51 c-5 0 -8 -4 -7 -8 c5 0 8 3 7 8 z"
+                />
                 <circle class="calOut" cx="18" cy="42" r="5.4" />
                 <circle class="calIn" cx="18" cy="42" r="2.8" />
             </g>
@@ -194,9 +264,18 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
         <g v-else-if="id === 'ioil'">
             <g class="sprig">
                 <path class="stem" d="M13 63 C12 55 14 48 20 43" />
-                <path class="leaf" d="M11 55 c-4 -3 -4 -8 -1 -11 c3 3 4 8 1 11 z" />
-                <path class="leaf" d="M17 49 c-3 -4 -2 -9 1 -11 c2 4 2 8 -1 11 z" />
-                <path class="leaf" d="M22 44 c1 -4 5 -6 8 -5 c-1 4 -4 6 -8 5 z" />
+                <path
+                    class="leaf"
+                    d="M11 55 c-4 -3 -4 -8 -1 -11 c3 3 4 8 1 11 z"
+                />
+                <path
+                    class="leaf"
+                    d="M17 49 c-3 -4 -2 -9 1 -11 c2 4 2 8 -1 11 z"
+                />
+                <path
+                    class="leaf"
+                    d="M22 44 c1 -4 5 -6 8 -5 c-1 4 -4 6 -8 5 z"
+                />
                 <ellipse class="olive" cx="14" cy="58" rx="1.8" ry="2.4" />
                 <ellipse class="olive" cx="18.5" cy="54" rx="1.8" ry="2.4" />
             </g>
@@ -210,32 +289,97 @@ const content = computed(() => CONTENT[props.id] || '#7d9a63');
 </template>
 
 <style scoped>
-.fta { display: block; overflow: visible; }
+.fta {
+    display: block;
+    overflow: visible;
+}
 
 /* vessel body — cream apothecary glass with a herbal outline */
-.b { fill: #fffdf6; stroke: #45603c; stroke-width: 2; stroke-linejoin: round; }
+.b {
+    fill: #fffdf6;
+    stroke: #45603c;
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
 /* contents — a soft wash of the real material */
-.c { fill: var(--c); opacity: 0.5; }
+.c {
+    fill: var(--c);
+    opacity: 0.5;
+}
 /* caps / lids / rims */
-.k { fill: #45603c; }
-.cork { fill: #a9814e; }
+.k {
+    fill: #45603c;
+}
+.cork {
+    fill: #a9814e;
+}
 /* thin details — pipettes, seams, handles, infusion twigs */
-.d { fill: none; stroke: #45603c; stroke-width: 1.6; stroke-linecap: round; }
+.d {
+    fill: none;
+    stroke: #45603c;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+}
 /* steam + aroma — faint rising wisps */
-.steam { fill: none; stroke: #6d9459; stroke-width: 1.8; stroke-linecap: round; opacity: 0.55; }
-.aroma { fill: none; stroke: #9a86b5; stroke-width: 1.5; stroke-linecap: round; opacity: 0.7; }
+.steam {
+    fill: none;
+    stroke: #6d9459;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    opacity: 0.55;
+}
+.aroma {
+    fill: none;
+    stroke: #9a86b5;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    opacity: 0.7;
+}
 
 /* ——— the sprigs (unique per type) ——— */
-.stem { fill: none; stroke: #5c8150; stroke-width: 1.8; stroke-linecap: round; }
-.leaf { fill: #6d9459; }
-.succ { fill: #79a86a; }
-.vein { fill: none; stroke: #4c6f3e; stroke-width: 1; stroke-linecap: round; opacity: 0.6; }
-.lav { fill: #9a86b5; }                 /* lavender buds */
-.berryRed { fill: #c65b46; }            /* nightshade-family berry */
-.berryGoji { fill: #cf4f3a; }           /* goji — Chinese decoction */
-.petals ellipse { fill: #f4efe3; stroke: #d9d2be; stroke-width: 0.4; }
-.pollen { fill: #e6b84b; }              /* chamomile centre */
-.calOut { fill: #e59a45; }              /* calendula bloom */
-.calIn { fill: #c9702a; }
-.olive { fill: #7f9a44; }
+.stem {
+    fill: none;
+    stroke: #5c8150;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+}
+.leaf {
+    fill: #6d9459;
+}
+.succ {
+    fill: #79a86a;
+}
+.vein {
+    fill: none;
+    stroke: #4c6f3e;
+    stroke-width: 1;
+    stroke-linecap: round;
+    opacity: 0.6;
+}
+.lav {
+    fill: #9a86b5;
+} /* lavender buds */
+.berryRed {
+    fill: #c65b46;
+} /* nightshade-family berry */
+.berryGoji {
+    fill: #cf4f3a;
+} /* goji — Chinese decoction */
+.petals ellipse {
+    fill: #f4efe3;
+    stroke: #d9d2be;
+    stroke-width: 0.4;
+}
+.pollen {
+    fill: #e6b84b;
+} /* chamomile centre */
+.calOut {
+    fill: #e59a45;
+} /* calendula bloom */
+.calIn {
+    fill: #c9702a;
+}
+.olive {
+    fill: #7f9a44;
+}
 </style>

@@ -8,17 +8,32 @@ defineProps({
 });
 
 function scrollToTarget(target) {
-    if (!target) return;
+    if (!target) {
+        return;
+    }
+
     const el = document.getElementById(target);
-    if (!el) return;
+
+    if (!el) {
+        return;
+    }
+
     const startY = window.pageYOffset;
     const destY = Math.max(0, el.getBoundingClientRect().top + startY - 130);
+
     // Smooth when the browser supports it…
-    try { window.scrollTo({ top: destY, behavior: 'smooth' }); }
-    catch (e) { window.scrollTo(0, destY); }
+    try {
+        window.scrollTo({ top: destY, behavior: 'smooth' });
+    } catch {
+        window.scrollTo(0, destY);
+    }
+
     // …but guarantee arrival even where smooth scrolling is a no-op.
     window.setTimeout(() => {
-        if (Math.abs(window.pageYOffset - startY) < 2 && Math.abs(destY - startY) > 4) {
+        if (
+            Math.abs(window.pageYOffset - startY) < 2 &&
+            Math.abs(destY - startY) > 4
+        ) {
             window.scrollTo(0, destY);
         }
     }, 90);
@@ -35,14 +50,23 @@ function scrollToTarget(target) {
         v-if="message"
         role="alert"
         :title="target ? 'לחצו למעבר למקום שדורש התייחסות' : undefined"
-        class="flex items-center gap-[11px] px-[16px] py-[12px] text-[13.5px] font-semibold leading-[1.45] text-danger bg-[#faf0ed] border border-[#e6c3ba] rounded-card"
+        class="flex items-center gap-[11px] rounded-card border border-[#e6c3ba] bg-[#faf0ed] px-[16px] py-[12px] text-[13.5px] leading-[1.45] font-semibold text-danger"
         :class="target ? 'cursor-pointer' : 'cursor-default'"
         @click="target && scrollToTarget(target)"
     >
         <span
-            class="inline-flex items-center justify-center w-[22px] h-[22px] shrink-0 text-white bg-danger rounded-[50%]"
+            class="inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[50%] bg-danger text-white"
         >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
                 <path d="M12 7v6" />
                 <path d="M12 17h.01" />
             </svg>
@@ -50,10 +74,19 @@ function scrollToTarget(target) {
         <span>{{ message }}</span>
         <span
             v-if="target"
-            class="inline-flex items-center gap-[5px] ms-auto shrink-0 text-[12.5px] font-bold"
+            class="ms-auto inline-flex shrink-0 items-center gap-[5px] text-[12.5px] font-bold"
         >
             קחו אותי לשם
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
                 <path d="M19 12H5" />
                 <path d="m12 19-7-7 7-7" />
             </svg>

@@ -7,7 +7,7 @@ import OrderPath from '@/components/shared/wizard/OrderPath.vue';
 import SavePath from '@/components/shared/wizard/SavePath.vue';
 import SuccessScreen from '@/components/shared/wizard/SuccessScreen.vue';
 
-const props = defineProps({
+defineProps({
     formula: { type: Object, required: true },
     patientLabel: { type: String, default: null },
     noPatient: { type: Boolean, default: false },

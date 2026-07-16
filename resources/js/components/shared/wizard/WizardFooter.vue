@@ -5,9 +5,9 @@
 // footer scrolls into view we lift the bar so it comes to rest exactly on top
 // of the footer instead of sliding beneath / over it.
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
 import FooterCell from '@/components/shared/wizard/FooterCell.vue';
 import StepNavBtn from '@/components/shared/wizard/StepNavBtn.vue';
+import Icon from '@/components/ui/Icon.vue';
 
 defineProps({
     patientLabel: { type: String, default: null },
@@ -36,17 +36,25 @@ function compute() {
     // the desired visual offset into this context's CSS length.
     let z = 1;
     let el = barRef.value?.parentElement;
+
     while (el) {
         const zv = parseFloat(getComputedStyle(el).zoom);
-        if (zv && zv !== 1) z *= zv;
+
+        if (zv && zv !== 1) {
+            z *= zv;
+        }
+
         el = el.parentElement;
     }
-    const stripH = strip ? (strip.offsetHeight || 0) : 0;
+
+    const stripH = strip ? strip.offsetHeight || 0 : 0;
     let overlap = 0;
+
     if (footer) {
         const top = footer.getBoundingClientRect().top;
         overlap = window.innerHeight - top; // how much of the footer is on screen
     }
+
     // Always clear the fixed compliance strip; lift further once the main
     // footer scrolls into view so the bar rests on top of it.
     bottom.value = Math.max(stripH, overlap) / z;
@@ -63,28 +71,41 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', compute);
     window.removeEventListener('resize', compute);
-    if (resizeObserver) resizeObserver.disconnect();
+
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+    }
 });
 </script>
 
 <template>
     <div
         ref="barRef"
-        class="wizard-footer-bar fixed left-0 right-0 z-40 flex items-center h-[84px] bg-transparent border-none shadow-none pointer-events-none"
+        class="wizard-footer-bar pointer-events-none fixed right-0 left-0 z-40 flex h-[84px] items-center border-none bg-transparent shadow-none"
         :style="{ bottom: `${bottom}px` }"
     >
         <div
-            class="wizard-footer-inner flex items-center w-full max-w-[min(1080px,calc(var(--maxw-lab)_-_24px))] h-[60px] my-0 mx-auto px-[20px] py-0 bg-surface border border-line-strong rounded-[16px] shadow-[var(--summary-shadow,0_20px_48px_rgba(31,46,29,0.28))] pointer-events-auto"
+            class="wizard-footer-inner pointer-events-auto mx-auto my-0 flex h-[60px] w-full max-w-[min(1080px,calc(var(--maxw-lab)_-_24px))] items-center rounded-[16px] border border-line-strong bg-surface px-[20px] py-0 shadow-[var(--summary-shadow,0_20px_48px_rgba(31,46,29,0.28))]"
         >
             <!-- חזור — right edge (start) in RTL. -->
-            <div class="flex-1 flex justify-start">
-                <StepNavBtn dir="back" label="חזור" compact :disabled="!canBack" @click="canBack && emit('back')" />
+            <div class="flex flex-1 justify-start">
+                <StepNavBtn
+                    dir="back"
+                    label="חזור"
+                    compact
+                    :disabled="!canBack"
+                    @click="canBack && emit('back')"
+                />
             </div>
 
             <!-- Summary — centered in the middle of the bar. -->
             <div class="wizard-footer-summary flex items-center justify-center">
                 <FooterCell label="סיכום" highlight />
-                <FooterCell label="מטופל" :value="noPatient ? 'ללא מטופל' : (patientLabel || '—')" :warning="noPatient" />
+                <FooterCell
+                    label="מטופל"
+                    :value="noPatient ? 'ללא מטופל' : patientLabel || '—'"
+                    :warning="noPatient"
+                />
                 <FooterCell label="סוג">
                     <span class="inline-flex items-center gap-[6px]">
                         <Icon name="flask" :size="14" color="var(--ink-2)" />
@@ -108,8 +129,14 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- הבא — left edge (end) in RTL. -->
-            <div class="flex-1 flex justify-end">
-                <StepNavBtn dir="forward" label="הבא" compact :disabled="!canForward" @click="canForward && emit('forward')" />
+            <div class="flex flex-1 justify-end">
+                <StepNavBtn
+                    dir="forward"
+                    label="הבא"
+                    compact
+                    :disabled="!canForward"
+                    @click="canForward && emit('forward')"
+                />
             </div>
         </div>
     </div>

@@ -4,16 +4,16 @@
 // directions slot. The parent owns the `formula` object; every mutation flows
 // up through emit('patch', …) (the source's setF) and emit('load-saved', …).
 import { ref, computed, useSlots } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
+import DoseInline from '@/components/shared/wizard/DoseInline.vue';
+import SavedFormulaPicker from '@/components/shared/wizard/SavedFormulaPicker.vue';
 import ValidationNote from '@/components/shared/wizard/ValidationNote.vue';
 import ZoneA from '@/components/shared/wizard/ZoneA.vue';
 import ZoneBC from '@/components/shared/wizard/ZoneBC.vue';
 import ZoneD from '@/components/shared/wizard/ZoneD.vue';
-import DoseInline from '@/components/shared/wizard/DoseInline.vue';
-import SavedFormulaPicker from '@/components/shared/wizard/SavedFormulaPicker.vue';
-import { useSavedFormulasStore } from '@/stores/savedFormulas';
-import { visit } from '@/lib/routes';
+import Icon from '@/components/ui/Icon.vue';
 import { HERBS, FORMULA_TYPES } from '@/data/mock';
+import { visit } from '@/lib/routes';
+import { useSavedFormulasStore } from '@/stores/savedFormulas';
 
 const props = defineProps({
     formula: { type: Object, required: true },
@@ -35,7 +35,9 @@ const loadSavedFormula = (saved) => emit('load-saved', saved);
 
 const savedStore = useSavedFormulasStore();
 
-const ftype = computed(() => FORMULA_TYPES.find((t) => t.id === props.formula.typeId));
+const ftype = computed(() =>
+    FORMULA_TYPES.find((t) => t.id === props.formula.typeId),
+);
 
 // "Save to my list" — persists the formula and routes to הפורמולות שלי.
 const savedOpen = ref(false);
@@ -46,8 +48,10 @@ function onSaveToList() {
     // Guard: a formula may never be saved without a name.
     if (!props.formula.name || !props.formula.name.trim()) {
         nameError.value = true;
+
         return;
     }
+
     nameError.value = false;
 
     // Build a SAVED_FORMULAS-shaped entry from the live formula.
@@ -64,7 +68,10 @@ function onSaveToList() {
         tinctureVolume: props.formula.tinctureVolume,
         capsuleCount: props.formula.capsuleCount,
         capsuleMultiPacks: props.formula.capsuleMultiPacks,
-        ingredients: props.formula.ingredients.map((i) => ({ herbId: i.herbId, qty: i.qty })),
+        ingredients: props.formula.ingredients.map((i) => ({
+            herbId: i.herbId,
+            qty: i.qty,
+        })),
         externalNotes: props.formula.externalNotes,
         lastUsed: 'זה עתה נשמרה',
         usageCount: 0,
@@ -82,13 +89,36 @@ function onSaveToList() {
 }
 
 // Continue-button blocker reasons (in priority order).
-const totalParts = computed(() => props.formula.ingredients.reduce((s, i) => s + (+i.parts || 0), 0));
+const totalParts = computed(() =>
+    props.formula.ingredients.reduce((s, i) => s + (+i.parts || 0), 0),
+);
 const blocker = computed(() => {
-    if (props.canNext) return null;
-    if (props.formula.formulaVolume == null) return { msg: 'נא לבחור נפח פורמולה', target: 'tf-anchor-volume' };
-    if (!props.formula.name.trim()) return { msg: 'נא להזין שם פורמולה', target: 'tf-anchor-name' };
-    if (props.formula.ingredients.length === 0) return { msg: 'נא להוסיף לפחות רכיב אחד לפורמולה', target: 'tf-anchor-ingredients' };
-    if (totalParts.value <= 0) return { msg: 'נא להזין חלקים לפחות לרכיב אחד', target: 'tf-anchor-ingredients' };
+    if (props.canNext) {
+        return null;
+    }
+
+    if (props.formula.formulaVolume == null) {
+        return { msg: 'נא לבחור נפח פורמולה', target: 'tf-anchor-volume' };
+    }
+
+    if (!props.formula.name.trim()) {
+        return { msg: 'נא להזין שם פורמולה', target: 'tf-anchor-name' };
+    }
+
+    if (props.formula.ingredients.length === 0) {
+        return {
+            msg: 'נא להוסיף לפחות רכיב אחד לפורמולה',
+            target: 'tf-anchor-ingredients',
+        };
+    }
+
+    if (totalParts.value <= 0) {
+        return {
+            msg: 'נא להזין חלקים לפחות לרכיב אחד',
+            target: 'tf-anchor-ingredients',
+        };
+    }
+
     return null;
 });
 </script>
@@ -96,12 +126,26 @@ const blocker = computed(() => {
 <template>
     <div class="col gap-[24px]">
         <ZoneA :formula="formula" :set-f="setF" />
-        <ZoneBC :formula="formula" :set-f="setF" :patient-meds="patientMeds" :load-saved-formula="loadSavedFormula" />
-        <ZoneD :formula="formula" :ftype="ftype" :patient-label="patientLabel" :no-patient="noPatient" />
+        <ZoneBC
+            :formula="formula"
+            :set-f="setF"
+            :patient-meds="patientMeds"
+            :load-saved-formula="loadSavedFormula"
+        />
+        <ZoneD
+            :formula="formula"
+            :ftype="ftype"
+            :patient-label="patientLabel"
+            :no-patient="noPatient"
+        />
 
         <!-- DoseInline is hidden when the directions slot is present — the new
              WizardStep4 card already contains the full dose + timing UI. -->
-        <DoseInline v-if="!hasDirections && !noPatient" :formula="formula" :set-f="setF" />
+        <DoseInline
+            v-if="!hasDirections && !noPatient"
+            :formula="formula"
+            :set-f="setF"
+        />
 
         <!-- Usage directions — embedded at the end of the compounding flow -->
         <slot name="directions" />
@@ -119,9 +163,11 @@ const blocker = computed(() => {
             />
             <div
                 v-if="savingList"
-                class="flex items-center gap-[12px] px-[16px] py-[12px] text-[13px] font-semibold text-[color:var(--accent-ink,var(--accent))] bg-accent-tint border border-accent rounded-card"
+                class="flex items-center gap-[12px] rounded-card border border-accent bg-accent-tint px-[16px] py-[12px] text-[13px] font-semibold text-[color:var(--accent-ink,var(--accent))]"
             >
-                <div class="w-[18px] h-[18px] shrink-0 border-[2.5px] border-accent-tint-strong border-t-accent rounded-[50%] animate-[tf-spin_0.7s_linear_infinite]" />
+                <div
+                    class="h-[18px] w-[18px] shrink-0 animate-[tf-spin_0.7s_linear_infinite] rounded-[50%] border-[2.5px] border-accent-tint-strong border-t-accent"
+                />
                 <span>שומר את הפורמולה — מעביר אותך אל הפורמולות שלי…</span>
             </div>
             <div class="flex justify-between">
@@ -136,14 +182,20 @@ const blocker = computed(() => {
                         @click="onSaveToList"
                     >
                         <Icon name="save" :size="15" />
-                        <span class="save-to-list-label">שמירת הפורמולה לרשימה שלי</span>
+                        <span class="save-to-list-label"
+                            >שמירת הפורמולה לרשימה שלי</span
+                        >
                     </button>
                     <button
                         v-if="!noPatient"
                         class="btn btn--primary ps-[28px] pe-[28px]"
                         :disabled="!canNext"
                         :title="blocker ? blocker.msg : undefined"
-                        :class="canNext ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
+                        :class="
+                            canNext
+                                ? 'cursor-pointer opacity-100'
+                                : 'cursor-not-allowed opacity-40'
+                        "
                         @click="emit('next')"
                     >
                         המשך לאישור
@@ -156,11 +208,20 @@ const blocker = computed(() => {
         <SavedFormulaPicker
             v-if="savedOpen"
             @close="savedOpen = false"
-            @pick="(saved) => { loadSavedFormula(saved); savedOpen = false; }"
+            @pick="
+                (saved) => {
+                    loadSavedFormula(saved);
+                    savedOpen = false;
+                }
+            "
         />
     </div>
 </template>
 
 <style>
-@keyframes tf-spin { to { transform: rotate(360deg); } }
+@keyframes tf-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 </style>

@@ -3,8 +3,8 @@
 // Western mode: Latin primary (italic), Hebrew secondary.
 // Chinese mode: pinyin primary (no hanzi), Latin secondary (small, italic, below).
 import { computed } from 'vue';
-import { useModeStore } from '@/stores/mode';
 import { herbPinyin } from '@/lib/herbs';
+import { useModeStore } from '@/stores/mode';
 
 const props = defineProps({
     herb: { type: Object, required: true },
@@ -27,11 +27,17 @@ const props = defineProps({
 const { isChinese } = useModeStore();
 
 // Chinese mode: pinyin (hanzi stripped) is primary, Latin botanical is secondary.
-const primary = computed(() => (isChinese.value ? herbPinyin(props.herb) : props.herb.lat));
+const primary = computed(() =>
+    isChinese.value ? herbPinyin(props.herb) : props.herb.lat,
+);
 // Secondary line. In `parallel` mode the Western secondary becomes the Chinese
 // name shown as pinyin only (hanzi stripped) instead of the Hebrew name.
 const secondary = computed(() =>
-    isChinese.value ? props.herb.lat : props.parallel ? herbPinyin(props.herb) : props.herb.heb
+    isChinese.value
+        ? props.herb.lat
+        : props.parallel
+          ? herbPinyin(props.herb)
+          : props.herb.heb,
 );
 // The Latin botanical name is always italic (primary in Western, secondary in Chinese).
 const secondaryIsItalic = computed(() => isChinese.value);
@@ -58,16 +64,26 @@ const secondaryStyle = computed(() => ({
 </script>
 
 <template>
-    <span
-        v-if="inline"
-        class="inline-flex items-baseline gap-[8px] flex-wrap"
-    >
+    <span v-if="inline" class="inline-flex flex-wrap items-baseline gap-[8px]">
         <span :style="primaryStyle">{{ primary }}</span>
-        <span v-if="!hideSecondary" :style="secondaryStyle">{{ secondary }}</span>
+        <span v-if="!hideSecondary" :style="secondaryStyle">{{
+            secondary
+        }}</span>
     </span>
     <template v-else>
         <!-- Block variant pins the primary to Inter 600/15px (design decision from the handoff). -->
-        <div :style="{ ...primaryStyle, fontFamily: 'Inter', fontWeight: '600', fontSize: '15px' }">{{ primary }}</div>
-        <div v-if="!hideSecondary" class="mt-[1px]" :style="secondaryStyle">{{ secondary }}</div>
+        <div
+            :style="{
+                ...primaryStyle,
+                fontFamily: 'Inter',
+                fontWeight: '600',
+                fontSize: '15px',
+            }"
+        >
+            {{ primary }}
+        </div>
+        <div v-if="!hideSecondary" class="mt-[1px]" :style="secondaryStyle">
+            {{ secondary }}
+        </div>
     </template>
 </template>

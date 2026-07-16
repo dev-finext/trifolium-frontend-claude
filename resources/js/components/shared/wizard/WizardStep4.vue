@@ -6,10 +6,10 @@
 // The prototype mutated the formula via a `setF(patch)` callback; here the same
 // patch object is emitted as `patch` and merged by the wizard shell's setF.
 import { computed, nextTick, ref } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
 import DoseCol from '@/components/shared/wizard/DoseCol.vue';
 // Dose rules replace the prototype's window.DOSE_RULES global.
 import { DOSE_RULES } from '@/components/shared/wizard/wizard-rules.js';
+import Icon from '@/components/ui/Icon.vue';
 
 const props = defineProps({
     formula: { type: Object, required: true },
@@ -36,11 +36,14 @@ const STEP4_UNIT_LABELS = {
 const TIMING_TAGS = ['לפני ארוחה', 'עם הארוחה', 'אחרי הארוחה', 'על בטן ריקה'];
 
 const setF = (patch) => emit('patch', patch);
-const setDose = (patch) => setF({ dose: { ...(props.formula.dose || {}), ...patch } });
+const setDose = (patch) =>
+    setF({ dose: { ...(props.formula.dose || {}), ...patch } });
 
 function toggleTag(tag) {
     const cur = props.formula.tags || [];
-    setF({ tags: cur.includes(tag) ? cur.filter((t) => t !== tag) : [...cur, tag] });
+    setF({
+        tags: cur.includes(tag) ? cur.filter((t) => t !== tag) : [...cur, tag],
+    });
 }
 function clearTags() {
     setF({ tags: [] });
@@ -58,27 +61,40 @@ function startAddingTag() {
 }
 function commitTag() {
     const v = tagDraft.value.trim();
+
     if (v && !(props.formula.tags || []).includes(v)) {
         setF({ tags: [...(props.formula.tags || []), v] });
     }
+
     tagDraft.value = '';
     addingTag.value = false;
 }
 function onTagKeydown(e) {
-    if (e.key === 'Enter') commitTag();
-    if (e.key === 'Escape') { tagDraft.value = ''; addingTag.value = false; }
+    if (e.key === 'Enter') {
+        commitTag();
+    }
+
+    if (e.key === 'Escape') {
+        tagDraft.value = '';
+        addingTag.value = false;
+    }
 }
-const customTags = computed(() => (props.formula.tags || []).filter((t) => !TIMING_TAGS.includes(t)));
+const customTags = computed(() =>
+    (props.formula.tags || []).filter((t) => !TIMING_TAGS.includes(t)),
+);
 
 // Units allowed for this formula type (was exposed by window.DOSE_RULES).
 const unitIds = computed(() => {
     const doseRules = DOSE_RULES[props.formula.typeId];
+
     return doseRules ? doseRules.units : Object.keys(STEP4_UNIT_LABELS);
 });
 
 const freqOpts = [1, 2, 3, 4, 5, 6];
 
-const doseUnitValue = computed(() => props.formula.dose?.unit || unitIds.value[0] || 'ml');
+const doseUnitValue = computed(
+    () => props.formula.dose?.unit || unitIds.value[0] || 'ml',
+);
 
 // Textarea border swaps to the accent while focused (prototype used inline handlers).
 function focusBorder(e, on) {
@@ -88,24 +104,25 @@ function focusBorder(e, on) {
 
 <template>
     <div class="col gap-[16px]">
-
         <!-- ─── Card 1: מינון יומי ─────────────────────────── -->
-        <section class="card p-0 overflow-hidden">
-
+        <section class="card overflow-hidden p-0">
             <!-- Title row -->
-            <div class="flex justify-start px-[20px] py-[10px] border-b border-line">
-                <span class="text-[13.5px] font-bold text-accent">מינון יומי</span>
+            <div
+                class="flex justify-start border-b border-line px-[20px] py-[10px]"
+            >
+                <span class="text-[13.5px] font-bold text-accent"
+                    >מינון יומי</span
+                >
             </div>
 
             <!-- 4-column grid -->
             <div class="dose-grid grid grid-cols-[1fr_1fr_1fr_2fr]">
-
                 <!-- כמות -->
                 <DoseCol icon="scale" label="כמות">
                     <input
                         type="number"
                         min="0"
-                        class="input num w-full h-[40px] text-center text-[15px] font-semibold box-border"
+                        class="input num box-border h-[40px] w-full text-center text-[15px] font-semibold"
                         :value="formula.dose?.qty ?? 10"
                         placeholder="כמות"
                         @input="setDose({ qty: +$event.target.value || 0 })"
@@ -115,23 +132,27 @@ function focusBorder(e, on) {
                 <!-- יחידת מידה -->
                 <DoseCol icon="drop" label="יחידת מידה">
                     <select
-                        class="select w-full h-[40px] text-[14px] box-border"
+                        class="select box-border h-[40px] w-full text-[14px]"
                         :value="doseUnitValue"
                         @change="setDose({ unit: $event.target.value })"
                     >
-                        <option v-for="u in unitIds" :key="u" :value="u">{{ STEP4_UNIT_LABELS[u] || u }}</option>
+                        <option v-for="u in unitIds" :key="u" :value="u">
+                            {{ STEP4_UNIT_LABELS[u] || u }}
+                        </option>
                     </select>
                 </DoseCol>
 
                 <!-- פעמים ביום -->
                 <DoseCol icon="gauge" label="פעמים ביום">
                     <select
-                        class="select w-full h-[40px] text-[14px] box-border"
+                        class="select box-border h-[40px] w-full text-[14px]"
                         :value="formula.dose?.perDay || ''"
                         @change="setDose({ perDay: +$event.target.value || 0 })"
                     >
                         <option value="">אנא בחר/י</option>
-                        <option v-for="n in freqOpts" :key="n" :value="n">{{ n }}</option>
+                        <option v-for="n in freqOpts" :key="n" :value="n">
+                            {{ n }}
+                        </option>
                     </select>
                 </DoseCol>
 
@@ -142,21 +163,37 @@ function focusBorder(e, on) {
                             <button
                                 v-for="tag in TIMING_TAGS"
                                 :key="tag"
-                                class="h-[34px] px-[14px] rounded-[999px] border text-[13px] font-semibold cursor-pointer transition-[background-color,border-color,color] duration-[120ms] [font-family:inherit] whitespace-nowrap"
-                                :class="(formula.tags || []).includes(tag) ? 'border-[#546b7c] bg-[#546b7c] text-white' : 'border-line-strong bg-surface text-ink-2'"
+                                class="h-[34px] cursor-pointer rounded-[999px] border px-[14px] [font-family:inherit] text-[13px] font-semibold whitespace-nowrap transition-[background-color,border-color,color] duration-[120ms]"
+                                :class="
+                                    (formula.tags || []).includes(tag)
+                                        ? 'border-[#546b7c] bg-[#546b7c] text-white'
+                                        : 'border-line-strong bg-surface text-ink-2'
+                                "
                                 @click="toggleTag(tag)"
-                            >{{ tag }}</button>
+                            >
+                                {{ tag }}
+                            </button>
 
                             <!-- Custom tags added by the user -->
                             <button
                                 v-for="t in customTags"
                                 :key="t"
                                 title="הסר"
-                                class="inline-flex items-center gap-[6px] h-[34px] px-[14px] rounded-[999px] border border-[#546b7c] bg-[#546b7c] text-white text-[13px] font-semibold cursor-pointer [font-family:inherit] whitespace-nowrap"
+                                class="inline-flex h-[34px] cursor-pointer items-center gap-[6px] rounded-[999px] border border-[#546b7c] bg-[#546b7c] px-[14px] [font-family:inherit] text-[13px] font-semibold whitespace-nowrap text-white"
                                 @click="toggleTag(t)"
                             >
                                 {{ t }}
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                                <svg
+                                    width="11"
+                                    height="11"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                >
+                                    <path d="M18 6 6 18M6 6l12 12" />
+                                </svg>
                             </button>
 
                             <!-- "אחר" — add a free-text tag -->
@@ -166,40 +203,57 @@ function focusBorder(e, on) {
                                 :value="tagDraft"
                                 maxlength="15"
                                 placeholder="הקלד ולחץ Enter"
-                                class="h-[34px] w-[160px] px-[12px] rounded-[999px] border border-accent outline-none text-[13px] [font-family:inherit] bg-surface text-ink"
+                                class="h-[34px] w-[160px] rounded-[999px] border border-accent bg-surface px-[12px] [font-family:inherit] text-[13px] text-ink outline-none"
                                 @input="tagDraft = $event.target.value"
                                 @keydown="onTagKeydown"
                                 @blur="commitTag"
                             />
                             <button
                                 v-else
-                                class="inline-flex items-center gap-[5px] h-[34px] px-[14px] rounded-[999px] border border-dashed border-line-strong bg-surface text-ink-3 text-[13px] font-semibold cursor-pointer [font-family:inherit]"
+                                class="inline-flex h-[34px] cursor-pointer items-center gap-[5px] rounded-[999px] border border-dashed border-line-strong bg-surface px-[14px] [font-family:inherit] text-[13px] font-semibold text-ink-3"
                                 @click="startAddingTag"
                             >
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.4"
+                                    stroke-linecap="round"
+                                >
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
                                 אחר
                             </button>
                         </div>
                         <button
                             :disabled="!hasTags"
-                            class="self-start h-[28px] px-[12px] rounded-[999px] border border-line bg-surface-sunk text-[12px] font-medium [font-family:inherit] transition-opacity duration-[120ms]"
-                            :class="hasTags ? 'text-ink-3 cursor-pointer opacity-100' : 'text-ink-4 cursor-default opacity-45'"
+                            class="h-[28px] self-start rounded-[999px] border border-line bg-surface-sunk px-[12px] [font-family:inherit] text-[12px] font-medium transition-opacity duration-[120ms]"
+                            :class="
+                                hasTags
+                                    ? 'cursor-pointer text-ink-3 opacity-100'
+                                    : 'cursor-default text-ink-4 opacity-45'
+                            "
                             @click="clearTags"
-                        >נקה</button>
+                        >
+                            נקה
+                        </button>
                     </div>
                 </DoseCol>
-
             </div>
 
             <!-- הנחיות נוספות עבור המטופל/ת -->
-            <div class="border-t border-line pt-[14px] px-[20px] pb-[18px]">
-                <div class="mb-[8px] text-[13px] font-semibold text-ink-2 text-right">
+            <div class="border-t border-line px-[20px] pt-[14px] pb-[18px]">
+                <div
+                    class="mb-[8px] text-right text-[13px] font-semibold text-ink-2"
+                >
                     הנחיות נוספות עבור המטופל/ת
                 </div>
                 <textarea
                     :value="formula.externalNotes || ''"
                     placeholder="הנחיות נוספות עבור המטופל/ת"
-                    class="block w-full min-h-[72px] border border-line rounded-control px-[14px] py-[10px] text-[14px] leading-[1.55] [font-family:inherit] outline-none resize-y bg-surface text-ink box-border"
+                    class="box-border block min-h-[72px] w-full resize-y rounded-control border border-line bg-surface px-[14px] py-[10px] [font-family:inherit] text-[14px] leading-[1.55] text-ink outline-none"
                     @input="setF({ externalNotes: $event.target.value })"
                     @focus="focusBorder($event, true)"
                     @blur="focusBorder($event, false)"
@@ -208,14 +262,18 @@ function focusBorder(e, on) {
         </section>
 
         <!-- ─── Card 2: הוראות לבית המרקחת ────────────────── -->
-        <section class="card pharmacy-notes-card p-0 overflow-hidden">
-            <div class="flex justify-start px-[20px] py-[10px] border-b border-line">
-                <span class="text-[13.5px] font-bold text-accent">הוראות לבית המרקחת</span>
+        <section class="card pharmacy-notes-card overflow-hidden p-0">
+            <div
+                class="flex justify-start border-b border-line px-[20px] py-[10px]"
+            >
+                <span class="text-[13.5px] font-bold text-accent"
+                    >הוראות לבית המרקחת</span
+                >
             </div>
-            <div class="pt-[16px] px-[20px] pb-[20px]">
+            <div class="px-[20px] pt-[16px] pb-[20px]">
                 <textarea
                     :value="formula.internalNotes || ''"
-                    class="block w-full min-h-[110px] border border-line rounded-control px-[14px] py-[10px] text-[14px] leading-[1.55] [font-family:inherit] outline-none resize-y bg-surface text-ink box-border"
+                    class="box-border block min-h-[110px] w-full resize-y rounded-control border border-line bg-surface px-[14px] py-[10px] [font-family:inherit] text-[14px] leading-[1.55] text-ink outline-none"
                     @input="setF({ internalNotes: $event.target.value })"
                 />
             </div>

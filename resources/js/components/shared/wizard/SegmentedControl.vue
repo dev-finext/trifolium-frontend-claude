@@ -16,18 +16,22 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const norm = computed(() =>
-    props.options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o)),
+    props.options.map((o) =>
+        typeof o === 'string' ? { value: o, label: o } : o,
+    ),
 );
 
 const btns = ref([]);
 const selectedIndex = computed(() => {
     const i = norm.value.findIndex((o) => o.value === props.modelValue);
+
     return i; // -1 when nothing selected
 });
 // Roving tabindex: the selected option is the single tab stop; if none is
 // selected the first option is, so the group is always reachable by Tab.
 function tabindexFor(i) {
     const sel = selectedIndex.value;
+
     return (sel === -1 ? i === 0 : i === sel) ? 0 : -1;
 }
 
@@ -40,10 +44,17 @@ function onKeydown(e, i) {
     const n = norm.value.length;
     // RTL: ArrowLeft advances, ArrowRight goes back; Up/Down direction-neutral.
     let next = null;
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = (i + 1) % n;
-    else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = (i - 1 + n) % n;
-    else if (e.key === 'Home') next = 0;
-    else if (e.key === 'End') next = n - 1;
+
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        next = (i + 1) % n;
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+        next = (i - 1 + n) % n;
+    } else if (e.key === 'Home') {
+        next = 0;
+    } else if (e.key === 'End') {
+        next = n - 1;
+    }
+
     if (next !== null) {
         e.preventDefault();
         select(next);
@@ -55,7 +66,7 @@ function onKeydown(e, i) {
     <div
         role="radiogroup"
         :aria-label="ariaLabel || undefined"
-        class="inline-flex h-[40px] border border-line rounded-control overflow-hidden"
+        class="inline-flex h-[40px] overflow-hidden rounded-control border border-line"
     >
         <button
             v-for="(o, i) in norm"
@@ -65,13 +76,17 @@ function onKeydown(e, i) {
             role="radio"
             :aria-checked="modelValue === o.value"
             :tabindex="tabindexFor(i)"
-            class="h-full px-[18px] py-0 border-0 text-[13px] [font-family:inherit] whitespace-nowrap cursor-pointer transition-all duration-[.12s]"
+            class="h-full cursor-pointer border-0 px-[18px] py-0 [font-family:inherit] text-[13px] whitespace-nowrap transition-all duration-[.12s]"
             :class="[
                 i === norm.length - 1 ? '' : 'border-e border-line',
-                modelValue === o.value ? 'bg-inverse-surface text-inverse-ink font-medium' : 'bg-transparent text-ink-2 font-normal',
+                modelValue === o.value
+                    ? 'bg-inverse-surface font-medium text-inverse-ink'
+                    : 'bg-transparent font-normal text-ink-2',
             ]"
             @click="emit('update:modelValue', o.value)"
             @keydown="onKeydown($event, i)"
-        >{{ o.label }}</button>
+        >
+            {{ o.label }}
+        </button>
     </div>
 </template>

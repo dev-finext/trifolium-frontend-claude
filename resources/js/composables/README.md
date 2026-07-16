@@ -18,18 +18,18 @@ import { useDarkMode } from '@/composables/useDarkMode';
 import { ref, onMounted } from 'vue';
 
 export function useDarkMode() {
-  const isDark = ref(false);
+    const isDark = ref(false);
 
-  onMounted(() => {
-    isDark.value = document.documentElement.classList.contains('dark');
-  });
+    onMounted(() => {
+        isDark.value = document.documentElement.classList.contains('dark');
+    });
 
-  function toggle() {
-    isDark.value = !isDark.value;
-    document.documentElement.classList.toggle('dark', isDark.value);
-  }
+    function toggle() {
+        isDark.value = !isDark.value;
+        document.documentElement.classList.toggle('dark', isDark.value);
+    }
 
-  return { isDark, toggle };
+    return { isDark, toggle };
 }
 ```
 
@@ -54,18 +54,18 @@ export function useDarkMode() {
 import { ref, onMounted } from 'vue';
 
 export function useDarkMode() {
-  const isDark = ref(false);
+    const isDark = ref(false);
 
-  onMounted(() => {
-    isDark.value = document.documentElement.classList.contains('dark');
-  });
+    onMounted(() => {
+        isDark.value = document.documentElement.classList.contains('dark');
+    });
 
-  function toggle() {
-    isDark.value = !isDark.value;
-    document.documentElement.classList.toggle('dark', isDark.value);
-  }
+    function toggle() {
+        isDark.value = !isDark.value;
+        document.documentElement.classList.toggle('dark', isDark.value);
+    }
 
-  return { isDark, toggle };
+    return { isDark, toggle };
 }
 ```
 
@@ -80,6 +80,6 @@ const { isDark, toggle } = useDarkMode();
 </script>
 
 <template>
-  <Button @click="toggle">{{ isDark ? '☀️ Light' : '🌙 Dark' }}</Button>
+    <Button @click="toggle">{{ isDark ? '☀️ Light' : '🌙 Dark' }}</Button>
 </template>
 ```

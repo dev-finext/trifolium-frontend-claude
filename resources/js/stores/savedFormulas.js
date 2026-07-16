@@ -29,6 +29,7 @@ function remove(id) {
 function consumeHighlight() {
     const id = state.highlightId;
     state.highlightId = null;
+
     return id;
 }
 

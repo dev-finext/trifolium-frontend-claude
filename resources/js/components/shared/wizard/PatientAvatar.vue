@@ -9,12 +9,18 @@ defineProps({
 
 <template>
     <div
-        class="flex items-center justify-center shrink-0 font-bold rounded-[50%]"
-        :class="sel ? 'bg-accent text-white' : 'bg-accent-tint-strong text-accent-ink'"
+        class="flex shrink-0 items-center justify-center rounded-[50%] font-bold"
+        :class="
+            sel
+                ? 'bg-accent text-white'
+                : 'bg-accent-tint-strong text-accent-ink'
+        "
         :style="{
             width: `${size}px`,
             height: `${size}px`,
             fontSize: `${Math.round(size * 0.34)}px`,
         }"
-    >{{ initials }}</div>
+    >
+        {{ initials }}
+    </div>
 </template>

@@ -21,10 +21,16 @@ const isBack = computed(() => props.dir === 'back');
     <button
         type="button"
         :disabled="disabled"
-        class="inline-flex items-center gap-[6px] shrink-0 font-semibold [font-family:inherit] bg-surface border rounded-[999px] transition-[border-color,color,background-color] duration-[.12s]"
+        class="inline-flex shrink-0 items-center gap-[6px] rounded-[999px] border bg-surface [font-family:inherit] font-semibold transition-[border-color,color,background-color] duration-[.12s]"
         :class="[
-            compact ? 'h-[30px] ps-[11px] pe-[11px] text-[12.5px]' : 'h-[34px] ps-[14px] pe-[14px] text-[13.5px]',
-            disabled ? 'border-line text-ink-4 cursor-not-allowed opacity-55' : (hover ? 'border-accent text-accent cursor-pointer opacity-100' : 'border-line-strong text-ink-2 cursor-pointer opacity-100'),
+            compact
+                ? 'h-[30px] ps-[11px] pe-[11px] text-[12.5px]'
+                : 'h-[34px] ps-[14px] pe-[14px] text-[13.5px]',
+            disabled
+                ? 'cursor-not-allowed border-line text-ink-4 opacity-55'
+                : hover
+                  ? 'cursor-pointer border-accent text-accent opacity-100'
+                  : 'cursor-pointer border-line-strong text-ink-2 opacity-100',
         ]"
         @click="!disabled && emit('click')"
         @mouseenter="hover = true"

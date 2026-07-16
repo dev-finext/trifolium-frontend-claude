@@ -9,7 +9,7 @@ const hover = ref(false);
 
 <template>
     <button
-        class="btn--icon w-[26px] h-[26px]"
+        class="btn--icon h-[26px] w-[26px]"
         :class="hover ? 'text-danger' : 'text-ink-3'"
         title="הסר"
         @click="$emit('click')"

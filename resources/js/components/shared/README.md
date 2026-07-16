@@ -13,10 +13,10 @@ import AppHeader from '@/components/shared/AppHeader.vue';
 - Layout & chrome shared across pages: `AppLayout.vue`, `AppHeader.vue`, `Sidebar.vue`, `Footer.vue`, `Breadcrumbs.vue`.
 - Cross-page feature widgets: `FlashMessages.vue`, `Pagination.vue`, `SearchBar.vue`, `UserMenu.vue`, `NotificationBell.vue`.
 - Components that compose `@/components/ui` primitives and may:
-  - use Inertia (`<Link>`, `<Form>`, `useForm`, `router`),
-  - read from `@/stores`,
-  - reference routes via Wayfinder (`@/routes`, `@/actions`),
-  - call `@/composables`.
+    - use Inertia (`<Link>`, `<Form>`, `useForm`, `router`),
+    - read from `@/stores`,
+    - reference routes via Wayfinder (`@/routes`, `@/actions`),
+    - call `@/composables`.
 
 ```vue
 <script setup lang="ts">
@@ -25,10 +25,10 @@ import Button from '@/components/ui/Button.vue';
 </script>
 
 <template>
-  <header class="flex items-center justify-between p-4">
-    <Link href="/">Home</Link>
-    <Button>New</Button>
-  </header>
+    <header class="flex items-center justify-between p-4">
+        <Link href="/">Home</Link>
+        <Button>New</Button>
+    </header>
 </template>
 ```
 
@@ -59,10 +59,12 @@ defineProps<{ user: User }>();
 </script>
 
 <template>
-  <div class="flex items-center justify-between rounded border p-4">
-    <span>{{ user.name }}</span>
-    <Link :href="`/users/${user.id}/edit`"><Button variant="ghost">Edit</Button></Link>
-  </div>
+    <div class="flex items-center justify-between rounded border p-4">
+        <span>{{ user.name }}</span>
+        <Link :href="`/users/${user.id}/edit`"
+            ><Button variant="ghost">Edit</Button></Link
+        >
+    </div>
 </template>
 ```
 
@@ -77,7 +79,7 @@ defineProps<{ users: User[] }>();
 </script>
 
 <template>
-  <UserCard v-for="user in users" :key="user.id" :user="user" />
+    <UserCard v-for="user in users" :key="user.id" :user="user" />
 </template>
 ```
 

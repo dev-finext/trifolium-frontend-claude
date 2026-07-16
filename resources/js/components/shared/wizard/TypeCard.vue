@@ -4,9 +4,9 @@
 // little "i" badge reveals a viewport-fixed tooltip (Teleported to <body> so
 // the card's / section's overflow never clips it).
 import { ref, computed } from 'vue';
-import Icon from '@/components/ui/Icon.vue';
 import FormulaTypeArt from '@/components/shared/wizard/FormulaTypeArt.vue';
 import { TYPE_INFO } from '@/components/shared/wizard/wizard-lib';
+import Icon from '@/components/ui/Icon.vue';
 
 const props = defineProps({
     type: { type: Object, required: true },
@@ -27,34 +27,46 @@ function showTip(e) {
 
 // Tooltip geometry — clamp horizontally so text never runs off either edge.
 const tipBox = computed(() => {
-    if (!tip.value) return null;
+    if (!tip.value) {
+        return null;
+    }
+
     const margin = 14;
-    const vw = Math.min(window.innerWidth, document.documentElement.clientWidth);
+    const vw = Math.min(
+        window.innerWidth,
+        document.documentElement.clientWidth,
+    );
     const W = Math.min(236, vw - margin * 2);
     let left = tip.value.cx - W / 2;
     left = Math.max(margin, Math.min(left, vw - W - margin));
     const arrowX = Math.max(14, Math.min(W - 14, tip.value.cx - left));
+
     return { W, left, arrowX, top: tip.value.top };
 });
 </script>
 
 <template>
     <button
-        class="ftype-card relative flex flex-col items-center justify-center gap-[8px] w-full min-w-0 h-[116px] pt-[12px] px-[8px] pb-[10px] [font-family:inherit] text-ink bg-surface rounded-card cursor-pointer"
-        :class="selected
-            ? 'border-2 border-accent shadow-[inset_0_0_0_1px_var(--accent),0_6px_16px_-10px_rgba(31,46,29,0.30)]'
-            : hover
-                ? 'border border-line-strong shadow-[0_4px_12px_-8px_rgba(20,18,14,0.30)]'
-                : 'border border-line shadow-none'"
+        class="ftype-card relative flex h-[116px] w-full min-w-0 cursor-pointer flex-col items-center justify-center gap-[8px] rounded-card bg-surface px-[8px] pt-[12px] pb-[10px] [font-family:inherit] text-ink"
+        :class="
+            selected
+                ? 'border-2 border-accent shadow-[inset_0_0_0_1px_var(--accent),0_6px_16px_-10px_rgba(31,46,29,0.30)]'
+                : hover
+                  ? 'border border-line-strong shadow-[0_4px_12px_-8px_rgba(20,18,14,0.30)]'
+                  : 'border border-line shadow-none'
+        "
         @click="emit('click')"
         @mouseenter="hover = true"
-        @mouseleave="hover = false; tip = null"
+        @mouseleave="
+            hover = false;
+            tip = null;
+        "
     >
         <!-- Info badge — hover opens an explanatory tooltip for this type -->
         <span
             v-if="info"
             :aria-label="'מידע על ' + type.heb"
-            class="absolute top-[6px] start-[6px] inline-flex items-center justify-center w-[19px] h-[19px] text-ink-3 bg-surface-sunk border border-line rounded-[50%] cursor-help"
+            class="absolute start-[6px] top-[6px] inline-flex h-[19px] w-[19px] cursor-help items-center justify-center rounded-[50%] border border-line bg-surface-sunk text-ink-3"
             @mouseenter="showTip"
             @mouseleave="tip = null"
             @click.stop
@@ -64,14 +76,23 @@ const tipBox = computed(() => {
         </span>
 
         <span
-            class="inline-flex items-center justify-center shrink-0 w-[58px] h-[58px] bg-[#f8f7ef] border border-line rounded-[15px]"
+            class="inline-flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-[15px] border border-line bg-[#f8f7ef]"
         >
             <FormulaTypeArt :id="id" :size="50" />
         </span>
 
         <div class="max-w-full text-center leading-[1.25]">
-            <div class="text-[14px] text-ink whitespace-nowrap" :class="selected ? 'font-bold' : 'font-semibold'">{{ type.heb }}</div>
-            <div class="mt-[3px] text-[12px] text-ink-3 whitespace-nowrap overflow-hidden text-ellipsis">{{ type.sub }}</div>
+            <div
+                class="text-[14px] whitespace-nowrap text-ink"
+                :class="selected ? 'font-bold' : 'font-semibold'"
+            >
+                {{ type.heb }}
+            </div>
+            <div
+                class="mt-[3px] overflow-hidden text-[12px] text-ellipsis whitespace-nowrap text-ink-3"
+            >
+                {{ type.sub }}
+            </div>
         </div>
 
         <!-- Floating tooltip — fixed to the viewport, Teleported to <body>. -->
@@ -79,17 +100,17 @@ const tipBox = computed(() => {
             <div
                 v-if="tipBox && info"
                 role="tooltip"
-                class="fixed -translate-y-full py-[11px] px-[14px] text-[12.5px] font-normal leading-[1.55] text-right [direction:rtl] text-(--surface) bg-(--ink) rounded-[9px] shadow-[0_14px_30px_-10px_rgba(20,18,14,0.55)] z-[1000] pointer-events-none"
+                class="pointer-events-none fixed z-[1000] -translate-y-full rounded-[9px] bg-(--ink) px-[14px] py-[11px] text-right text-[12.5px] leading-[1.55] font-normal text-(--surface) shadow-[0_14px_30px_-10px_rgba(20,18,14,0.55)] [direction:rtl]"
                 :style="{
-                    top: (tipBox.top - 10) + 'px',
+                    top: tipBox.top - 10 + 'px',
                     left: tipBox.left + 'px',
                     width: tipBox.W + 'px',
                 }"
             >
-                <div class="font-bold mb-[3px]">{{ type.heb }}</div>
+                <div class="mb-[3px] font-bold">{{ type.heb }}</div>
                 {{ info }}
                 <span
-                    class="absolute top-full -translate-x-1/2 w-0 h-0 border-s-[6px] border-s-transparent border-e-[6px] border-e-transparent border-t-[6px] border-t-ink"
+                    class="absolute top-full h-0 w-0 -translate-x-1/2 border-s-[6px] border-e-[6px] border-t-[6px] border-s-transparent border-e-transparent border-t-ink"
                     :style="{ left: tipBox.arrowX + 'px' }"
                 />
             </div>

@@ -22,9 +22,9 @@ defineProps<{ users: App.Data.UserData[] }>();
 </script>
 
 <template>
-  <AppLayout>
-    <!-- page content -->
-  </AppLayout>
+    <AppLayout>
+        <!-- page content -->
+    </AppLayout>
 </template>
 ```
 
@@ -55,9 +55,9 @@ defineProps<{ users: User[] }>();
 </script>
 
 <template>
-  <AppLayout>
-    <UserCard v-for="user in users" :key="user.id" :user="user" />
-  </AppLayout>
+    <AppLayout>
+        <UserCard v-for="user in users" :key="user.id" :user="user" />
+    </AppLayout>
 </template>
 ```
 

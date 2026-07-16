@@ -21,13 +21,17 @@ defineEmits(['update:modelValue']);
                 <Icon name="chevron_down" :size="16" />
             </span>
             <select
-                class="select appearance-none [-webkit-appearance:none] pl-[34px] cursor-pointer"
+                class="select cursor-pointer appearance-none pl-[34px] [-webkit-appearance:none]"
                 :class="modelValue ? 'text-ink' : 'text-ink-4'"
                 :value="modelValue"
                 @change="$emit('update:modelValue', $event.target.value)"
             >
-                <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>
-                <option v-for="o in options" :key="o" :value="o">{{ o }}</option>
+                <option v-if="placeholder" value="" disabled>
+                    {{ placeholder }}
+                </option>
+                <option v-for="o in options" :key="o" :value="o">
+                    {{ o }}
+                </option>
             </select>
         </div>
     </div>

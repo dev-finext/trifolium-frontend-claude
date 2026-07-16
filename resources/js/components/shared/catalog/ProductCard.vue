@@ -22,32 +22,41 @@ const emit = defineEmits(['add']);
 
 <template>
     <div class="card product-card">
-        <div class="product-card__media relative h-[180px] overflow-hidden border-b border-b-line bg-surface-sunk">
+        <div
+            class="product-card__media relative h-[180px] overflow-hidden border-b border-b-line bg-surface-sunk"
+        >
             <img
                 :src="PRODUCT_IMG_URL"
                 :alt="product.heb"
                 loading="lazy"
-                class="product-card__img block w-full h-full object-cover"
+                class="product-card__img block h-full w-full object-cover"
             />
             <span
                 v-if="product.tag"
-                class="absolute top-[12px] end-[12px] py-[3px] px-[10px] text-[11px] font-medium text-ink-2 bg-surface border border-line rounded-[999px]"
-            >{{ product.tag }}</span>
+                class="absolute end-[12px] top-[12px] rounded-[999px] border border-line bg-surface px-[10px] py-[3px] text-[11px] font-medium text-ink-2"
+                >{{ product.tag }}</span
+            >
         </div>
 
-        <div class="flex flex-col flex-1 gap-[4px] p-[16px]">
+        <div class="flex flex-1 flex-col gap-[4px] p-[16px]">
             <div class="text-[15px] font-medium">{{ product.heb }}</div>
             <div class="small muted leading-[1.5]">{{ product.sub }}</div>
             <div class="small muted">{{ product.vol }}</div>
 
-            <div class="flex items-center justify-between mt-[12px]">
+            <div class="mt-[12px] flex items-center justify-between">
                 <div>
-                    <span class="num text-[20px] font-semibold">{{ product.price }}</span>
-                    <span class="text-[13px] text-ink-3 mr-[2px]"> ₪</span>
+                    <span class="num text-[20px] font-semibold">{{
+                        product.price
+                    }}</span>
+                    <span class="mr-[2px] text-[13px] text-ink-3"> ₪</span>
                 </div>
                 <button
                     class="btn btn--ghost btn--sm"
-                    :aria-label="inCart > 0 ? `${product.heb} — ${inCart} בסל, הוסף עוד` : `הוסף ${product.heb} לסל`"
+                    :aria-label="
+                        inCart > 0
+                            ? `${product.heb} — ${inCart} בסל, הוסף עוד`
+                            : `הוסף ${product.heb} לסל`
+                    "
                     @click.stop="emit('add')"
                 >
                     <template v-if="inCart > 0">
@@ -66,7 +75,10 @@ const emit = defineEmits(['add']);
 .product-card {
     display: flex;
     flex-direction: column;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .15s ease;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.15s ease;
 }
 .product-card:hover,
 .product-card:focus-within {
@@ -74,10 +86,18 @@ const emit = defineEmits(['add']);
     transform: translateY(-3px);
     box-shadow: 0 8px 24px -8px rgba(31, 46, 29, 0.18);
 }
-.product-card__img { transition: transform .5s ease; }
+.product-card__img {
+    transition: transform 0.5s ease;
+}
 .product-card:hover .product-card__img,
-.product-card:focus-within .product-card__img { transform: scale(1.04); }
+.product-card:focus-within .product-card__img {
+    transform: scale(1.04);
+}
 @media (prefers-reduced-motion: reduce) {
-    .product-card, .product-card:hover, .product-card:focus-within { transform: none; }
+    .product-card,
+    .product-card:hover,
+    .product-card:focus-within {
+        transform: none;
+    }
 }
 </style>

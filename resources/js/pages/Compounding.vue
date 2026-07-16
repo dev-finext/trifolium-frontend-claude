@@ -7,15 +7,15 @@
 // -page concerns live in the wizard store (dirty → mode-switch confirmation,
 // resetSignal → wipe-and-restart after a confirmed style switch) and the
 // pending-formula hand-off from "My Formulas".
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import StepIndicator from '@/components/shared/wizard/StepIndicator.vue';
+import { VOLUME_RULES } from '@/components/shared/wizard/wizard-rules.js';
 import WizardFooter from '@/components/shared/wizard/WizardFooter.vue';
 import WizardStep2 from '@/components/shared/wizard/WizardStep2.vue';
 import WizardStep3 from '@/components/shared/wizard/WizardStep3.vue';
 import WizardStep4 from '@/components/shared/wizard/WizardStep4.vue';
 import WizardStep5 from '@/components/shared/wizard/WizardStep5.vue';
-import { VOLUME_RULES } from '@/components/shared/wizard/wizard-rules.js';
 import { FORMULA_TYPES, HERBS, PATIENTS } from '@/data/mock';
 import { useWizardStore } from '@/stores/wizard';
 
@@ -71,9 +71,12 @@ const patientOption = ref('existing');
 // No patient pre-selected — the practitioner must choose one proactively.
 const existingPatientId = ref(null);
 const newPatient = ref({
-    firstName: '', lastName: '',
+    firstName: '',
+    lastName: '',
     phone: '',
-    age: '', ageEstimated: false, sex: '',
+    age: '',
+    ageEstimated: false,
+    sex: '',
     pregnant: null,
     breastfeeding: null,
     onMeds: null,
@@ -87,7 +90,9 @@ const newPatient = ref({
 // unchanged. formulaVolume starts as null — the practitioner MUST pick one
 // before the ingredient builder unlocks.
 const formula = ref(makeDefaultFormula());
-const setF = (patch) => { formula.value = { ...formula.value, ...patch }; };
+const setF = (patch) => {
+    formula.value = { ...formula.value, ...patch };
+};
 
 // Report whether the formula has any ingredients — drives whether a style
 // switch needs the wipe-confirmation popup (mode store reads state.dirty).
@@ -117,16 +122,24 @@ watch(
 // pending hand-off from "My Formulas"). Saved formulas store legacy qty;
 // normalize to percentages on load.
 function loadSavedFormula(saved) {
-    const sumQty = saved.ingredients.reduce((s, i) => s + (+i.qty || 0), 0) || 1;
+    const sumQty =
+        saved.ingredients.reduce((s, i) => s + (+i.qty || 0), 0) || 1;
     // Pick the volume that matches the saved type's unit.
-    const fv = saved.typeId === 'capsule'
-        ? (saved.capsuleCount ?? 200)
-        : (saved.tinctureVolume ?? 200);
+    const fv =
+        saved.typeId === 'capsule'
+            ? (saved.capsuleCount ?? 200)
+            : (saved.tinctureVolume ?? 200);
     const normalized = saved.ingredients.map((i) => {
         const pct = Math.round((i.qty / sumQty) * 1000) / 10; // 1-decimal
+
         // Chinese mode: keep the saved amount as the part ratio so the parts
         // builder reproduces the same proportions.
-        return { herbId: i.herbId, pct, qty: Math.round((pct / 100) * fv), parts: Math.max(1, Math.round(i.qty)) };
+        return {
+            herbId: i.herbId,
+            pct,
+            qty: Math.round((pct / 100) * fv),
+            parts: Math.max(1, Math.round(i.qty)),
+        };
     });
     formula.value = {
         ...formula.value,
@@ -136,7 +149,8 @@ function loadSavedFormula(saved) {
         tinctureVolume: saved.tinctureVolume ?? formula.value.tinctureVolume,
         evaporation: saved.evaporation ?? formula.value.evaporation,
         capsuleCount: saved.capsuleCount ?? formula.value.capsuleCount,
-        capsuleMultiPacks: saved.capsuleMultiPacks ?? formula.value.capsuleMultiPacks,
+        capsuleMultiPacks:
+            saved.capsuleMultiPacks ?? formula.value.capsuleMultiPacks,
         ingredients: normalized,
     };
 }
@@ -147,6 +161,7 @@ function loadSavedFormula(saved) {
 // entering the lab. The composed formula is waiting on step 2.
 onMounted(() => {
     const pending = wizard.consumePendingFormula();
+
     if (pending) {
         loadSavedFormula(pending);
         // Stay on step 1 (patient selection); do not jump to the lab.
@@ -154,88 +169,150 @@ onMounted(() => {
 });
 
 // ─── Patient label + meds (footer + interactions) ─────────────
-const existingPatient = computed(() => PATIENTS.find((p) => p.id === existingPatientId.value));
+const existingPatient = computed(() =>
+    PATIENTS.find((p) => p.id === existingPatientId.value),
+);
 const noPatient = computed(() => patientOption.value === 'none');
 const patientLabel = computed(() => {
-    if (noPatient.value) return null;
-    if (patientOption.value === 'existing') return existingPatient.value?.heb || '—';
+    if (noPatient.value) {
+        return null;
+    }
+
+    if (patientOption.value === 'existing') {
+        return existingPatient.value?.heb || '—';
+    }
+
     const np = newPatient.value;
+
     return np.firstName ? `${np.firstName} ${np.lastName}`.trim() : '—';
 });
 const patientMeds = computed(() => {
     if (patientOption.value === 'new') {
         const m = newPatient.value.meds;
-        return newPatient.value.onMeds ? (Array.isArray(m) ? m.join(', ') : m) : '';
+
+        return newPatient.value.onMeds
+            ? Array.isArray(m)
+                ? m.join(', ')
+                : m
+            : '';
     }
+
     if (patientOption.value === 'existing') {
         const m = existingPatient.value?.meds;
-        return (m && m.length) ? m.join(', ') : '';
+
+        return m && m.length ? m.join(', ') : '';
     }
+
     return '';
 });
 // Whether the chosen patient is on any medication — drives the interaction-
 // safety declaration on the confirmation step.
 const patientOnMeds = computed(() => {
-    if (patientOption.value === 'new') return newPatient.value.onMeds === true;
+    if (patientOption.value === 'new') {
+        return newPatient.value.onMeds === true;
+    }
+
     if (patientOption.value === 'existing') {
         const m = existingPatient.value?.meds;
+
         return !!(m && m.length);
     }
+
     return false;
 });
 
 // Last-step label adapts when "no patient".
 const stepsResolved = computed(() =>
-    STEPS.map((s) => (s.n === 3 && noPatient.value ? { ...s, label: 'שמירה' } : s)),
+    STEPS.map((s) =>
+        s.n === 3 && noPatient.value ? { ...s, label: 'שמירה' } : s,
+    ),
 );
 
 // ─── Footer values derived live from formula ──────────────────
-const ftype = computed(() => FORMULA_TYPES.find((t) => t.id === formula.value.typeId));
+const ftype = computed(() =>
+    FORMULA_TYPES.find((t) => t.id === formula.value.typeId),
+);
 const itemsCount = computed(() => formula.value.ingredients.length);
 // Rough pricing for the footer summary.
 const subtotalILS = computed(() => {
     const totalPriceBase = formula.value.ingredients.reduce((s, i) => {
         const h = HERBS.find((h) => h.id === i.herbId);
+
         return s + (h ? h.price * i.qty : 0);
     }, 0);
     const compoundingFee = 35;
     // Each EXTRA package (beyond the first) adds ₪10 — powder/tea split packaging.
-    const extraPackFee = (formula.value.splitPackaging && (formula.value.typeId === 'powder' || formula.value.typeId === 'tea'))
-        ? Math.max(0, (formula.value.packageCount || 1) - 1) * 10
-        : 0;
+    const extraPackFee =
+        formula.value.splitPackaging &&
+        (formula.value.typeId === 'powder' || formula.value.typeId === 'tea')
+            ? Math.max(0, (formula.value.packageCount || 1) - 1) * 10
+            : 0;
+
     return Math.round(totalPriceBase + compoundingFee + extraPackFee);
 });
 
 // Footer volume label = the volume chosen in Zone A (single source of truth).
 const footerVolume = computed(() => ({
     value: formula.value.formulaVolume || 0,
-    unit: VOLUME_RULES?.[formula.value.typeId]?.unit || ftype.value?.unit || 'ml',
+    unit:
+        VOLUME_RULES?.[formula.value.typeId]?.unit || ftype.value?.unit || 'ml',
 }));
 
 const canNext = computed(() => {
     if (step.value === 1) {
-        if (patientOption.value === 'existing') return !!existingPatientId.value;
+        if (patientOption.value === 'existing') {
+            return !!existingPatientId.value;
+        }
+
         if (patientOption.value === 'new') {
             const p = newPatient.value;
             const ageNum = Number(p.age);
             const ageValid = p.age !== '' && ageNum >= 0 && ageNum <= 120;
-            const needsRepro = p.sex === 'female' && ageValid && ageNum >= 15 && ageNum <= 60;
-            return p.firstName && p.lastName && p.phone && ageValid && p.sex && p.onMeds !== null
-                && (!needsRepro || (p.pregnant !== null && p.breastfeeding !== null))
-                && (p.onMeds !== true || p.medsDeclarationAck === true);
+            const needsRepro =
+                p.sex === 'female' && ageValid && ageNum >= 15 && ageNum <= 60;
+
+            return (
+                p.firstName &&
+                p.lastName &&
+                p.phone &&
+                ageValid &&
+                p.sex &&
+                p.onMeds !== null &&
+                (!needsRepro ||
+                    (p.pregnant !== null && p.breastfeeding !== null)) &&
+                (p.onMeds !== true || p.medsDeclarationAck === true)
+            );
         }
-        if (patientOption.value === 'none') return true;
+
+        if (patientOption.value === 'none') {
+            return true;
+        }
     }
+
     if (step.value === 2) {
         const f = formula.value;
-        if (f.ingredients.length < 1) return false;
-        if (!f.name.trim()) return false;
-        if (!f.formulaVolume) return false;
+
+        if (f.ingredients.length < 1) {
+            return false;
+        }
+
+        if (!f.name.trim()) {
+            return false;
+        }
+
+        if (!f.formulaVolume) {
+            return false;
+        }
+
         // Unified parts model (both styles): need a volume and at least one
         // ingredient carrying a positive part count. The system normalises to 100%.
         return f.ingredients.some((i) => (+i.parts || 0) > 0);
     }
-    if (step.value === 3) return true;
+
+    if (step.value === 3) {
+        return true;
+    }
+
     return true;
 });
 
@@ -244,15 +321,22 @@ const canNext = computed(() => {
 // the current step is actually valid to advance (canNext).
 const canBack = computed(() => step.value > 1);
 const canForward = computed(() => canNext.value && step.value < STEPS.length);
-function goBack() { if (step.value > 1) step.value -= 1; }
-function goForward() { if (canForward.value) go(step.value + 1); }
+function goBack() {
+    if (step.value > 1) {
+        step.value -= 1;
+    }
+}
+function goForward() {
+    if (canForward.value) {
+        go(step.value + 1);
+    }
+}
 </script>
 
 <template>
     <Head title="הכנת פורמולה" />
     <div class="formula-prep bg-bg">
         <div class="[zoom:1.13]">
-
             <!-- Step indicator -->
             <StepIndicator
                 :steps="stepsResolved"
@@ -270,29 +354,41 @@ function goForward() { if (canForward.value) go(step.value + 1); }
                  top bar so the practitioner always knows where they are. -->
             <div class="wizard-mobile-progress" aria-hidden="true">
                 <div class="wizard-mobile-progress__row">
-                    <span class="wizard-mobile-progress__step num">{{ step }}/{{ stepsResolved.length }}</span>
-                    <span class="wizard-mobile-progress__label">{{ stepsResolved[step - 1]?.label }}</span>
+                    <span class="wizard-mobile-progress__step num"
+                        >{{ step }}/{{ stepsResolved.length }}</span
+                    >
+                    <span class="wizard-mobile-progress__label">{{
+                        stepsResolved[step - 1]?.label
+                    }}</span>
                 </div>
                 <div class="wizard-mobile-progress__track">
                     <span
                         v-for="s in stepsResolved"
                         :key="s.n"
-                        :class="['wizard-mobile-progress__seg', { 'wizard-mobile-progress__seg--done': s.n <= step }]"
+                        :class="[
+                            'wizard-mobile-progress__seg',
+                            {
+                                'wizard-mobile-progress__seg--done':
+                                    s.n <= step,
+                            },
+                        ]"
                     />
                 </div>
             </div>
 
             <!-- Step content -->
-            <main class="pt-[40px] px-[24px] pb-[120px]">
-                <div class="max-w-(--maxw-lab) my-0 mx-auto">
-                    <div v-if="step === 1" class="max-w-[720px] my-0 mx-auto">
+            <main class="px-[24px] pt-[40px] pb-[120px]">
+                <div class="mx-auto my-0 max-w-(--maxw-lab)">
+                    <div v-if="step === 1" class="mx-auto my-0 max-w-[720px]">
                         <WizardStep2
                             :option="patientOption"
                             :existing-patient-id="existingPatientId"
                             :new-patient="newPatient"
                             :can-next="canNext"
                             @update:option="patientOption = $event"
-                            @update:existing-patient-id="existingPatientId = $event"
+                            @update:existing-patient-id="
+                                existingPatientId = $event
+                            "
                             @update:new-patient="newPatient = $event"
                             @next="canNext && go(2)"
                         />

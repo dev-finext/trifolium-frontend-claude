@@ -22,16 +22,21 @@ defineEmits(['update:modelValue']);
                 <Icon name="lock" :size="14" />
             </span>
             <input
-                class="input h-[42px] pl-[34px] text-[14px] text-ink-2 bg-surface-sunk cursor-default"
+                class="input h-[42px] cursor-default bg-surface-sunk pl-[34px] text-[14px] text-ink-2"
                 :class="dir === 'ltr' ? 'text-right' : ''"
-                :value="modelValue" readonly tabindex="-1" :dir="dir"
+                :value="modelValue"
+                readonly
+                tabindex="-1"
+                :dir="dir"
             />
         </div>
         <input
             v-else
             class="input h-[42px] text-[14px]"
             :class="dir === 'ltr' ? 'text-right' : ''"
-            :value="modelValue" :placeholder="placeholder" :dir="dir"
+            :value="modelValue"
+            :placeholder="placeholder"
+            :dir="dir"
             @input="$emit('update:modelValue', $event.target.value)"
         />
     </div>

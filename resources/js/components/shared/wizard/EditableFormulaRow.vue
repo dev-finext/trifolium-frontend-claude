@@ -11,27 +11,46 @@ defineEmits(['select']);
 
 <template>
     <div
-        class="flex items-center gap-[12px] px-[18px] py-[13px] border-b border-b-line border-s-[3px] cursor-pointer transition-[background] duration-100"
-        :class="selected ? 'bg-accent-tint border-s-accent' : 'bg-transparent border-s-transparent'"
+        class="flex cursor-pointer items-center gap-[12px] border-s-[3px] border-b border-b-line px-[18px] py-[13px] transition-[background] duration-100"
+        :class="
+            selected
+                ? 'border-s-accent bg-accent-tint'
+                : 'border-s-transparent bg-transparent'
+        "
         @click="$emit('select')"
     >
         <span
-            class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[9px]"
-            :class="selected ? 'bg-white border-accent text-accent' : 'bg-surface-sunk border-line text-ink-3'"
+            class="inline-flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[9px] border"
+            :class="
+                selected
+                    ? 'border-accent bg-white text-accent'
+                    : 'border-line bg-surface-sunk text-ink-3'
+            "
         >
             <FormulaTypeIcon :id="f.typeId" :size="19" color="currentColor" />
         </span>
-        <div class="flex-1 min-w-0">
-            <div class="text-[14px] font-bold whitespace-nowrap overflow-hidden text-ellipsis" :class="selected ? 'text-accent-ink' : 'text-ink'">{{ f.name }}</div>
-            <div class="mt-[3px] text-[12px] text-ink-3 whitespace-nowrap overflow-hidden text-ellipsis">
-                <span class="num">{{ f.ingredients.length }}</span> רכיבים · {{ f.summary }}
+        <div class="min-w-0 flex-1">
+            <div
+                class="overflow-hidden text-[14px] font-bold text-ellipsis whitespace-nowrap"
+                :class="selected ? 'text-accent-ink' : 'text-ink'"
+            >
+                {{ f.name }}
+            </div>
+            <div
+                class="mt-[3px] overflow-hidden text-[12px] text-ellipsis whitespace-nowrap text-ink-3"
+            >
+                <span class="num">{{ f.ingredients.length }}</span> רכיבים ·
+                {{ f.summary }}
             </div>
         </div>
         <span
-            class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 bg-surface border-2 rounded-[50%]"
+            class="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[50%] border-2 bg-surface"
             :class="selected ? 'border-accent' : 'border-line-strong'"
         >
-            <span v-if="selected" class="w-[8px] h-[8px] rounded-[50%] bg-accent" />
+            <span
+                v-if="selected"
+                class="h-[8px] w-[8px] rounded-[50%] bg-accent"
+            />
         </span>
     </div>
 </template>

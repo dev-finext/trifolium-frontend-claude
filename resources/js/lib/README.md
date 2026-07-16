@@ -22,7 +22,7 @@ import type { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 ```
 
@@ -45,11 +45,11 @@ export function cn(...inputs: ClassValue[]) {
 
 ```ts
 export function formatDate(value: string | Date, locale = 'en-US'): string {
-  return new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(value));
+    return new Intl.DateTimeFormat(locale, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    }).format(new Date(value));
 }
 ```
 
@@ -63,6 +63,6 @@ defineProps<{ publishedAt: string }>();
 </script>
 
 <template>
-  <time>{{ formatDate(publishedAt) }}</time>
+    <time>{{ formatDate(publishedAt) }}</time>
 </template>
 ```

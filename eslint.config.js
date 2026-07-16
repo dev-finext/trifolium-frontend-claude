@@ -39,7 +39,13 @@ export default defineConfigWithVueTs(
         },
         rules: {
             'vue/multi-word-component-names': 'off',
+            // The codebase is plain-JS SFCs (allowJs) — same as the base
+            // repo's migrated components; new components may use lang="ts".
+            'vue/block-lang': ['error', { script: { allowNoLang: true, lang: 'ts' } }],
             '@typescript-eslint/no-explicit-any': 'off',
+            // Destructure-to-omit ({ meta, ...rest } = item) is a deliberate
+            // pattern here (e.g. stripping hold metadata in Pending).
+            '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
             '@typescript-eslint/consistent-type-imports': [
                 'error',
                 {
@@ -79,6 +85,7 @@ export default defineConfigWithVueTs(
         ignores: [
             'node_modules',
             'public',
+            'dist',
             'vite.config.js',
             'vite.preview.config.js',
             'resources/js/components/ui/*',

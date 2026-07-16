@@ -37,13 +37,13 @@ function labelStyle(active) {
         role="switch"
         :aria-checked="isChinese"
         :title="isChinese ? 'מעבר לסגנון מערבי' : 'מעבר לסגנון סיני'"
-        class="relative flex items-stretch h-[30px] p-[2px] shrink-0 [font-family:inherit] bg-surface-sunk border border-line-strong rounded-[999px] cursor-pointer shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]"
+        class="relative flex h-[30px] shrink-0 cursor-pointer items-stretch rounded-[999px] border border-line-strong bg-surface-sunk p-[2px] [font-family:inherit] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]"
         :style="{ width: `${TRACK_WIDTH}px` }"
         @click="emit('request', isChinese ? 'western' : 'chinese')"
     >
         <!-- Sliding knob -->
         <span
-            class="absolute top-[2px] bottom-[2px] bg-ink rounded-[999px] transition-[inset-inline-start] duration-[.22s] ease-[cubic-bezier(.4,0,.2,1)] shadow-[0_1px_3px_rgba(0,0,0,0.15)]"
+            class="absolute top-[2px] bottom-[2px] rounded-[999px] bg-ink shadow-[0_1px_3px_rgba(0,0,0,0.15)] transition-[inset-inline-start] duration-[.22s] ease-[cubic-bezier(.4,0,.2,1)]"
             :style="{
                 insetInlineStart: isChinese ? `${knobWidth}px` : '2px',
                 width: `${knobWidth - 4}px`,

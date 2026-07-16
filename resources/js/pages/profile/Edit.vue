@@ -9,26 +9,39 @@
 //   • שם המרפאה / מספר רישיון — editable
 //   • עדכון סיסמה
 //   …nothing more, nothing less.
-import { reactive, ref, provide, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import { visit } from '@/lib/routes';
-import Icon from '@/components/ui/Icon.vue';
-import ProfileField from '@/components/shared/profile/ProfileField.vue';
-import ReadOnlyField from '@/components/shared/profile/ReadOnlyField.vue';
-import ProfileSelect from '@/components/shared/profile/ProfileSelect.vue';
+import { reactive, ref, provide, nextTick } from 'vue';
 import AddressesEditor from '@/components/shared/profile/AddressesEditor.vue';
+import ProfileField from '@/components/shared/profile/ProfileField.vue';
 import ProfileSection from '@/components/shared/profile/ProfileSection.vue';
+import ProfileSelect from '@/components/shared/profile/ProfileSelect.vue';
+import ReadOnlyField from '@/components/shared/profile/ReadOnlyField.vue';
+import Icon from '@/components/ui/Icon.vue';
 import { tfLoadAddresses, tfSaveAddresses } from '@/composables/useAddresses';
+import { visit } from '@/lib/routes';
 import { isPhone } from '@/lib/validators';
 
 // Specialization option lists — mirrored from the registration screen.
 const TF_TREATMENTS_OPTS = [
-    'נטורופתיה', 'הרבולוגיה / צמחי מרפא', 'רפואה סינית', 'הומאופתיה',
-    'תזונה קלינית', 'רפלקסולוגיה', 'ארומתרפיה', 'פרחי באך',
+    'נטורופתיה',
+    'הרבולוגיה / צמחי מרפא',
+    'רפואה סינית',
+    'הומאופתיה',
+    'תזונה קלינית',
+    'רפלקסולוגיה',
+    'ארומתרפיה',
+    'פרחי באך',
 ];
 const TF_SPECIALTIES_OPTS = [
-    'נשים ופוריות', 'מערכת העיכול', 'מערכת החיסון', 'עור ושיער',
-    'נפש ורגש', 'כאב כרוני', 'ילדים', 'גיל המעבר', 'מערכת הנשימה',
+    'נשים ופוריות',
+    'מערכת העיכול',
+    'מערכת החיסון',
+    'עור ושיער',
+    'נפש ורגש',
+    'כאב כרוני',
+    'ילדים',
+    'גיל המעבר',
+    'מערכת הנשימה',
 ];
 
 // TODO(backend): hard-coded practitioner values — replace with real user
@@ -55,7 +68,11 @@ provide('tfAddrErrors', addrErrors);
 // Any edit invalidates the "saved" banner until the next save.
 function setField(key, value) {
     form[key] = value;
-    if (errors[key] !== undefined) errors[key] = '';
+
+    if (errors[key] !== undefined) {
+        errors[key] = '';
+    }
+
     saved.value = false;
 }
 function setAddrs(next) {
@@ -80,15 +97,27 @@ function validate() {
     Object.keys(addrErrors).forEach((k) => delete addrErrors[k]);
     addresses.value.forEach((a) => {
         const e = {};
-        if (!(a.street || '').trim()) e.street = 'יש להזין רחוב ומספר';
-        if (!(a.city || '').trim()) e.city = 'יש להזין עיר';
-        if (!(a.phone || '').trim()) e.phone = 'יש להזין טלפון';
-        else if (!isPhone(a.phone)) e.phone = 'מספר הטלפון אינו תקין';
+
+        if (!(a.street || '').trim()) {
+            e.street = 'יש להזין רחוב ומספר';
+        }
+
+        if (!(a.city || '').trim()) {
+            e.city = 'יש להזין עיר';
+        }
+
+        if (!(a.phone || '').trim()) {
+            e.phone = 'יש להזין טלפון';
+        } else if (!isPhone(a.phone)) {
+            e.phone = 'מספר הטלפון אינו תקין';
+        }
+
         if (Object.keys(e).length) {
             addrErrors[a.id] = e;
             ok = false;
         }
     });
+
     return ok;
 }
 
@@ -97,9 +126,13 @@ function validate() {
 function save() {
     if (!validate()) {
         saved.value = false;
-        nextTick(() => { document.querySelector('[aria-invalid="true"]')?.focus(); });
+        nextTick(() => {
+            document.querySelector('[aria-invalid="true"]')?.focus();
+        });
+
         return;
     }
+
     addresses.value = tfSaveAddresses(addresses.value);
     saved.value = true;
     window.scrollTo(0, 0);
@@ -110,10 +143,9 @@ function save() {
     <Head title="עריכת פרטים אישיים" />
     <div class="page">
         <div class="page__inner">
-
             <!-- Breadcrumb -->
             <a
-                class="inline-flex items-center gap-[6px] mb-[18px] text-[13px] text-ink-3 cursor-pointer"
+                class="mb-[18px] inline-flex cursor-pointer items-center gap-[6px] text-[13px] text-ink-3"
                 @click="goBack"
             >
                 <Icon name="arrow_right" :size="15" /> חזרה ללוח הבקרה
@@ -129,24 +161,49 @@ function save() {
 
             <div
                 v-if="saved"
-                class="flex items-center gap-[11px] mb-[20px] py-[13px] px-[16px] text-[13.5px] font-semibold text-accent-ink bg-accent-tint border border-accent-tint-strong rounded-card"
+                class="mb-[20px] flex items-center gap-[11px] rounded-card border border-accent-tint-strong bg-accent-tint px-[16px] py-[13px] text-[13.5px] font-semibold text-accent-ink"
             >
-                <Icon name="check" :size="17" color="var(--accent)" :stroke="2.2" />
+                <Icon
+                    name="check"
+                    :size="17"
+                    color="var(--accent)"
+                    :stroke="2.2"
+                />
                 הפרטים נשמרו בהצלחה.
             </div>
 
             <!-- Identity card -->
             <div class="col gap-[16px]">
                 <!-- Personal -->
-                <ProfileSection title="פרטים אישיים" desc="השם יוצג במסמכי ההזמנה ובתקשורת עם המטופלים.">
+                <ProfileSection
+                    title="פרטים אישיים"
+                    desc="השם יוצג במסמכי ההזמנה ובתקשורת עם המטופלים."
+                >
                     <div class="grid grid-cols-2 gap-[16px]">
-                        <ProfileField label="שם פרטי" required autocomplete="given-name" :error="errors.firstName" :model-value="form.firstName" @update:model-value="setField('firstName', $event)" />
-                        <ProfileField label="שם משפחה" required autocomplete="family-name" :error="errors.lastName" :model-value="form.lastName" @update:model-value="setField('lastName', $event)" />
+                        <ProfileField
+                            label="שם פרטי"
+                            required
+                            autocomplete="given-name"
+                            :error="errors.firstName"
+                            :model-value="form.firstName"
+                            @update:model-value="setField('firstName', $event)"
+                        />
+                        <ProfileField
+                            label="שם משפחה"
+                            required
+                            autocomplete="family-name"
+                            :error="errors.lastName"
+                            :model-value="form.lastName"
+                            @update:model-value="setField('lastName', $event)"
+                        />
                     </div>
                 </ProfileSection>
 
                 <!-- Specialization -->
-                <ProfileSection title="התמחות" desc="בחר את סוג הטיפול ותחום ההתמחות מתוך הרשימות.">
+                <ProfileSection
+                    title="התמחות"
+                    desc="בחר את סוג הטיפול ותחום ההתמחות מתוך הרשימות."
+                >
                     <div class="grid grid-cols-2 gap-[16px]">
                         <ProfileSelect
                             label="סוג טיפול"
@@ -166,17 +223,35 @@ function save() {
                 </ProfileSection>
 
                 <!-- Contact — read-only -->
-                <ProfileSection title="פרטי התקשרות" desc="האימייל והטלפון נעולים לעריכה ומשמשים לזיהוי החשבון.">
+                <ProfileSection
+                    title="פרטי התקשרות"
+                    desc="האימייל והטלפון נעולים לעריכה ומשמשים לזיהוי החשבון."
+                >
                     <div class="grid grid-cols-2 gap-[16px]">
-                        <ReadOnlyField label="אימייל" :value="form.email" dir="ltr" />
-                        <ReadOnlyField label="טלפון נייד" :value="form.phone" dir="ltr" />
+                        <ReadOnlyField
+                            label="אימייל"
+                            :value="form.email"
+                            dir="ltr"
+                        />
+                        <ReadOnlyField
+                            label="טלפון נייד"
+                            :value="form.phone"
+                            dir="ltr"
+                        />
                     </div>
                 </ProfileSection>
 
                 <!-- Professional -->
-                <ProfileSection title="פרטים מקצועיים" desc="שם המרפאה ומספר הרישיון מופיעים מול בית המרקחת.">
+                <ProfileSection
+                    title="פרטים מקצועיים"
+                    desc="שם המרפאה ומספר הרישיון מופיעים מול בית המרקחת."
+                >
                     <div class="grid grid-cols-2 gap-[16px]">
-                        <ProfileField label="שם המרפאה / העסק" :model-value="form.clinic" @update:model-value="setField('clinic', $event)" />
+                        <ProfileField
+                            label="שם המרפאה / העסק"
+                            :model-value="form.clinic"
+                            @update:model-value="setField('clinic', $event)"
+                        />
                         <ProfileField
                             label="מספר רישיון"
                             :model-value="form.license"
@@ -188,13 +263,25 @@ function save() {
                 </ProfileSection>
 
                 <!-- Shipping addresses — source of truth for the cart's "משלוח אליי" -->
-                <ProfileSection title="כתובות למשלוח" desc="ניתן לשמור כמה כתובות (מרפאה, בית…). הכתובת שתסומן כברירת מחדל תוצע בסל כשהמשלוח אלייך.">
-                    <AddressesEditor :list="addresses" @update:list="setAddrs" />
+                <ProfileSection
+                    title="כתובות למשלוח"
+                    desc="ניתן לשמור כמה כתובות (מרפאה, בית…). הכתובת שתסומן כברירת מחדל תוצע בסל כשהמשלוח אלייך."
+                >
+                    <AddressesEditor
+                        :list="addresses"
+                        @update:list="setAddrs"
+                    />
                 </ProfileSection>
 
                 <!-- Password — links to its own standalone page -->
-                <ProfileSection title="סיסמה ואבטחה" desc="מומלץ להחליף סיסמה אחת לכמה חודשים.">
-                    <button class="btn btn--ghost" @click="visit('change-password')">
+                <ProfileSection
+                    title="סיסמה ואבטחה"
+                    desc="מומלץ להחליף סיסמה אחת לכמה חודשים."
+                >
+                    <button
+                        class="btn btn--ghost"
+                        @click="visit('change-password')"
+                    >
                         <Icon name="lock" :size="16" /> לשינוי סיסמה
                     </button>
                 </ProfileSection>
@@ -202,14 +289,13 @@ function save() {
 
             <!-- Save bar -->
             <div
-                class="flex items-center justify-end gap-[12px] mt-[22px] pt-[22px] border-t border-line"
+                class="mt-[22px] flex items-center justify-end gap-[12px] border-t border-line pt-[22px]"
             >
                 <button class="btn btn--ghost" @click="goBack">ביטול</button>
                 <button class="btn btn--primary px-[26px]" @click="save">
                     <Icon name="check" :size="16" :stroke="2.2" /> שמור שינויים
                 </button>
             </div>
-
         </div>
     </div>
 </template>

@@ -21,7 +21,9 @@ const emit = defineEmits(['jump', 'back', 'forward']);
 const maxReached = (n) => n <= (props.maxStep ?? props.current);
 
 const compact = ref(false);
-const onScroll = () => { compact.value = window.scrollY > 80; };
+const onScroll = () => {
+    compact.value = window.scrollY > 80;
+};
 
 onMounted(() => {
     onScroll();
@@ -33,19 +35,29 @@ onBeforeUnmount(() => {
 
 function jump(s) {
     const canJump = s.n !== props.current && maxReached(s.n);
-    if (canJump) emit('jump', s.n);
+
+    if (canJump) {
+        emit('jump', s.n);
+    }
 }
 </script>
 
 <template>
     <div
-        class="wizard-step-indicator relative z-[30] bg-surface border-b border-line transition-[padding] duration-[180ms] ease-[ease]"
+        class="wizard-step-indicator relative z-[30] border-b border-line bg-surface transition-[padding] duration-[180ms] ease-[ease]"
     >
         <div
-            class="max-w-(--maxw-lab) my-0 mx-auto transition-[padding] duration-[180ms] ease-[ease]"
-            :class="compact ? 'pt-[8px] px-[24px] pb-[6px]' : 'pt-[20px] px-[24px] pb-[14px]'"
+            class="mx-auto my-0 max-w-(--maxw-lab) transition-[padding] duration-[180ms] ease-[ease]"
+            :class="
+                compact
+                    ? 'px-[24px] pt-[8px] pb-[6px]'
+                    : 'px-[24px] pt-[20px] pb-[14px]'
+            "
         >
-            <div class="flex items-center" :class="compact ? 'gap-[14px]' : 'gap-[22px]'">
+            <div
+                class="flex items-center"
+                :class="compact ? 'gap-[14px]' : 'gap-[22px]'"
+            >
                 <!-- חזור — process-bar back. State is preserved across the whole flow. -->
                 <StepNavBtn
                     dir="back"
@@ -58,22 +70,26 @@ function jump(s) {
                 <div class="relative flex flex-1 items-start justify-between">
                     <template v-for="(s, i) in steps" :key="s.n">
                         <div
-                            class="relative flex flex-col items-center min-w-0 py-0 px-[8px] z-[2] bg-surface"
+                            class="relative z-[2] flex min-w-0 flex-col items-center bg-surface px-[8px] py-0"
                             :class="[
                                 compact ? 'gap-[4px]' : 'gap-[8px]',
-                                (s.n !== current && maxReached(s.n)) ? 'cursor-pointer' : 'cursor-default',
+                                s.n !== current && maxReached(s.n)
+                                    ? 'cursor-pointer'
+                                    : 'cursor-default',
                             ]"
                             @click="jump(s)"
                         >
                             <div
-                                class="flex items-center justify-center font-latin font-semibold border-[1.5px] rounded-[50%] transition-[width,height,font-size] duration-[180ms] ease-[ease]"
+                                class="flex items-center justify-center rounded-[50%] border-[1.5px] font-latin font-semibold transition-[width,height,font-size] duration-[180ms] ease-[ease]"
                                 :class="[
-                                    compact ? 'w-[22px] h-[22px] text-[11px]' : 'w-[28px] h-[28px] text-[13px]',
+                                    compact
+                                        ? 'h-[22px] w-[22px] text-[11px]'
+                                        : 'h-[28px] w-[28px] text-[13px]',
                                     s.n === current
                                         ? 'border-accent bg-accent text-white'
                                         : s.n < current
-                                            ? 'border-accent bg-surface text-accent'
-                                            : 'border-line-strong bg-surface text-ink-4',
+                                          ? 'border-accent bg-surface text-accent'
+                                          : 'border-line-strong bg-surface text-ink-4',
                                 ]"
                             >
                                 <svg
@@ -98,15 +114,16 @@ function jump(s) {
                                     s.n === current
                                         ? 'font-semibold text-accent'
                                         : s.n < current
-                                            ? 'font-normal text-ink-3'
-                                            : 'font-normal text-ink-4',
+                                          ? 'font-normal text-ink-3'
+                                          : 'font-normal text-ink-4',
                                 ]"
-                            >{{ s.label }}</span>
+                                >{{ s.label }}</span
+                            >
                         </div>
 
                         <div
                             v-if="i !== steps.length - 1"
-                            class="relative flex-1 self-start h-[1.5px] mx-[-4px] z-[1] transition-[margin-top] duration-[180ms] ease-[ease]"
+                            class="relative z-[1] mx-[-4px] h-[1.5px] flex-1 self-start transition-[margin-top] duration-[180ms] ease-[ease]"
                             :class="[
                                 s.n < current ? 'bg-accent' : 'bg-line-strong',
                                 compact ? 'mt-[11px]' : 'mt-[14px]',

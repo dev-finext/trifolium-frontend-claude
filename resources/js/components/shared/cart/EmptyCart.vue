@@ -5,17 +5,19 @@ import { visit } from '@/lib/routes';
 </script>
 
 <template>
-    <div class="card max-w-[520px] my-0 mx-auto px-[24px] py-[72px] text-center">
+    <div
+        class="card mx-auto my-0 max-w-[520px] px-[24px] py-[72px] text-center"
+    >
         <div
-            class="inline-flex items-center justify-center w-[64px] h-[64px] mt-0 mx-auto mb-[18px] text-ink-3 bg-surface-sunk rounded-[50%]"
+            class="mx-auto mt-0 mb-[18px] inline-flex h-[64px] w-[64px] items-center justify-center rounded-[50%] bg-surface-sunk text-ink-3"
         >
             <Icon name="cart" :size="28" />
         </div>
         <div class="mb-[6px] text-[18px] font-semibold">הסל ריק</div>
-        <p class="small muted max-w-[320px] mt-0 mx-auto mb-[22px]">
+        <p class="small muted mx-auto mt-0 mb-[22px] max-w-[320px]">
             הוסף מוצרי מדף מוכנים או רקח פורמולה אישית כדי להתחיל הזמנה.
         </p>
-        <div class="flex gap-[10px] justify-center flex-wrap">
+        <div class="flex flex-wrap justify-center gap-[10px]">
             <button class="btn btn--ghost" @click="visit('catalog')">
                 <Icon name="package" :size="16" /> מוצרי מדף
             </button>

@@ -11,8 +11,12 @@ defineProps({
 
 <template>
     <!-- dark (video) covers use the lighter opacity; ink color doubles as the dark flag -->
-    <g :opacity="p.ink === '#f3efe6' ? 0.16 : 0.20">
-        <g transform="translate(24,184) rotate(-14)"><CvSprig :p="p" :scale="0.72" /></g>
-        <g transform="translate(300,10) rotate(166)"><CvSprig :p="p" :scale="0.6" /></g>
+    <g :opacity="p.ink === '#f3efe6' ? 0.16 : 0.2">
+        <g transform="translate(24,184) rotate(-14)"
+            ><CvSprig :p="p" :scale="0.72"
+        /></g>
+        <g transform="translate(300,10) rotate(166)"
+            ><CvSprig :p="p" :scale="0.6"
+        /></g>
     </g>
 </template>

@@ -13,7 +13,7 @@ const hover = ref(false);
 
 <template>
     <span
-        class="relative inline-flex items-center gap-[7px] cursor-default"
+        class="relative inline-flex cursor-default items-center gap-[7px]"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
@@ -22,7 +22,8 @@ const hover = ref(false);
         <span
             v-if="hover"
             role="tooltip"
-            class="absolute top-[calc(100%_+_10px)] left-[50%] [transform:translateX(-50%)] z-[90] py-[5px] px-[9px] whitespace-nowrap text-[11.5px] font-semibold leading-[1] bg-(--ink) text-(--surface) rounded-[7px] shadow-[0_6px_18px_rgba(20,28,24,0.22)] pointer-events-none animate-[tf-tip-in_.12s_ease_both]"
-        >נקודות זכות למימוש</span>
+            class="pointer-events-none absolute top-[calc(100%_+_10px)] left-[50%] z-[90] [transform:translateX(-50%)] animate-[tf-tip-in_.12s_ease_both] rounded-[7px] bg-(--ink) px-[9px] py-[5px] text-[11.5px] leading-[1] font-semibold whitespace-nowrap text-(--surface) shadow-[0_6px_18px_rgba(20,28,24,0.22)]"
+            >נקודות זכות למימוש</span
+        >
     </span>
 </template>

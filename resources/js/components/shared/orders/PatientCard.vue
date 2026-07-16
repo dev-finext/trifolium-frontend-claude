@@ -13,11 +13,14 @@ defineProps({
     <SideCard title="מטופל">
         <div class="flex items-center gap-[12px]">
             <span
-                class="inline-flex items-center justify-center w-[42px] h-[42px] shrink-0 text-[15px] font-semibold bg-accent-tint-strong text-accent-ink rounded-full"
-            >{{ initialsFromName(name) }}</span>
+                class="inline-flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-accent-tint-strong text-[15px] font-semibold text-accent-ink"
+                >{{ initialsFromName(name) }}</span
+            >
             <div class="min-w-0">
                 <div class="text-[15px] font-semibold">{{ name }}</div>
-                <div class="small muted num text-right" dir="ltr">{{ phone }}</div>
+                <div class="small muted num text-right" dir="ltr">
+                    {{ phone }}
+                </div>
             </div>
         </div>
     </SideCard>

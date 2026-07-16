@@ -7,19 +7,32 @@ import { FORMULA_TYPES, KNOWN_INTERACTIONS } from '@/data/mock';
 // ─────────────────────────────────────────────────────────────
 export const isHerbCompatible = (herb, typeId) => {
     const ft = FORMULA_TYPES.find((t) => t.id === typeId);
-    if (!ft) return true;
+
+    if (!ft) {
+        return true;
+    }
+
     return ft.compat.includes(herb.category);
 };
 
 export const findInteractions = (herbId, medsText) => {
-    if (!medsText) return [];
-    return KNOWN_INTERACTIONS.filter((k) => k.herbId === herbId && k.drug.test(medsText));
+    if (!medsText) {
+        return [];
+    }
+
+    return KNOWN_INTERACTIONS.filter(
+        (k) => k.herbId === herbId && k.drug.test(medsText),
+    );
 };
 
 /** The first medication name in the patient's meds text that matches a known interaction. */
 export const matchedDrug = (herbId, medsText) => {
     const hit = findInteractions(herbId, medsText)[0];
-    if (!hit) return null;
+
+    if (!hit) {
+        return null;
+    }
+
     return (medsText && medsText.match(hit.drug)?.[0]) || 'תרופה';
 };
 
@@ -35,18 +48,26 @@ export const unitForHerb = (form) =>
 // the Hebrew name, and a Chinese-character query against the Chinese name.
 // Tone marks and case are stripped so "ren" matches "Rén".
 // ─────────────────────────────────────────────────────────────
-export const tfNorm = (s) => (s || '')
-    .toString()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '') // strip diacritics / pinyin tone marks
-    .toLowerCase()
-    .trim();
+export const tfNorm = (s) =>
+    (s || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '') // strip diacritics / pinyin tone marks
+        .toLowerCase()
+        .trim();
 
 export const herbScript = (query) => {
     const raw = (query || '').trim();
-    if (/[֐-׿]/.test(raw)) return 'heb';       // Hebrew
-    if (/[㐀-鿿]/.test(raw)) return 'cjk';       // Chinese characters
-    return 'lat';                                        // Latin letters (incl. pinyin)
+
+    if (/[֐-׿]/.test(raw)) {
+        return 'heb';
+    } // Hebrew
+
+    if (/[㐀-鿿]/.test(raw)) {
+        return 'cjk';
+    } // Chinese characters
+
+    return 'lat'; // Latin letters (incl. pinyin)
 };
 
 // The field(s) a query of a given script should be tested against. Pinyin is
@@ -54,47 +75,86 @@ export const herbScript = (query) => {
 // "S" in Western mode would surface herbs by their pinyin reading (e.g.
 // Withania / "Shuì Qié") alongside the Latin S-names.
 export const herbFieldsForScript = (herb, script, allowPinyin) => {
-    if (script === 'heb') return [herb.heb];
-    if (script === 'cjk') return herb.cn ? [herb.cn.split('·')[0]] : [];
+    if (script === 'heb') {
+        return [herb.heb];
+    }
+
+    if (script === 'cjk') {
+        return herb.cn ? [herb.cn.split('·')[0]] : [];
+    }
+
     const fields = [herb.lat];
-    if (allowPinyin && herb.cn) fields.push(herb.cn.split('·').pop());
+
+    if (allowPinyin && herb.cn) {
+        fields.push(herb.cn.split('·').pop());
+    }
+
     return fields;
 };
 
 // The single field that determines sort order for the current query — the
 // herb's displayed primary name in the typed script.
 export const herbPrimaryField = (herb, script, isChinese) => {
-    if (script === 'heb') return herb.heb;
-    if (script === 'cjk') return herb.cn ? herb.cn.split('·')[0] : '';
+    if (script === 'heb') {
+        return herb.heb;
+    }
+
+    if (script === 'cjk') {
+        return herb.cn ? herb.cn.split('·')[0] : '';
+    }
+
     return isChinese && herb.cn ? herb.cn.split('·').pop() : herb.lat;
 };
 
 export const startsWithToken = (field, q) => {
     const norm = tfNorm(field);
-    if (!norm) return false;
-    if (norm.startsWith(q)) return true;
+
+    if (!norm) {
+        return false;
+    }
+
+    if (norm.startsWith(q)) {
+        return true;
+    }
+
     return norm.split(/[\s\-·]+/).some((w) => w && w.startsWith(q));
 };
 
 export const herbMatchesQuery = (herb, query, { allowPinyin = true } = {}) => {
     const q = tfNorm(query);
-    if (!q) return true;
+
+    if (!q) {
+        return true;
+    }
+
     const script = herbScript(query);
-    return herbFieldsForScript(herb, script, allowPinyin).some((f) => startsWithToken(f, q));
+
+    return herbFieldsForScript(herb, script, allowPinyin).some((f) =>
+        startsWithToken(f, q),
+    );
 };
 
 // Order matches so that herbs whose PRIMARY name begins with the query lead,
 // then alphabetically — so the list tracks the typing exactly.
 export const sortHerbsByQuery = (herbs, query, isChinese) => {
     const q = tfNorm(query);
-    if (!q) return herbs;
+
+    if (!q) {
+        return herbs;
+    }
+
     const script = herbScript(query);
+
     return herbs.slice().sort((a, b) => {
         const pa = tfNorm(herbPrimaryField(a, script, isChinese));
         const pb = tfNorm(herbPrimaryField(b, script, isChinese));
         const ra = pa.startsWith(q) ? 0 : 1;
         const rb = pb.startsWith(q) ? 0 : 1;
-        if (ra !== rb) return ra - rb;
+
+        if (ra !== rb) {
+            return ra - rb;
+        }
+
         return pa.localeCompare(pb);
     });
 };
@@ -107,8 +167,12 @@ export const fmtPct = (n) => String(Math.round(n));
 
 /** Format a parts amount: one decimal max, integer when whole. */
 export const fmtPart = (n) => {
-    if (!isFinite(n)) return '0';
+    if (!isFinite(n)) {
+        return '0';
+    }
+
     const r = Math.round(n * 10) / 10;
+
     return Number.isInteger(r) ? String(r) : r.toFixed(1);
 };
 
@@ -119,7 +183,7 @@ export const fmtPart = (n) => {
 export const reflowQty = (ingredients, volume) =>
     ingredients.map((i) => ({
         ...i,
-        qty: Math.max(0, Math.round((+i.pct || 0) / 100 * (volume || 0))),
+        qty: Math.max(0, Math.round(((+i.pct || 0) / 100) * (volume || 0))),
     }));
 
 // Chinese (parts) mode: each ingredient carries a relative `parts` count.
@@ -127,23 +191,29 @@ export const reflowQty = (ingredients, volume) =>
 // Volume ÷ Σparts = the physical amount of ONE part.
 export const reflowParts = (ingredients, volume) => {
     const sum = ingredients.reduce((s, i) => s + (+i.parts || 0), 0);
-    if (sum <= 0) return ingredients.map((i) => ({ ...i, pct: 0, qty: 0 }));
+
+    if (sum <= 0) {
+        return ingredients.map((i) => ({ ...i, pct: 0, qty: 0 }));
+    }
+
     // Largest-remainder rounding so the displayed percentages sum to exactly 100.
-    const raw = ingredients.map((i) => (+i.parts || 0) / sum * 100);
+    const raw = ingredients.map((i) => ((+i.parts || 0) / sum) * 100);
     const floor = raw.map((r) => Math.floor(r));
     let remainder = 100 - floor.reduce((s, f) => s + f, 0);
     const order = raw
         .map((r, idx) => ({ idx, frac: r - Math.floor(r) }))
         .sort((a, b) => b.frac - a.frac);
     const pcts = [...floor];
+
     for (let k = 0; k < order.length && remainder > 0; k++) {
         pcts[order[k].idx] += 1;
         remainder--;
     }
+
     return ingredients.map((i, idx) => ({
         ...i,
         pct: pcts[idx],
-        qty: Math.round((+i.parts || 0) / sum * (volume || 0)),
+        qty: Math.round(((+i.parts || 0) / sum) * (volume || 0)),
     }));
 };
 
@@ -159,7 +229,9 @@ export const EVAPORATION_OPTIONS = [
 ];
 
 // Carrier options shown only AFTER the user opts to evaporate.
-export const CARRIER_OPTIONS = EVAPORATION_OPTIONS.filter((o) => o.id !== 'none');
+export const CARRIER_OPTIONS = EVAPORATION_OPTIONS.filter(
+    (o) => o.id !== 'none',
+);
 
 // Package split (powder / tea): minimum grams (or capsules) per package.
 export const MIN_PER_PACKAGE = 10;
@@ -171,32 +243,42 @@ export const MIN_PER_PACKAGE = 10;
 // type cards (the rest of the step keeps the house green).
 // ─────────────────────────────────────────────────────────────
 export const TYPE_HUE = {
-    tincture: 74, capsule: 46, powder: 96, tea: 146, decoction: 28,
-    gel: 192, cream: 14, eoil: 300, ioil: 122,
+    tincture: 74,
+    capsule: 46,
+    powder: 96,
+    tea: 146,
+    decoction: 28,
+    gel: 192,
+    cream: 14,
+    eoil: 300,
+    ioil: 122,
 };
 
 export const typePig = {
-    ink:        (id) => `oklch(0.50 0.105 ${TYPE_HUE[id] ?? 146})`,
-    inkDeep:    (id) => `oklch(0.42 0.095 ${TYPE_HUE[id] ?? 146})`,
-    solid:      (id) => `oklch(0.585 0.115 ${TYPE_HUE[id] ?? 146})`,
-    tint:       (id) => `oklch(0.965 0.018 ${TYPE_HUE[id] ?? 146})`,
-    tintMid:    (id) => `oklch(0.935 0.034 ${TYPE_HUE[id] ?? 146})`,
+    ink: (id) => `oklch(0.50 0.105 ${TYPE_HUE[id] ?? 146})`,
+    inkDeep: (id) => `oklch(0.42 0.095 ${TYPE_HUE[id] ?? 146})`,
+    solid: (id) => `oklch(0.585 0.115 ${TYPE_HUE[id] ?? 146})`,
+    tint: (id) => `oklch(0.965 0.018 ${TYPE_HUE[id] ?? 146})`,
+    tintMid: (id) => `oklch(0.935 0.034 ${TYPE_HUE[id] ?? 146})`,
     tintStrong: (id) => `oklch(0.90 0.052 ${TYPE_HUE[id] ?? 146})`,
-    line:       (id) => `oklch(0.80 0.055 ${TYPE_HUE[id] ?? 146})`,
+    line: (id) => `oklch(0.80 0.055 ${TYPE_HUE[id] ?? 146})`,
 };
 
 // Short explanation of each preparation form — shown in the hover tooltip
 // behind the small "i" badge on every type card.
 export const TYPE_INFO = {
-    tincture:  'תמצית מרוכזת של הצמחים המופקת באלכוהול. נשמרת היטב לאורך זמן, נספגת מהר ונמדדת בטיפות. ניתן לנדף את האלכוהול ולהוסיף נושא.',
-    capsule:   'אבקת צמחים טחונה דק וממולאת בקפסולות. פותרת טעם מר, שומרת על מינון אחיד ונוחה לנטילה ללא הכנה.',
-    powder:    'תערובת צמחים טחונה דק לערבוב במים, ביוגורט או בדבש. מאפשרת מינון גמיש וספיגה מהירה.',
-    tea:       'תערובת עלים ופרחים יבשים לחליטה במים חמים. עדינה ומתאימה לשתייה יומיומית, למערכת העצבים ולעיכול.',
-    decoction: 'מרתח מסורתי — בישול ארוך של שורשים, קליפות ופירות במים. שיטת ההכנה הקלאסית ברפואה הסינית לפורמולות חזקות.',
-    gel:       'בסיס ג׳ל מימי לשימוש מקומי על העור. נספג מהר, אינו שומני ומתאים לאזורים דלקתיים.',
-    cream:     'בסיס קרם שומני-מימי לשימוש מקומי. מזין, מספק לחות ומתאים לעור יבש ולטיפול ממושך.',
-    eoil:      'תזקיק ארומטי מרוכז של שמנים נדיפים. לשאיפה, לעיסוי בדילול או למפזר ריח — בעל ריכוז גבוה מאוד.',
-    ioil:      'צמחים מושרים בשמן נושא (כגון זית או שקדים). לעיסוי ולטיפוח העור, עם ספיגה איטית ועדינה.',
+    tincture:
+        'תמצית מרוכזת של הצמחים המופקת באלכוהול. נשמרת היטב לאורך זמן, נספגת מהר ונמדדת בטיפות. ניתן לנדף את האלכוהול ולהוסיף נושא.',
+    capsule:
+        'אבקת צמחים טחונה דק וממולאת בקפסולות. פותרת טעם מר, שומרת על מינון אחיד ונוחה לנטילה ללא הכנה.',
+    powder: 'תערובת צמחים טחונה דק לערבוב במים, ביוגורט או בדבש. מאפשרת מינון גמיש וספיגה מהירה.',
+    tea: 'תערובת עלים ופרחים יבשים לחליטה במים חמים. עדינה ומתאימה לשתייה יומיומית, למערכת העצבים ולעיכול.',
+    decoction:
+        'מרתח מסורתי — בישול ארוך של שורשים, קליפות ופירות במים. שיטת ההכנה הקלאסית ברפואה הסינית לפורמולות חזקות.',
+    gel: 'בסיס ג׳ל מימי לשימוש מקומי על העור. נספג מהר, אינו שומני ומתאים לאזורים דלקתיים.',
+    cream: 'בסיס קרם שומני-מימי לשימוש מקומי. מזין, מספק לחות ומתאים לעור יבש ולטיפול ממושך.',
+    eoil: 'תזקיק ארומטי מרוכז של שמנים נדיפים. לשאיפה, לעיסוי בדילול או למפזר ריח — בעל ריכוז גבוה מאוד.',
+    ioil: 'צמחים מושרים בשמן נושא (כגון זית או שקדים). לעיסוי ולטיפוח העור, עם ספיגה איטית ועדינה.',
 };
 
 // ─────────────────────────────────────────────────────────────

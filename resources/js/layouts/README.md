@@ -1,6 +1,6 @@
 # Layouts
 
-**Persistent layout components** that wrap page content — the shared chrome (header, sidebar, footer, flash messages) around `@/Pages` views. Layouts define the structure a page renders *into* via a default `<slot />`.
+**Persistent layout components** that wrap page content — the shared chrome (header, sidebar, footer, flash messages) around `@/Pages` views. Layouts define the structure a page renders _into_ via a default `<slot />`.
 
 Import via the `@/` alias:
 
@@ -20,12 +20,12 @@ import AppHeader from '@/components/shared/AppHeader.vue';
 </script>
 
 <template>
-  <div class="min-h-screen">
-    <AppHeader />
-    <main class="p-4">
-      <slot />
-    </main>
-  </div>
+    <div class="min-h-screen">
+        <AppHeader />
+        <main class="p-4">
+            <slot />
+        </main>
+    </div>
 </template>
 ```
 
@@ -39,9 +39,9 @@ import AppLayout from '@/layouts/AppLayout.vue';
 </script>
 
 <template>
-  <AppLayout>
-    <!-- page content -->
-  </AppLayout>
+    <AppLayout>
+        <!-- page content -->
+    </AppLayout>
 </template>
 ```
 
@@ -80,12 +80,12 @@ import AppHeader from '@/components/shared/AppHeader.vue';
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <AppHeader />
-    <main class="mx-auto max-w-5xl p-4">
-      <slot />
-    </main>
-  </div>
+    <div class="bg-gray-50 min-h-screen">
+        <AppHeader />
+        <main class="mx-auto max-w-5xl p-4">
+            <slot />
+        </main>
+    </div>
 </template>
 ```
 
@@ -97,9 +97,9 @@ import AppLayout from '@/layouts/AppLayout.vue';
 </script>
 
 <template>
-  <AppLayout>
-    <h1 class="text-2xl font-bold">Dashboard</h1>
-    <!-- page content renders into the layout's <slot /> -->
-  </AppLayout>
+    <AppLayout>
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <!-- page content renders into the layout's <slot /> -->
+    </AppLayout>
 </template>
 ```

@@ -34,11 +34,19 @@ const TABS = [
         <button
             v-for="tab in TABS.slice(0, 2)"
             :key="tab.id"
-            :class="['tabbar__item', { 'tabbar__item--active': route === tab.id }]"
+            :class="[
+                'tabbar__item',
+                { 'tabbar__item--active': route === tab.id },
+            ]"
             :aria-current="route === tab.id ? 'page' : undefined"
             @click="visit(tab.id)"
         >
-            <Icon :name="tab.icon" :size="22" :stroke="route === tab.id ? 2 : 1.6" color="currentColor" />
+            <Icon
+                :name="tab.icon"
+                :size="22"
+                :stroke="route === tab.id ? 2 : 1.6"
+                color="currentColor"
+            />
             <span class="tabbar__label">{{ tab.label }}</span>
         </button>
 
@@ -58,13 +66,25 @@ const TABS = [
         <button
             v-for="tab in TABS.slice(2)"
             :key="tab.id"
-            :class="['tabbar__item', { 'tabbar__item--active': route === tab.id }]"
+            :class="[
+                'tabbar__item',
+                { 'tabbar__item--active': route === tab.id },
+            ]"
             :aria-current="route === tab.id ? 'page' : undefined"
             @click="visit(tab.id)"
         >
             <span class="tabbar__icon-wrap">
-                <Icon :name="tab.icon" :size="22" :stroke="route === tab.id ? 2 : 1.6" color="currentColor" />
-                <span v-if="tab.badge && cart.state.items.length" class="tabbar__badge num">{{ cart.state.items.length }}</span>
+                <Icon
+                    :name="tab.icon"
+                    :size="22"
+                    :stroke="route === tab.id ? 2 : 1.6"
+                    color="currentColor"
+                />
+                <span
+                    v-if="tab.badge && cart.state.items.length"
+                    class="tabbar__badge num"
+                    >{{ cart.state.items.length }}</span
+                >
             </span>
             <span class="tabbar__label">{{ tab.label }}</span>
         </button>

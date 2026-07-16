@@ -19,10 +19,14 @@ const hover = ref(false);
     <div class="relative inline-flex">
         <button
             :aria-label="tooltip"
-            class="relative inline-flex items-center justify-center w-[38px] h-[38px] shrink-0 cursor-pointer border rounded-control transition-all duration-150"
+            class="relative inline-flex h-[38px] w-[38px] shrink-0 cursor-pointer items-center justify-center rounded-control border transition-all duration-150"
             :class="[
                 active ? 'bg-accent-tint' : 'bg-transparent',
-                active ? 'border-accent' : hover ? 'border-line-strong' : 'border-transparent',
+                active
+                    ? 'border-accent'
+                    : hover
+                      ? 'border-line-strong'
+                      : 'border-transparent',
             ]"
             @click="$emit('click')"
             @mouseenter="hover = true"
@@ -30,16 +34,23 @@ const hover = ref(false);
             @focus="hover = true"
             @blur="hover = false"
         >
-            <Icon :name="icon" :size="19" :color="active ? 'var(--accent)' : 'var(--ink-2)'" :stroke="1.6" />
+            <Icon
+                :name="icon"
+                :size="19"
+                :color="active ? 'var(--accent)' : 'var(--ink-2)'"
+                :stroke="1.6"
+            />
             <span
                 v-if="count > 0"
-                class="num absolute top-[-5px] left-[-5px] min-w-[18px] h-[18px] py-0 px-[5px] text-[11px] font-bold leading-[18px] text-center bg-accent text-on-accent border-2 border-surface rounded-[999px]"
-            >{{ count }}</span>
+                class="num absolute top-[-5px] left-[-5px] h-[18px] min-w-[18px] rounded-[999px] border-2 border-surface bg-accent px-[5px] py-0 text-center text-[11px] leading-[18px] font-bold text-on-accent"
+                >{{ count }}</span
+            >
         </button>
         <span
             v-if="hover"
             role="tooltip"
-            class="absolute top-[calc(100%_+_8px)] start-0 z-[90] py-[5px] px-[9px] whitespace-nowrap text-[11.5px] font-semibold leading-[1] bg-(--ink) text-(--surface) rounded-[7px] shadow-[0_6px_18px_rgba(20,28,24,0.22)] pointer-events-none animate-[tf-tip-in_.12s_ease_both]"
-        >{{ tooltip }}</span>
+            class="pointer-events-none absolute start-0 top-[calc(100%_+_8px)] z-[90] animate-[tf-tip-in_.12s_ease_both] rounded-[7px] bg-(--ink) px-[9px] py-[5px] text-[11.5px] leading-[1] font-semibold whitespace-nowrap text-(--surface) shadow-[0_6px_18px_rgba(20,28,24,0.22)]"
+            >{{ tooltip }}</span
+        >
     </div>
 </template>

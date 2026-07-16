@@ -10,13 +10,13 @@
 // Desktop renders the original Home composition untouched (see Pages/Home.vue).
 import { computed } from 'vue';
 import { HeroPanorama } from '@/components/shared/art';
-import QuickAccess from '@/components/shared/home/QuickAccess.vue';
-import HomeEvents from '@/components/shared/home/HomeEvents.vue';
-import HomeArticles from '@/components/shared/home/HomeArticles.vue';
-import HomeVideos from '@/components/shared/home/HomeVideos.vue';
 import BackToTop from '@/components/shared/home/BackToTop.vue';
-import markStrongUrl from '@img/trifolium-mark-strong.png';
+import HomeArticles from '@/components/shared/home/HomeArticles.vue';
+import HomeEvents from '@/components/shared/home/HomeEvents.vue';
+import HomeVideos from '@/components/shared/home/HomeVideos.vue';
+import QuickAccess from '@/components/shared/home/QuickAccess.vue';
 import { DEMO_USER } from '@/data/user';
+import markStrongUrl from '@img/trifolium-mark-strong.png';
 
 defineProps({
     events: { type: Array, required: true },
@@ -26,9 +26,19 @@ defineProps({
 
 const greeting = computed(() => {
     const h = new Date().getHours();
-    if (h >= 5 && h < 12) return 'בוקר טוב';
-    if (h >= 12 && h < 17) return 'צהריים טובים';
-    if (h >= 17 && h < 22) return 'ערב טוב';
+
+    if (h >= 5 && h < 12) {
+        return 'בוקר טוב';
+    }
+
+    if (h >= 12 && h < 17) {
+        return 'צהריים טובים';
+    }
+
+    if (h >= 17 && h < 22) {
+        return 'ערב טוב';
+    }
+
     return 'לילה טוב';
 });
 </script>
@@ -38,18 +48,26 @@ const greeting = computed(() => {
         <!-- hero: the still-life counter with the brand lockup floating above -->
         <section class="mh-pano" aria-label="Trifolium">
             <!-- fit="strip": the full still-life, bottom-anchored as a counter -->
-            <div class="mh-pano__bg" aria-hidden="true"><HeroPanorama fit="strip" /></div>
+            <div class="mh-pano__bg" aria-hidden="true">
+                <HeroPanorama fit="strip" />
+            </div>
             <div class="mh-pano__wash" aria-hidden="true"></div>
 
             <div class="mh-pano__lock">
-                <img :src="markStrongUrl" alt="Trifolium" class="mh-pano__mark" />
+                <img
+                    :src="markStrongUrl"
+                    alt="Trifolium"
+                    class="mh-pano__mark"
+                />
                 <p class="mh-pano__wm">TRIFOLIUM</p>
                 <div class="mh-pano__dvd" aria-hidden="true">
                     <span class="mh-pano__dvd-line"></span>
                     <span class="mh-pano__dvd-dot"></span>
                     <span class="mh-pano__dvd-line"></span>
                 </div>
-                <h1 class="mh-pano__greet">{{ greeting }}, {{ DEMO_USER.firstName }}</h1>
+                <h1 class="mh-pano__greet">
+                    {{ greeting }}, {{ DEMO_USER.firstName }}
+                </h1>
             </div>
         </section>
 
@@ -66,8 +84,12 @@ const greeting = computed(() => {
 </template>
 
 <style>
-.mhome { padding-top: 10px; }
-.mhome__section { padding: 14px 14px 0; }
+.mhome {
+    padding-top: 10px;
+}
+.mhome__section {
+    padding: 14px 14px 0;
+}
 
 /* ————— panorama hero ————— */
 .mh-pano {
@@ -78,16 +100,21 @@ const greeting = computed(() => {
     overflow: hidden;
     background: #eef0dd; /* the panorama ground — fills above the still-life band */
 }
-.mh-pano__bg { position: absolute; inset: 0; }
+.mh-pano__bg {
+    position: absolute;
+    inset: 0;
+}
 /* soft luminous wash centered on the lockup, so it lifts off the foliage
    without washing out the still-life counter at the very bottom */
 .mh-pano__wash {
     position: absolute;
     inset: 0;
-    background: radial-gradient(66% 58% at 50% 40%,
+    background: radial-gradient(
+        66% 58% at 50% 40%,
         rgba(247, 249, 238, 0.82) 0%,
         rgba(247, 249, 238, 0.42) 52%,
-        rgba(247, 249, 238, 0) 78%);
+        rgba(247, 249, 238, 0) 78%
+    );
 }
 
 /* the lockup floats in the lower-middle, just above the still-life counter */
@@ -125,7 +152,12 @@ const greeting = computed(() => {
     width: 128px;
     margin: 11px auto 9px;
 }
-.mh-pano__dvd-line { flex: 1; height: 1px; background: var(--accent); opacity: 0.42; }
+.mh-pano__dvd-line {
+    flex: 1;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.42;
+}
 .mh-pano__dvd-dot {
     flex: none;
     width: 7px;
@@ -148,8 +180,17 @@ const greeting = computed(() => {
         transform: translateY(12px);
         animation: mhome-rise 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
     }
-    .mhome > *:nth-child(1) { animation-delay: 0.03s; }
-    .mhome > *:nth-child(2) { animation-delay: 0.14s; }
+    .mhome > *:nth-child(1) {
+        animation-delay: 0.03s;
+    }
+    .mhome > *:nth-child(2) {
+        animation-delay: 0.14s;
+    }
 }
-@keyframes mhome-rise { to { opacity: 1; transform: none; } }
+@keyframes mhome-rise {
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
 </style>

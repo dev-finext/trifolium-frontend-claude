@@ -44,34 +44,55 @@ const SOCIAL_LINKS = [
 ];
 
 // Shared utility-class strings (formerly inline style objects).
-const socialBtnClass = 'inline-flex items-center justify-center w-[32px] h-[32px] bg-surface border border-line rounded-control transition-all duration-150 ease-[ease] cursor-pointer';
+const socialBtnClass =
+    'inline-flex items-center justify-center w-[32px] h-[32px] bg-surface border border-line rounded-control transition-all duration-150 ease-[ease] cursor-pointer';
 
-const certBadgeClass = 'py-[4px] px-[10px] text-[10px] tracking-[0.08em] bg-bg border border-line rounded-pill';
+const certBadgeClass =
+    'py-[4px] px-[10px] text-[10px] tracking-[0.08em] bg-bg border border-line rounded-pill';
 
 const dotClass = 'text-[12px] text-[rgba(255,255,255,0.32)]';
 
-const complianceLinkClass = 'pb-[1px] no-underline text-[rgba(255,255,255,0.85)] border-b border-b-[rgba(255,255,255,0.25)] cursor-pointer';
+const complianceLinkClass =
+    'pb-[1px] no-underline text-[rgba(255,255,255,0.85)] border-b border-b-[rgba(255,255,255,0.25)] cursor-pointer';
 
 function onLink(link, event) {
     event.preventDefault();
-    if (link.route) visit(link.route);
+
+    if (link.route) {
+        visit(link.route);
+    }
 }
 </script>
 
 <template>
-    <footer class="mt-[80px] font-heb text-ink-2 bg-surface border-t border-line">
+    <footer
+        class="mt-[80px] border-t border-line bg-surface font-heb text-ink-2"
+    >
         <!-- MAIN — brand + nav columns -->
-        <div class="grid grid-cols-[1.4fr_1fr_1fr_1fr] gap-[48px] max-w-[1200px] mx-auto my-0 pt-[56px] px-[24px] pb-[40px]">
+        <div
+            class="mx-auto my-0 grid max-w-[1200px] grid-cols-[1.4fr_1fr_1fr_1fr] gap-[48px] px-[24px] pt-[56px] pb-[40px]"
+        >
             <!-- Brand block -->
             <div>
-                <div class="mb-[16px] font-[Cormorant_Garamond,Times_New_Roman,serif] text-[32px] font-medium tracking-[0.02em] leading-[1] text-accent">
+                <div
+                    class="mb-[16px] font-[Cormorant_Garamond,Times_New_Roman,serif] text-[32px] leading-[1] font-medium tracking-[0.02em] text-accent"
+                >
                     Trifolium
                 </div>
-                <p class="max-w-[320px] m-0 mb-[20px] text-[13px] leading-[1.65] font-light [text-wrap:pretty] text-ink-3">
-                    בית המרקחת הדיגיטלי — פלטפורמה מקצועית לרקיחת פורמולות צמחים אישיות עבור מטופלים.
+                <p
+                    class="m-0 mb-[20px] max-w-[320px] text-[13px] leading-[1.65] font-light [text-wrap:pretty] text-ink-3"
+                >
+                    בית המרקחת הדיגיטלי — פלטפורמה מקצועית לרקיחת פורמולות צמחים
+                    אישיות עבור מטופלים.
                 </p>
                 <div class="flex gap-[8px]">
-                    <a v-for="s in SOCIAL_LINKS" :key="s.icon" href="#" :aria-label="s.label" :class="socialBtnClass">
+                    <a
+                        v-for="s in SOCIAL_LINKS"
+                        :key="s.icon"
+                        href="#"
+                        :aria-label="s.label"
+                        :class="socialBtnClass"
+                    >
                         <Icon :name="s.icon" :size="15" color="var(--ink-3)" />
                     </a>
                 </div>
@@ -79,14 +100,16 @@ function onLink(link, event) {
 
             <!-- Nav columns -->
             <div v-for="col in FOOTER_COLS" :key="col.title">
-                <div class="mb-[16px] font-latin text-[11px] tracking-[0.12em] uppercase font-semibold text-ink-3">
+                <div
+                    class="mb-[16px] font-latin text-[11px] font-semibold tracking-[0.12em] text-ink-3 uppercase"
+                >
                     {{ col.title }}
                 </div>
-                <ul class="flex flex-col gap-[10px] list-none p-0 m-0">
+                <ul class="m-0 flex list-none flex-col gap-[10px] p-0">
                     <li v-for="(link, i) in col.links" :key="i">
                         <a
                             href="#"
-                            class="tf-footer-link text-[13px] text-ink-2 cursor-pointer transition-[color] duration-150"
+                            class="tf-footer-link cursor-pointer text-[13px] text-ink-2 transition-[color] duration-150"
                             @click="onLink(link, $event)"
                         >
                             {{ link.label }}
@@ -97,13 +120,15 @@ function onLink(link, event) {
         </div>
 
         <!-- Divider -->
-        <div class="max-w-[1200px] mx-auto my-0 py-0 px-[24px]">
+        <div class="mx-auto my-0 max-w-[1200px] px-[24px] py-0">
             <div class="h-[1px] bg-line" />
         </div>
 
         <!-- CONTACT STRIP — quick contact + certifications -->
-        <div class="flex justify-between items-center gap-[24px] flex-wrap max-w-[1200px] mx-auto my-0 p-[24px]">
-            <div class="flex items-center gap-[28px] flex-wrap">
+        <div
+            class="mx-auto my-0 flex max-w-[1200px] flex-wrap items-center justify-between gap-[24px] p-[24px]"
+        >
+            <div class="flex flex-wrap items-center gap-[28px]">
                 <div class="flex items-center gap-[8px] text-[13px] text-ink-2">
                     <Icon name="phone" :size="14" color="var(--accent)" />
                     <span class="num" dir="ltr">03-555-0142</span>
@@ -118,7 +143,9 @@ function onLink(link, event) {
                 </div>
             </div>
 
-            <div class="flex items-center gap-[10px] font-latin text-[11px] tracking-[0.06em] uppercase font-semibold text-ink-3">
+            <div
+                class="flex items-center gap-[10px] font-latin text-[11px] font-semibold tracking-[0.06em] text-ink-3 uppercase"
+            >
                 <span :class="certBadgeClass">ISO 9001</span>
                 <span :class="certBadgeClass">GMP</span>
                 <span :class="certBadgeClass">משרד הבריאות</span>
@@ -128,12 +155,17 @@ function onLink(link, event) {
         <!-- COMPLIANCE STRIP — slim, fixed to viewport bottom -->
         <div
             id="site-compliance-strip"
-            class="fixed bottom-0 left-0 right-0 z-[30] text-[rgba(255,255,255,0.78)] bg-[rgb(61,90,58)] border-t border-t-[rgba(255,255,255,0.08)] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]"
+            class="fixed right-0 bottom-0 left-0 z-[30] border-t border-t-[rgba(255,255,255,0.08)] bg-[rgb(61,90,58)] text-[rgba(255,255,255,0.78)] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]"
         >
-            <div class="flex flex-wrap items-center justify-center gap-y-[2px] gap-x-[10px] max-w-[1200px] mx-auto my-0 py-[8px] px-[24px] text-[11px] leading-[1.5] [text-wrap:pretty]">
+            <div
+                class="mx-auto my-0 flex max-w-[1200px] flex-wrap items-center justify-center gap-x-[10px] gap-y-[2px] px-[24px] py-[8px] text-[11px] leading-[1.5] [text-wrap:pretty]"
+            >
                 <span>כל הזכויות שמורות © <span class="num">2026</span></span>
                 <span :class="dotClass">•</span>
-                <span>פועל באישור משרד הבריאות ואגף הרוקחות. רוקח אחראי אמיל אבו חמאד מס׳ רשיון <span class="num">6400</span></span>
+                <span
+                    >פועל באישור משרד הבריאות ואגף הרוקחות. רוקח אחראי אמיל אבו
+                    חמאד מס׳ רשיון <span class="num">6400</span></span
+                >
                 <span :class="dotClass">•</span>
                 <span>ט.ל.ח</span>
                 <span :class="dotClass">•</span>

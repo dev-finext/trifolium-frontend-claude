@@ -1,11 +1,11 @@
 <script setup>
 // A6 בחירת סיסמה חדשה — set new / initial password ("החלפת סיסמה ראשונית").
 // Reached from the email reset link, and used for first-time password setup.
-import { computed, nextTick, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import Icon from '@/components/ui/Icon.vue';
+import { computed, nextTick, ref } from 'vue';
 import AuthSplitCard from '@/components/shared/auth/AuthSplitCard.vue';
 import BackToLogin from '@/components/shared/auth/BackToLogin.vue';
+import Icon from '@/components/ui/Icon.vue';
 import PasswordField from '@/components/ui/PasswordField.vue';
 import { PASSWORD_RULES, validate } from '@/lib/passwordRules';
 import { visit } from '@/lib/routes';
@@ -26,21 +26,45 @@ const allRulesPass = computed(() => validate(pw.value).valid);
 // server-side errors replace this local gating.
 function submit() {
     const next = {};
-    if (!pw.value) next.pw = 'נא להזין סיסמה חדשה';
-    else if (!allRulesPass.value) next.pw = 'הסיסמה אינה עומדת בדרישות';
-    if (!confirm.value) next.confirm = 'נא לאשר את הסיסמה';
-    else if (pw.value && confirm.value !== pw.value) next.confirm = 'הסיסמאות אינן תואמות';
+
+    if (!pw.value) {
+        next.pw = 'נא להזין סיסמה חדשה';
+    } else if (!allRulesPass.value) {
+        next.pw = 'הסיסמה אינה עומדת בדרישות';
+    }
+
+    if (!confirm.value) {
+        next.confirm = 'נא לאשר את הסיסמה';
+    } else if (pw.value && confirm.value !== pw.value) {
+        next.confirm = 'הסיסמאות אינן תואמות';
+    }
+
     err.value = next;
-    if (Object.keys(next).length === 0) { visit('reset-done'); return; }
+
+    if (Object.keys(next).length === 0) {
+        visit('reset-done');
+
+        return;
+    }
+
     // Focus the first invalid field.
     nextTick(() => {
-        if (next.pw) pwField.value?.focus();
-        else if (next.confirm) confirmField.value?.focus();
+        if (next.pw) {
+            pwField.value?.focus();
+        } else if (next.confirm) {
+            confirmField.value?.focus();
+        }
     });
 }
 
-function onPw(v) { pw.value = v; err.value = { ...err.value, pw: undefined }; }
-function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: undefined }; }
+function onPw(v) {
+    pw.value = v;
+    err.value = { ...err.value, pw: undefined };
+}
+function onConfirm(v) {
+    confirm.value = v;
+    err.value = { ...err.value, confirm: undefined };
+}
 </script>
 
 <template>
@@ -49,48 +73,69 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
     <AuthSplitCard data-screen-label="A6 בחירת סיסמה חדשה">
         <form novalidate @submit.prevent="submit">
             <span
-                class="inline-flex items-center justify-center w-[46px] h-[46px] mb-[18px] bg-accent-tint border border-accent-tint-strong rounded-[50%]"
-            ><Icon name="lock" :size="22" color="var(--accent)" /></span>
-            <h1 class="m-0 text-[23px] font-semibold leading-[1.3] tracking-[-0.01em]">
+                class="mb-[18px] inline-flex h-[46px] w-[46px] items-center justify-center rounded-[50%] border border-accent-tint-strong bg-accent-tint"
+                ><Icon name="lock" :size="22" color="var(--accent)"
+            /></span>
+            <h1
+                class="m-0 text-[23px] leading-[1.3] font-semibold tracking-[-0.01em]"
+            >
                 בחירת סיסמה חדשה
             </h1>
-            <p class="page-sub mt-[8px] mx-0 mb-[30px] leading-[1.7] text-pretty">
-                בחרו סיסמה חדשה לחשבונכם. מומלץ להשתמש בסיסמה שאינכם משתמשים בה במקום אחר.
+            <p
+                class="page-sub mx-0 mt-[8px] mb-[30px] leading-[1.7] text-pretty"
+            >
+                בחרו סיסמה חדשה לחשבונכם. מומלץ להשתמש בסיסמה שאינכם משתמשים בה
+                במקום אחר.
             </p>
 
             <div class="flex flex-col gap-[18px]">
                 <PasswordField
                     ref="pwField"
-                    label="סיסמה חדשה" :model-value="pw"
-                    placeholder="הזינו סיסמה" :error="err.pw || ''"
+                    label="סיסמה חדשה"
+                    :model-value="pw"
+                    placeholder="הזינו סיסמה"
+                    :error="err.pw || ''"
                     enterkeyhint="next"
                     @update:model-value="onPw"
                 />
 
                 <!-- live requirement checklist -->
-                <div class="flex flex-wrap gap-y-[6px] gap-x-[16px] mt-[-6px]">
+                <div class="mt-[-6px] flex flex-wrap gap-x-[16px] gap-y-[6px]">
                     <span
-                        v-for="r in RULES" :key="r.id"
+                        v-for="r in RULES"
+                        :key="r.id"
                         class="inline-flex items-center gap-[6px] text-[12.5px] transition-[color] duration-150"
                         :class="r.test(pw) ? 'text-accent' : 'text-ink-4'"
                     >
                         <span
-                            class="inline-flex items-center justify-center w-[15px] h-[15px] shrink-0 border-[1.5px] rounded-[50%] transition-all duration-150"
-                            :class="r.test(pw) ? 'border-accent bg-accent' : 'border-line-strong bg-transparent'"
-                        ><Icon v-if="r.test(pw)" name="check" :size="9" color="#fff" :stroke="3" /></span>
+                            class="inline-flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-[50%] border-[1.5px] transition-all duration-150"
+                            :class="
+                                r.test(pw)
+                                    ? 'border-accent bg-accent'
+                                    : 'border-line-strong bg-transparent'
+                            "
+                            ><Icon
+                                v-if="r.test(pw)"
+                                name="check"
+                                :size="9"
+                                color="#fff"
+                                :stroke="3"
+                        /></span>
                         {{ r.label }}
                     </span>
                 </div>
 
                 <PasswordField
                     ref="confirmField"
-                    label="אימות סיסמה" :model-value="confirm"
-                    placeholder="הזינו שוב את הסיסמה" :error="err.confirm || ''"
+                    label="אימות סיסמה"
+                    :model-value="confirm"
+                    placeholder="הזינו שוב את הסיסמה"
+                    :error="err.confirm || ''"
                     enterkeyhint="done"
                     @update:model-value="onConfirm"
                 />
 
-                <button type="submit" class="btn btn--primary w-full mt-[6px]">
+                <button type="submit" class="btn btn--primary mt-[6px] w-full">
                     שמירת הסיסמה
                 </button>
             </div>

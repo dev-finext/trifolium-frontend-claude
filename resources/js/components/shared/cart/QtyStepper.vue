@@ -11,11 +11,16 @@ const emit = defineEmits(['change']);
 // 30px on desktop; the mobile stylesheet bumps .qty-step to 40px (M7).
 function btnStyle(disabled) {
     return {
-        width: '30px', height: '30px', borderRadius: 'var(--r-control)',
-        border: 'none', flexShrink: 0,
+        width: '30px',
+        height: '30px',
+        borderRadius: 'var(--r-control)',
+        border: 'none',
+        flexShrink: 0,
         background: disabled ? 'var(--surface-sunk)' : 'var(--accent)',
         color: disabled ? 'var(--ink-4)' : 'var(--on-accent)',
-        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'background .15s',
     };
@@ -23,7 +28,11 @@ function btnStyle(disabled) {
 </script>
 
 <template>
-    <div class="qty-stepper flex items-center gap-[8px]" role="group" aria-label="כמות">
+    <div
+        class="qty-stepper flex items-center gap-[8px]"
+        role="group"
+        aria-label="כמות"
+    >
         <button
             class="qty-step"
             type="button"
@@ -32,14 +41,20 @@ function btnStyle(disabled) {
             :style="btnStyle(qty <= 1)"
             @click="emit('change', qty - 1)"
         >
-            <Icon name="minus" :size="15" :color="qty <= 1 ? 'var(--ink-4)' : 'var(--on-accent)'" :stroke="2.2" />
+            <Icon
+                name="minus"
+                :size="15"
+                :color="qty <= 1 ? 'var(--ink-4)' : 'var(--on-accent)'"
+                :stroke="2.2"
+            />
         </button>
         <span
-            class="num qty-count min-w-[40px] h-[30px] text-center text-[15px] font-semibold leading-[28px] bg-surface border border-line rounded-control"
+            class="num qty-count h-[30px] min-w-[40px] rounded-control border border-line bg-surface text-center text-[15px] leading-[28px] font-semibold"
             role="status"
             aria-live="polite"
             :aria-label="`כמות: ${qty}`"
-        >{{ qty }}</span>
+            >{{ qty }}</span
+        >
         <button
             class="qty-step"
             type="button"
@@ -47,7 +62,12 @@ function btnStyle(disabled) {
             :style="btnStyle(false)"
             @click="emit('change', qty + 1)"
         >
-            <Icon name="plus" :size="15" color="var(--on-accent)" :stroke="2.2" />
+            <Icon
+                name="plus"
+                :size="15"
+                color="var(--on-accent)"
+                :stroke="2.2"
+            />
         </button>
     </div>
 </template>

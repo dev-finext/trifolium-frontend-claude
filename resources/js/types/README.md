@@ -41,9 +41,9 @@ import type { User } from '@/types';
 ```ts
 // types/user.ts
 export interface User {
-  id: number;
-  name: string;
-  email: string;
+    id: number;
+    name: string;
+    email: string;
 }
 ```
 

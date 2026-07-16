@@ -2,47 +2,50 @@
 // App chrome for every authenticated screen: navbar, footer, cart toast, and
 // the treatment-style switch confirmation. Applied automatically to all pages
 // except Auth/* (see resources/js/app.js).
-import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import TheNavbar from '@/components/shared/navbar/TheNavbar.vue';
-import BottomTabBar from '@/components/shared/navbar/BottomTabBar.vue';
-import TheFooter from '@/components/shared/TheFooter.vue';
+import { computed } from 'vue';
 import CartToast from '@/components/shared/CartToast.vue';
 import ModeSwitchConfirmModal from '@/components/shared/mode/ModeSwitchConfirmModal.vue';
+import BottomTabBar from '@/components/shared/navbar/BottomTabBar.vue';
+import TheNavbar from '@/components/shared/navbar/TheNavbar.vue';
+import TheFooter from '@/components/shared/TheFooter.vue';
+import { DEMO_USER } from '@/data/user';
+import { routeNameFromUrl } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart';
 import { useModeStore } from '@/stores/mode';
-import { routeNameFromUrl } from '@/lib/routes';
 
 const page = usePage();
 const cart = useCartStore();
 const modeStore = useModeStore();
 
-import { DEMO_USER } from '@/data/user';
-
 const USER = DEMO_USER; // TODO(backend): auth user via Inertia shared props
 
 const currentRoute = computed(() => routeNameFromUrl(page.url));
 // The article detail view highlights the "מאמרים" nav entry.
-const navRoute = computed(() => (currentRoute.value === 'article' ? 'articles' : currentRoute.value));
+const navRoute = computed(() =>
+    currentRoute.value === 'article' ? 'articles' : currentRoute.value,
+);
 
 // Canonical screen index from the design handoff — kept as a data attribute
 // for traceability back to the spec (each screen's `data-screen-label`).
 const SCREEN_LABELS = {
-    'home': '01 ראשי',
-    'catalog': '02 מוצרי מדף',
-    'compounding': '03 הכנת פורמולה',
-    'articles': '04 מאמרים',
-    'article': '04 מאמר',
-    'orders': '05 כל ההזמנות',
-    'order': '05 צפייה בהזמנה',
-    'cart': '06 סל הקניות',
-    'pending': '07 הזמנות בהמתנה',
-    'contact': '08 צור קשר',
-    'profile': '09 עריכת פרטים אישיים',
+    home: '01 ראשי',
+    catalog: '02 מוצרי מדף',
+    compounding: '03 הכנת פורמולה',
+    articles: '04 מאמרים',
+    article: '04 מאמר',
+    orders: '05 כל ההזמנות',
+    order: '05 צפייה בהזמנה',
+    cart: '06 סל הקניות',
+    pending: '07 הזמנות בהמתנה',
+    contact: '08 צור קשר',
+    profile: '09 עריכת פרטים אישיים',
     'change-password': '09b שינוי סיסמה',
     'my-formulas': '10 רשימת הפורמולות שלי',
 };
-const screenLabel = computed(() => SCREEN_LABELS[currentRoute.value] || currentRoute.value);
+const screenLabel = computed(
+    () => SCREEN_LABELS[currentRoute.value] || currentRoute.value,
+);
 </script>
 
 <template>

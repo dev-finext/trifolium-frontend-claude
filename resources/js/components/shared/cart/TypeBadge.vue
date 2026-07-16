@@ -12,10 +12,18 @@ const shelf = computed(() => props.kind === 'shelf');
 
 <template>
     <span
-        class="inline-flex items-center gap-[6px] px-[11px] py-[4px] text-[12px] font-semibold border rounded-[999px]"
-        :class="shelf ? 'bg-surface-sunk text-ink-2 border-line' : 'bg-accent-tint-strong text-accent-ink border-transparent'"
+        class="inline-flex items-center gap-[6px] rounded-[999px] border px-[11px] py-[4px] text-[12px] font-semibold"
+        :class="
+            shelf
+                ? 'border-line bg-surface-sunk text-ink-2'
+                : 'border-transparent bg-accent-tint-strong text-accent-ink'
+        "
     >
-        <Icon :name="shelf ? 'package' : 'flask'" :size="13" :color="shelf ? 'var(--ink-3)' : 'var(--accent)'" />
+        <Icon
+            :name="shelf ? 'package' : 'flask'"
+            :size="13"
+            :color="shelf ? 'var(--ink-3)' : 'var(--accent)'"
+        />
         {{ shelf ? 'מוצר מדף' : 'פורמולה בהכנה אישית' }}
     </span>
 </template>

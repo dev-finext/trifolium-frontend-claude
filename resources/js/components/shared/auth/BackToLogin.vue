@@ -11,7 +11,7 @@ defineProps({
 <template>
     <div class="mt-[24px] text-center">
         <a
-            class="inline-flex items-center gap-[6px] whitespace-nowrap text-[13.5px] text-ink-3 cursor-pointer"
+            class="inline-flex cursor-pointer items-center gap-[6px] text-[13.5px] whitespace-nowrap text-ink-3"
             @click="visit('login')"
         >
             <Icon name="chevron_right" :size="15" color="var(--ink-3)" />

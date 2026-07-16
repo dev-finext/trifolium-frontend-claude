@@ -10,12 +10,22 @@ export const isPhone = (v) => /^0\d{8,9}$/.test(onlyDigits(v));
 // Israeli ID check digit (Luhn-like weighting over 9 digits).
 export function isIsraeliID(v) {
     const id = onlyDigits(v);
-    if (!/^\d{9}$/.test(id)) return false;
+
+    if (!/^\d{9}$/.test(id)) {
+        return false;
+    }
+
     let sum = 0;
+
     for (let i = 0; i < 9; i++) {
         let step = Number(id[i]) * ((i % 2) + 1);
-        if (step > 9) step -= 9;
+
+        if (step > 9) {
+            step -= 9;
+        }
+
         sum += step;
     }
+
     return sum % 10 === 0;
 }

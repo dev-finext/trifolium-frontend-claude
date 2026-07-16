@@ -23,6 +23,8 @@ defineProps({
         stroke-linejoin="round"
     >
         <path d="M14.5 3.5 L19 8" />
-        <path d="M4 11 H20 L18.5 18 a3 3 0 0 1 -3 2.5 H8.5 a3 3 0 0 1 -3 -2.5 Z" />
+        <path
+            d="M4 11 H20 L18.5 18 a3 3 0 0 1 -3 2.5 H8.5 a3 3 0 0 1 -3 -2.5 Z"
+        />
     </svg>
 </template>

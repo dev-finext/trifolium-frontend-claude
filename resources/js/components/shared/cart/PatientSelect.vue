@@ -15,13 +15,15 @@ defineEmits(['update:modelValue']);
             <Icon name="chevron_down" :size="16" />
         </span>
         <select
-            class="select appearance-none h-[42px] pl-[34px] text-[14px] cursor-pointer"
+            class="select h-[42px] cursor-pointer appearance-none pl-[34px] text-[14px]"
             :class="modelValue ? 'text-ink' : 'text-ink-4'"
             :value="modelValue"
             @change="$emit('update:modelValue', $event.target.value)"
         >
             <option value="" disabled>בחר/י מטופל/ת…</option>
-            <option v-for="p in patients" :key="p.name" :value="p.name">{{ p.name }}</option>
+            <option v-for="p in patients" :key="p.name" :value="p.name">
+                {{ p.name }}
+            </option>
         </select>
     </div>
 </template>

@@ -19,7 +19,7 @@ defineProps({
                 <Icon name="lock" :size="15" />
             </span>
             <input
-                class="input pl-[36px] cursor-default bg-surface-sunk text-ink-2"
+                class="input cursor-default bg-surface-sunk pl-[36px] text-ink-2"
                 :class="dir === 'ltr' ? 'text-right' : ''"
                 :value="value"
                 readonly
@@ -27,6 +27,8 @@ defineProps({
                 :dir="dir"
             />
         </div>
-        <div class="small muted mt-[6px]">לא ניתן לעריכה. לשינוי יש לפנות לתמיכה.</div>
+        <div class="small muted mt-[6px]">
+            לא ניתן לעריכה. לשינוי יש לפנות לתמיכה.
+        </div>
     </div>
 </template>

@@ -42,8 +42,8 @@
 //                         names, formula names, herb notes). DELETE together
 //                         with data/mock.js when the real backend arrives.
 // ============================================================================
-import APP_DICT from '@/lib/i18n/dictionary.js';
 import DEMO_DICT from '@/lib/i18n/dictionary.demo.js';
+import APP_DICT from '@/lib/i18n/dictionary.js';
 import { PATTERNS } from '@/lib/i18n/patterns.js';
 
 const DICT = { ...DEMO_DICT, ...APP_DICT };
@@ -66,72 +66,143 @@ export function isEnglishRequested() {
  * nothing (caller then leaves the original Hebrew in place).
  */
 function translate(raw) {
-    if (!raw || !HEB.test(raw)) return null;
+    if (!raw || !HEB.test(raw)) {
+        return null;
+    }
+
     const lead = raw.match(/^\s*/)[0];
     const trail = raw.match(/\s*$/)[0];
     const key = raw.slice(lead.length, raw.length - trail.length);
-    if (key === '') return null;
+
+    if (key === '') {
+        return null;
+    }
 
     // 1) exact whole-value match (also try collapsing internal whitespace —
     //    DOM text often carries newlines/tabs from template indentation).
-    if (Object.prototype.hasOwnProperty.call(DICT, key)) return lead + DICT[key] + trail;
+    if (Object.prototype.hasOwnProperty.call(DICT, key)) {
+        return lead + DICT[key] + trail;
+    }
+
     const collapsed = key.replace(/\s+/g, ' ');
-    if (collapsed !== key && Object.prototype.hasOwnProperty.call(DICT, collapsed)) {
+
+    if (
+        collapsed !== key &&
+        Object.prototype.hasOwnProperty.call(DICT, collapsed)
+    ) {
         return lead + DICT[collapsed] + trail;
     }
 
     // 2) curated interpolation patterns (units, dosing, …)
     let out = key;
     let hit = false;
+
     for (const [re, rep] of PATTERNS) {
         const next = out.replace(re, rep);
-        if (next !== out) { out = next; hit = true; }
+
+        if (next !== out) {
+            out = next;
+            hit = true;
+        }
     }
-    if (hit) return lead + out + trail;
+
+    if (hit) {
+        return lead + out + trail;
+    }
 
     return null; // silent Hebrew fallback
 }
 
 function handleTextNode(node) {
     const v = node.nodeValue;
-    if (!v || !HEB.test(v)) return;
-    if (node.parentNode && SKIP_TAGS[node.parentNode.nodeName]) return;
+
+    if (!v || !HEB.test(v)) {
+        return;
+    }
+
+    if (node.parentNode && SKIP_TAGS[node.parentNode.nodeName]) {
+        return;
+    }
+
     const t = translate(v);
-    if (t !== null && t !== v) node.nodeValue = t;
+
+    if (t !== null && t !== v) {
+        node.nodeValue = t;
+    }
 }
 
 function handleElementAttrs(el) {
-    if (!el || el.nodeType !== 1) return;
+    if (!el || el.nodeType !== 1) {
+        return;
+    }
+
     for (const a of ATTRS) {
-        if (!el.hasAttribute(a)) continue;
+        if (!el.hasAttribute(a)) {
+            continue;
+        }
+
         const cur = el.getAttribute(a);
-        if (!HEB.test(cur)) continue;
+
+        if (!HEB.test(cur)) {
+            continue;
+        }
+
         const t = translate(cur);
-        if (t !== null && t !== cur) el.setAttribute(a, t);
+
+        if (t !== null && t !== cur) {
+            el.setAttribute(a, t);
+        }
     }
 }
 
 function walk(root) {
-    if (!root) return;
-    if (root.nodeType === 3) { handleTextNode(root); return; }
-    if (root.nodeType !== 1 && root.nodeType !== 9 && root.nodeType !== 11) return;
-    if (root.nodeType === 1) handleElementAttrs(root);
+    if (!root) {
+        return;
+    }
 
-    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    if (root.nodeType === 3) {
+        handleTextNode(root);
+
+        return;
+    }
+
+    if (root.nodeType !== 1 && root.nodeType !== 9 && root.nodeType !== 11) {
+        return;
+    }
+
+    if (root.nodeType === 1) {
+        handleElementAttrs(root);
+    }
+
+    const tw = document.createTreeWalker(
+        root,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false,
+    );
     const batch = [];
     let n;
-    while ((n = tw.nextNode())) batch.push(n);
+
+    while ((n = tw.nextNode())) {
+        batch.push(n);
+    }
+
     batch.forEach(handleTextNode);
 
     if (root.querySelectorAll) {
-        root.querySelectorAll('[placeholder],[title],[aria-label],[alt]').forEach(handleElementAttrs);
+        root.querySelectorAll(
+            '[placeholder],[title],[aria-label],[alt]',
+        ).forEach(handleElementAttrs);
     }
 }
 
 function runFullPass() {
     walk(document.body);
     const t = translate(document.title);
-    if (t !== null && t !== document.title) document.title = t;
+
+    if (t !== null && t !== document.title) {
+        document.title = t;
+    }
 }
 
 /**
@@ -139,7 +210,9 @@ function runFullPass() {
  * immediately unless `?lang=en` is present.
  */
 export function initEnglishOverlay() {
-    if (typeof window === 'undefined' || !isEnglishRequested()) return;
+    if (typeof window === 'undefined' || !isEnglishRequested()) {
+        return;
+    }
 
     // Announce the language to assistive tech / the browser. dir stays "rtl".
     document.documentElement.lang = 'en';
@@ -149,9 +222,13 @@ export function initEnglishOverlay() {
         // Keep translating as Vue/Inertia mutate the tree (renders, navigation).
         const obs = new MutationObserver((muts) => {
             for (const m of muts) {
-                if (m.type === 'characterData') handleTextNode(m.target);
-                else if (m.type === 'attributes') handleElementAttrs(m.target);
-                else if (m.type === 'childList') m.addedNodes.forEach(walk);
+                if (m.type === 'characterData') {
+                    handleTextNode(m.target);
+                } else if (m.type === 'attributes') {
+                    handleElementAttrs(m.target);
+                } else if (m.type === 'childList') {
+                    m.addedNodes.forEach(walk);
+                }
             }
         });
         obs.observe(document.body, {
@@ -166,6 +243,9 @@ export function initEnglishOverlay() {
         setTimeout(runFullPass, 1200);
     };
 
-    if (document.body) boot();
-    else document.addEventListener('DOMContentLoaded', boot);
+    if (document.body) {
+        boot();
+    } else {
+        document.addEventListener('DOMContentLoaded', boot);
+    }
 }

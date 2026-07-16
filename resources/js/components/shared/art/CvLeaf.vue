@@ -14,7 +14,23 @@ defineProps({
 
 <template>
     <g :transform="`rotate(${rot} ${cx} ${cy})`">
-        <ellipse :cx="cx" :cy="cy" :rx="rx" :ry="ry" :fill="accent ? p.accent : 'none'" :stroke="p.ink" stroke-width="1.6" />
-        <line :x1="cx - rx + 1" :y1="cy" :x2="cx + rx - 1" :y2="cy" :stroke="p.ink" stroke-width="0.9" opacity="0.55" />
+        <ellipse
+            :cx="cx"
+            :cy="cy"
+            :rx="rx"
+            :ry="ry"
+            :fill="accent ? p.accent : 'none'"
+            :stroke="p.ink"
+            stroke-width="1.6"
+        />
+        <line
+            :x1="cx - rx + 1"
+            :y1="cy"
+            :x2="cx + rx - 1"
+            :y2="cy"
+            :stroke="p.ink"
+            stroke-width="0.9"
+            opacity="0.55"
+        />
     </g>
 </template>

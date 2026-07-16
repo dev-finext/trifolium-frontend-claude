@@ -1,11 +1,11 @@
 <script setup>
 // צור קשר — Contact page. Two-column: contact form (start) + contact details (end).
-import { ref, reactive, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import Icon from '@/components/ui/Icon.vue';
+import { ref, reactive, nextTick } from 'vue';
 import ContactField from '@/components/shared/contact/ContactField.vue';
 import InfoRow from '@/components/shared/contact/InfoRow.vue';
 import SocialGlyph from '@/components/shared/contact/SocialGlyph.vue';
+import Icon from '@/components/ui/Icon.vue';
 import { isEmail, isPhone } from '@/lib/validators';
 
 const CONTACT_INFO = {
@@ -39,12 +39,18 @@ function validate() {
 
     const hasEmail = form.value.email.trim();
     const hasPhone = form.value.phone.trim();
+
     if (!hasEmail && !hasPhone) {
         errors.email = 'יש להזין דואר אלקטרוני או טלפון';
         errors.phone = 'יש להזין דואר אלקטרוני או טלפון';
     } else {
-        if (hasEmail && !isEmail(form.value.email)) errors.email = 'כתובת הדוא"ל אינה תקינה';
-        if (hasPhone && !isPhone(form.value.phone)) errors.phone = 'מספר הטלפון אינו תקין';
+        if (hasEmail && !isEmail(form.value.email)) {
+            errors.email = 'כתובת הדוא"ל אינה תקינה';
+        }
+
+        if (hasPhone && !isPhone(form.value.phone)) {
+            errors.phone = 'מספר הטלפון אינו תקין';
+        }
     }
 
     errors.message = form.value.message.trim() ? '' : 'יש להזין הודעה';
@@ -55,16 +61,25 @@ function validate() {
 // TODO(backend): replace the setTimeout with Inertia's useForm().post('/contact')
 // once the Laravel endpoint exists; `sent` then keys off the server response.
 function submit() {
-    if (sending.value) return; // guard double-submit
+    if (sending.value) {
+        return;
+    } // guard double-submit
+
     if (!validate()) {
-        nextTick(() => { document.querySelector('.card [aria-invalid="true"]')?.focus(); });
+        nextTick(() => {
+            document.querySelector('.card [aria-invalid="true"]')?.focus();
+        });
+
         return;
     }
+
     sending.value = true;
     setTimeout(() => {
         sending.value = false;
         sent.value = true;
-        setTimeout(() => { sent.value = false; }, 3200);
+        setTimeout(() => {
+            sent.value = false;
+        }, 3200);
     }, 3200);
 }
 </script>
@@ -74,10 +89,10 @@ function submit() {
     <div class="page">
         <div class="page__inner">
             <!-- Centered header -->
-            <div class="flex items-center justify-center gap-[12px] mb-[32px]">
+            <div class="mb-[32px] flex items-center justify-center gap-[12px]">
                 <h1 class="page-title m-0 text-[30px]">יצירת קשר</h1>
                 <span
-                    class="inline-flex items-center justify-center w-[40px] h-[40px] bg-accent-tint rounded-[11px]"
+                    class="inline-flex h-[40px] w-[40px] items-center justify-center rounded-[11px] bg-accent-tint"
                 >
                     <Icon name="mail" :size="20" color="var(--accent)" />
                 </span>
@@ -87,7 +102,11 @@ function submit() {
                 class="grid grid-cols-[minmax(0,1fr)_340px] items-stretch gap-[28px]"
             >
                 <!-- Form card (start side) -->
-                <form novalidate class="card pt-[28px] px-[32px] pb-[32px]" @submit.prevent="submit">
+                <form
+                    novalidate
+                    class="card px-[32px] pt-[28px] pb-[32px]"
+                    @submit.prevent="submit"
+                >
                     <h2 class="m-0 mb-[4px] text-[19px] font-semibold text-ink">
                         טופס יצירת קשר
                     </h2>
@@ -95,7 +114,9 @@ function submit() {
                         מלאי את פרטי ההתקשרות וניצור עמך קשר בהקדם האפשרי
                     </p>
 
-                    <div class="grid grid-cols-[1fr_1fr] gap-y-[20px] gap-x-[24px]">
+                    <div
+                        class="grid grid-cols-[1fr_1fr] gap-x-[24px] gap-y-[20px]"
+                    >
                         <ContactField
                             id="contact-name"
                             v-model="form.name"
@@ -144,46 +165,70 @@ function submit() {
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-[16px] mt-[26px]">
-                        <button type="submit" class="btn btn--primary min-w-[96px]" :disabled="sending">
+                    <div class="mt-[26px] flex items-center gap-[16px]">
+                        <button
+                            type="submit"
+                            class="btn btn--primary min-w-[96px]"
+                            :disabled="sending"
+                        >
                             {{ sending ? 'שולח…' : 'שלחי' }}
                         </button>
                         <span
                             v-if="sent"
                             class="inline-flex items-center gap-[7px] text-[13.5px] font-medium text-accent"
                         >
-                            <Icon name="check" :size="16" color="var(--accent)" :stroke="2.4" />
+                            <Icon
+                                name="check"
+                                :size="16"
+                                color="var(--accent)"
+                                :stroke="2.4"
+                            />
                             ההודעה נשלחה — ניצור איתך קשר בהקדם
                         </span>
                     </div>
                 </form>
 
                 <!-- Contact details card (end side) -->
-                <aside class="card pt-[28px] px-[26px] pb-[30px]">
-                    <h2 class="m-0 mb-[22px] text-[18px] font-semibold text-center text-ink">
+                <aside class="card px-[26px] pt-[28px] pb-[30px]">
+                    <h2
+                        class="m-0 mb-[22px] text-center text-[18px] font-semibold text-ink"
+                    >
                         פרטי התקשרות
                     </h2>
 
-                    <div class="mb-[18px] text-[15px] font-bold text-center text-ink">
+                    <div
+                        class="mb-[18px] text-center text-[15px] font-bold text-ink"
+                    >
                         {{ CONTACT_INFO.company }}
                     </div>
 
-                    <ul class="flex flex-col gap-[14px] m-0 p-0 list-none">
+                    <ul class="m-0 flex list-none flex-col gap-[14px] p-0">
                         <InfoRow icon="map_pin">
                             <div>{{ CONTACT_INFO.address }}</div>
-                            <div class="mt-[2px] text-[12.5px] text-ink-3">{{ CONTACT_INFO.hours }}</div>
+                            <div class="mt-[2px] text-[12.5px] text-ink-3">
+                                {{ CONTACT_INFO.hours }}
+                            </div>
                         </InfoRow>
                         <InfoRow icon="phone">
-                            <a :href="`tel:${CONTACT_INFO.phone}`" class="num inline-block" dir="ltr">{{ CONTACT_INFO.phone }}</a>
+                            <a
+                                :href="`tel:${CONTACT_INFO.phone}`"
+                                class="num inline-block"
+                                dir="ltr"
+                                >{{ CONTACT_INFO.phone }}</a
+                            >
                         </InfoRow>
                         <InfoRow icon="mail">
-                            <a :href="`mailto:${CONTACT_INFO.email}`" class="latin">{{ CONTACT_INFO.email }}</a>
+                            <a
+                                :href="`mailto:${CONTACT_INFO.email}`"
+                                class="latin"
+                                >{{ CONTACT_INFO.email }}</a
+                            >
                         </InfoRow>
                     </ul>
 
-                    <div class="h-[1px] my-[22px] mx-0 bg-(--line)" />
+                    <div class="mx-0 my-[22px] h-[1px] bg-(--line)" />
 
-                    <ul class="flex flex-col gap-[14px] m-0 p-0 list-none">
+                    <ul class="m-0 flex list-none flex-col gap-[14px] p-0">
                         <li v-for="s in SOCIALS" :key="s.id">
                             <a
                                 href="#"
@@ -192,7 +237,7 @@ function submit() {
                             >
                                 <span>{{ s.label }}</span>
                                 <span
-                                    class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 bg-bg border border-line rounded-[8px]"
+                                    class="inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] border border-line bg-bg"
                                 >
                                     <SocialGlyph :id="s.id" :size="15" />
                                 </span>

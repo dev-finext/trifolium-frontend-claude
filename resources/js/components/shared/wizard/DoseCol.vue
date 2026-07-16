@@ -13,11 +13,11 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col items-center gap-[10px] pt-[20px] px-[14px] pb-[18px]"
+        class="flex flex-col items-center gap-[10px] px-[14px] pt-[20px] pb-[18px]"
         :class="isLast ? '' : 'border-l border-line'"
     >
         <Step4Icon :type="icon" />
-        <div class="text-[13px] font-semibold text-ink-2 text-center">
+        <div class="text-center text-[13px] font-semibold text-ink-2">
             {{ label }}
         </div>
         <div class="w-full">

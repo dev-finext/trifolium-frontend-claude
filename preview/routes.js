@@ -30,8 +30,16 @@ export const STATIC_ROUTES = {
 
 /** Dynamic routes: regex → component + captured props. */
 const DYNAMIC_ROUTES = [
-    { pattern: /^\/articles\/([^/]+)$/, component: 'articles/Show', props: (m) => ({ id: m[1] }) },
-    { pattern: /^\/orders\/([^/]+)$/, component: 'orders/Show', props: (m) => ({ id: m[1] }) },
+    {
+        pattern: /^\/articles\/([^/]+)$/,
+        component: 'articles/Show',
+        props: (m) => ({ id: m[1] }),
+    },
+    {
+        pattern: /^\/orders\/([^/]+)$/,
+        component: 'orders/Show',
+        props: (m) => ({ id: m[1] }),
+    },
 ];
 
 /**
@@ -40,12 +48,18 @@ const DYNAMIC_ROUTES = [
  */
 export function resolvePreviewRoute(pathname) {
     const clean = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+
     if (STATIC_ROUTES[clean]) {
         return { component: STATIC_ROUTES[clean], props: {} };
     }
+
     for (const route of DYNAMIC_ROUTES) {
         const m = clean.match(route.pattern);
-        if (m) return { component: route.component, props: route.props(m) };
+
+        if (m) {
+            return { component: route.component, props: route.props(m) };
+        }
     }
+
     return null;
 }

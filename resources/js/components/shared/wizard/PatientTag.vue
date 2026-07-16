@@ -16,10 +16,11 @@ const colors = computed(() => MAP[props.tone] || MAP.active);
 
 <template>
     <span
-        class="inline-flex items-center px-[9px] py-[2px] text-[11.5px] font-semibold rounded-[999px] whitespace-nowrap"
+        class="inline-flex items-center rounded-[999px] px-[9px] py-[2px] text-[11.5px] font-semibold whitespace-nowrap"
         :style="{
             background: colors.bg,
             color: colors.fg,
         }"
-    ><slot /></span>
+        ><slot
+    /></span>
 </template>

@@ -3,8 +3,8 @@
 // patient) and order (patient selected). Navigation replaces the prototype's
 // tf:route events; the order hand-off replaces window.__tfLastOrder.
 import Icon from '@/components/ui/Icon.vue';
-import { visit } from '@/lib/routes';
 import { setLastOrder } from '@/lib/orders';
+import { visit } from '@/lib/routes';
 
 const props = defineProps({
     noPatient: { type: Boolean, default: false },
@@ -28,11 +28,20 @@ function goHome() {
 </script>
 
 <template>
-    <div class="card py-[64px] px-[32px] text-center">
+    <div class="card px-[32px] py-[64px] text-center">
         <div
-            class="inline-flex items-center justify-center w-[80px] h-[80px] mb-[20px] text-accent bg-accent-tint-strong rounded-[50%]"
+            class="mb-[20px] inline-flex h-[80px] w-[80px] items-center justify-center rounded-[50%] bg-accent-tint-strong text-accent"
         >
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
                 <path d="M20 6L9 17l-5-5" />
             </svg>
         </div>
@@ -43,17 +52,25 @@ function goHome() {
 
         <p class="muted m-0 mx-auto max-w-[480px] text-[14px]">
             <template v-if="noPatient">
-                הפורמולה <strong class="text-ink-2">{{ formulaName || 'ללא שם' }}</strong> נשמרה בטיוטות שלך. ניתן לקשר אותה למטופל ולהפוך אותה להזמנה בכל רגע.
+                הפורמולה
+                <strong class="text-ink-2">{{
+                    formulaName || 'ללא שם'
+                }}</strong>
+                נשמרה בטיוטות שלך. ניתן לקשר אותה למטופל ולהפוך אותה להזמנה בכל
+                רגע.
             </template>
             <template v-else>
-                הפורמולה עבור <strong class="text-ink-2">{{ patientLabel }}</strong> נוספה אל <strong class="text-ink-2">סל הקניות</strong> — ניתן להשלים את הרכישה משם בכל רגע.
+                הפורמולה עבור
+                <strong class="text-ink-2">{{ patientLabel }}</strong> נוספה אל
+                <strong class="text-ink-2">סל הקניות</strong> — ניתן להשלים את
+                הרכישה משם בכל רגע.
             </template>
         </p>
 
         <div class="mt-[32px] flex flex-wrap justify-center gap-[12px]">
             <a
                 v-if="noPatient"
-                class="inline-flex items-center gap-[6px] text-[14px] font-semibold text-accent cursor-pointer"
+                class="inline-flex cursor-pointer items-center gap-[6px] text-[14px] font-semibold text-accent"
             >
                 קשר למטופל ושלח להזמנה
                 <Icon name="arrow_left" :size="14" />

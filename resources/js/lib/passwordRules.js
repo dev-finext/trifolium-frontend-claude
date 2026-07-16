@@ -6,10 +6,22 @@
 // TODO(backend): server-side validation remains authoritative.
 
 export const PASSWORD_RULES = [
-    { id: 'len', label: 'בין 8 ל-64 תווים', test: (v) => v.length >= 8 && v.length <= 64 },
-    { id: 'letter', label: 'אות באנגלית אחת לפחות', test: (v) => /[a-zA-Z]/.test(v) },
+    {
+        id: 'len',
+        label: 'בין 8 ל-64 תווים',
+        test: (v) => v.length >= 8 && v.length <= 64,
+    },
+    {
+        id: 'letter',
+        label: 'אות באנגלית אחת לפחות',
+        test: (v) => /[a-zA-Z]/.test(v),
+    },
     { id: 'digit', label: 'ספרה אחת לפחות', test: (v) => /\d/.test(v) },
-    { id: 'strong', label: 'אות גדולה או תו מיוחד', test: (v) => /[A-Z]/.test(v) || /[^a-zA-Z0-9]/.test(v) },
+    {
+        id: 'strong',
+        label: 'אות גדולה או תו מיוחד',
+        test: (v) => /[A-Z]/.test(v) || /[^a-zA-Z0-9]/.test(v),
+    },
 ];
 
 // Run every rule against a password. Returns the per-rule results plus an
@@ -18,6 +30,10 @@ export const PASSWORD_RULES = [
 export function validate(password) {
     const value = password || '';
     const checks = {};
-    for (const r of PASSWORD_RULES) checks[r.id] = r.test(value);
-    return { valid: PASSWORD_RULES.every(r => checks[r.id]), checks };
+
+    for (const r of PASSWORD_RULES) {
+        checks[r.id] = r.test(value);
+    }
+
+    return { valid: PASSWORD_RULES.every((r) => checks[r.id]), checks };
 }

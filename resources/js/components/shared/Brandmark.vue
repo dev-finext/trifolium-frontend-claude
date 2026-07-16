@@ -15,7 +15,11 @@ defineProps({
         :src="logoUrl"
         alt="Trifolium"
         class="block w-auto max-w-full object-contain"
-        :class="tone === 'light' ? '[filter:brightness(0)_invert(1)]' : '[filter:none]'"
+        :class="
+            tone === 'light'
+                ? '[filter:brightness(0)_invert(1)]'
+                : '[filter:none]'
+        "
         :style="{ height: `${height}px` }"
     />
 </template>

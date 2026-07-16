@@ -18,10 +18,14 @@ const MENU_ITEMS = [
 ];
 
 function onDocumentClick(e) {
-    if (rootEl.value && !rootEl.value.contains(e.target)) open.value = false;
+    if (rootEl.value && !rootEl.value.contains(e.target)) {
+        open.value = false;
+    }
 }
 function onKeydown(e) {
-    if (e.key === 'Escape') open.value = false;
+    if (e.key === 'Escape') {
+        open.value = false;
+    }
 }
 
 // Attach the outside-click / Escape listeners only while the menu is open.
@@ -50,14 +54,27 @@ function pick(id) {
         <button
             aria-haspopup="true"
             :aria-expanded="open"
-            class="inline-flex flex-row-reverse items-center gap-[9px] py-[4px] pr-[6px] pl-[12px] cursor-pointer [font:inherit] border rounded-[999px] transition-[background,border-color] duration-120"
-            :class="open ? 'bg-surface-sunk border-line' : 'bg-transparent border-transparent'"
+            class="inline-flex cursor-pointer flex-row-reverse items-center gap-[9px] rounded-[999px] border py-[4px] pr-[6px] pl-[12px] transition-[background,border-color] duration-120 [font:inherit]"
+            :class="
+                open
+                    ? 'border-line bg-surface-sunk'
+                    : 'border-transparent bg-transparent'
+            "
             @click="open = !open"
         >
-            <span class="inline-flex items-center justify-center w-[34px] h-[34px] shrink-0 bg-accent-tint border border-line rounded-full">
-                <Icon name="user" :size="19" color="var(--accent)" :stroke="1.7" />
+            <span
+                class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border border-line bg-accent-tint"
+            >
+                <Icon
+                    name="user"
+                    :size="19"
+                    color="var(--accent)"
+                    :stroke="1.7"
+                />
             </span>
-            <span class="text-[14px] font-medium text-ink">{{ user.name }}</span>
+            <span class="text-[14px] font-medium text-ink">{{
+                user.name
+            }}</span>
             <Icon
                 name="chevron_down"
                 :size="15"
@@ -70,15 +87,28 @@ function pick(id) {
         <div
             v-if="open"
             role="menu"
-            class="absolute start-0 top-[calc(100%_+_12px)] z-[80] w-[232px] p-[7px] bg-surface border border-line rounded-card shadow-[0_18px_50px_rgba(20,28,24,0.16)] animate-[tf-pa-in_.16s_ease_both]"
+            class="absolute start-0 top-[calc(100%_+_12px)] z-[80] w-[232px] animate-[tf-pa-in_.16s_ease_both] rounded-card border border-line bg-surface p-[7px] shadow-[0_18px_50px_rgba(20,28,24,0.16)]"
         >
-            <div class="flex flex-row-reverse items-center gap-[11px] pt-[8px] px-[10px] pb-[11px] mb-[6px] border-b border-line">
-                <span class="inline-flex items-center justify-center w-[38px] h-[38px] shrink-0 bg-accent-tint rounded-full">
-                    <Icon name="user" :size="20" color="var(--accent)" :stroke="1.7" />
+            <div
+                class="mb-[6px] flex flex-row-reverse items-center gap-[11px] border-b border-line px-[10px] pt-[8px] pb-[11px]"
+            >
+                <span
+                    class="inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-accent-tint"
+                >
+                    <Icon
+                        name="user"
+                        :size="20"
+                        color="var(--accent)"
+                        :stroke="1.7"
+                    />
                 </span>
                 <span class="text-right">
-                    <span class="block text-[13.5px] font-semibold text-ink">{{ user.name }}</span>
-                    <span class="block mt-[1px] text-[11px] text-ink-3">חשבון מקצועי</span>
+                    <span class="block text-[13.5px] font-semibold text-ink">{{
+                        user.name
+                    }}</span>
+                    <span class="mt-[1px] block text-[11px] text-ink-3"
+                        >חשבון מקצועי</span
+                    >
                 </span>
             </div>
 
@@ -86,11 +116,19 @@ function pick(id) {
                 v-for="item in MENU_ITEMS"
                 :key="item.id"
                 role="menuitem"
-                class="tf-usermenu-item flex flex-row-reverse items-center gap-[11px] w-full py-[10px] px-[11px] text-right [font-family:inherit] text-[13.5px] font-medium cursor-pointer bg-transparent border border-transparent rounded-[calc(var(--r-card)_-_2px)] transition-[background] duration-120"
-                :class="item.danger ? 'text-[var(--danger,#b4452f)]' : 'text-ink'"
+                class="tf-usermenu-item flex w-full cursor-pointer flex-row-reverse items-center gap-[11px] rounded-[calc(var(--r-card)_-_2px)] border border-transparent bg-transparent px-[11px] py-[10px] text-right [font-family:inherit] text-[13.5px] font-medium transition-[background] duration-120"
+                :class="
+                    item.danger ? 'text-[var(--danger,#b4452f)]' : 'text-ink'
+                "
                 @click="pick(item.id)"
             >
-                <Icon :name="item.icon" :size="17" :color="item.danger ? 'var(--danger, #b4452f)' : 'var(--ink-2)'" />
+                <Icon
+                    :name="item.icon"
+                    :size="17"
+                    :color="
+                        item.danger ? 'var(--danger, #b4452f)' : 'var(--ink-2)'
+                    "
+                />
                 <span class="flex-1">{{ item.label }}</span>
             </button>
         </div>

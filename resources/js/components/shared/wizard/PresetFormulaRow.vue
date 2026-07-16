@@ -11,32 +11,57 @@ defineEmits(['select']);
 
 <template>
     <div
-        class="flex items-center gap-[12px] py-[13px] px-[18px] border-b border-line border-s-[3px] cursor-pointer transition-[background] duration-100"
-        :class="selected ? 'bg-accent-tint border-s-accent' : 'bg-transparent border-s-transparent'"
+        class="flex cursor-pointer items-center gap-[12px] border-s-[3px] border-b border-line px-[18px] py-[13px] transition-[background] duration-100"
+        :class="
+            selected
+                ? 'border-s-accent bg-accent-tint'
+                : 'border-s-transparent bg-transparent'
+        "
         @click="$emit('select')"
     >
         <span
-            class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[9px]"
-            :class="selected ? 'bg-white border-accent text-accent' : 'bg-surface-sunk border-line text-ink-3'"
+            class="inline-flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[9px] border"
+            :class="
+                selected
+                    ? 'border-accent bg-white text-accent'
+                    : 'border-line bg-surface-sunk text-ink-3'
+            "
         >
-            <FormulaTypeIcon :id="preset.typeId" :size="19" color="currentColor" />
+            <FormulaTypeIcon
+                :id="preset.typeId"
+                :size="19"
+                color="currentColor"
+            />
         </span>
-        <div class="flex-1 min-w-0">
-            <div class="flex items-baseline gap-[7px] flex-wrap">
-                <span class="text-[14px] font-bold font-latin" :class="selected ? 'text-accent-ink' : 'text-ink'">{{ preset.nameEn }}</span>
-                <span class="text-[11.5px] italic text-ink-3 font-latin">{{ preset.namePinyin }}</span>
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-[7px]">
+                <span
+                    class="font-latin text-[14px] font-bold"
+                    :class="selected ? 'text-accent-ink' : 'text-ink'"
+                    >{{ preset.nameEn }}</span
+                >
+                <span class="font-latin text-[11.5px] text-ink-3 italic">{{
+                    preset.namePinyin
+                }}</span>
             </div>
-            <div class="flex items-center gap-[7px] mt-[3px] text-[12px] text-ink-3">
-                <span class="text-[14px] [font-family:serif] text-ink-2">{{ preset.nameZh }}</span>
+            <div
+                class="mt-[3px] flex items-center gap-[7px] text-[12px] text-ink-3"
+            >
+                <span class="[font-family:serif] text-[14px] text-ink-2">{{
+                    preset.nameZh
+                }}</span>
                 <span>·</span>
                 <span class="num">{{ preset.ingredients.length }}</span> רכיבים
             </div>
         </div>
         <span
-            class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 border-2 bg-surface rounded-[50%]"
+            class="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[50%] border-2 bg-surface"
             :class="selected ? 'border-accent' : 'border-line-strong'"
         >
-            <span v-if="selected" class="w-[8px] h-[8px] bg-accent rounded-[50%]" />
+            <span
+                v-if="selected"
+                class="h-[8px] w-[8px] rounded-[50%] bg-accent"
+            />
         </span>
     </div>
 </template>

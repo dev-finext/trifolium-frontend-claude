@@ -15,6 +15,10 @@ defineProps({
         <span class="inline-flex items-center gap-[8px] text-[13px] text-ink-3">
             <Icon :name="icon" :size="14" color="var(--ink-4)" /> {{ label }}
         </span>
-        <span class="text-[13px] font-medium text-left" :class="valueMuted ? 'text-ink-3' : 'text-ink'">{{ value }}</span>
+        <span
+            class="text-left text-[13px] font-medium"
+            :class="valueMuted ? 'text-ink-3' : 'text-ink'"
+            >{{ value }}</span
+        >
     </div>
 </template>

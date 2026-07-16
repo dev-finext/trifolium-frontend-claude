@@ -2,11 +2,11 @@
 //
 // This same file runs in production (served by Laravel + laravel-vite-plugin)
 // and in the standalone preview server (`npm run preview`).
-import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+import { createApp, h } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { initMobileLayoutFlag } from '@/lib/mobileLayout.js';
 import { initEnglishOverlay } from '@/lib/i18n/overlay.js';
+import { initMobileLayoutFlag } from '@/lib/mobileLayout.js';
 
 // In Laravel the stylesheet is included from Blade via @vite(); importing it
 // here as well keeps the standalone preview and plain `vite build` working.
@@ -26,8 +26,12 @@ initEnglishOverlay();
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
-            .register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL })
-            .catch(() => { /* PWA is progressive — the app works fine without it */ });
+            .register(`${import.meta.env.BASE_URL}sw.js`, {
+                scope: import.meta.env.BASE_URL,
+            })
+            .catch(() => {
+                /* PWA is progressive — the app works fine without it */
+            });
     });
 }
 
@@ -36,13 +40,18 @@ createInertiaApp({
     resolve: (name) => {
         const pages = import.meta.glob('./pages/**/*.vue', { eager: true });
         const page = pages[`./pages/${name}.vue`];
-        if (!page) throw new Error(`Unknown Inertia page: ${name}`);
+
+        if (!page) {
+            throw new Error(`Unknown Inertia page: ${name}`);
+        }
+
         // Every page gets the app chrome (navbar/footer) by default.
         // Auth screens are full-bleed and manage their own backdrop, so they
         // opt out. A page can still set its own `layout` explicitly.
         if (page.default.layout === undefined && !name.startsWith('auth/')) {
             page.default.layout = AppLayout;
         }
+
         return page;
     },
     setup({ el, App, props, plugin }) {

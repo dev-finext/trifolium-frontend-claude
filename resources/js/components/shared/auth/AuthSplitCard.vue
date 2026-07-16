@@ -10,17 +10,23 @@ defineProps({
 </script>
 
 <template>
-    <div class="relative flex items-center justify-center min-h-[100vh] p-[24px] bg-bg">
+    <div
+        class="relative flex min-h-[100vh] items-center justify-center bg-bg p-[24px]"
+    >
         <AuthBg />
         <div
-            class="card relative z-[1] grid grid-cols-[1.05fr_0.95fr] w-full shadow-[0_1px_2px_rgba(31,46,29,0.06),0_24px_70px_rgba(20,32,18,0.30)]"
+            class="card relative z-[1] grid w-full grid-cols-[1.05fr_0.95fr] shadow-[0_1px_2px_rgba(31,46,29,0.06),0_24px_70px_rgba(20,32,18,0.30)]"
             :style="{ maxWidth: `${maxWidth}px` }"
         >
-            <div class="pt-[46px] px-[48px] pb-[44px]"><slot /></div>
-            <div class="flex flex-col items-center justify-center gap-[18px] py-[48px] px-[36px] text-center text-[#fff] bg-accent">
+            <div class="px-[48px] pt-[46px] pb-[44px]"><slot /></div>
+            <div
+                class="flex flex-col items-center justify-center gap-[18px] bg-accent px-[36px] py-[48px] text-center text-[#fff]"
+            >
                 <Brandmark tone="light" :height="108" />
-                <div class="w-[40px] h-[1px] bg-[rgba(255,255,255,0.3)]" />
-                <p class="m-0 text-[15px] font-normal tracking-[0.02em] text-[rgba(255,255,255,0.86)]">
+                <div class="h-[1px] w-[40px] bg-[rgba(255,255,255,0.3)]" />
+                <p
+                    class="m-0 text-[15px] font-normal tracking-[0.02em] text-[rgba(255,255,255,0.86)]"
+                >
                     בית מרקחת לצמחי מרפא
                 </p>
             </div>

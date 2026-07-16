@@ -20,31 +20,53 @@ let ro = null;
 // re-fits on demand and repaints any existing signature scaled to the new box.
 function fitCanvas() {
     const c = canvasRef.value;
-    if (!c) return;
+
+    if (!c) {
+        return;
+    }
+
     const rect = c.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
+
+    if (rect.width === 0 || rect.height === 0) {
+        return;
+    }
+
     const dpr = window.devicePixelRatio || 1;
     const w = Math.round(rect.width * dpr);
     const h = Math.round(rect.height * dpr);
+
     // Nothing changed — avoid a needless clear (setting width/height wipes the canvas).
-    if (ctx && c.width === w && c.height === h) return;
+    if (ctx && c.width === w && c.height === h) {
+        return;
+    }
 
     // Snapshot the current drawing so a resize does not erase the signature.
     let snapshot = null;
+
     if (ctx && inked && c.width > 0 && c.height > 0) {
-        try { snapshot = c.toDataURL(); } catch (e) { snapshot = null; }
+        try {
+            snapshot = c.toDataURL();
+        } catch {
+            snapshot = null;
+        }
     }
 
     c.width = w;
     c.height = h;
     ctx = c.getContext('2d');
     ctx.scale(dpr, dpr);
-    ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.lineWidth = 2.2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.strokeStyle = '#1f2e1d';
 
     if (snapshot) {
         const img = new Image();
-        img.onload = () => { if (ctx) ctx.drawImage(img, 0, 0, rect.width, rect.height); };
+        img.onload = () => {
+            if (ctx) {
+                ctx.drawImage(img, 0, 0, rect.width, rect.height);
+            }
+        };
         img.src = snapshot;
     }
 }
@@ -53,6 +75,7 @@ const onOrientation = () => fitCanvas();
 
 onMounted(() => {
     fitCanvas();
+
     // ResizeObserver catches both viewport resizes and late layout shifts;
     // orientationchange is kept as an explicit fallback for older WebViews.
     if (typeof ResizeObserver !== 'undefined' && canvasRef.value) {
@@ -61,11 +84,16 @@ onMounted(() => {
     } else {
         window.addEventListener('resize', onOrientation);
     }
+
     window.addEventListener('orientationchange', onOrientation);
 });
 
 onBeforeUnmount(() => {
-    if (ro) { ro.disconnect(); ro = null; }
+    if (ro) {
+        ro.disconnect();
+        ro = null;
+    }
+
     window.removeEventListener('resize', onOrientation);
     window.removeEventListener('orientationchange', onOrientation);
 });
@@ -73,18 +101,35 @@ onBeforeUnmount(() => {
 function pos(e) {
     const r = canvasRef.value.getBoundingClientRect();
     const t = (e.touches && e.touches[0]) || e;
+
     return { x: t.clientX - r.left, y: t.clientY - r.top };
 }
-function start(e) { e.preventDefault(); drawing = true; last = pos(e); }
+function start(e) {
+    e.preventDefault();
+    drawing = true;
+    last = pos(e);
+}
 function move(e) {
-    if (!drawing) return;
+    if (!drawing) {
+        return;
+    }
+
     e.preventDefault();
     const p = pos(e);
-    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
     last = p;
-    if (!inked) { inked = true; emit('ink-change', true); }
+
+    if (!inked) {
+        inked = true;
+        emit('ink-change', true);
+    }
 }
-function end() { drawing = false; }
+function end() {
+    drawing = false;
+}
 function clear() {
     const c = canvasRef.value;
     ctx.clearRect(0, 0, c.width, c.height);
@@ -97,7 +142,7 @@ function clear() {
     <div class="relative">
         <button
             title="ניקוי חתימה"
-            class="absolute top-[8px] left-[8px] z-[2] inline-flex items-center justify-center w-[30px] h-[30px] bg-surface border border-line rounded-[8px] cursor-pointer"
+            class="absolute top-[8px] left-[8px] z-[2] inline-flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] border border-line bg-surface"
             @click="clear"
         >
             <Icon name="x" :size="15" color="var(--danger)" />
@@ -106,7 +151,7 @@ function clear() {
             ref="canvasRef"
             role="img"
             aria-label="אזור חתימה — חתמו כאן באמצעות העכבר או האצבע"
-            class="block w-full h-[230px] bg-white border border-line rounded-card touch-none cursor-crosshair"
+            class="block h-[230px] w-full cursor-crosshair touch-none rounded-card border border-line bg-white"
             @mousedown="start"
             @mousemove="move"
             @mouseup="end"

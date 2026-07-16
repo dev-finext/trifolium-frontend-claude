@@ -41,12 +41,19 @@ export const TF_DEFAULT_ADDRESSES = [
 export function tfLoadAddresses() {
     try {
         const raw = localStorage.getItem(TF_ADDR_KEY);
+
         if (raw) {
             const arr = JSON.parse(raw);
-            if (Array.isArray(arr) && arr.length) return arr;
+
+            if (Array.isArray(arr) && arr.length) {
+                return arr;
+            }
         }
-    } catch (e) { /* ignore */ }
-    return TF_DEFAULT_ADDRESSES.map(a => ({ ...a }));
+    } catch {
+        /* ignore */
+    }
+
+    return TF_DEFAULT_ADDRESSES.map((a) => ({ ...a }));
 }
 
 // The one reactive list every consumer shares (cart, profile editor, …).
@@ -55,12 +62,22 @@ const addresses = ref(tfLoadAddresses());
 // TODO(backend): persist to the server; localStorage stands in until then.
 export function tfSaveAddresses(list) {
     // Guarantee exactly one primary.
-    const normalized = list.map(a => ({ ...a }));
-    if (!normalized.some(a => a.primary) && normalized.length) normalized[0].primary = true;
-    try { localStorage.setItem(TF_ADDR_KEY, JSON.stringify(normalized)); } catch (e) { /* ignore */ }
+    const normalized = list.map((a) => ({ ...a }));
+
+    if (!normalized.some((a) => a.primary) && normalized.length) {
+        normalized[0].primary = true;
+    }
+
+    try {
+        localStorage.setItem(TF_ADDR_KEY, JSON.stringify(normalized));
+    } catch {
+        /* ignore */
+    }
+
     // Updating the shared ref replaces the prototype's `tf:addresses-changed`
     // CustomEvent — all mounted consumers see the change immediately.
     addresses.value = normalized;
+
     return normalized;
 }
 
@@ -68,7 +85,12 @@ export function tfSaveAddresses(list) {
  *  returned by useAddresses() — unwrapped defensively so call sites can't
  *  crash on the ref/array seam. */
 export const tfPrimaryAddress = (list) => {
-    const arr = Array.isArray(list) ? list : (list && Array.isArray(list.value) ? list.value : []);
+    const arr = Array.isArray(list)
+        ? list
+        : list && Array.isArray(list.value)
+          ? list.value
+          : [];
+
     return arr.find((a) => a.primary) || arr[0] || null;
 };
 

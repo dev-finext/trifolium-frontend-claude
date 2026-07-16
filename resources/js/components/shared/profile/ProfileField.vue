@@ -8,8 +8,8 @@ let TF_PF_SEQ = 0;
 // autocomplete, inputmode…) fall through to the <input>, mirroring the
 // prototype's `...rest` spread.
 import { computed } from 'vue';
-import FieldLabel from '@/components/ui/FieldLabel.vue';
 import ErrMsg from '@/components/ui/ErrMsg.vue';
+import FieldLabel from '@/components/ui/FieldLabel.vue';
 
 defineOptions({ inheritAttrs: false });
 
@@ -35,7 +35,13 @@ const describedBy = computed(() => (props.error ? errorId : undefined));
 <template>
     <div>
         <FieldLabel :for="uid">
-            {{ label }}<span v-if="required" aria-hidden="true" class="ms-[3px] text-danger">*</span>
+            {{ label
+            }}<span
+                v-if="required"
+                aria-hidden="true"
+                class="ms-[3px] text-danger"
+                >*</span
+            >
         </FieldLabel>
         <input
             :id="uid"

@@ -39,9 +39,16 @@ function setPendingFormula(formula) {
 function consumePendingFormula() {
     const pending = state.pendingFormula;
     state.pendingFormula = null;
+
     return pending;
 }
 
 export function useWizardStore() {
-    return { state, setDirty, bumpResetSignal, setPendingFormula, consumePendingFormula };
+    return {
+        state,
+        setDirty,
+        bumpResetSignal,
+        setPendingFormula,
+        consumePendingFormula,
+    };
 }

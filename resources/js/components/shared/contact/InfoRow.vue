@@ -13,7 +13,7 @@ defineProps({
             <slot />
         </div>
         <span
-            class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 bg-accent-tint rounded-[8px]"
+            class="inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] bg-accent-tint"
         >
             <Icon :name="icon" :size="15" color="var(--accent)" />
         </span>

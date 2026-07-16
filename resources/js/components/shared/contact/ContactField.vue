@@ -7,8 +7,8 @@ let TF_CF_SEQ = 0;
 // Labeled input / textarea for the contact form. Email + phone values are
 // LTR data typed in an RTL form → dir="ltr" with right-aligned text.
 import { computed } from 'vue';
-import FieldLabel from '@/components/ui/FieldLabel.vue';
 import ErrMsg from '@/components/ui/ErrMsg.vue';
+import FieldLabel from '@/components/ui/FieldLabel.vue';
 
 const props = defineProps({
     label: { type: String, required: true },
@@ -32,15 +32,31 @@ const uid = props.id || `contact-field-${TF_CF_SEQ++}`;
 const errorId = `${uid}-error`;
 const counterId = `${uid}-counter`;
 
-const isLtrValue = computed(() => props.type === 'email' || props.type === 'tel');
+const isLtrValue = computed(
+    () => props.type === 'email' || props.type === 'tel',
+);
 const isEmailType = computed(() => props.type === 'email');
-const resolvedInputmode = computed(() => props.inputmode
-    || (props.type === 'email' ? 'email' : props.type === 'tel' ? 'tel' : undefined));
+const resolvedInputmode = computed(
+    () =>
+        props.inputmode ||
+        (props.type === 'email'
+            ? 'email'
+            : props.type === 'tel'
+              ? 'tel'
+              : undefined),
+);
 
 const describedBy = computed(() => {
     const ids = [];
-    if (props.error) ids.push(errorId);
-    if (props.textarea && props.maxlength) ids.push(counterId);
+
+    if (props.error) {
+        ids.push(errorId);
+    }
+
+    if (props.textarea && props.maxlength) {
+        ids.push(counterId);
+    }
+
     return ids.length ? ids.join(' ') : undefined;
 });
 </script>
@@ -48,12 +64,18 @@ const describedBy = computed(() => {
 <template>
     <div>
         <FieldLabel :for="uid">
-            {{ label }}<span v-if="required" aria-hidden="true" class="text-danger ms-[3px]">*</span>
+            {{ label
+            }}<span
+                v-if="required"
+                aria-hidden="true"
+                class="ms-[3px] text-danger"
+                >*</span
+            >
         </FieldLabel>
         <textarea
             v-if="textarea"
             :id="uid"
-            class="input h-auto py-[12px] px-[14px] resize-y leading-[1.6]"
+            class="input h-auto resize-y px-[14px] py-[12px] leading-[1.6]"
             :class="error ? 'border-danger' : ''"
             :rows="5"
             :placeholder="placeholder"
@@ -70,7 +92,10 @@ const describedBy = computed(() => {
             v-else
             :id="uid"
             class="input"
-            :class="[isLtrValue ? 'text-right' : '', error ? 'border-danger' : '']"
+            :class="[
+                isLtrValue ? 'text-right' : '',
+                error ? 'border-danger' : '',
+            ]"
             :type="type"
             :placeholder="placeholder"
             :value="modelValue"
@@ -91,7 +116,7 @@ const describedBy = computed(() => {
         <div
             v-if="textarea && maxlength"
             :id="counterId"
-            class="mt-[6px] text-[11.5px] text-ink-3 text-start"
+            class="mt-[6px] text-start text-[11.5px] text-ink-3"
             dir="ltr"
         >
             {{ (modelValue || '').length }}/{{ maxlength }}

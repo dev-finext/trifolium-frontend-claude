@@ -18,31 +18,36 @@ const c = computed(() => (accentTone.value ? 'var(--accent)' : AMBER));
 
 <template>
     <div
-        class="card p-0 overflow-hidden"
+        class="card overflow-hidden p-0"
         :style="{
             borderInlineStart: '3px solid ' + c,
         }"
     >
         <div
-            class="flex items-center gap-[9px] py-[12px] px-[20px] border-b border-b-line"
+            class="flex items-center gap-[9px] border-b border-b-line px-[20px] py-[12px]"
             :class="accentTone ? 'bg-accent-tint' : 'bg-transparent'"
         >
             <span
-                class="inline-flex items-center justify-center w-[24px] h-[24px] shrink-0 rounded-full"
+                class="inline-flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full"
                 :style="{
                     background: accentTone ? c : 'transparent',
                     border: accentTone ? 'none' : '1.5px solid ' + c,
                     color: accentTone ? '#fff' : c,
                 }"
             >
-                <Icon :name="icon" :size="13" :color="accentTone ? '#fff' : c" />
+                <Icon
+                    :name="icon"
+                    :size="13"
+                    :color="accentTone ? '#fff' : c"
+                />
             </span>
             <span
-                class="text-[11px] tracking-[0.06em] uppercase font-bold"
+                class="text-[11px] font-bold tracking-[0.06em] uppercase"
                 :style="{ color: accentTone ? 'var(--accent-ink)' : c }"
-            >{{ eyebrow }}</span>
+                >{{ eyebrow }}</span
+            >
         </div>
-        <div class="py-[16px] px-[20px] text-[14px] leading-[1.6] text-ink-2">
+        <div class="px-[20px] py-[16px] text-[14px] leading-[1.6] text-ink-2">
             {{ text }}
         </div>
     </div>

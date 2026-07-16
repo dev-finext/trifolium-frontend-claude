@@ -13,10 +13,22 @@ defineProps({
         <ellipse
             v-for="i in petals"
             :key="i"
-            cx="0" cy="-15" rx="5" ry="13"
-            fill="none" :stroke="p.ink" stroke-width="1.5"
+            cx="0"
+            cy="-15"
+            rx="5"
+            ry="13"
+            fill="none"
+            :stroke="p.ink"
+            stroke-width="1.5"
             :transform="`rotate(${((i - 1) / petals) * 360})`"
         />
-        <circle cx="0" cy="0" r="6" :fill="p.accent" :stroke="p.ink" stroke-width="1.3" />
+        <circle
+            cx="0"
+            cy="0"
+            r="6"
+            :fill="p.accent"
+            :stroke="p.ink"
+            stroke-width="1.3"
+        />
     </g>
 </template>

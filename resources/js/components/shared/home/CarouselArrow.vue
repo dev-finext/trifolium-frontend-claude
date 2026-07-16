@@ -12,17 +12,21 @@ const props = defineProps({
 defineEmits(['click']);
 
 const hover = ref(false);
-const sideStyle = computed(() => (props.dir === 'prev' ? { right: '-18px' } : { left: '-18px' }));
+const sideStyle = computed(() =>
+    props.dir === 'prev' ? { right: '-18px' } : { left: '-18px' },
+);
 </script>
 
 <template>
     <button
         :disabled="disabled"
         :aria-label="dir === 'prev' ? 'הקודם' : 'הבא'"
-        class="absolute top-[38%] flex items-center justify-center w-[44px] h-[44px] bg-surface border rounded-[50%] z-[3] transition-all duration-150 ease-[ease]"
+        class="absolute top-[38%] z-[3] flex h-[44px] w-[44px] items-center justify-center rounded-[50%] border bg-surface transition-all duration-150 ease-[ease]"
         :class="[
             hover && !disabled ? 'border-ink-2' : 'border-line',
-            disabled ? 'shadow-none cursor-default opacity-[0.35]' : 'shadow-[0_6px_18px_-8px_rgba(31,46,29,0.30)] cursor-pointer opacity-100',
+            disabled
+                ? 'cursor-default opacity-[0.35] shadow-none'
+                : 'cursor-pointer opacity-100 shadow-[0_6px_18px_-8px_rgba(31,46,29,0.30)]',
         ]"
         :style="sideStyle"
         @click="$emit('click')"

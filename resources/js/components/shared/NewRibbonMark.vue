@@ -11,7 +11,8 @@ defineProps({
 <template>
     <span
         aria-label="פיצ'ר חדש"
-        class="absolute z-[6] origin-center [transform:rotate(-45deg)] py-[3px] px-[34px] font-heb text-[10px] font-extrabold tracking-[0.06em] leading-[1] text-on-accent bg-accent pointer-events-none"
+        class="pointer-events-none absolute z-[6] origin-center [transform:rotate(-45deg)] bg-accent px-[34px] py-[3px] font-heb text-[10px] leading-[1] font-extrabold tracking-[0.06em] text-on-accent"
         :style="{ top: `${top}px`, left: `${left}px` }"
-    >חדש</span>
+        >חדש</span
+    >
 </template>
