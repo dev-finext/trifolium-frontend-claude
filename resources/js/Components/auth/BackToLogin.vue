@@ -9,9 +9,9 @@ defineProps({
 </script>
 
 <template>
-    <div style="margin-top: 24px; text-align: center">
+    <div class="mt-[24px] text-center">
         <a
-            :style="{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', color: 'var(--ink-3)', cursor: 'pointer', whiteSpace: 'nowrap' }"
+            class="inline-flex items-center gap-[6px] whitespace-nowrap text-[13.5px] text-ink-3 cursor-pointer"
             @click="visit('login')"
         >
             <Icon name="chevron_right" :size="15" color="var(--ink-3)" />

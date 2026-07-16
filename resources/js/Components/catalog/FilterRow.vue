@@ -19,53 +19,33 @@ const hover = ref(false);
 
 <template>
     <label
-        :style="{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '9px',
-            padding: '5px 6px',
-            margin: '0 -6px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            background: hover ? 'var(--accent-tint)' : 'transparent',
-            transition: 'background .12s',
-        }"
+        class="flex items-center gap-[9px] py-[5px] px-[6px] my-0 mx-[-6px] rounded-[4px] cursor-pointer transition-[background] duration-120"
+        :class="hover ? 'bg-accent-tint' : 'bg-transparent'"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
         <span
-            :style="{
-                width: '14px',
-                height: '14px',
-                flexShrink: 0,
-                border: `1.5px solid ${checked ? 'var(--accent)' : 'var(--line-strong)'}`,
-                background: checked ? 'var(--accent)' : 'var(--surface)',
-                borderRadius: radio ? '50%' : '3px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all .15s',
-            }"
+            class="inline-flex items-center justify-center w-[14px] h-[14px] shrink-0 border-[1.5px] transition-all duration-150"
+            :class="[
+                checked ? 'border-accent bg-accent' : 'border-line-strong bg-surface',
+                radio ? 'rounded-[50%]' : 'rounded-[3px]',
+            ]"
         >
             <template v-if="checked">
-                <span v-if="radio" style="width: 6px; height: 6px; border-radius: 50%; background: #fff" />
+                <span v-if="radio" class="w-[6px] h-[6px] rounded-[50%] bg-[#fff]" />
                 <Icon v-else name="check" :size="10" color="#fff" :stroke="2.5" />
             </template>
         </span>
         <input
             :type="radio ? 'radio' : 'checkbox'"
             :checked="checked"
-            style="position: absolute; opacity: 0; pointer-events: none"
+            class="absolute opacity-0 pointer-events-none"
             @change="emit('change')"
         />
         <span
-            :style="{
-                fontSize: '13px',
-                color: checked ? 'var(--ink)' : 'var(--ink-2)',
-                fontWeight: checked ? 600 : 400,
-                flex: 1,
-            }"
+            class="flex-1 text-[13px]"
+            :class="checked ? 'text-ink font-semibold' : 'text-ink-2 font-normal'"
         >{{ label }}</span>
-        <span class="num" style="font-size: 11px; color: var(--ink-4)">{{ count }}</span>
+        <span class="num text-[11px] text-ink-4">{{ count }}</span>
     </label>
 </template>

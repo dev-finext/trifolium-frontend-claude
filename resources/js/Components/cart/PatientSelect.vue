@@ -11,16 +11,13 @@ defineEmits(['update:modelValue']);
 
 <template>
     <div class="input-wrap">
-        <span class="lead-icon" style="right: auto; left: 10px">
+        <span class="lead-icon right-auto left-[10px]">
             <Icon name="chevron_down" :size="16" />
         </span>
         <select
-            class="select"
+            class="select appearance-none h-[42px] pl-[34px] text-[14px] cursor-pointer"
+            :class="modelValue ? 'text-ink' : 'text-ink-4'"
             :value="modelValue"
-            :style="{
-                'appearance': 'none', '-webkit-appearance': 'none', paddingLeft: '34px',
-                color: modelValue ? 'var(--ink)' : 'var(--ink-4)', cursor: 'pointer', height: '42px', fontSize: '14px',
-            }"
             @change="$emit('update:modelValue', $event.target.value)"
         >
             <option value="" disabled>בחר/י מטופל/ת…</option>

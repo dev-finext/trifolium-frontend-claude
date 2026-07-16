@@ -6,8 +6,8 @@ defineProps({
 </script>
 
 <template>
-    <div class="card" style="padding: 20px">
-        <h3 style="margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3)">{{ title }}</h3>
+    <div class="card p-[20px]">
+        <h3 class="mt-0 mx-0 mb-[14px] text-[13px] font-bold tracking-[0.04em] uppercase text-ink-3">{{ title }}</h3>
         <slot />
     </div>
 </template>

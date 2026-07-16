@@ -42,37 +42,28 @@ function openPicker() {
     <div>
         <label v-if="label" class="field-label">{{ label }}</label>
         <input
-            ref="inputRef" type="file" :accept="accept" style="display: none"
+            ref="inputRef" type="file" :accept="accept" class="hidden"
             @change="pick($event.target.files[0])"
         />
         <!-- Picked-file chip -->
         <div
             v-if="modelValue"
-            :style="{
-                display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px',
-                border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                background: 'var(--surface)',
-            }"
+            class="flex items-center gap-[12px] px-[12px] py-[10px] bg-surface border border-line rounded-control"
         >
             <img
                 v-if="modelValue.url"
                 :src="modelValue.url" alt=""
-                :style="{ width: '40px', height: '40px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }"
+                class="w-[40px] h-[40px] shrink-0 object-cover rounded-[6px]"
             />
             <span
                 v-else
-                :style="{
-                    width: '36px', height: '36px', borderRadius: '6px', flexShrink: 0,
-                    background: 'var(--accent-tint)', display: 'inline-flex',
-                    alignItems: 'center', justifyContent: 'center',
-                }"
+                class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 bg-accent-tint rounded-[6px]"
             ><Icon :name="kind === 'image' ? 'image' : 'file_text'" :size="17" color="var(--accent)" /></span>
-            <span :style="{ flex: 1, minWidth: 0, fontSize: '13.5px', color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }">
+            <span class="flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[13.5px] text-ink">
                 {{ modelValue.name }}
             </span>
             <button
-                type="button" class="btn--icon" aria-label="הסר קובץ"
-                :style="{ width: '30px', height: '30px', border: '1px solid transparent', borderRadius: '6px', background: 'transparent', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }"
+                type="button" class="btn--icon inline-flex items-center justify-center w-[30px] h-[30px] cursor-pointer bg-transparent border border-transparent rounded-[6px]" aria-label="הסר קובץ"
                 @click="emit('update:modelValue', null)"
             ><Icon name="x" :size="15" color="var(--ink-3)" /></button>
         </div>
@@ -80,14 +71,11 @@ function openPicker() {
         <div
             v-else
             role="button" tabindex="0"
-            :style="{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                gap: '8px', padding: kind === 'image' ? '26px 16px' : '22px 16px', textAlign: 'center',
-                border: '1.5px dashed ' + (drag ? 'var(--accent)' : 'var(--line-strong)'),
-                borderRadius: 'var(--r-control)',
-                background: drag ? 'var(--accent-tint)' : 'var(--surface-sunk)',
-                color: 'var(--ink-3)', cursor: 'pointer', transition: 'all .15s',
-            }"
+            class="flex flex-col items-center justify-center gap-[8px] px-[16px] text-center text-ink-3 border-[1.5px] border-dashed rounded-control cursor-pointer transition-all duration-150"
+            :class="[
+                kind === 'image' ? 'py-[26px]' : 'py-[22px]',
+                drag ? 'border-accent bg-accent-tint' : 'border-line-strong bg-surface-sunk',
+            ]"
             @click="openPicker"
             @keydown.enter.prevent="openPicker"
             @keydown.space.prevent="openPicker"
@@ -96,8 +84,8 @@ function openPicker() {
             @drop.prevent="onDrop"
         >
             <Icon :name="kind === 'image' ? 'image' : 'upload'" :size="22" :color="drag ? 'var(--accent)' : 'var(--ink-4)'" :stroke="1.6" />
-            <span style="font-size: 13px">{{ placeholder }}</span>
-            <span style="font-size: 11.5px; color: var(--ink-4)">
+            <span class="text-[13px]">{{ placeholder }}</span>
+            <span class="text-[11.5px] text-ink-4">
                 {{ kind === 'image' ? 'PNG · JPG · עד 5MB' : 'PDF · JPG · PNG · עד 10MB' }}
             </span>
         </div>

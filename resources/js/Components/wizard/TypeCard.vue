@@ -40,30 +40,12 @@ const tipBox = computed(() => {
 
 <template>
     <button
-        class="ftype-card"
-        :style="{
-            position: 'relative',
-            width: '100%',
-            minWidth: 0,
-            height: '116px',
-            background: 'var(--surface)',
-            color: 'var(--ink)',
-            border: selected
-                ? '2px solid var(--accent)'
-                : '1px solid ' + (hover ? 'var(--line-strong)' : 'var(--line)'),
-            boxShadow: selected
-                ? 'inset 0 0 0 1px var(--accent), 0 6px 16px -10px rgba(31,46,29,0.30)'
-                : (hover ? '0 4px 12px -8px rgba(20,18,14,0.30)' : 'none'),
-            borderRadius: 'var(--r-card)',
-            padding: '12px 8px 10px',
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            fontFamily: 'inherit',
-        }"
+        class="ftype-card relative flex flex-col items-center justify-center gap-[8px] w-full min-w-0 h-[116px] pt-[12px] px-[8px] pb-[10px] [font-family:inherit] text-ink bg-surface rounded-card cursor-pointer"
+        :class="selected
+            ? 'border-2 border-accent shadow-[inset_0_0_0_1px_var(--accent),0_6px_16px_-10px_rgba(31,46,29,0.30)]'
+            : hover
+                ? 'border border-line-strong shadow-[0_4px_12px_-8px_rgba(20,18,14,0.30)]'
+                : 'border border-line shadow-none'"
         @click="emit('click')"
         @mouseenter="hover = true"
         @mouseleave="hover = false; tip = null"
@@ -72,21 +54,7 @@ const tipBox = computed(() => {
         <span
             v-if="info"
             :aria-label="'מידע על ' + type.heb"
-            :style="{
-                position: 'absolute',
-                top: '6px',
-                insetInlineStart: '6px',
-                width: '19px',
-                height: '19px',
-                borderRadius: '50%',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'var(--surface-sunk)',
-                border: '1px solid var(--line)',
-                color: 'var(--ink-3)',
-                cursor: 'help',
-            }"
+            class="absolute top-[6px] start-[6px] inline-flex items-center justify-center w-[19px] h-[19px] text-ink-3 bg-surface-sunk border border-line rounded-[50%] cursor-help"
             @mouseenter="showTip"
             @mouseleave="tip = null"
             @click.stop
@@ -96,19 +64,14 @@ const tipBox = computed(() => {
         </span>
 
         <span
-            :style="{
-                width: '58px', height: '58px', borderRadius: '15px', flexShrink: 0,
-                background: '#f8f7ef',
-                border: '1px solid var(--line)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center shrink-0 w-[58px] h-[58px] bg-[#f8f7ef] border border-line rounded-[15px]"
         >
             <FormulaTypeArt :id="id" :size="50" />
         </span>
 
-        <div style="text-align: center; line-height: 1.25; max-width: 100%">
-            <div :style="{ fontSize: '14px', fontWeight: selected ? 700 : 600, color: 'var(--ink)', whiteSpace: 'nowrap' }">{{ type.heb }}</div>
-            <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ type.sub }}</div>
+        <div class="max-w-full text-center leading-[1.25]">
+            <div class="text-[14px] text-ink whitespace-nowrap" :class="selected ? 'font-bold' : 'font-semibold'">{{ type.heb }}</div>
+            <div class="mt-[3px] text-[12px] text-ink-3 whitespace-nowrap overflow-hidden text-ellipsis">{{ type.sub }}</div>
         </div>
 
         <!-- Floating tooltip — fixed to the viewport, Teleported to <body>. -->
@@ -116,39 +79,18 @@ const tipBox = computed(() => {
             <div
                 v-if="tipBox && info"
                 role="tooltip"
+                class="fixed -translate-y-full py-[11px] px-[14px] text-[12.5px] font-normal leading-[1.55] text-right [direction:rtl] text-(--surface) bg-(--ink) rounded-[9px] shadow-[0_14px_30px_-10px_rgba(20,18,14,0.55)] z-[1000] pointer-events-none"
                 :style="{
-                    position: 'fixed',
                     top: (tipBox.top - 10) + 'px',
                     left: tipBox.left + 'px',
-                    transform: 'translateY(-100%)',
                     width: tipBox.W + 'px',
-                    background: 'var(--ink)',
-                    color: 'var(--surface)',
-                    padding: '11px 14px',
-                    borderRadius: '9px',
-                    fontSize: '12.5px',
-                    fontWeight: 400,
-                    lineHeight: 1.55,
-                    textAlign: 'right',
-                    direction: 'rtl',
-                    boxShadow: '0 14px 30px -10px rgba(20,18,14,0.55)',
-                    zIndex: 1000,
-                    pointerEvents: 'none',
                 }"
             >
-                <div style="font-weight: 700; margin-bottom: 3px">{{ type.heb }}</div>
+                <div class="font-bold mb-[3px]">{{ type.heb }}</div>
                 {{ info }}
                 <span
-                    :style="{
-                        position: 'absolute',
-                        top: '100%',
-                        left: tipBox.arrowX + 'px',
-                        transform: 'translateX(-50%)',
-                        width: 0, height: 0,
-                        borderInlineStart: '6px solid transparent',
-                        borderInlineEnd: '6px solid transparent',
-                        borderTop: '6px solid var(--ink)',
-                    }"
+                    class="absolute top-full -translate-x-1/2 w-0 h-0 border-s-[6px] border-s-transparent border-e-[6px] border-e-transparent border-t-[6px] border-t-ink"
+                    :style="{ left: tipBox.arrowX + 'px' }"
                 />
             </div>
         </Teleport>

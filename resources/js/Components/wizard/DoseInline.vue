@@ -34,91 +34,75 @@ const singleUnit = computed(() => rules.value.units.length === 1);
 </script>
 
 <template>
-    <section class="card" style="padding: 14px 20px">
-        <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+    <section class="card px-[20px] py-[14px]">
+        <div class="flex items-center flex-wrap gap-[18px]">
 
             <!-- Title -->
-            <div style="min-width: 96px">
-                <div style="font-size: 14.5px; font-weight: 600; color: var(--ink)">מינון יומי</div>
+            <div class="min-w-[96px]">
+                <div class="text-[14.5px] font-semibold text-ink">מינון יומי</div>
             </div>
 
-            <div style="width: 1px; align-self: stretch; background: var(--line); flex-shrink: 0" />
+            <div class="w-[1px] self-stretch shrink-0 bg-(--line)" />
 
             <!-- Daily quantity + adaptive unit -->
             <div>
-                <div class="field-label" style="margin-bottom: 6px">
+                <div class="field-label mb-[6px]">
                     <label for="dose-qty">כמות יומית</label>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px">
+                <div class="flex items-center gap-[8px]">
                     <input
                         id="dose-qty"
                         type="number"
                         min="0"
                         :max="MAX_QTY"
-                        class="input num"
+                        class="input num w-[72px] h-[36px] text-center text-[15px] font-semibold"
                         :value="dose.qty"
-                        style="width: 72px; height: 36px; text-align: center; font-size: 15px; font-weight: 600"
                         :aria-invalid="qtyError"
                         :aria-describedby="qtyError ? 'dose-qty-hint' : undefined"
                         @input="setDose({ qty: +$event.target.value || 0 })"
                     />
                     <span
                         v-if="singleUnit"
-                        style="display: inline-flex; align-items: center; height: 36px; padding-inline: 14px; border-radius: var(--r-control); border: 1px solid var(--line); background: var(--surface-sunk); font-size: 13.5px; font-weight: 600; color: var(--ink-2)"
+                        class="inline-flex items-center h-[36px] px-[14px] text-[13.5px] font-semibold text-ink-2 bg-surface-sunk border border-line rounded-control"
                     >{{ unitLabel }}</span>
                     <select
                         v-else
-                        class="select"
+                        class="select h-[36px] min-w-[96px] text-[13.5px]"
                         :value="dose.unit"
-                        style="height: 36px; font-size: 13.5px; min-width: 96px"
                         @change="setDose({ unit: $event.target.value })"
                     >
                         <option v-for="u in rules.units" :key="u" :value="u">{{ DOSE_UNIT_LABELS[u] }}</option>
                     </select>
                 </div>
-                <div v-if="qtyError" id="dose-qty-hint" role="alert" class="small" style="color: var(--danger); font-weight: 600; margin-top: 6px">
+                <div v-if="qtyError" id="dose-qty-hint" role="alert" class="small mt-[6px] font-semibold text-danger">
                     יש להזין כמות בין <span class="num">0</span> ל־<span class="num">{{ MAX_QTY }}</span>.
                 </div>
             </div>
 
-            <div style="width: 1px; align-self: stretch; background: var(--line); flex-shrink: 0" />
+            <div class="w-[1px] self-stretch shrink-0 bg-(--line)" />
 
             <!-- Times per day -->
             <div>
-                <div class="field-label" style="margin-bottom: 6px">נטילות ביום</div>
-                <div style="display: flex; align-items: center; gap: 6px">
+                <div class="field-label mb-[6px]">נטילות ביום</div>
+                <div class="flex items-center gap-[6px]">
                     <button
                         v-for="n in PRESETS" :key="n"
-                        class="num"
-                        :style="{
-                            width: '38px', height: '36px', borderRadius: 'var(--r-control)',
-                            border: '1px solid ' + (!isCustom && dose.perDay === n ? 'var(--accent)' : 'var(--line-strong)'),
-                            background: !isCustom && dose.perDay === n ? 'var(--accent-tint)' : 'var(--surface)',
-                            color: !isCustom && dose.perDay === n ? 'var(--accent-ink)' : 'var(--ink-2)',
-                            fontSize: '14.5px', fontWeight: 600, cursor: 'pointer',
-                            transition: 'all .12s',
-                        }"
+                        class="num w-[38px] h-[36px] text-[14.5px] font-semibold cursor-pointer border rounded-control transition-all duration-[.12s]"
+                        :class="!isCustom && dose.perDay === n ? 'border-accent bg-accent-tint text-accent-ink' : 'border-line-strong bg-surface text-ink-2'"
                         @click="customPerDay = false; setDose({ perDay: n })"
                     >{{ n }}</button>
                     <button
-                        :style="{
-                            height: '36px', paddingInline: '12px', borderRadius: 'var(--r-control)',
-                            border: '1px solid ' + (isCustom ? 'var(--accent)' : 'var(--line-strong)'),
-                            background: isCustom ? 'var(--accent-tint)' : 'var(--surface)',
-                            color: isCustom ? 'var(--accent-ink)' : 'var(--ink-2)',
-                            fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-                            transition: 'all .12s',
-                        }"
+                        class="h-[36px] px-[12px] text-[13px] font-semibold cursor-pointer border rounded-control transition-all duration-[.12s]"
+                        :class="isCustom ? 'border-accent bg-accent-tint text-accent-ink' : 'border-line-strong bg-surface text-ink-2'"
                         @click="customPerDay = true; setDose({ perDay: 0 })"
                     >אחר</button>
                     <input
                         v-if="isCustom"
                         type="number"
                         min="1"
-                        class="input num"
+                        class="input num w-[60px] h-[36px] text-center text-[14.5px] font-semibold"
                         placeholder="0"
                         :value="dose.perDay || ''"
-                        style="width: 60px; height: 36px; text-align: center; font-size: 14.5px; font-weight: 600"
                         @input="setDose({ perDay: +$event.target.value || 0 })"
                     />
                 </div>

@@ -55,7 +55,7 @@ function onKeydown(e, i) {
     <div
         role="radiogroup"
         :aria-label="ariaLabel || undefined"
-        style="display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-control); overflow: hidden; height: 40px"
+        class="inline-flex h-[40px] border border-line rounded-control overflow-hidden"
     >
         <button
             v-for="(o, i) in norm"
@@ -65,20 +65,11 @@ function onKeydown(e, i) {
             role="radio"
             :aria-checked="modelValue === o.value"
             :tabindex="tabindexFor(i)"
-            :style="{
-                height: '100%',
-                padding: '0 18px',
-                border: 'none',
-                borderInlineEnd: i === norm.length - 1 ? 'none' : '1px solid var(--line)',
-                background: modelValue === o.value ? 'var(--inverse-surface)' : 'transparent',
-                color: modelValue === o.value ? 'var(--inverse-ink)' : 'var(--ink-2)',
-                fontSize: '13px',
-                fontWeight: modelValue === o.value ? 500 : 400,
-                cursor: 'pointer',
-                transition: 'all .12s',
-                fontFamily: 'inherit',
-                whiteSpace: 'nowrap',
-            }"
+            class="h-full px-[18px] py-0 border-0 text-[13px] [font-family:inherit] whitespace-nowrap cursor-pointer transition-all duration-[.12s]"
+            :class="[
+                i === norm.length - 1 ? '' : 'border-e border-line',
+                modelValue === o.value ? 'bg-inverse-surface text-inverse-ink font-medium' : 'bg-transparent text-ink-2 font-normal',
+            ]"
             @click="emit('update:modelValue', o.value)"
             @keydown="onKeydown($event, i)"
         >{{ o.label }}</button>

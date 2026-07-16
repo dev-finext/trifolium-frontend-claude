@@ -75,22 +75,16 @@ watch(
         >
             <!-- Header — user + close -->
             <div class="nav-drawer__head">
-                <div style="display: flex; align-items: center; gap: 11px; flex-direction: row-reverse">
-                    <span
-                        :style="{
-                            width: '40px', height: '40px', borderRadius: '50%', flexShrink: 0,
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            background: 'var(--accent-tint)', border: '1px solid var(--line)',
-                        }"
-                    >
+                <div class="flex flex-row-reverse items-center gap-[11px]">
+                    <span class="inline-flex items-center justify-center w-[40px] h-[40px] shrink-0 bg-accent-tint border border-line rounded-full">
                         <Icon name="user" :size="21" color="var(--accent)" :stroke="1.7" />
                     </span>
-                    <span style="text-align: right">
-                        <span style="display: block; font-size: 14.5px; font-weight: 700; color: var(--ink)">{{ user.name }}</span>
-                        <span style="display: flex; align-items: center; gap: 6px; margin-top: 2px">
+                    <span class="text-right">
+                        <span class="block text-[14.5px] font-bold text-ink">{{ user.name }}</span>
+                        <span class="flex items-center gap-[6px] mt-[2px]">
                             <GoldCoin :size="15" />
-                            <span class="num" style="font-size: 12.5px; font-weight: 700; color: var(--ink-2)">{{ user.points }}</span>
-                            <span style="font-size: 11.5px; color: var(--ink-3)">נקודות</span>
+                            <span class="num text-[12.5px] font-bold text-ink-2">{{ user.points }}</span>
+                            <span class="text-[11.5px] text-ink-3">נקודות</span>
                         </span>
                     </span>
                 </div>
@@ -107,7 +101,7 @@ watch(
                 @click="emit('navigate', link.id)"
             >
                 <Icon :name="link.icon" :size="19" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
-                <span style="flex: 1">{{ link.label }}</span>
+                <span class="flex-1">{{ link.label }}</span>
                 <span v-if="link.id === 'my-formulas'" class="nav-drawer__badge">חדש</span>
             </button>
 
@@ -119,14 +113,14 @@ watch(
                 @click="emit('navigate', link.id)"
             >
                 <Icon :name="link.icon" :size="19" :color="route === link.id ? 'var(--accent)' : 'var(--ink-3)'" :stroke="1.6" />
-                <span style="flex: 1">{{ link.label }}</span>
+                <span class="flex-1">{{ link.label }}</span>
                 <span v-if="countFor(link) > 0" class="nav-drawer__count num">{{ countFor(link) }}</span>
             </button>
 
-            <div class="divider" style="margin: 10px 0" />
-            <button class="nav-drawer__item" type="button" style="color: var(--danger)" @click="emit('navigate', 'login')">
+            <div class="divider my-[10px] mx-0" />
+            <button class="nav-drawer__item text-danger" type="button" @click="emit('navigate', 'login')">
                 <Icon name="logout" :size="19" color="var(--danger)" :stroke="1.6" />
-                <span style="flex: 1">התנתק</span>
+                <span class="flex-1">התנתק</span>
             </button>
         </aside>
     </div>

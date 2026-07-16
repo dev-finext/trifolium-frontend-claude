@@ -55,10 +55,10 @@ const pendingLabel = computed(() =>
 
 <template>
     <!-- ── Block 1: Formula TYPE ─────────────────────────────── -->
-    <section class="card" style="padding: 28px" id="tf-anchor-type">
+    <section class="card p-[28px]" id="tf-anchor-type">
         <!-- Treatment style — Chinese ↔ Western. Centered above the type grid. -->
-        <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 26px">
-            <span style="font-size: 13.5px; font-weight: 600; color: var(--ink-2)">בחירת סגנון טיפול:</span>
+        <div class="flex items-center justify-center gap-[12px] mb-[26px]">
+            <span class="text-[13.5px] font-semibold text-ink-2">בחירת סגנון טיפול:</span>
             <ModeSwitch :mode="mode" @request="requestMode" />
         </div>
 
@@ -78,7 +78,7 @@ const pendingLabel = computed(() =>
             </div>
 
             <!-- Desktop: the visual card picker. -->
-            <div class="ftype-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(102px, 1fr)); gap: 10px; margin-top: 4px">
+            <div class="ftype-grid grid grid-cols-[repeat(auto-fit,minmax(102px,1fr))] gap-[10px] mt-[4px]">
                 <TypeCard
                     v-for="t in availableTypes" :key="t.id"
                     :type="t"
@@ -100,29 +100,25 @@ const pendingLabel = computed(() =>
     </section>
 
     <!-- ── Block 2: Formula NAME ─────────────────────────────── -->
-    <section class="card" style="padding: 28px; margin-top: 24px" id="tf-anchor-name">
+    <section class="card p-[28px] mt-[24px]" id="tf-anchor-name">
         <div>
-            <label class="field-label">שם הפורמולה <span style="color: var(--danger, #c0392b)">*</span></label>
+            <label class="field-label">שם הפורמולה <span class="text-[var(--danger,#c0392b)]">*</span></label>
             <input
-                class="input"
+                class="input text-[16px] h-[48px]"
+                :class="nameError ? 'border-[var(--danger,#c0392b)] shadow-[0_0_0_3px_rgba(192,57,43,0.12)]' : ''"
                 :value="formula.name"
                 :maxlength="15"
                 placeholder="לדוגמה: פורמולת שינה"
                 :aria-invalid="nameError"
                 aria-required="true"
-                :style="{
-                    fontSize: '16px',
-                    height: '48px',
-                    ...(nameError ? { borderColor: 'var(--danger, #c0392b)', boxShadow: '0 0 0 3px rgba(192,57,43,0.12)' } : {}),
-                }"
                 @input="setF({ name: $event.target.value.slice(0, 15) })"
                 @blur="nameTouched = true"
             />
 
-            <div v-if="nameError" class="small mt-8" style="color: var(--danger, #c0392b); font-weight: 600">
+            <div v-if="nameError" class="small mt-[8px] font-semibold text-[var(--danger,#c0392b)]">
                 שם הפורמולה הוא שדה חובה — לא ניתן להמשיך ללא שם.
             </div>
-            <div v-else class="small muted mt-8">
+            <div v-else class="small muted mt-[8px]">
                 לתשומת ליבך: שם הפורמולה מודפס על המדבקה ועל גבי החשבונית. אין לכתוב בשם הפורמולה כל התוויה רפואית.
             </div>
         </div>

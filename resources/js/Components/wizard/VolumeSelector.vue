@@ -66,13 +66,13 @@ function onSelect(v) {
     <div v-if="!rules"></div>
 
     <!-- Confirmation pill (volume already chosen, not editing) -->
-    <div v-else-if="current != null && !editMode" style="margin-top: 14px">
-        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px; background: var(--accent-tint); border: 1px solid var(--accent); border-radius: 999px; font-size: 13px; color: var(--accent-ink); font-weight: 600; line-height: 1.4">
+    <div v-else-if="current != null && !editMode" class="mt-[14px]">
+        <div class="inline-flex items-center gap-[6px] py-[4px] pr-[10px] pl-[6px] text-[13px] font-semibold leading-[1.4] text-accent-ink bg-accent-tint border border-accent rounded-[999px]">
             <Icon name="check" :size="12" color="var(--accent)" />
             נפח: <span class="num">{{ current }}</span> {{ rules.unit }}
             <button
                 aria-label="ערוך נפח"
-                style="border: none; background: transparent; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; padding: 0; margin-inline-start: 2px"
+                class="inline-flex items-center p-0 ms-[2px] border-none bg-transparent text-accent cursor-pointer"
                 @click="editMode = true"
             >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -90,71 +90,46 @@ function onSelect(v) {
     </div>
 
     <!-- Edit / initial-pick mode -->
-    <div v-else style="margin-top: 14px" id="tf-anchor-volume">
+    <div v-else class="mt-[14px]" id="tf-anchor-volume">
         <!-- Desktop: volume pills. On mobile a dropdown (.vol-select-wrap) replaces them. -->
-        <div class="vol-pills" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+        <div class="vol-pills flex flex-wrap items-center gap-[8px]">
             <button
                 v-for="n in rules.options" :key="n"
-                :style="{
-                    height: '32px',
-                    padding: '0 12px',
-                    borderRadius: '999px',
-                    border: '1px solid ' + (!otherMode && current === n ? 'var(--ink)' : 'var(--line-strong)'),
-                    background: !otherMode && current === n ? 'var(--ink)' : 'var(--surface)',
-                    color: !otherMode && current === n ? '#fff' : 'var(--ink-2)',
-                    fontSize: '13px',
-                    fontWeight: !otherMode && current === n ? 600 : 500,
-                    cursor: 'pointer',
-                    fontFamily: 'var(--font-latin)',
-                    transition: 'background-color .12s, border-color .12s',
-                }"
+                class="h-[32px] px-[12px] py-0 rounded-[999px] border text-[13px] cursor-pointer font-latin transition-[background-color,border-color] duration-[120ms]"
+                :class="!otherMode && current === n ? 'border-ink bg-ink text-white font-semibold' : 'border-line-strong bg-surface text-ink-2 font-medium'"
                 @click="otherMode = false; requestVolume(n)"
             >
-                <span class="num">{{ n }}</span>&nbsp;<span style="font-family: inherit; font-size: 12px">{{ rules.unit }}</span>
+                <span class="num">{{ n }}</span>&nbsp;<span class="[font-family:inherit] text-[12px]">{{ rules.unit }}</span>
             </button>
 
             <button
                 v-if="rules.allowOther"
-                :style="{
-                    height: '32px',
-                    padding: '0 14px',
-                    borderRadius: '999px',
-                    border: '1px solid ' + (otherMode ? 'var(--ink)' : 'var(--line-strong)'),
-                    background: otherMode ? 'var(--ink)' : 'var(--surface)',
-                    color: otherMode ? '#fff' : 'var(--ink-2)',
-                    fontSize: '13px',
-                    fontWeight: otherMode ? 600 : 500,
-                    cursor: 'pointer',
-                    transition: 'background-color .12s, border-color .12s',
-                }"
+                class="h-[32px] px-[14px] py-0 rounded-[999px] border text-[13px] cursor-pointer transition-[background-color,border-color] duration-[120ms]"
+                :class="otherMode ? 'border-ink bg-ink text-white font-semibold' : 'border-line-strong bg-surface text-ink-2 font-medium'"
                 @click="otherMode = true"
             >אחר</button>
 
             <!-- Shared "other/custom volume" editor (desktop, inline in the pill row) -->
-            <div v-if="otherMode" style="display: inline-flex; align-items: center; gap: 6px">
-                <div style="position: relative">
+            <div v-if="otherMode" class="inline-flex items-center gap-[6px]">
+                <div class="relative">
                     <input
                         type="number"
                         :min="minOther"
                         :step="stepOther"
                         v-model="otherDraft"
                         :placeholder="stepOther > 1 ? `${minOther}, ${minOther + stepOther}…` : `${minOther}+`"
-                        class="num no-spin"
+                        class="num no-spin w-[96px] h-[32px] rounded-control border py-0 pr-[38px] pl-[10px] bg-surface text-[13px] text-center outline-none"
+                        :class="otherInvalid ? 'border-danger' : 'border-line-strong'"
                         aria-label="נפח אחר"
                         :aria-invalid="otherInvalid"
                         :aria-describedby="otherInvalid ? 'vol-other-error' : undefined"
-                        :style="{
-                            width: '96px', height: '32px', borderRadius: 'var(--r-control)',
-                            border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
-                            padding: '0 38px 0 10px', background: 'var(--surface)', fontSize: '13px', textAlign: 'center', outline: 'none',
-                        }"
                     />
-                    <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--ink-3); pointer-events: none">{{ rules.unit }}</span>
+                    <span class="absolute left-[8px] top-[50%] translate-y-[-50%] text-[11px] text-ink-3 pointer-events-none">{{ rules.unit }}</span>
                 </div>
                 <button
                     :disabled="otherInvalid || otherDraft === ''"
-                    class="btn btn--primary"
-                    :style="{ height: '32px', paddingInline: '14px', fontSize: '12.5px', opacity: (otherInvalid || otherDraft === '') ? 0.4 : 1, cursor: (otherInvalid || otherDraft === '') ? 'not-allowed' : 'pointer' }"
+                    class="btn btn--primary h-[32px] px-[14px] text-[12.5px]"
+                    :class="(otherInvalid || otherDraft === '') ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
                     @click="commitOther"
                 >אישור</button>
             </div>
@@ -172,28 +147,24 @@ function onSelect(v) {
                 <option v-for="n in rules.options" :key="n" :value="n">{{ n }} {{ rules.unit }}</option>
                 <option v-if="rules.allowOther" value="__other__">אחר…</option>
             </select>
-            <div v-if="otherMode" style="margin-top: 10px">
-                <div style="display: inline-flex; align-items: center; gap: 6px">
-                    <div style="position: relative">
+            <div v-if="otherMode" class="mt-[10px]">
+                <div class="inline-flex items-center gap-[6px]">
+                    <div class="relative">
                         <input
                             type="number"
                             :min="minOther"
                             :step="stepOther"
                             v-model="otherDraft"
                             :placeholder="stepOther > 1 ? `${minOther}, ${minOther + stepOther}…` : `${minOther}+`"
-                            class="num no-spin"
-                            :style="{
-                                width: '96px', height: '32px', borderRadius: 'var(--r-control)',
-                                border: '1px solid ' + (otherInvalid ? 'var(--danger)' : 'var(--line-strong)'),
-                                padding: '0 38px 0 10px', background: 'var(--surface)', fontSize: '13px', textAlign: 'center', outline: 'none',
-                            }"
+                            class="num no-spin w-[96px] h-[32px] rounded-control border py-0 pr-[38px] pl-[10px] bg-surface text-[13px] text-center outline-none"
+                            :class="otherInvalid ? 'border-danger' : 'border-line-strong'"
                         />
-                        <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--ink-3); pointer-events: none">{{ rules.unit }}</span>
+                        <span class="absolute left-[8px] top-[50%] translate-y-[-50%] text-[11px] text-ink-3 pointer-events-none">{{ rules.unit }}</span>
                     </div>
                     <button
                         :disabled="otherInvalid || otherDraft === ''"
-                        class="btn btn--primary"
-                        :style="{ height: '32px', paddingInline: '14px', fontSize: '12.5px', opacity: (otherInvalid || otherDraft === '') ? 0.4 : 1, cursor: (otherInvalid || otherDraft === '') ? 'not-allowed' : 'pointer' }"
+                        class="btn btn--primary h-[32px] px-[14px] text-[12.5px]"
+                        :class="(otherInvalid || otherDraft === '') ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
                         @click="commitOther"
                     >אישור</button>
                 </div>
@@ -202,7 +173,7 @@ function onSelect(v) {
 
         <div
             v-if="current == null && !otherInvalid"
-            style="display: flex; align-items: center; gap: 7px; margin-top: 9px; font-size: 12.5px; font-weight: 600; color: var(--danger)"
+            class="flex items-center gap-[7px] mt-[9px] text-[12.5px] font-semibold text-danger"
         >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 7v6" />
@@ -212,7 +183,7 @@ function onSelect(v) {
             נא לבחור נפח פורמולה
         </div>
 
-        <div v-if="otherInvalid" id="vol-other-error" role="alert" style="font-size: 12px; color: var(--danger); margin-top: 6px">
+        <div v-if="otherInvalid" id="vol-other-error" role="alert" class="mt-[6px] text-[12px] text-danger">
             <template v-if="otherBadStep">הערך חייב להיות בכפולות של <span class="num">{{ stepOther }}</span> {{ rules.unit }}</template>
             <template v-else>כמות מינימלית היא <span class="num">{{ minOther }}</span> {{ rules.unit }}</template>
         </div>

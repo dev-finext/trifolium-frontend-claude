@@ -22,38 +22,28 @@ const emit = defineEmits(['add']);
 
 <template>
     <div class="card product-card">
-        <div class="product-card__media" style="height: 180px; position: relative; border-bottom: 1px solid var(--line); overflow: hidden; background: var(--surface-sunk)">
+        <div class="product-card__media relative h-[180px] overflow-hidden border-b border-b-line bg-surface-sunk">
             <img
                 :src="PRODUCT_IMG_URL"
                 :alt="product.heb"
                 loading="lazy"
-                class="product-card__img"
-                style="width: 100%; height: 100%; object-fit: cover; display: block"
+                class="product-card__img block w-full h-full object-cover"
             />
             <span
                 v-if="product.tag"
-                :style="{
-                    position: 'absolute', top: '12px', insetInlineEnd: '12px',
-                    background: 'var(--surface)',
-                    border: '1px solid var(--line)',
-                    padding: '3px 10px',
-                    borderRadius: '999px',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: 'var(--ink-2)',
-                }"
+                class="absolute top-[12px] end-[12px] py-[3px] px-[10px] text-[11px] font-medium text-ink-2 bg-surface border border-line rounded-[999px]"
             >{{ product.tag }}</span>
         </div>
 
-        <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px; flex: 1">
-            <div style="font-size: 15px; font-weight: 500">{{ product.heb }}</div>
-            <div class="small muted" style="line-height: 1.5">{{ product.sub }}</div>
+        <div class="flex flex-col flex-1 gap-[4px] p-[16px]">
+            <div class="text-[15px] font-medium">{{ product.heb }}</div>
+            <div class="small muted leading-[1.5]">{{ product.sub }}</div>
             <div class="small muted">{{ product.vol }}</div>
 
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px">
+            <div class="flex items-center justify-between mt-[12px]">
                 <div>
-                    <span class="num" style="font-size: 20px; font-weight: 600">{{ product.price }}</span>
-                    <span style="font-size: 13px; color: var(--ink-3); margin-right: 2px"> ₪</span>
+                    <span class="num text-[20px] font-semibold">{{ product.price }}</span>
+                    <span class="text-[13px] text-ink-3 mr-[2px]"> ₪</span>
                 </div>
                 <button
                     class="btn btn--ghost btn--sm"

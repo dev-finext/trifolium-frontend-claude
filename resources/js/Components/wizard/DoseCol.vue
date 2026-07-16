@@ -13,20 +13,14 @@ defineProps({
 
 <template>
     <div
-        :style="{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '20px 14px 18px',
-            borderLeft: isLast ? 'none' : '1px solid var(--line)',
-        }"
+        class="flex flex-col items-center gap-[10px] pt-[20px] px-[14px] pb-[18px]"
+        :class="isLast ? '' : 'border-l border-line'"
     >
         <Step4Icon :type="icon" />
-        <div style="font-size: 13px; font-weight: 600; color: var(--ink-2); text-align: center">
+        <div class="text-[13px] font-semibold text-ink-2 text-center">
             {{ label }}
         </div>
-        <div style="width: 100%">
+        <div class="w-full">
             <slot />
         </div>
     </div>

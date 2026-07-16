@@ -16,43 +16,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 
 <template>
     <div
-        :style="{
-            position: 'fixed', inset: 0,
-            background: 'rgba(20, 18, 14, 0.42)',
-            zIndex: 120,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-            backdropFilter: 'blur(2px)',
-        }"
+        class="fixed inset-0 flex items-center justify-center p-[24px] bg-[rgba(20,18,14,0.42)] z-[120] backdrop-blur-[2px]"
         @click="emit('close')"
     >
         <div
             dir="rtl"
-            :style="{
-                background: 'var(--surface)',
-                borderRadius: 'var(--r-card)',
-                borderTop: '3px solid var(--danger)',
-                width: 'min(360px, 100%)',
-                padding: '22px 22px 18px',
-                boxShadow: '0 30px 80px rgba(0,0,0,0.22)',
-                textAlign: 'right',
-            }"
+            class="w-[min(360px,100%)] pt-[22px] px-[22px] pb-[18px] text-right bg-surface rounded-card border-t-[3px] border-t-danger shadow-[0_30px_80px_rgba(0,0,0,0.22)]"
             @click.stop
         >
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+            <div class="flex items-center gap-[10px] mb-[10px]">
                 <span
-                    :style="{
-                        width: '34px', height: '34px',
-                        borderRadius: '8px',
-                        background: 'var(--danger)',
-                        color: '#fff',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                    }"
+                    class="inline-flex items-center justify-center shrink-0 w-[34px] h-[34px] text-white bg-danger rounded-[8px]"
                 >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
@@ -60,37 +34,25 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
                         <path d="M12 17h.01" />
                     </svg>
                 </span>
-                <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink)">
+                <h3 class="m-0 text-[16px] font-bold text-ink">
                     אינטראקציה אפשרית
                 </h3>
             </div>
 
-            <p style="margin: 0 0 12px; font-size: 13.5px; color: var(--ink-2); line-height: 1.6">
+            <p class="m-0 mb-[12px] text-[13.5px] leading-[1.6] text-ink-2">
                 זוהתה אינטראקציה אפשרית בין רכיב זה לבין תרופה שהמטופל נוטל. יש לבדוק את ההתאמה לפני המשך הרקיחה.
             </p>
 
             <div
-                :style="{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    padding: '10px 12px',
-                    background: 'var(--danger-tint, #f3e3e0)',
-                    borderRadius: 'var(--r-control)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: 'var(--danger)',
-                    marginBottom: '16px',
-                }"
+                class="flex items-center justify-center gap-[10px] py-[10px] px-[12px] mb-[16px] text-[13px] font-semibold text-danger bg-[var(--danger-tint,#f3e3e0)] rounded-control"
             >
-                <span style="font-family: var(--font-latin)">{{ herb?.lat || herb?.heb }}</span>
-                <span style="opacity: 0.6">+</span>
-                <span style="font-family: var(--font-latin)">{{ drug }}</span>
+                <span class="font-latin">{{ herb?.lat || herb?.heb }}</span>
+                <span class="opacity-60">+</span>
+                <span class="font-latin">{{ drug }}</span>
             </div>
 
-            <div style="display: flex; justify-content: flex-start">
-                <button class="btn btn--primary" style="padding-inline: 20px" @click="emit('close')">
+            <div class="flex justify-start">
+                <button class="btn btn--primary px-[20px]" @click="emit('close')">
                     הבנתי
                 </button>
             </div>

@@ -21,24 +21,11 @@ const isBack = computed(() => props.dir === 'back');
     <button
         type="button"
         :disabled="disabled"
-        :style="{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            flexShrink: 0,
-            height: compact ? '30px' : '34px',
-            paddingInline: compact ? '11px' : '14px',
-            borderRadius: '999px',
-            border: '1px solid ' + (disabled ? 'var(--line)' : (hover ? 'var(--accent)' : 'var(--line-strong)')),
-            background: 'var(--surface)',
-            color: disabled ? 'var(--ink-4)' : (hover ? 'var(--accent)' : 'var(--ink-2)'),
-            fontFamily: 'inherit',
-            fontSize: compact ? '12.5px' : '13.5px',
-            fontWeight: 600,
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            opacity: disabled ? 0.55 : 1,
-            transition: 'border-color .12s, color .12s, background-color .12s',
-        }"
+        class="inline-flex items-center gap-[6px] shrink-0 font-semibold [font-family:inherit] bg-surface border rounded-[999px] transition-[border-color,color,background-color] duration-[.12s]"
+        :class="[
+            compact ? 'h-[30px] ps-[11px] pe-[11px] text-[12.5px]' : 'h-[34px] ps-[14px] pe-[14px] text-[13.5px]',
+            disabled ? 'border-line text-ink-4 cursor-not-allowed opacity-55' : (hover ? 'border-accent text-accent cursor-pointer opacity-100' : 'border-line-strong text-ink-2 cursor-pointer opacity-100'),
+        ]"
         @click="!disabled && emit('click')"
         @mouseenter="hover = true"
         @mouseleave="hover = false"

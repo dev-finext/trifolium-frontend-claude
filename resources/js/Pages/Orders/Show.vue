@@ -82,11 +82,7 @@ const openFormulaInLab = () => {
 
             <!-- Breadcrumb back -->
             <a
-                :style="{
-                    display: 'inline-flex', alignItems: 'center', gap: '6px',
-                    fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer',
-                    marginBottom: '18px',
-                }"
+                class="inline-flex items-center gap-[6px] mb-[18px] text-[13px] text-ink-3 cursor-pointer"
                 @click="goHome"
             >
                 <Icon name="arrow_right" :size="15" />
@@ -95,34 +91,31 @@ const openFormulaInLab = () => {
 
             <!-- Header row -->
             <div
-                :style="{
-                    display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-                    gap: '24px', flexWrap: 'wrap', marginBottom: '28px',
-                }"
+                class="flex items-start justify-between gap-[24px] flex-wrap mb-[28px]"
             >
                 <div>
-                    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
-                        <h1 class="page-title" style="margin: 0">
-                            הזמנה <span class="num" style="letter-spacing: 0.01em">{{ order.id }}</span>
+                    <div class="flex items-center gap-[14px] flex-wrap">
+                        <h1 class="page-title m-0">
+                            הזמנה <span class="num tracking-[0.01em]">{{ order.id }}</span>
                         </h1>
                         <StatusPill :route="order.paymentRoute" :tone="tone" :label="order.status" />
                     </div>
-                    <p class="page-sub" style="margin-top: 8px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
-                        <span style="display: inline-flex; align-items: center; gap: 6px">
+                    <p class="page-sub flex items-center gap-[14px] flex-wrap mt-[8px]">
+                        <span class="inline-flex items-center gap-[6px]">
                             <Icon name="clock" :size="14" /> {{ order.date }}
                         </span>
-                        <span style="color: var(--line-strong)">·</span>
-                        <span style="display: inline-flex; align-items: center; gap: 6px">
+                        <span class="text-line-strong">·</span>
+                        <span class="inline-flex items-center gap-[6px]">
                             <Icon name="user" :size="14" /> {{ patientName }}
                         </span>
-                        <span style="color: var(--line-strong)">·</span>
-                        <span style="display: inline-flex; align-items: center; gap: 6px">
+                        <span class="text-line-strong">·</span>
+                        <span class="inline-flex items-center gap-[6px]">
                             <Icon name="flask" :size="14" /> {{ f.typeHeb }}
                         </span>
                     </p>
                 </div>
 
-                <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <div class="flex gap-[10px] flex-wrap">
                     <!-- Edit-in-lab — compounded formulas only; shelf products are not editable -->
                     <button v-if="canEditFormula" class="btn btn--ghost btn--sm" @click="openFormulaInLab">
                         <Icon name="flask" :size="15" /> עריכה במעבדה
@@ -138,16 +131,10 @@ const openFormulaInLab = () => {
 
             <!-- Two-column body -->
             <div
-                :style="{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 340px',
-                    gap: '24px',
-                    alignItems: 'flex-start',
-                    marginTop: '24px',
-                }"
+                class="grid grid-cols-[1fr_340px] items-start gap-[24px] mt-[24px]"
             >
                 <!-- MAIN -->
-                <div class="col gap-24">
+                <div class="col gap-[24px]">
                     <FormulaCard :f="f" />
 
                     <NotesCard
@@ -167,7 +154,7 @@ const openFormulaInLab = () => {
                 </div>
 
                 <!-- SIDEBAR -->
-                <div class="col gap-16">
+                <div class="col gap-[16px]">
                     <PatientCard :name="patientName" :phone="phone" />
                     <PricingCard :pricing="pricing" />
                     <PharmacistCard />
@@ -175,7 +162,7 @@ const openFormulaInLab = () => {
             </div>
 
             <!-- Bottom nav -->
-            <div style="margin-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+            <div class="flex flex-wrap justify-between gap-[12px] mt-[32px]">
                 <button class="btn btn--ghost" @click="goHome">
                     <Icon name="arrow_right" :size="16" /> חזרה ללוח הבקרה
                 </button>

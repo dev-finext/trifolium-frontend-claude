@@ -13,14 +13,7 @@ const { dialogRef } = useModal(() => emit('close'));
 
 <template>
     <div
-        :style="{
-            position: 'fixed', inset: 0,
-            background: 'rgba(10,9,7,0.85)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            zIndex: 200,
-            padding: '24px',
-            animation: 'tf-fade-in .2s ease',
-        }"
+        class="fixed inset-0 flex items-center justify-center z-[200] p-[24px] bg-[rgba(10,9,7,0.85)] animate-[tf-fade-in_.2s_ease]"
         @click="emit('close')"
     >
         <div
@@ -29,68 +22,25 @@ const { dialogRef } = useModal(() => emit('close'));
             aria-modal="true"
             tabindex="-1"
             aria-labelledby="tf-video-title"
-            :style="{
-                width: '100%',
-                maxWidth: '1000px',
-                background: '#0e0e0c',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                position: 'relative',
-            }"
+            class="relative w-full max-w-[1000px] overflow-hidden bg-[#0e0e0c] rounded-[8px]"
             @click.stop
         >
             <!-- Close -->
             <button
                 aria-label="סגור"
-                :style="{
-                    position: 'absolute', top: '16px', left: '16px',
-                    width: '36px', height: '36px', borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: 'none',
-                    color: '#fff',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer',
-                    zIndex: 10,
-                    backdropFilter: 'blur(8px)',
-                }"
+                class="absolute top-[16px] left-[16px] z-[10] flex items-center justify-center w-[36px] h-[36px] text-white bg-[rgba(255,255,255,0.1)] border-none rounded-[50%] cursor-pointer backdrop-blur-[8px]"
                 @click="emit('close')"
             >
                 <Icon name="x" :size="18" color="#fff" />
             </button>
 
             <!-- "Video" — simulated player -->
-            <div
-                :style="{
-                    aspectRatio: '16 / 9',
-                    background: 'linear-gradient(135deg, #2a3a3e 0%, #4a5d52 100%)',
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }"
-            >
-                <div
-                    :style="{
-                        position: 'absolute', inset: 0,
-                        backgroundImage: 'repeating-linear-gradient(115deg, transparent 0, transparent 16px, rgba(255,255,255,0.04) 16px, rgba(255,255,255,0.04) 17px)',
-                    }"
-                />
+            <div class="relative flex items-center justify-center aspect-[16/9] bg-[linear-gradient(135deg,#2a3a3e_0%,#4a5d52_100%)]">
+                <div class="absolute inset-0 bg-[repeating-linear-gradient(115deg,transparent_0,transparent_16px,rgba(255,255,255,0.04)_16px,rgba(255,255,255,0.04)_17px)]" />
                 <button
                     type="button"
                     aria-label="נגן"
-                    :style="{
-                        width: '72px', height: '72px',
-                        borderRadius: '50%',
-                        background: '#fff',
-                        color: 'var(--ink)',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingRight: '6px',
-                        cursor: 'pointer',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-                    }"
+                    class="flex items-center justify-center w-[72px] h-[72px] pr-[6px] text-ink bg-white border-none rounded-[50%] cursor-pointer shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
                 >
                     <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 4l14 8-14 8V4z" />
@@ -100,23 +50,12 @@ const { dialogRef } = useModal(() => emit('close'));
                 <!-- Progress bar -->
                 <div
                     aria-hidden="true"
-                    :style="{
-                        position: 'absolute', bottom: 0, left: 0, right: 0,
-                        padding: '16px 20px',
-                        background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)',
-                    }"
+                    class="absolute bottom-0 left-0 right-0 py-[16px] px-[20px] bg-[linear-gradient(to_top,rgba(0,0,0,0.5),transparent)]"
                 >
-                    <div style="height: 3px; background: rgba(255,255,255,0.2); border-radius: 999px; overflow: hidden">
-                        <div style="width: 0%; height: 100%; background: #fff" />
+                    <div class="h-[3px] bg-[rgba(255,255,255,0.2)] rounded-[999px] overflow-hidden">
+                        <div class="w-0 h-full bg-white" />
                     </div>
-                    <div
-                        :style="{
-                            display: 'flex', justifyContent: 'space-between',
-                            color: 'rgba(255,255,255,0.85)',
-                            fontFamily: 'var(--font-latin)',
-                            fontSize: '12px', marginTop: '8px',
-                        }"
-                    >
+                    <div class="flex justify-between mt-[8px] text-[12px] font-latin text-[rgba(255,255,255,0.85)]">
                         <span>0:00</span>
                         <span>{{ video.duration }}</span>
                     </div>
@@ -124,16 +63,10 @@ const { dialogRef } = useModal(() => emit('close'));
             </div>
 
             <!-- Meta below -->
-            <div style="padding: 24px; color: #e8e6e0; direction: rtl">
-                <div
-                    :style="{
-                        fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase',
-                        color: '#a8c79e', fontWeight: 600, marginBottom: '8px',
-                        fontFamily: 'var(--font-latin)',
-                    }"
-                >{{ video.chapter }}</div>
-                <div id="tf-video-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px">{{ video.title }}</div>
-                <div style="font-size: 13px; color: #a8a89c; line-height: 1.5">{{ video.desc }}</div>
+            <div class="p-[24px] text-[#e8e6e0] [direction:rtl]">
+                <div class="mb-[8px] text-[11px] font-semibold tracking-[0.14em] uppercase font-latin text-[#a8c79e]">{{ video.chapter }}</div>
+                <div id="tf-video-title" class="mb-[6px] text-[18px] font-semibold">{{ video.title }}</div>
+                <div class="text-[13px] leading-[1.5] text-[#a8a89c]">{{ video.desc }}</div>
             </div>
         </div>
     </div>

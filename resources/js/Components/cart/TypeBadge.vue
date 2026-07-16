@@ -12,13 +12,8 @@ const shelf = computed(() => props.kind === 'shelf');
 
 <template>
     <span
-        :style="{
-            display: 'inline-flex', alignItems: 'center', gap: '6px',
-            padding: '4px 11px', borderRadius: '999px', fontSize: '12px', fontWeight: 600,
-            background: shelf ? 'var(--surface-sunk)' : 'var(--accent-tint-strong)',
-            color: shelf ? 'var(--ink-2)' : 'var(--accent-ink)',
-            border: shelf ? '1px solid var(--line)' : '1px solid transparent',
-        }"
+        class="inline-flex items-center gap-[6px] px-[11px] py-[4px] text-[12px] font-semibold border rounded-[999px]"
+        :class="shelf ? 'bg-surface-sunk text-ink-2 border-line' : 'bg-accent-tint-strong text-accent-ink border-transparent'"
     >
         <Icon :name="shelf ? 'package' : 'flask'" :size="13" :color="shelf ? 'var(--ink-3)' : 'var(--accent)'" />
         {{ shelf ? 'מוצר מדף' : 'פורמולה בהכנה אישית' }}

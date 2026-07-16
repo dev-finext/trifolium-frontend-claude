@@ -37,34 +37,16 @@ function labelStyle(active) {
         role="switch"
         :aria-checked="isChinese"
         :title="isChinese ? 'מעבר לסגנון מערבי' : 'מעבר לסגנון סיני'"
-        :style="{
-            position: 'relative',
-            width: `${TRACK_WIDTH}px`,
-            height: '30px',
-            border: '1px solid var(--line-strong)',
-            borderRadius: '999px',
-            background: 'var(--surface-sunk)',
-            padding: '2px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'stretch',
-            fontFamily: 'inherit',
-            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)',
-            flexShrink: 0,
-        }"
+        class="relative flex items-stretch h-[30px] p-[2px] shrink-0 [font-family:inherit] bg-surface-sunk border border-line-strong rounded-[999px] cursor-pointer shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]"
+        :style="{ width: `${TRACK_WIDTH}px` }"
         @click="emit('request', isChinese ? 'western' : 'chinese')"
     >
         <!-- Sliding knob -->
         <span
+            class="absolute top-[2px] bottom-[2px] bg-ink rounded-[999px] transition-[inset-inline-start] duration-[.22s] ease-[cubic-bezier(.4,0,.2,1)] shadow-[0_1px_3px_rgba(0,0,0,0.15)]"
             :style="{
-                position: 'absolute',
-                top: '2px', bottom: '2px',
                 insetInlineStart: isChinese ? `${knobWidth}px` : '2px',
                 width: `${knobWidth - 4}px`,
-                background: 'var(--ink)',
-                borderRadius: '999px',
-                transition: 'inset-inline-start .22s cubic-bezier(.4,0,.2,1)',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
             }"
         />
         <span :style="labelStyle(!isChinese)">מערבי</span>

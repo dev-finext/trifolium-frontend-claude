@@ -39,18 +39,13 @@ function jump(s) {
 
 <template>
     <div
-        class="wizard-step-indicator"
-        style="position: relative; z-index: 30; background: var(--surface); border-bottom: 1px solid var(--line); transition: padding .18s ease"
+        class="wizard-step-indicator relative z-[30] bg-surface border-b border-line transition-[padding] duration-[180ms] ease-[ease]"
     >
         <div
-            :style="{
-                maxWidth: 'var(--maxw-lab)',
-                margin: '0 auto',
-                padding: compact ? '8px 24px 6px' : '20px 24px 14px',
-                transition: 'padding .18s ease',
-            }"
+            class="max-w-(--maxw-lab) my-0 mx-auto transition-[padding] duration-[180ms] ease-[ease]"
+            :class="compact ? 'pt-[8px] px-[24px] pb-[6px]' : 'pt-[20px] px-[24px] pb-[14px]'"
         >
-            <div :style="{ display: 'flex', alignItems: 'center', gap: compact ? '14px' : '22px' }">
+            <div class="flex items-center" :class="compact ? 'gap-[14px]' : 'gap-[22px]'">
                 <!-- חזור — process-bar back. State is preserved across the whole flow. -->
                 <StepNavBtn
                     dir="back"
@@ -60,39 +55,26 @@ function jump(s) {
                     @click="canBack && emit('back')"
                 />
 
-                <div style="flex: 1; display: flex; align-items: flex-start; justify-content: space-between; position: relative">
+                <div class="relative flex flex-1 items-start justify-between">
                     <template v-for="(s, i) in steps" :key="s.n">
                         <div
-                            :style="{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: compact ? '4px' : '8px',
-                                cursor: (s.n !== current && maxReached(s.n)) ? 'pointer' : 'default',
-                                position: 'relative',
-                                zIndex: 2,
-                                background: 'var(--surface)',
-                                padding: '0 8px',
-                                minWidth: 0,
-                            }"
+                            class="relative flex flex-col items-center min-w-0 py-0 px-[8px] z-[2] bg-surface"
+                            :class="[
+                                compact ? 'gap-[4px]' : 'gap-[8px]',
+                                (s.n !== current && maxReached(s.n)) ? 'cursor-pointer' : 'cursor-default',
+                            ]"
                             @click="jump(s)"
                         >
                             <div
-                                :style="{
-                                    width: compact ? '22px' : '28px',
-                                    height: compact ? '22px' : '28px',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontFamily: 'var(--font-latin)',
-                                    fontSize: compact ? '11px' : '13px',
-                                    fontWeight: 600,
-                                    border: '1.5px solid ' + (s.n === current ? 'var(--accent)' : s.n < current ? 'var(--accent)' : 'var(--line-strong)'),
-                                    background: s.n === current ? 'var(--accent)' : 'var(--surface)',
-                                    color: s.n === current ? '#fff' : s.n < current ? 'var(--accent)' : 'var(--ink-4)',
-                                    transition: 'width .18s ease, height .18s ease, font-size .18s ease',
-                                }"
+                                class="flex items-center justify-center font-latin font-semibold border-[1.5px] rounded-[50%] transition-[width,height,font-size] duration-[180ms] ease-[ease]"
+                                :class="[
+                                    compact ? 'w-[22px] h-[22px] text-[11px]' : 'w-[28px] h-[28px] text-[13px]',
+                                    s.n === current
+                                        ? 'border-accent bg-accent text-white'
+                                        : s.n < current
+                                            ? 'border-accent bg-surface text-accent'
+                                            : 'border-line-strong bg-surface text-ink-4',
+                                ]"
                             >
                                 <svg
                                     v-if="s.n < current"
@@ -110,29 +92,25 @@ function jump(s) {
                                 <template v-else>{{ s.n }}</template>
                             </div>
                             <span
-                                :style="{
-                                    fontSize: compact ? '11.5px' : '13px',
-                                    fontWeight: s.n === current ? 600 : 400,
-                                    color: s.n === current ? 'var(--accent)' : s.n < current ? 'var(--ink-3)' : 'var(--ink-4)',
-                                    whiteSpace: 'nowrap',
-                                    transition: 'font-size .18s ease',
-                                }"
+                                class="whitespace-nowrap transition-[font-size] duration-[180ms] ease-[ease]"
+                                :class="[
+                                    compact ? 'text-[11.5px]' : 'text-[13px]',
+                                    s.n === current
+                                        ? 'font-semibold text-accent'
+                                        : s.n < current
+                                            ? 'font-normal text-ink-3'
+                                            : 'font-normal text-ink-4',
+                                ]"
                             >{{ s.label }}</span>
                         </div>
 
                         <div
                             v-if="i !== steps.length - 1"
-                            :style="{
-                                flex: 1,
-                                height: '1.5px',
-                                background: s.n < current ? 'var(--accent)' : 'var(--line-strong)',
-                                marginTop: compact ? '11px' : '14px',
-                                alignSelf: 'flex-start',
-                                position: 'relative',
-                                zIndex: 1,
-                                marginInline: '-4px',
-                                transition: 'margin-top .18s ease',
-                            }"
+                            class="relative flex-1 self-start h-[1.5px] mx-[-4px] z-[1] transition-[margin-top] duration-[180ms] ease-[ease]"
+                            :class="[
+                                s.n < current ? 'bg-accent' : 'bg-line-strong',
+                                compact ? 'mt-[11px]' : 'mt-[14px]',
+                            ]"
                         />
                     </template>
                 </div>

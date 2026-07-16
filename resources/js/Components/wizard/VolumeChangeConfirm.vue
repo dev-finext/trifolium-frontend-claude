@@ -16,36 +16,27 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 
 <template>
     <div
-        :style="{
-            position: 'fixed', inset: 0,
-            background: 'rgba(20, 18, 14, 0.46)',
-            zIndex: 110,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-            backdropFilter: 'blur(2px)',
-        }"
+        class="fixed inset-0 flex items-center justify-center p-[24px] bg-[rgba(20,18,14,0.46)] z-[110] backdrop-blur-[2px]"
         @click="emit('cancel')"
     >
         <div
-            style="background: var(--surface); border-radius: var(--r-card); width: min(440px, 100%); padding: 24px; box-shadow: 0 30px 80px rgba(0,0,0,0.22)"
+            class="w-[min(440px,100%)] p-[24px] bg-surface rounded-card shadow-[0_30px_80px_rgba(0,0,0,0.22)]"
             @click.stop
         >
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px">
-                <span style="width: 38px; height: 38px; border-radius: 50%; background: var(--accent-tint); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0">
+            <div class="flex items-center gap-[12px] mb-[12px]">
+                <span class="inline-flex items-center justify-center shrink-0 w-[38px] h-[38px] text-accent bg-accent-tint rounded-[50%]">
                     <Icon name="info" :size="18" />
                 </span>
-                <h3 style="margin: 0; font-size: 16px; font-weight: 600">
+                <h3 class="m-0 text-[16px] font-semibold">
                     שינוי נפח ל-<span class="num">{{ newVolume }}</span> {{ unit }}
                 </h3>
             </div>
-            <p style="margin: 4px 0 18px; font-size: 13.5px; color: var(--ink-2); line-height: 1.55">
+            <p class="mt-[4px] mx-0 mb-[18px] text-[13.5px] leading-[1.55] text-ink-2">
                 שינוי הנפח לא ישפיע על האחוזים. הרכב הרכיבים ישמר. האם להמשיך?
             </p>
-            <div style="display: flex; justify-content: flex-end; gap: 10px">
+            <div class="flex justify-end gap-[10px]">
                 <button class="btn btn--ghost" @click="emit('cancel')">ביטול</button>
-                <button class="btn btn--primary" style="padding-inline: 18px" @click="emit('confirm')">שנה נפח</button>
+                <button class="btn btn--primary px-[18px]" @click="emit('confirm')">שנה נפח</button>
             </div>
         </div>
     </div>

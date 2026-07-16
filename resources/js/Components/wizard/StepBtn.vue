@@ -11,21 +11,8 @@ defineEmits(['click']);
     <button
         type="button"
         :disabled="disabled"
-        :style="{
-            width: '38px',
-            height: '100%',
-            border: 'none',
-            background: 'transparent',
-            color: disabled ? 'var(--ink-4)' : 'var(--ink)',
-            fontSize: '18px',
-            fontWeight: 600,
-            lineHeight: 1,
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'var(--font-latin)',
-        }"
+        class="inline-flex items-center justify-center w-[38px] h-full border-none bg-transparent text-[18px] font-semibold leading-[1] font-latin"
+        :class="disabled ? 'text-ink-4 cursor-not-allowed' : 'text-ink cursor-pointer'"
         @click="$emit('click')"
     >{{ label }}</button>
 </template>

@@ -5,18 +5,14 @@ import { visit } from '@/lib/routes';
 </script>
 
 <template>
-    <div class="card" style="padding: 72px 24px; text-align: center; max-width: 520px; margin: 0 auto">
+    <div class="card max-w-[520px] my-0 mx-auto px-[24px] py-[72px] text-center">
         <div
-            :style="{
-                width: '64px', height: '64px', borderRadius: '50%', margin: '0 auto 18px',
-                background: 'var(--surface-sunk)', color: 'var(--ink-3)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[64px] h-[64px] mt-0 mx-auto mb-[18px] text-ink-3 bg-surface-sunk rounded-[50%]"
         >
             <Icon name="clock" :size="28" />
         </div>
-        <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px">אין הזמנות בהמתנה</div>
-        <p class="small muted" style="margin: 0 auto 22px; max-width: 340px">
+        <div class="mb-[6px] text-[18px] font-semibold">אין הזמנות בהמתנה</div>
+        <p class="small muted max-w-[340px] mt-0 mx-auto mb-[22px]">
             הזמנות שתעבירו להמתנה מהסל יופיעו כאן, ויחכו עד שתהיו מוכנים לשלוח אותן לתשלום.
         </p>
         <button class="btn btn--accent" @click="visit('cart')">

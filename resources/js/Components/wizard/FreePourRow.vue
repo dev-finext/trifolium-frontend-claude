@@ -11,43 +11,27 @@ defineEmits(['select']);
 
 <template>
     <div
-        :style="{
-            display: 'flex', alignItems: 'center', gap: '12px',
-            padding: '13px 18px',
-            borderBottom: '1px solid var(--line)',
-            cursor: 'pointer',
-            background: selected ? 'var(--accent-tint)' : 'transparent',
-            borderInlineStart: '3px solid ' + (selected ? 'var(--accent)' : 'transparent'),
-            transition: 'background .1s',
-        }"
+        class="flex items-center gap-[12px] px-[18px] py-[13px] border-b border-b-line border-s-[3px] cursor-pointer transition-[background] duration-100"
+        :class="selected ? 'bg-accent-tint border-s-accent' : 'bg-transparent border-s-transparent'"
         @click="$emit('select')"
     >
         <span
-            :style="{
-                width: '36px', height: '36px', borderRadius: '9px', flexShrink: 0,
-                background: selected ? '#fff' : 'var(--surface-sunk)',
-                border: '1px solid ' + (selected ? 'var(--accent)' : 'var(--line)'),
-                color: selected ? 'var(--accent)' : 'var(--ink-3)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[9px]"
+            :class="selected ? 'bg-white border-accent text-accent' : 'bg-surface-sunk border-line text-ink-3'"
         >
             <FormulaTypeIcon :id="f.typeId" :size="19" color="currentColor" />
         </span>
-        <div style="flex: 1; min-width: 0">
-            <div :style="{ fontSize: '14px', fontWeight: 700, color: selected ? 'var(--accent-ink)' : 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }">{{ f.name }}</div>
-            <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+        <div class="flex-1 min-w-0">
+            <div class="text-[14px] font-bold whitespace-nowrap overflow-hidden text-ellipsis" :class="selected ? 'text-accent-ink' : 'text-ink'">{{ f.name }}</div>
+            <div class="mt-[3px] text-[12px] text-ink-3 whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ f.summary }}
             </div>
         </div>
         <span
-            :style="{
-                width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0,
-                border: '2px solid ' + (selected ? 'var(--accent)' : 'var(--line-strong)'),
-                background: 'var(--surface)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 bg-surface border-2 rounded-[50%]"
+            :class="selected ? 'border-accent' : 'border-line-strong'"
         >
-            <span v-if="selected" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent)" />
+            <span v-if="selected" class="w-[8px] h-[8px] rounded-[50%] bg-accent" />
         </span>
     </div>
 </template>

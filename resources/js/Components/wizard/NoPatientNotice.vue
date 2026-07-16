@@ -5,11 +5,11 @@ import Icon from '@/Components/ui/Icon.vue';
 
 <template>
     <div
-        style="border-inline-start: 3px solid var(--accent); background: var(--surface-sunk); padding: 16px 18px; border-radius: var(--r-card); display: flex; gap: 14px; align-items: flex-start"
+        class="flex items-start gap-[14px] px-[18px] py-[16px] bg-surface-sunk border-s-[3px] border-s-accent rounded-card"
     >
-        <Icon name="info" :size="18" color="var(--accent)" style="margin-top: 2px" />
-        <div style="font-size: 13px; line-height: 1.6; color: var(--ink-2)">
-            <div style="font-weight: 600; color: var(--ink); margin-bottom: 4px">
+        <Icon name="info" :size="18" color="var(--accent)" class="mt-[2px]" />
+        <div class="text-[13px] leading-[1.6] text-ink-2">
+            <div class="mb-[4px] font-semibold text-ink">
                 שמירה בלבד — ללא יצירת הזמנה
             </div>
             פורמולה זו תישמר תחת <strong>הפורמולות שלי</strong> בלבד. לא תיצור הזמנה ולא תישלח לתשלום. ניתן לקשר אותה למטופל ולהזמין בכל עת.

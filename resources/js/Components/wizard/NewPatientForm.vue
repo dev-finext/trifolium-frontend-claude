@@ -99,9 +99,9 @@ function onMedsChange(v) {
 </script>
 
 <template>
-    <div class="col gap-16">
+    <div class="col gap-[16px]">
         <!-- Names + phone — name fields first, then required phone -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+        <div class="grid grid-cols-[1fr_1fr] gap-[16px]">
             <Field label="שם פרטי *">
                 <input id="np-firstName" class="input" :value="value.firstName" placeholder="יוסי" @input="set('firstName', $event.target.value)" />
             </Field>
@@ -115,52 +115,50 @@ function onMedsChange(v) {
                 <span class="lead-icon"><Icon name="phone" :size="14" /></span>
                 <input
                     id="np-phone"
-                    class="input with-icon num"
+                    class="input with-icon num text-right"
                     type="tel"
                     dir="ltr"
                     :value="value.phone"
                     placeholder="050-1234567"
-                    style="text-align: right"
                     :aria-invalid="phoneError"
                     :aria-describedby="phoneError ? 'np-phone-error' : undefined"
                     @input="set('phone', $event.target.value)"
                 />
             </div>
-            <div v-if="phoneError" id="np-phone-error" role="alert" class="small mt-8" style="color: var(--danger); font-weight: 600">
+            <div v-if="phoneError" id="np-phone-error" role="alert" class="small mt-[8px] font-semibold text-danger">
                 מספר טלפון לא תקין — יש להזין מספר בן 9–10 ספרות (לדוגמה: 050-1234567).
             </div>
         </Field>
 
         <!-- Age + Sex + Meds toggle — compact single row to save space -->
-        <div style="display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start">
+        <div class="flex flex-wrap items-start gap-[28px]">
             <Field label="גיל *">
-                <div style="display: flex; align-items: center; gap: 12px">
+                <div class="flex items-center gap-[12px]">
                     <input
                         id="np-age"
-                        class="input num"
+                        class="input num w-[84px] text-center"
                         type="number"
                         min="0"
                         max="120"
                         inputmode="numeric"
                         :value="value.age"
                         placeholder="42"
-                        style="width: 84px; text-align: center"
                         :aria-invalid="ageError"
                         :aria-describedby="ageError ? 'np-age-hint' : undefined"
                         @input="onAgeInput"
                         @blur="onAgeBlur"
                     />
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--ink-2); white-space: nowrap">
+                    <label class="flex items-center gap-[8px] cursor-pointer text-[13px] text-ink-2 whitespace-nowrap">
                         <input
                             type="checkbox"
                             :checked="value.ageEstimated === true"
-                            style="width: 16px; height: 16px; accent-color: var(--ink); cursor: pointer"
+                            class="w-[16px] h-[16px] cursor-pointer accent-(--ink)"
                             @change="set('ageEstimated', $event.target.checked)"
                         />
                         גיל משוער
                     </label>
                 </div>
-                <div v-if="ageError" id="np-age-hint" role="alert" class="small mt-8" style="color: var(--danger); font-weight: 600">
+                <div v-if="ageError" id="np-age-hint" role="alert" class="small mt-[8px] font-semibold text-danger">
                     יש להזין גיל בין <span class="num">0</span> ל־<span class="num">120</span>.
                 </div>
             </Field>
@@ -193,7 +191,7 @@ function onMedsChange(v) {
 
         <!-- Medication details — expansion when taking meds -->
         <div>
-            <div v-if="value.onMeds === true" class="col gap-12" style="margin-top: 20px">
+            <div v-if="value.onMeds === true" class="col gap-[12px] mt-[20px]">
                 <MedsSafetyDeclaration
                     :patient-meds="Array.isArray(value.meds) ? value.meds.join(', ') : (value.meds || '')"
                     confirmable
@@ -205,7 +203,7 @@ function onMedsChange(v) {
                         :model-value="Array.isArray(value.meds) ? value.meds : (value.meds ? [value.meds] : [])"
                         @update:model-value="set('meds', $event)"
                     />
-                    <div class="small muted mt-8" style="display: flex; gap: 6px">
+                    <div class="small muted mt-[8px] flex gap-[6px]">
                         <Icon name="info" :size="13" />
                         המידע ישמש לבדיקת אינטראקציות תרופה–צמח בשלב 3.
                     </div>
@@ -215,13 +213,9 @@ function onMedsChange(v) {
 
         <!-- Submit -->
         <button
-            class="btn btn--primary"
+            class="btn btn--primary w-full"
+            :class="canProceed ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
             :disabled="!canProceed"
-            :style="{
-                width: '100%',
-                opacity: canProceed ? 1 : 0.4,
-                cursor: canProceed ? 'pointer' : 'not-allowed',
-            }"
             @click="tryContinue"
         >
             {{ submitLabel || 'שמור מטופל והמשך' }}

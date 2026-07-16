@@ -9,31 +9,23 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-    <div :style="{ display: 'flex', gap: '12px', flexWrap: 'wrap' }">
+    <div class="flex gap-[12px] flex-wrap">
         <label
             v-for="o in options" :key="o.id"
-            :style="{
-                display: 'inline-flex', alignItems: 'center', gap: '10px',
-                padding: '11px 18px', borderRadius: 'var(--r-control)',
-                border: '1.5px solid ' + (modelValue === o.id ? 'var(--accent)' : 'var(--line-strong)'),
-                background: modelValue === o.id ? 'var(--accent-tint)' : 'var(--surface)',
-                cursor: 'pointer', transition: 'all .15s', userSelect: 'none',
-            }"
+            class="inline-flex items-center gap-[10px] px-[18px] py-[11px] border-[1.5px] rounded-control cursor-pointer select-none transition-all duration-150"
+            :class="modelValue === o.id ? 'border-accent bg-accent-tint' : 'border-line-strong bg-surface'"
             @click="emit('update:modelValue', o.id)"
         >
             <span
-                :style="{
-                    width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0,
-                    border: '1.5px solid ' + (modelValue === o.id ? 'var(--accent)' : 'var(--line-strong)'),
-                    background: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                }"
+                class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 bg-[#fff] border-[1.5px] rounded-full"
+                :class="modelValue === o.id ? 'border-accent' : 'border-line-strong'"
             >
                 <span
                     v-if="modelValue === o.id"
-                    :style="{ width: '9px', height: '9px', borderRadius: '50%', background: 'var(--accent)' }"
+                    class="w-[9px] h-[9px] rounded-full bg-accent"
                 />
             </span>
-            <span :style="{ fontSize: '15.5px', fontWeight: modelValue === o.id ? 600 : 500, color: 'var(--ink)' }">{{ o.label }}</span>
+            <span class="text-[15.5px] text-ink" :class="modelValue === o.id ? 'font-semibold' : 'font-medium'">{{ o.label }}</span>
         </label>
     </div>
 </template>

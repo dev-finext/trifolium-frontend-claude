@@ -19,17 +19,13 @@ const emit = defineEmits(['update:modelValue']);
     <div>
         <label v-if="label" class="field-label">{{ label }}</label>
         <div class="input-wrap">
-            <span class="lead-icon" :style="{ right: 'auto', left: '10px' }">
+            <span class="lead-icon right-auto left-[10px]">
                 <Icon name="chevron_down" :size="16" />
             </span>
             <select
-                class="select"
+                class="select appearance-none [-webkit-appearance:none] pl-[34px]"
                 :value="modelValue"
-                :style="{
-                    appearance: 'none', WebkitAppearance: 'none', paddingLeft: '34px',
-                    color: modelValue ? 'var(--ink)' : 'var(--ink-4)',
-                    ...(error ? { borderColor: 'var(--danger)' } : {}),
-                }"
+                :class="[modelValue ? 'text-ink' : 'text-ink-4', error ? 'border-danger' : '']"
                 @change="emit('update:modelValue', $event.target.value)"
             >
                 <option value="" disabled>{{ placeholder || 'בחר/י' }}</option>

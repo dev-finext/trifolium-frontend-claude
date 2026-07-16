@@ -8,8 +8,8 @@ defineProps({
 </script>
 
 <template>
-    <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0">
-        <span style="font-size: 13.5px; color: var(--ink-2)">{{ label }}</span>
-        <span class="num" :style="{ fontSize: '14px', fontWeight: 600, color: accent ? 'var(--accent)' : 'var(--ink)' }">{{ value }}</span>
+    <div class="flex justify-between items-baseline px-0 py-[6px]">
+        <span class="text-[13.5px] text-ink-2">{{ label }}</span>
+        <span class="num text-[14px] font-semibold" :class="accent ? 'text-accent' : 'text-ink'">{{ value }}</span>
     </div>
 </template>

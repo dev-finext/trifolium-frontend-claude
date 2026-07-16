@@ -52,44 +52,26 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 
 <template>
     <div
-        class="preset-picker-overlay"
-        :style="{
-            position: 'fixed', inset: 0,
-            background: 'rgba(20, 18, 14, 0.46)',
-            zIndex: 100,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '24px',
-            backdropFilter: 'blur(2px)',
-        }"
+        class="preset-picker-overlay fixed inset-0 z-[100] flex items-center justify-center p-[24px] bg-[rgba(20,18,14,0.46)] backdrop-blur-[2px]"
         @click="emit('close')"
     >
         <div
-            class="preset-picker-modal"
-            :style="{
-                background: 'var(--surface)',
-                borderRadius: 'var(--r-card)',
-                width: 'min(940px, 100%)',
-                maxHeight: '88vh',
-                display: 'flex', flexDirection: 'column',
-                boxShadow: '0 30px 80px rgba(0,0,0,0.22)',
-                overflow: 'hidden',
-            }"
+            class="preset-picker-modal flex flex-col w-[min(940px,100%)] max-h-[88vh] bg-surface rounded-card shadow-[0_30px_80px_rgba(0,0,0,0.22)] overflow-hidden"
             @click.stop
         >
             <!-- Header -->
-            <div style="padding: 20px 24px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: flex-start; gap: 16px">
-                <div style="flex: 1">
-                    <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 4px">
+            <div class="flex items-start gap-[16px] pt-[20px] px-[24px] pb-[14px] border-b border-line">
+                <div class="flex-1">
+                    <div class="mb-[4px] text-[11px] tracking-[0.18em] uppercase font-semibold text-accent">
                         {{ tab.eyebrow }}
                     </div>
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.005em">{{ tab.title }}</h3>
-                    <p class="muted" style="margin: 4px 0 0; font-size: 13px">
+                    <h3 class="m-0 text-[18px] font-bold tracking-[-0.005em]">{{ tab.title }}</h3>
+                    <p class="muted mt-[4px] mx-0 mb-0 text-[13px]">
                         {{ tab.sub }}
                     </p>
                 </div>
                 <button
-                    class="btn--icon" aria-label="סגור"
-                    style="width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink-2); flex-shrink: 0"
+                    class="btn--icon w-[32px] h-[32px] shrink-0 bg-surface text-ink-2 border border-line rounded-[50%]" aria-label="סגור"
                     @click="emit('close')"
                 >
                     <Icon name="x" :size="14" />
@@ -97,44 +79,24 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
             </div>
 
             <!-- Tabs -->
-            <div style="position: relative; border-bottom: 1px solid var(--line); background: var(--surface-sunk); flex-shrink: 0">
-                <div class="preset-picker-tabs" style="display: flex; gap: 4px; padding: 0 16px">
+            <div class="relative shrink-0 bg-surface-sunk border-b border-line">
+                <div class="preset-picker-tabs flex gap-[4px] px-[16px] py-0">
                     <div
                         v-for="t in PICKER_TABS"
                         :key="t.id"
-                        class="ppt-item"
+                        class="ppt-item flex items-center gap-[4px]"
                         :class="{ 'ppt-item--active': t.id === tabId }"
-                        style="display: flex; align-items: center; gap: 4px"
                     >
                         <button
-                            class="ppt-tab"
-                            :style="{
-                                appearance: 'none', background: 'none', border: 'none', cursor: 'pointer',
-                                padding: '13px 4px 11px', fontSize: '14px',
-                                fontWeight: t.id === tabId ? 700 : 500,
-                                fontFamily: 'inherit',
-                                color: t.id === tabId ? 'var(--accent-ink)' : 'var(--ink-3)',
-                                borderBottom: '2.5px solid ' + (t.id === tabId ? 'var(--accent)' : 'transparent'),
-                                marginBottom: '-1px', transition: 'color .12s',
-                            }"
+                            class="ppt-tab appearance-none bg-transparent border-0 border-b-[2.5px] cursor-pointer pt-[13px] px-[4px] pb-[11px] text-[14px] [font-family:inherit] mb-[-1px] transition-[color] duration-[120ms]"
+                            :class="t.id === tabId ? 'font-bold text-accent-ink border-b-accent' : 'font-medium text-ink-3 border-b-transparent'"
                             @click="switchTab(t.id)"
                         >{{ t.label }}</button>
                         <button
-                            class="ppt-info"
+                            class="ppt-info appearance-none cursor-pointer inline-flex items-center justify-center w-[17px] h-[17px] rounded-[50%] shrink-0 text-[11px] font-bold leading-[1] font-latin border me-[8px] transition-all duration-[120ms] italic"
+                            :class="infoTab === t.id ? 'border-accent bg-accent text-white' : 'border-line-strong bg-transparent text-ink-3'"
                             :aria-label="'מידע על ' + t.label"
                             title="הסבר"
-                            :style="{
-                                appearance: 'none', cursor: 'pointer',
-                                width: '17px', height: '17px', borderRadius: '50%', flexShrink: 0,
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                fontSize: '11px', fontWeight: 700, lineHeight: 1,
-                                fontFamily: 'var(--font-latin)',
-                                border: '1px solid ' + (infoTab === t.id ? 'var(--accent)' : 'var(--line-strong)'),
-                                background: infoTab === t.id ? 'var(--accent)' : 'transparent',
-                                color: infoTab === t.id ? '#fff' : 'var(--ink-3)',
-                                marginInlineEnd: '8px', transition: 'all .12s',
-                                fontStyle: 'italic',
-                            }"
                             @click.stop="infoTab = infoTab === t.id ? null : t.id"
                         >i</button>
                     </div>
@@ -143,25 +105,25 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
                 <!-- Info popover -->
                 <div
                     v-if="infoTabDef"
-                    style="position: absolute; top: calc(100% + 6px); inset-inline-end: 16px; z-index: 5; width: min(340px, calc(100% - 32px)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-control); box-shadow: 0 14px 38px rgba(0,0,0,0.16); padding: 14px 16px"
+                    class="absolute top-[calc(100%+6px)] end-[16px] z-[5] w-[min(340px,calc(100%-32px))] bg-surface border border-line rounded-control shadow-[0_14px_38px_rgba(0,0,0,0.16)] px-[16px] py-[14px]"
                     @click.stop
                 >
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px">
-                        <strong style="font-size: 13.5px; color: var(--ink)">{{ infoTabDef.label }}</strong>
+                    <div class="flex items-center justify-between mb-[6px]">
+                        <strong class="text-[13.5px] text-ink">{{ infoTabDef.label }}</strong>
                         <button
                             aria-label="סגור"
-                            style="appearance: none; background: none; border: none; cursor: pointer; color: var(--ink-3); padding: 2px; line-height: 0"
+                            class="appearance-none bg-transparent border-none cursor-pointer text-ink-3 p-[2px] leading-[0]"
                             @click="infoTab = null"
                         >
                             <Icon name="x" :size="13" />
                         </button>
                     </div>
-                    <p style="margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-2)">{{ infoTabDef.info }}</p>
+                    <p class="m-0 text-[12.5px] leading-[1.6] text-ink-2">{{ infoTabDef.info }}</p>
                     <div
                         v-if="!infoTabDef.editable"
-                        style="margin-top: 10px; display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; color: var(--accent-ink); background: var(--accent-tint); border: 1px solid var(--accent); border-radius: var(--r-control); padding: 6px 10px"
+                        class="flex items-center gap-[6px] mt-[10px] px-[10px] py-[6px] text-[11.5px] font-semibold text-accent-ink bg-accent-tint border border-accent rounded-control"
                     >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                             <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
                         הפורמולה מוכנה — יחסי הבסיס נעולים ואינם ניתנים לשינוי.
@@ -170,10 +132,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
             </div>
 
             <!-- Body — two columns -->
-            <div class="preset-picker-body" style="flex: 1; overflow: hidden; display: flex; min-height: 0">
+            <div class="preset-picker-body flex flex-1 min-h-0 overflow-hidden">
                 <!-- Left: formula list -->
-                <div class="preset-picker-list" style="width: 320px; border-inline-end: 1px solid var(--line); overflow-y: auto; flex-shrink: 0">
-                    <div v-if="list.length === 0" style="padding: 40px 20px; text-align: center; color: var(--ink-3); font-size: 13px">
+                <div class="preset-picker-list w-[320px] shrink-0 overflow-y-auto border-e border-line">
+                    <div v-if="list.length === 0" class="px-[20px] py-[40px] text-center text-ink-3 text-[13px]">
                         אין פורמולות להצגה בלשונית זו.
                     </div>
                     <template v-else>
@@ -200,44 +162,44 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
                     </template>
                 </div>
                 <!-- Right: detail panel -->
-                <div :class="'preset-picker-detail' + (selected ? '' : ' preset-picker-detail--empty')" style="flex: 1; overflow-y: auto; padding: 24px 28px">
+                <div class="flex-1 overflow-y-auto px-[28px] py-[24px]" :class="'preset-picker-detail' + (selected ? '' : ' preset-picker-detail--empty')">
                     <template v-if="selected">
                         <FreePourDetail v-if="tab.kind === 'freepour'" :f="selected" />
                         <EditableFormulaDetail v-else-if="tab.editable" :f="selected" />
                         <PresetFormulaDetail v-else :preset="selected" />
                     </template>
-                    <div v-else style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--ink-3); text-align: center">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3">
+                    <div v-else class="h-full flex flex-col items-center justify-center gap-[10px] text-ink-3 text-center">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-30">
                             <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                         </svg>
-                        <div style="font-weight: 600; color: var(--ink-2); font-size: 14px">בחר פורמולה מהרשימה</div>
+                        <div class="font-semibold text-ink-2 text-[14px]">בחר פורמולה מהרשימה</div>
                         <div class="small">{{ tab.editable ? 'הרכיבים והמינונים יופיעו כאן לפני הטעינה' : 'הרכיבים והיחסים יופיעו כאן לפני הטעינה' }}</div>
                     </div>
                 </div>
             </div>
 
             <!-- Footer -->
-            <div class="preset-picker-footer" style="padding: 14px 24px; border-top: 1px solid var(--line); background: var(--surface-sunk); display: flex; align-items: center; justify-content: space-between; gap: 14px">
+            <div class="preset-picker-footer flex items-center justify-between gap-[14px] px-[24px] py-[14px] bg-surface-sunk border-t border-line">
                 <div class="small muted">
                     <template v-if="selected">
                         <template v-if="tab.kind === 'freepour'">
-                            נבחר: <strong style="color: var(--ink)">{{ selected.name }}</strong> · {{ selected.ingredients.length }} רכיבים
+                            נבחר: <strong class="text-ink">{{ selected.name }}</strong> · {{ selected.ingredients.length }} רכיבים
                         </template>
                         <template v-else-if="tab.editable">
-                            נבחר: <strong style="color: var(--ink)">{{ selected.name }}</strong> · {{ selected.ingredients.length }} רכיבים
+                            נבחר: <strong class="text-ink">{{ selected.name }}</strong> · {{ selected.ingredients.length }} רכיבים
                         </template>
                         <template v-else>
-                            נבחר: <strong style="color: var(--ink); font-family: var(--font-latin); font-style: italic">{{ selected.nameEn }}</strong> · <span style="font-family: var(--font-latin)">{{ selected.namePinyin }}</span> · {{ selected.ingredients.length }} רכיבים
+                            נבחר: <strong class="text-ink font-latin italic">{{ selected.nameEn }}</strong> · <span class="font-latin">{{ selected.namePinyin }}</span> · {{ selected.ingredients.length }} רכיבים
                         </template>
                     </template>
                     <template v-else>בחר פורמולה מהרשימה לצפייה בפרטים</template>
                 </div>
-                <div style="display: flex; gap: 10px">
+                <div class="flex gap-[10px]">
                     <button class="btn btn--ghost" @click="emit('close')">ביטול</button>
                     <button
-                        class="btn btn--primary"
+                        class="btn btn--primary px-[24px]"
+                        :class="selected ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
                         :disabled="!selected"
-                        :style="{ opacity: selected ? 1 : 0.4, cursor: selected ? 'pointer' : 'not-allowed', paddingInline: '24px' }"
                         @click="handleLoad"
                     >
                         טען פורמולה

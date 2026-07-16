@@ -8,17 +8,11 @@ defineProps({
 </script>
 
 <template>
-    <div
-        :style="{
-            paddingBottom: last ? 0 : '18px',
-            marginBottom: last ? 0 : '18px',
-            borderBottom: last ? 'none' : '1px solid var(--line)',
-        }"
-    >
-        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 10px">
+    <div :class="last ? 'pb-0 mb-0' : 'pb-[18px] mb-[18px] border-b border-b-line'">
+        <div class="mb-[10px] text-[11px] font-semibold tracking-[0.08em] uppercase text-ink-3">
             {{ label }}
         </div>
-        <div style="display: flex; flex-direction: column; gap: 6px">
+        <div class="flex flex-col gap-[6px]">
             <slot />
         </div>
     </div>

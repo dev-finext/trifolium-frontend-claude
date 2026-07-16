@@ -54,29 +54,29 @@ function crestStyle(seg, i) {
 </script>
 
 <template>
-    <div style="display: flex; justify-content: center; align-items: center">
-        <div style="position: relative; display: flex; flex-direction: column; align-items: center">
+    <div class="flex items-center justify-center">
+        <div class="relative flex flex-col items-center">
             <!-- cork -->
-            <div :style="{ width: `${neckW * 0.92}px`, height: `${corkH}px`, marginBottom: '-2px', borderRadius: '5px 5px 3px 3px', background: 'linear-gradient(#b78f5d,#8a6235)', boxShadow: 'inset 0 2px 2px rgba(255,255,255,.3)', zIndex: 3 }" />
+            <div class="mb-[-2px] rounded-[5px_5px_3px_3px] bg-[linear-gradient(#b78f5d,#8a6235)] shadow-[inset_0_2px_2px_rgba(255,255,255,.3)] z-[3]" :style="{ width: `${neckW * 0.92}px`, height: `${corkH}px` }" />
             <!-- neck -->
-            <div :style="{ width: `${neckW}px`, height: `${neckH}px`, background: 'rgba(255,255,255,.16)', border: '2px solid rgba(120,135,118,.30)', borderBottom: 'none', borderRadius: '5px 5px 0 0', zIndex: 2 }" />
+            <div class="bg-[rgba(255,255,255,.16)] border-2 border-[rgba(120,135,118,.30)] border-b-0 rounded-[5px_5px_0_0] z-[2]" :style="{ width: `${neckW}px`, height: `${neckH}px` }" />
             <!-- body -->
-            <div :style="{ position: 'relative', width: `${bodyW}px`, height: `${bodyH}px`, background: 'rgba(255,255,255,.12)', border: '2px solid rgba(120,135,118,.32)', borderRadius: '12px 12px 26px 26px', overflow: 'hidden', boxShadow: 'inset 0 0 26px rgba(255,255,255,.25)' }">
+            <div class="relative overflow-hidden bg-[rgba(255,255,255,.12)] border-2 border-[rgba(120,135,118,.32)] rounded-[12px_12px_26px_26px] shadow-[inset_0_0_26px_rgba(255,255,255,.25)]" :style="{ width: `${bodyW}px`, height: `${bodyH}px` }">
                 <!-- liquid (first ingredient at the bottom) -->
-                <div :style="{ position: 'absolute', left: 0, right: 0, bottom: 0, height: fill + '%', display: 'flex', flexDirection: 'column-reverse', transition: 'height .5s ease' }">
+                <div class="absolute left-0 right-0 bottom-0 flex flex-col-reverse transition-[height] duration-500 ease-[ease]" :style="{ height: fill + '%' }">
                     <div v-for="(seg, i) in segments" :key="i" :style="layerStyle(seg)">
                         <div :style="crestStyle(seg, i)" />
                     </div>
                 </div>
                 <!-- glass glare -->
-                <div style="position: absolute; top: 6%; left: 12%; width: 15%; height: 80%; border-radius: 40%; background: linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,0)); filter: blur(2px); z-index: 2; pointer-events: none" />
+                <div class="absolute top-[6%] left-[12%] w-[15%] h-[80%] rounded-[40%] bg-[linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,0))] blur-[2px] z-[2] pointer-events-none" />
                 <!-- shimmer -->
-                <div style="position: absolute; top: 0; width: 55%; height: 100%; z-index: 2; pointer-events: none; background: linear-gradient(115deg,transparent 0%,rgba(255,255,255,.42) 50%,transparent 100%); transform: skewX(-14deg); animation: tfBottleShimmer 5.5s ease-in-out infinite" />
+                <div class="absolute top-0 w-[55%] h-full z-[2] pointer-events-none bg-[linear-gradient(115deg,transparent_0%,rgba(255,255,255,.42)_50%,transparent_100%)] skew-x-[-14deg] animate-[tfBottleShimmer_5.5s_ease-in-out_infinite]" />
             </div>
             <!-- fill caption -->
-            <div :style="{ marginTop: '10px', fontSize: '12px', fontWeight: 600, color: isOver ? 'var(--danger)' : 'var(--ink-3)', display: 'flex', alignItems: 'baseline', gap: '6px' }">
-                <span v-if="isDone" style="display: inline-flex"><Icon name="check" :size="12" color="var(--accent)" :stroke="3" /></span>
-                <span class="num" :style="{ fontSize: '15px', fontWeight: 700, color: isOver ? 'var(--danger)' : isDone ? 'var(--accent)' : 'var(--ink)' }">{{ fmtPct(totalPct) }}%</span>
+            <div class="flex items-baseline gap-[6px] mt-[10px] text-[12px] font-semibold" :class="isOver ? 'text-danger' : 'text-ink-3'">
+                <span v-if="isDone" class="inline-flex"><Icon name="check" :size="12" color="var(--accent)" :stroke="3" /></span>
+                <span class="num text-[15px] font-bold" :class="isOver ? 'text-danger' : isDone ? 'text-accent' : 'text-ink'">{{ fmtPct(totalPct) }}%</span>
                 {{ isDone ? 'הפורמולה מלאה' : isOver ? 'מעל 100%' : 'מתוך 100%' }}
             </div>
         </div>

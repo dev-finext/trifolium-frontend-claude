@@ -10,10 +10,10 @@ defineProps({
 
 <template>
     <div>
-        <div style="display: flex; align-items: center; gap: 7px">
+        <div class="flex items-center gap-[7px]">
             <Icon name="user" :size="15" color="var(--accent)" />
-            <span style="font-size: 16px; font-weight: 600">{{ name }}</span>
+            <span class="text-[16px] font-semibold">{{ name }}</span>
         </div>
-        <div v-if="phone" class="small muted num" dir="ltr" style="text-align: right; margin-top: 2px">{{ phone }}</div>
+        <div v-if="phone" class="small muted num mt-[2px] text-right" dir="ltr">{{ phone }}</div>
     </div>
 </template>

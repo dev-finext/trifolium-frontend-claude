@@ -35,33 +35,12 @@ function scrollToTarget(target) {
         v-if="message"
         role="alert"
         :title="target ? 'לחצו למעבר למקום שדורש התייחסות' : undefined"
-        :style="{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '11px',
-            padding: '12px 16px',
-            background: '#faf0ed',
-            border: '1px solid #e6c3ba',
-            borderRadius: 'var(--r-card)',
-            color: 'var(--danger)',
-            fontSize: '13.5px',
-            fontWeight: 600,
-            lineHeight: 1.45,
-            cursor: target ? 'pointer' : 'default',
-        }"
+        class="flex items-center gap-[11px] px-[16px] py-[12px] text-[13.5px] font-semibold leading-[1.45] text-danger bg-[#faf0ed] border border-[#e6c3ba] rounded-card"
+        :class="target ? 'cursor-pointer' : 'cursor-default'"
         @click="target && scrollToTarget(target)"
     >
         <span
-            :style="{
-                width: '22px', height: '22px',
-                borderRadius: '50%',
-                background: 'var(--danger)',
-                color: '#fff',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-            }"
+            class="inline-flex items-center justify-center w-[22px] h-[22px] shrink-0 text-white bg-danger rounded-[50%]"
         >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 7v6" />
@@ -71,15 +50,7 @@ function scrollToTarget(target) {
         <span>{{ message }}</span>
         <span
             v-if="target"
-            :style="{
-                marginInlineStart: 'auto',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                flexShrink: 0,
-                fontSize: '12.5px',
-                fontWeight: 700,
-            }"
+            class="inline-flex items-center gap-[5px] ms-auto shrink-0 text-[12.5px] font-bold"
         >
             קחו אותי לשם
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

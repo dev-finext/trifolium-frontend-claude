@@ -46,30 +46,22 @@ function submit() {
     <Head title="כניסה" />
     <div
         data-screen-label="A1 כניסה"
-        :style="{
-            minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '24px', background: 'var(--bg)', position: 'relative',
-        }"
+        class="relative flex min-h-screen items-center justify-center p-[24px] bg-bg"
     >
         <AuthBg />
         <div
-            class="card"
-            :style="{
-                position: 'relative', zIndex: 1,
-                width: '100%', maxWidth: '920px', display: 'grid', gridTemplateColumns: '1.05fr 0.95fr',
-                boxShadow: '0 1px 2px rgba(31,46,29,0.06), 0 24px 70px rgba(20,32,18,0.30)',
-            }"
+            class="card relative z-[1] grid w-full max-w-[920px] grid-cols-[1.05fr_0.95fr] shadow-[0_1px_2px_rgba(31,46,29,0.06),0_24px_70px_rgba(20,32,18,0.30)]"
         >
             <!-- Form side -->
-            <form novalidate style="padding: 46px 48px 44px" @submit.prevent="submit">
-                <h1 :style="{ margin: 0, fontSize: '23px', fontWeight: 600, letterSpacing: '-0.01em', lineHeight: 1.3 }">
+            <form novalidate class="pt-[46px] px-[48px] pb-[44px]" @submit.prevent="submit">
+                <h1 class="m-0 text-[23px] font-semibold leading-[1.3] tracking-[-0.01em]">
                     מערכת רוקחית – בית מרקחת טריפוליום
                 </h1>
-                <p class="page-sub" style="margin: 8px 0 32px">
+                <p class="page-sub mt-[8px] mx-0 mb-[32px]">
                     אנא הכניסו את שם המשתמש והסיסמה
                 </p>
 
-                <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
+                <div class="flex flex-col gap-[18px]">
                     <AuthInput
                         ref="usernameField"
                         v-model="username"
@@ -85,39 +77,35 @@ function submit() {
                                 :id="pwId"
                                 ref="passwordEl"
                                 v-model="password"
-                                class="input with-icon" :type="show ? 'text' : 'password'"
+                                class="input with-icon pl-[40px]" :type="show ? 'text' : 'password'"
                                 placeholder="הסיסמה שלכם" autocomplete="current-password"
                                 enterkeyhint="go"
                                 :aria-invalid="err.password ? 'true' : undefined"
                                 :aria-describedby="err.password ? pwErrId : undefined"
-                                :style="{ paddingLeft: '40px', ...(err.password ? { borderColor: 'var(--danger)' } : {}) }"
+                                :class="err.password ? 'border-danger' : ''"
                             />
                             <button
                                 type="button"
                                 :aria-label="show ? 'הסתר סיסמה' : 'הצג סיסמה'"
-                                :style="{
-                                    position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)',
-                                    background: 'transparent', border: 'none', padding: '4px', cursor: 'pointer',
-                                    display: 'inline-flex', color: 'var(--ink-3)',
-                                }"
+                                class="absolute left-[8px] top-1/2 -translate-y-1/2 inline-flex p-[4px] text-ink-3 bg-transparent border-none cursor-pointer"
                                 @click="show = !show"
                             ><Icon :name="show ? 'eye_off' : 'eye'" :size="17" /></button>
                         </div>
                         <ErrMsg v-if="err.password" :id="pwErrId" role="alert">{{ err.password }}</ErrMsg>
                     </div>
 
-                    <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 6px">
+                    <button type="submit" class="btn btn--primary w-full mt-[6px]">
                         כניסה למערכת
                     </button>
                 </div>
 
-                <div :style="{ marginTop: '26px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }">
+                <div class="flex flex-col items-center mt-[26px] gap-[12px]">
                     <a
-                        :style="{ fontSize: '14px', color: 'var(--accent)', fontWeight: 600, cursor: 'pointer' }"
+                        class="text-[14px] font-semibold text-accent cursor-pointer"
                         @click="visit('register')"
                     >אין לכם חשבון? לחצו להרשמה</a>
                     <a
-                        :style="{ fontSize: '13.5px', color: 'var(--ink-3)', cursor: 'pointer' }"
+                        class="text-[13.5px] text-ink-3 cursor-pointer"
                         @click="visit('forgot')"
                     >שכחתי סיסמה</a>
                 </div>
@@ -125,15 +113,11 @@ function submit() {
 
             <!-- Brand panel -->
             <div
-                :style="{
-                    background: 'var(--accent)', color: '#fff',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    gap: '18px', padding: '48px 36px', textAlign: 'center',
-                }"
+                class="flex flex-col items-center justify-center gap-[18px] py-[48px] px-[36px] text-center text-white bg-accent"
             >
                 <Brandmark tone="light" :height="108" />
-                <div :style="{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.3)' }" />
-                <p :style="{ margin: 0, fontSize: '15px', fontWeight: 400, color: 'rgba(255,255,255,0.86)', letterSpacing: '0.02em' }">
+                <div class="w-[40px] h-[1px] bg-[rgba(255,255,255,0.3)]" />
+                <p class="m-0 text-[15px] font-normal tracking-[0.02em] text-[rgba(255,255,255,0.86)]">
                     בית מרקחת לצמחי מרפא
                 </p>
             </div>

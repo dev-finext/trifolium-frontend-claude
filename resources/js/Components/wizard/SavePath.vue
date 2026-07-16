@@ -75,16 +75,16 @@ function handleSave() {
 </script>
 
 <template>
-    <div v-if="saving" class="card" style="padding: 72px 32px; text-align: center">
-        <div class="tf-save-spinner" style="width: 44px; height: 44px; margin: 0 auto 20px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%" />
-        <div style="font-size: 16px; font-weight: 600">שומר את הפורמולה…</div>
-        <p class="muted" style="margin: 6px 0 0; font-size: 13px">מעביר אותך אל הפורמולות שלי</p>
+    <div v-if="saving" class="card px-[32px] py-[72px] text-center">
+        <div class="tf-save-spinner w-[44px] h-[44px] mx-auto mt-0 mb-[20px] border-[3px] border-line border-t-accent rounded-full" />
+        <div class="text-[16px] font-semibold">שומר את הפורמולה…</div>
+        <p class="muted mt-[6px] mb-0 mx-0 text-[13px]">מעביר אותך אל הפורמולות שלי</p>
     </div>
 
-    <div v-else class="col gap-24">
+    <div v-else class="col gap-[24px]">
         <div>
-            <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 6px">שמירת פורמולה</h2>
-            <p class="muted" style="margin: 0; font-size: 14px">
+            <h2 class="m-0 mb-[6px] text-[20px] font-semibold">שמירת פורמולה</h2>
+            <p class="muted m-0 text-[14px]">
                 הפורמולה תישמר בטיוטות. לא תיווצר הזמנה ולא יישלח קישור תשלום.
             </p>
         </div>
@@ -92,11 +92,11 @@ function handleSave() {
         <!-- Missing-name error -->
         <div
             v-if="nameError"
-            style="border-inline-start: 3px solid #c0392b; background: #fdf2f2; border-radius: var(--r-card); padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start"
+            class="flex items-start gap-[12px] px-[18px] py-[14px] bg-[#fdf2f2] border-s-[3px] border-s-[#c0392b] rounded-card"
         >
-            <Icon name="info" :size="18" color="#c0392b" style="margin-top: 2px" />
-            <div style="font-size: 13px; line-height: 1.6; color: #9a2f2f">
-                <strong style="font-weight: 700">לא ניתן לשמור פורמולה ללא שם.</strong> חזור לרקיחת הפורמולה והזן שם לפני השמירה.
+            <Icon name="info" :size="18" color="#c0392b" class="mt-[2px]" />
+            <div class="text-[13px] leading-[1.6] text-[#9a2f2f]">
+                <strong class="font-bold">לא ניתן לשמור פורמולה ללא שם.</strong> חזור לרקיחת הפורמולה והזן שם לפני השמירה.
             </div>
         </div>
 
@@ -104,24 +104,23 @@ function handleSave() {
 
         <!-- Info notice — start accent border -->
         <div
-            style="border-inline-start: 3px solid var(--accent); background: var(--accent-tint); border-radius: var(--r-card); padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start"
+            class="flex items-start gap-[12px] px-[18px] py-[14px] bg-accent-tint border-s-[3px] border-s-accent rounded-card"
         >
-            <Icon name="info" :size="18" color="var(--accent)" style="margin-top: 2px" />
-            <div style="font-size: 13px; line-height: 1.6; color: var(--accent-ink)">
-                <strong style="font-weight: 700">שמירה בלבד — ללא יצירת הזמנה.</strong> פורמולה זו תישמר תחת <em>הפורמולות שלי</em>. ניתן לקשר אותה למטופל ולהזמין בכל עת.
+            <Icon name="info" :size="18" color="var(--accent)" class="mt-[2px]" />
+            <div class="text-[13px] leading-[1.6] text-accent-ink">
+                <strong class="font-bold">שמירה בלבד — ללא יצירת הזמנה.</strong> פורמולה זו תישמר תחת <em>הפורמולות שלי</em>. ניתן לקשר אותה למטופל ולהזמין בכל עת.
             </div>
         </div>
 
-        <div class="col gap-12">
+        <div class="col gap-[12px]">
             <button
-                class="btn btn--accent"
-                style="width: 100%; height: 48px; font-size: 16px; font-weight: 600"
+                class="btn btn--accent w-full h-[48px] text-[16px] font-semibold"
                 @click="handleSave"
             >
                 <Icon name="save" :size="18" color="#fff" />
                 שמור פורמולה
             </button>
-            <button class="btn btn--ghost" style="width: 100%" @click="emit('back')">
+            <button class="btn btn--ghost w-full" @click="emit('back')">
                 <Icon name="arrow_right" :size="16" /> חזור לרקיחת הפורמולה
             </button>
         </div>

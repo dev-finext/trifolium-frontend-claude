@@ -11,48 +11,32 @@ defineEmits(['select']);
 
 <template>
     <div
-        :style="{
-            display: 'flex', alignItems: 'center', gap: '12px',
-            padding: '13px 18px',
-            borderBottom: '1px solid var(--line)',
-            cursor: 'pointer',
-            background: selected ? 'var(--accent-tint)' : 'transparent',
-            borderInlineStart: '3px solid ' + (selected ? 'var(--accent)' : 'transparent'),
-            transition: 'background .1s',
-        }"
+        class="flex items-center gap-[12px] py-[13px] px-[18px] border-b border-line border-s-[3px] cursor-pointer transition-[background] duration-100"
+        :class="selected ? 'bg-accent-tint border-s-accent' : 'bg-transparent border-s-transparent'"
         @click="$emit('select')"
     >
         <span
-            :style="{
-                width: '36px', height: '36px', borderRadius: '9px', flexShrink: 0,
-                background: selected ? '#fff' : 'var(--surface-sunk)',
-                border: '1px solid ' + (selected ? 'var(--accent)' : 'var(--line)'),
-                color: selected ? 'var(--accent)' : 'var(--ink-3)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[9px]"
+            :class="selected ? 'bg-white border-accent text-accent' : 'bg-surface-sunk border-line text-ink-3'"
         >
             <FormulaTypeIcon :id="preset.typeId" :size="19" color="currentColor" />
         </span>
-        <div style="flex: 1; min-width: 0">
-            <div style="display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap">
-                <span :style="{ fontSize: '14px', fontWeight: 700, color: selected ? 'var(--accent-ink)' : 'var(--ink)', fontFamily: 'var(--font-latin)' }">{{ preset.nameEn }}</span>
-                <span style="font-size: 11.5px; font-style: italic; color: var(--ink-3); font-family: var(--font-latin)">{{ preset.namePinyin }}</span>
+        <div class="flex-1 min-w-0">
+            <div class="flex items-baseline gap-[7px] flex-wrap">
+                <span class="text-[14px] font-bold font-latin" :class="selected ? 'text-accent-ink' : 'text-ink'">{{ preset.nameEn }}</span>
+                <span class="text-[11.5px] italic text-ink-3 font-latin">{{ preset.namePinyin }}</span>
             </div>
-            <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px; display: flex; align-items: center; gap: 7px">
-                <span style="font-size: 14px; font-family: serif; color: var(--ink-2)">{{ preset.nameZh }}</span>
+            <div class="flex items-center gap-[7px] mt-[3px] text-[12px] text-ink-3">
+                <span class="text-[14px] [font-family:serif] text-ink-2">{{ preset.nameZh }}</span>
                 <span>·</span>
                 <span class="num">{{ preset.ingredients.length }}</span> רכיבים
             </div>
         </div>
         <span
-            :style="{
-                width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0,
-                border: '2px solid ' + (selected ? 'var(--accent)' : 'var(--line-strong)'),
-                background: 'var(--surface)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 border-2 bg-surface rounded-[50%]"
+            :class="selected ? 'border-accent' : 'border-line-strong'"
         >
-            <span v-if="selected" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent)" />
+            <span v-if="selected" class="w-[8px] h-[8px] bg-accent rounded-[50%]" />
         </span>
     </div>
 </template>

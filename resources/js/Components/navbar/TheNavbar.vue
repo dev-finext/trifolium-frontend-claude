@@ -32,7 +32,7 @@ function go(id) {
 </script>
 
 <template>
-    <nav class="nav" style="position: sticky; top: 0">
+    <nav class="nav sticky top-0">
         <!-- Right column (RTL): main menu links (desktop) + burger (mobile) -->
         <div class="nav__links">
             <button class="nav__burger" aria-label="תפריט" :aria-expanded="drawerOpen" @click="drawerOpen = true">
@@ -47,11 +47,11 @@ function go(id) {
                     :radius="7"
                     :top="10"
                     :left="-30"
-                    style="padding-top: 4px; padding-bottom: 4px; padding-left: 42px"
+                    class="pt-[4px] pb-[4px] pl-[42px]"
                 >
                     <a
                         :class="['nav__link', { 'nav__link--active': route === link.id }]"
-                        style="display: inline-flex; align-items: center; gap: 7px"
+                        class="inline-flex items-center gap-[7px]"
                         :href="routeUrl(link.id)"
                         @click.prevent="go(link.id)"
                     >
@@ -62,7 +62,7 @@ function go(id) {
                 <a
                     v-else
                     :class="['nav__link', { 'nav__link--active': route === link.id }]"
-                    style="display: inline-flex; align-items: center; gap: 7px"
+                    class="inline-flex items-center gap-[7px]"
                     :href="routeUrl(link.id)"
                     @click.prevent="go(link.id)"
                 >
@@ -76,18 +76,16 @@ function go(id) {
              .nav__center: on phones the mobile stylesheet absolutely centers this
              so uneven side clusters can't push the logo off-center. -->
         <a
-            class="nav__center"
+            class="nav__center flex items-center justify-center h-full cursor-pointer"
             :href="routeUrl('home')"
             aria-label="Trifolium — דף הבית"
-            style="display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%"
             @click.prevent="go('home')"
         >
             <img
                 v-if="!logoFailed"
                 :src="logoUrl"
                 alt="Trifolium"
-                class="nav__logo-full"
-                style="height: 44px; width: auto; display: block"
+                class="nav__logo-full block h-[44px] w-auto"
                 @error="logoFailed = true"
             />
             <!-- Phones: the circular brand mark alone (the full lockup is too
@@ -98,37 +96,20 @@ function go(id) {
                 alt="Trifolium"
                 class="nav__logo-mark"
             />
-            <div v-else style="display: flex; flex-direction: column; align-items: center; gap: 2px">
-                <svg width="22" height="14" viewBox="0 0 32 20" fill="none" style="display: block">
+            <div v-else class="flex flex-col items-center gap-[2px]">
+                <svg width="22" height="14" viewBox="0 0 32 20" fill="none" class="block">
                     <circle cx="10" cy="8" r="6" fill="none" stroke="var(--accent)" stroke-width="1.4" />
                     <circle cx="22" cy="8" r="6" fill="none" stroke="var(--accent)" stroke-width="1.4" />
                     <circle cx="16" cy="14" r="6" fill="none" stroke="var(--accent)" stroke-width="1.4" />
                 </svg>
                 <span
-                    :style="{
-                        fontFamily: `'Cormorant Garamond', serif`,
-                        fontSize: '22px',
-                        fontWeight: 500,
-                        letterSpacing: '0.04em',
-                        lineHeight: 1,
-                        color: 'var(--ink)',
-                        marginTop: '2px',
-                    }"
+                    class="mt-[2px] font-['Cormorant_Garamond',serif] text-[22px] font-medium tracking-[0.04em] leading-[1] text-ink"
                 >Trifolium</span>
             </div>
         </a>
 
         <!-- Left column: actions + user -->
-        <div
-            :style="{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                justifySelf: 'end',
-                flexDirection: 'row-reverse',
-                whiteSpace: 'nowrap',
-            }"
-        >
+        <div class="flex flex-row-reverse items-center gap-[12px] justify-self-end whitespace-nowrap">
             <!-- points — gold coin + bold count (no "נקודות" label) -->
             <span class="nav__desktop-only"><PointsBadge :value="user.points" /></span>
 
@@ -141,7 +122,7 @@ function go(id) {
 
             <span class="nav__desktop-only"><UserMenu :user="user" @navigate="go" /></span>
 
-            <span class="nav__desktop-only" style="width: 1px; height: 26px; background: var(--line); margin: 0 2px" />
+            <span class="nav__desktop-only w-[1px] h-[26px] mx-[2px] my-0 bg-(--line)" />
 
             <!-- On phones the cart lives in the bottom tab bar (nav__top-cart hides this). -->
             <span class="nav__top-cart">

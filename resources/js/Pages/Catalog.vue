@@ -158,8 +158,8 @@ function clearAll() {
                     <h1 class="page-title">מוצרי מדף</h1>
                     <p class="page-sub">פורמולות מוכנות, תמיסות ותערובות · הנחת מטפל 20% כלולה</p>
                 </div>
-                <div class="row gap-8">
-                    <div class="catalog-search" style="width: 260px">
+                <div class="row gap-[8px]">
+                    <div class="catalog-search w-[260px]">
                         <SearchInput v-model="search" placeholder="חיפוש מוצר…" />
                     </div>
                 </div>
@@ -170,50 +170,28 @@ function clearAll() {
                 <Icon name="filter" :size="15" color="var(--ink-2)" />
                 סינון
                 <span v-if="activeCount > 0" class="catalog-filters-toggle__count num">{{ activeCount }}</span>
-                <Icon :name="filtersOpen ? 'chevron_down' : 'chevron_left'" :size="15" color="var(--ink-3)" style="margin-inline-start: auto" />
+                <Icon :name="filtersOpen ? 'chevron_down' : 'chevron_left'" :size="15" color="var(--ink-3)" class="ms-auto" />
             </button>
 
             <!-- Two-column layout: sidebar (right in RTL) + grid -->
-            <div style="display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start">
+            <div class="grid grid-cols-[240px_1fr] items-start gap-[32px]">
                 <!-- FILTER SIDEBAR -->
                 <aside
                     v-show="!isMobile || filtersOpen"
-                    class="catalog-filters"
-                    :style="{
-                        background: 'var(--surface)',
-                        border: '1px solid var(--line)',
-                        borderRadius: 'var(--r-card)',
-                        padding: '20px 18px',
-                        position: 'sticky',
-                        top: '80px',
-                    }"
+                    class="catalog-filters sticky top-[80px] py-[20px] px-[18px] bg-surface border border-line rounded-card"
                 >
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--line)">
-                        <div style="display: flex; align-items: center; gap: 8px">
+                    <div class="flex items-center justify-between mb-[16px] pb-[14px] border-b border-b-line">
+                        <div class="flex items-center gap-[8px]">
                             <Icon name="filter" :size="15" color="var(--ink-2)" />
-                            <span style="font-size: 14px; font-weight: 600; color: var(--ink)">סינון</span>
+                            <span class="text-[14px] font-semibold text-ink">סינון</span>
                             <span
                                 v-if="activeCount > 0"
-                                class="num"
-                                :style="{
-                                    background: 'var(--accent)',
-                                    color: '#fff',
-                                    fontSize: '10px',
-                                    fontWeight: 700,
-                                    minWidth: '18px',
-                                    height: '18px',
-                                    padding: '0 5px',
-                                    borderRadius: '999px',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }"
+                                class="num inline-flex items-center justify-center min-w-[18px] h-[18px] py-0 px-[5px] text-[10px] font-bold text-white bg-accent rounded-[999px]"
                             >{{ activeCount }}</span>
                         </div>
                         <button
                             v-if="activeCount > 0"
-                            class="btn btn--text"
-                            style="font-size: 12px; color: var(--ink-3)"
+                            class="btn btn--text text-[12px] text-ink-3"
                             @click="clearAll"
                         >
                             נקה הכל
@@ -247,7 +225,7 @@ function clearAll() {
 
                     <!-- PRICE -->
                     <FilterGroup label="מחיר מקסימלי">
-                        <div style="padding: 4px 4px 0">
+                        <div class="pt-[4px] px-[4px] pb-0">
                             <input
                                 v-model.number="priceMax"
                                 type="range"
@@ -256,11 +234,11 @@ function clearAll() {
                                 :step="5"
                                 aria-label="מחיר מקסימלי"
                                 :aria-valuetext="`עד ${priceMax} שקלים`"
-                                style="width: 100%; accent-color: var(--accent); cursor: pointer"
+                                class="w-full cursor-pointer accent-(--accent)"
                             />
-                            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-3); margin-top: 4px">
+                            <div class="flex justify-between mt-[4px] text-[11px] text-ink-3">
                                 <span class="num">₪30</span>
-                                <span style="font-weight: 600; color: var(--ink); font-size: 13px">
+                                <span class="text-[13px] font-semibold text-ink">
                                     עד <span class="num">₪{{ priceMax }}</span>
                                 </span>
                                 <span class="num">₪150</span>
@@ -283,21 +261,20 @@ function clearAll() {
 
                 <!-- GRID -->
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 13px; color: var(--ink-3)">
+                    <div class="flex justify-between items-center mb-[16px] text-[13px] text-ink-3">
                         <span>
-                            <span class="num" style="color: var(--ink); font-weight: 600">{{ filtered.length }}</span>
+                            <span class="num font-semibold text-ink">{{ filtered.length }}</span>
                             מוצרים
-                            <span v-if="filtered.length !== props.products.length" style="color: var(--ink-3)">
+                            <span v-if="filtered.length !== props.products.length" class="text-ink-3">
                                 מתוך <span class="num">{{ props.products.length }}</span>
                             </span>
                         </span>
-                        <div style="display: flex; align-items: center; gap: 6px">
-                            <label for="catalog-sort" style="font-size: 12px">מיון:</label>
+                        <div class="flex items-center gap-[6px]">
+                            <label for="catalog-sort" class="text-[12px]">מיון:</label>
                             <select
                                 id="catalog-sort"
                                 v-model="sortBy"
-                                class="select"
-                                style="height: 36px; font-size: 13px; width: auto; padding: 0 8px"
+                                class="select h-[36px] w-auto py-0 px-[8px] text-[13px]"
                             >
                                 <option value="pop">פופולריות</option>
                                 <option value="price-asc">מחיר נמוך לגבוה</option>
@@ -309,16 +286,15 @@ function clearAll() {
 
                     <div
                         v-if="filtered.length === 0"
-                        class="card"
-                        style="padding: 60px 24px; text-align: center; color: var(--ink-3)"
+                        class="card py-[60px] px-[24px] text-center text-ink-3"
                     >
                         <Icon name="filter" :size="28" color="var(--ink-4)" />
-                        <div style="margin-top: 12px; font-size: 14px">לא נמצאו מוצרים לפי הסינון</div>
-                        <button class="btn btn--ghost btn--sm" style="margin-top: 16px" @click="clearAll">
+                        <div class="mt-[12px] text-[14px]">לא נמצאו מוצרים לפי הסינון</div>
+                        <button class="btn btn--ghost btn--sm mt-[16px]" @click="clearAll">
                             נקה סינון
                         </button>
                     </div>
-                    <div v-else style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px">
+                    <div v-else class="grid grid-cols-3 gap-[16px]">
                         <ProductCard
                             v-for="p in sorted"
                             :key="p.id"

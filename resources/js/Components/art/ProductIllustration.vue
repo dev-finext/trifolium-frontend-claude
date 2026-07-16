@@ -40,7 +40,7 @@ const CAPSULES = [
 </script>
 
 <template>
-    <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block">
+    <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" class="block w-full h-full">
         <defs>
             <linearGradient :id="gradId" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" :stop-color="palette.light" />

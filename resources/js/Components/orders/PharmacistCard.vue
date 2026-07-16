@@ -6,18 +6,14 @@ import SideCard from '@/Components/orders/SideCard.vue';
 
 <template>
     <SideCard title="רוקח אחראי">
-        <div style="display: flex; align-items: center; gap: 12px">
+        <div class="flex items-center gap-[12px]">
             <span
-                :style="{
-                    width: '38px', height: '38px', borderRadius: '50%',
-                    background: 'var(--surface-sunk)', color: 'var(--accent)',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }"
+                class="inline-flex items-center justify-center w-[38px] h-[38px] shrink-0 bg-surface-sunk text-accent rounded-full"
             >
                 <Icon name="user" :size="18" />
             </span>
             <div>
-                <div style="font-size: 14px; font-weight: 600">ד״ר נעמי שגב</div>
+                <div class="text-[14px] font-semibold">ד״ר נעמי שגב</div>
                 <div class="small muted">רוקחת אחראית · בית מרקחת Trifolium</div>
             </div>
         </div>

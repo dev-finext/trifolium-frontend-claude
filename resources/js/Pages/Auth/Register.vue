@@ -133,34 +133,28 @@ function selectRole(v) { role.value = v; err.value = {}; }
 
 // Current step number (1-based) for the progress bar.
 const currentStep = computed(() => SECTIONS.findIndex(s => s.id === active.value) + 1);
-
-const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px 22px' };
 </script>
 
 <template>
     <Head title="רישום למערכת" />
-    <div class="reg-scope" data-screen-label="A2 רישום למערכת" :style="{ minHeight: '100vh', background: 'var(--bg)' }">
+    <div class="reg-scope min-h-screen bg-bg" data-screen-label="A2 רישום למערכת">
         <!-- Header -->
-        <header :style="{ background: 'var(--surface)', borderBottom: '1px solid var(--line)' }">
-            <div :style="{ maxWidth: '760px', margin: '0 auto', padding: '22px 24px 26px' }">
-                <div :style="{ display: 'flex', justifyContent: 'center', marginBottom: '18px' }">
+        <header class="bg-surface border-b border-line">
+            <div class="max-w-[760px] my-0 mx-auto pt-[22px] px-[24px] pb-[26px]">
+                <div class="flex justify-center mb-[18px]">
                     <Brandmark tone="dark" :height="52" />
                 </div>
-                <div :style="{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px' }">
+                <div class="flex items-start justify-between gap-[20px]">
                     <div>
-                        <h1 :style="{ margin: 0, fontSize: '24px', fontWeight: 600, letterSpacing: '-0.01em' }">
+                        <h1 class="m-0 text-[24px] font-semibold tracking-[-0.01em]">
                             מערכת טריפוליום – רישום למערכת הרוקחית
                         </h1>
-                        <p class="page-sub" style="margin: 6px 0 0">
+                        <p class="page-sub mt-[6px] mx-0 mb-0">
                             אנא הזינו את פרטיכם וניצור עמכם קשר בהקדם
                         </p>
                     </div>
                     <span
-                        :style="{
-                            width: '46px', height: '46px', borderRadius: '50%', flexShrink: 0,
-                            background: 'var(--accent-tint)', border: '1px solid var(--line)',
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        }"
+                        class="inline-flex items-center justify-center w-[46px] h-[46px] shrink-0 bg-accent-tint border border-line rounded-[50%]"
                     ><Icon name="user" :size="22" color="var(--accent)" /></span>
                 </div>
             </div>
@@ -168,11 +162,11 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
 
         <RegStepIndicator :sections="SECTIONS" :current="currentStep" :done="done" @jump="reopen" />
 
-        <main :style="{ maxWidth: '760px', margin: '0 auto', padding: '36px 24px 96px' }">
-            <div ref="stepRef" :style="{ display: 'flex', flexDirection: 'column', gap: '26px' }">
+        <main class="max-w-[760px] my-0 mx-auto pt-[36px] px-[24px] pb-[96px]">
+            <div ref="stepRef" class="flex flex-col gap-[26px]">
                 <!-- ----- ACTIVE STEP ----- -->
-                <div v-if="active === 'personal'" :style="{ display: 'flex', flexDirection: 'column', gap: '24px' }">
-                    <div :style="gridStyle">
+                <div v-if="active === 'personal'" class="flex flex-col gap-[24px]">
+                    <div class="grid grid-cols-[repeat(3,1fr)] gap-y-[20px] gap-x-[22px]">
                         <AuthInput label="שם פרטי" icon="user" required auto-complete="given-name" enterkeyhint="next" :model-value="p.first" :error="err.first || ''" @update:model-value="(v) => { p.first = v; clr('first'); }" />
                         <AuthInput label="שם משפחה" icon="user" required auto-complete="family-name" enterkeyhint="next" :model-value="p.last" :error="err.last || ''" @update:model-value="(v) => { p.last = v; clr('last'); }" />
                         <AuthInput label="תאריך לידה" icon="calendar" type="date" dir="ltr" required auto-complete="bday" :min="DOB_MIN" :max="today" :model-value="p.dob" :error="err.dob || ''" @update:model-value="(v) => { p.dob = v; clr('dob'); }" />
@@ -180,13 +174,13 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                         <AuthInput label="כתובת דוא״ל" icon="mail" type="email" required placeholder="name@example.com" auto-complete="email" enterkeyhint="next" :model-value="p.email" :error="err.email || ''" @update:model-value="(v) => { p.email = v; clr('email'); }" />
                         <AuthInput label="טלפון" icon="phone" numeric required placeholder="050-0000000" input-mode="tel" auto-complete="tel" enterkeyhint="next" :model-value="p.phone" :error="err.phone || ''" @update:model-value="(v) => { p.phone = v; clr('phone'); }" />
                     </div>
-                    <div :style="{ display: 'flex', justifyContent: 'flex-start' }">
-                        <button class="btn btn--primary" style="min-width: 140px" @click="advance('personal', 'address')">המשך</button>
+                    <div class="flex justify-start">
+                        <button class="btn btn--primary min-w-[140px]" @click="advance('personal', 'address')">המשך</button>
                     </div>
                 </div>
 
-                <div v-else-if="active === 'address'" :style="{ display: 'flex', flexDirection: 'column', gap: '24px' }">
-                    <div :style="gridStyle">
+                <div v-else-if="active === 'address'" class="flex flex-col gap-[24px]">
+                    <div class="grid grid-cols-[repeat(3,1fr)] gap-y-[20px] gap-x-[22px]">
                         <!-- selects show a visible required * in the label (AuthSelect
                              is a shared component outside this task's scope, so it can't
                              carry aria-required). -->
@@ -197,16 +191,16 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                         <AuthInput v-model="a.floor" label="קומה" numeric input-mode="numeric" enterkeyhint="next" />
                         <AuthInput v-model="a.entrance" label="כניסה" enterkeyhint="next" />
                     </div>
-                    <div :style="{ display: 'flex', justifyContent: 'flex-start' }">
-                        <button class="btn btn--primary" style="min-width: 140px" @click="advance('address', 'professional')">המשך</button>
+                    <div class="flex justify-start">
+                        <button class="btn btn--primary min-w-[140px]" @click="advance('address', 'professional')">המשך</button>
                     </div>
                 </div>
 
-                <div v-else-if="active === 'professional'" :style="{ display: 'flex', flexDirection: 'column', gap: '24px' }">
+                <div v-else-if="active === 'professional'" class="flex flex-col gap-[24px]">
                     <!-- role -->
                     <div>
-                        <label class="field-label" style="margin-bottom: 10px">
-                            אני:<span aria-hidden="true" :style="{ color: 'var(--danger)', marginInlineStart: '2px' }">*</span>
+                        <label class="field-label mb-[10px]">
+                            אני:<span aria-hidden="true" class="text-danger ms-[2px]">*</span>
                         </label>
                         <RoleRadio
                             :model-value="role"
@@ -216,8 +210,8 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                         <ErrMsg v-if="err.role" role="alert">{{ err.role }}</ErrMsg>
                     </div>
 
-                    <div v-if="role === 'student'" :style="{ display: 'flex', flexDirection: 'column', gap: '24px' }">
-                        <div :style="gridStyle">
+                    <div v-if="role === 'student'" class="flex flex-col gap-[24px]">
+                        <div class="grid grid-cols-[repeat(3,1fr)] gap-y-[20px] gap-x-[22px]">
                             <AuthInput label="שם המכללה" required enterkeyhint="next" :model-value="stu.college" :error="err.college || ''" @update:model-value="(v) => { stu.college = v; clr('college'); }" />
                             <AuthInput v-model="stu.teacher" label="שם המורה" enterkeyhint="next" />
                             <AuthInput v-model="stu.head" label="שם מנהל/ת המגמה" enterkeyhint="next" />
@@ -230,8 +224,8 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                         </CheckRow>
                     </div>
 
-                    <div v-if="role === 'therapist'" :style="{ display: 'flex', flexDirection: 'column', gap: '24px' }">
-                        <div :style="gridStyle">
+                    <div v-if="role === 'therapist'" class="flex flex-col gap-[24px]">
+                        <div class="grid grid-cols-[repeat(3,1fr)] gap-y-[20px] gap-x-[22px]">
                             <AuthInput label="שנת סיום הלימודים" numeric required placeholder="2026" input-mode="numeric" enterkeyhint="next" :max-length="4" :model-value="th.gradYear" :error="err.gradYear || ''" @update:model-value="(v) => { th.gradYear = onlyDigits(v); clr('gradYear'); }" />
                             <AuthSelect label="סוג טיפול *" :options="TF_TREATMENTS" placeholder="בחר/י סוג טיפול" :model-value="th.treatment" :error="err.treatment || ''" @update:model-value="(v) => { th.treatment = v; clr('treatment'); }" />
                             <AuthSelect label="תחום התמחות *" :options="TF_SPECIALTIES" placeholder="בחר תחום" :model-value="th.specialty" :error="err.specialty || ''" @update:model-value="(v) => { th.specialty = v; clr('specialty'); }" />
@@ -245,14 +239,9 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
 
                         <div
                             v-if="th.listed"
-                            :style="{
-                                display: 'flex', flexDirection: 'column', gap: '20px',
-                                padding: '22px', borderRadius: 'var(--r-card)',
-                                border: '1px solid var(--line)', borderInlineStart: '3px solid var(--accent)',
-                                background: 'var(--accent-tint)',
-                            }"
+                            class="flex flex-col gap-[20px] p-[22px] bg-accent-tint border border-line [border-inline-start:3px_solid_var(--accent)] rounded-card"
                         >
-                            <p :style="{ margin: 0, fontSize: '13px', lineHeight: 1.75, color: 'var(--ink-2)', textWrap: 'pretty' }">
+                            <p class="m-0 text-[13px] leading-[1.75] text-ink-2 text-pretty">
                                 בית מרקחת טריפוליום שומר את הנתונים ויעלה אותם לאתר ע״פ שיקול דעת ותזמון מתאים ובהתאם להיקף הפעילות שלך אצלנו. בית המרקחת לא לוקח אחריות על אופן הטיפול בקליניקה הפרטית שלך.
                             </p>
                             <AuthInput label="שם הקליניקה" icon="home" required enterkeyhint="next" :model-value="th.clinicName" :error="err.clinicName || ''" @update:model-value="(v) => { th.clinicName = v; clr('clinicName'); }" />
@@ -261,11 +250,10 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                                 <textarea
                                     id="reg-clinic-desc"
                                     v-model="th.clinicDesc"
-                                    class="input" :rows="4" :maxlength="CLINIC_DESC_MAX"
-                                    :style="{ height: 'auto', padding: '12px 14px', resize: 'vertical', lineHeight: 1.6 }"
+                                    class="input h-auto py-[12px] px-[14px] resize-y leading-[1.6]" :rows="4" :maxlength="CLINIC_DESC_MAX"
                                 />
                                 <!-- F9 — live character counter -->
-                                <div :style="{ marginTop: '4px', fontSize: '12px', color: 'var(--ink-4)', textAlign: 'start' }" aria-live="polite">
+                                <div class="mt-[4px] text-[12px] text-ink-4 text-start" aria-live="polite">
                                     {{ th.clinicDesc.length }}/{{ CLINIC_DESC_MAX }}
                                 </div>
                             </div>
@@ -273,9 +261,9 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
                         </div>
                     </div>
 
-                    <div :style="{ display: 'flex', justifyContent: 'flex-start' }">
+                    <div class="flex justify-start">
                         <button
-                            class="btn btn--primary" style="min-width: 160px"
+                            class="btn btn--primary min-w-[160px]"
                             @click="advance('professional', null)"
                         >שלח לאישור</button>
                     </div>
@@ -283,8 +271,8 @@ const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap:
             </div>
 
             <!-- back to login -->
-            <div style="margin-top: 36px; text-align: center">
-                <a :style="{ fontSize: '13.5px', color: 'var(--ink-3)', cursor: 'pointer' }" @click="visit('login')">
+            <div class="mt-[36px] text-center">
+                <a class="text-[13.5px] text-ink-3 cursor-pointer" @click="visit('login')">
                     כבר רשומים? חזרה לכניסה
                 </a>
             </div>

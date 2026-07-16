@@ -4,12 +4,7 @@ import Icon from '@/Components/ui/Icon.vue';
 </script>
 
 <template>
-    <div
-        :style="{
-            display: 'flex', alignItems: 'center', gap: '5px', marginTop: '6px',
-            fontSize: '12px', color: 'var(--danger)', fontWeight: 500,
-        }"
-    >
+    <div class="flex items-center gap-[5px] mt-[6px] text-[12px] font-medium text-danger">
         <Icon name="alert" :size="13" color="var(--danger)" :stroke="1.8" />
         <slot />
     </div>

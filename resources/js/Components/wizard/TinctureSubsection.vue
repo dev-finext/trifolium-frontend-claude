@@ -21,77 +21,45 @@ function toggle() {
 
 <template>
     <div
-        :style="{
-            marginTop: '16px',
-            padding: on ? '18px' : '8px 14px',
-            background: 'var(--surface-sunk)',
-            border: '1px solid var(--line)',
-            borderRadius: 'var(--r-card)',
-            transition: 'padding .12s ease',
-        }"
+        class="mt-[16px] bg-surface-sunk border border-line rounded-card transition-[padding] duration-[.12s] ease-[ease]"
+        :class="on ? 'p-[18px]' : 'px-[14px] py-[8px]'"
     >
         <!-- The opt-in question — a single checkbox row, defaults to off -->
         <label
-            style="display: flex; align-items: center; gap: 12px; padding: 4px 0; cursor: pointer"
+            class="flex items-center gap-[12px] px-0 py-[4px] cursor-pointer"
             @click.prevent="toggle"
         >
             <span
-                :style="{
-                    width: on ? '20px' : '18px', height: on ? '20px' : '18px',
-                    borderRadius: '5px',
-                    flexShrink: 0,
-                    border: '2px solid ' + (on ? 'var(--accent)' : 'var(--line-strong)'),
-                    background: on ? 'var(--accent)' : '#fff',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'background-color .12s ease, border-color .12s ease',
-                }"
+                class="inline-flex items-center justify-center shrink-0 border-2 rounded-[5px] transition-[background-color,border-color] duration-[.12s] ease-[ease]"
+                :class="on ? 'w-[20px] h-[20px] border-accent bg-accent' : 'w-[18px] h-[18px] border-line-strong bg-white'"
             >
                 <Icon v-if="on" name="check" :size="13" color="#fff" :stroke="3" />
             </span>
-            <span style="flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap">
-                <span :style="{ fontSize: on ? '14px' : '13px', fontWeight: 600, color: on ? 'var(--accent-ink)' : 'var(--ink)' }">האם לנדף את הטינקטורה?</span>
-                <span :style="{ fontSize: on ? '12px' : '11.5px', color: 'var(--ink-3)' }">{{ on ? 'ברירת מחדל: ללא נידוף — תמצית באלכוהול בלבד.' : 'ללא נידוף (ברירת מחדל)' }}</span>
+            <span class="flex flex-1 min-w-0 items-baseline flex-wrap gap-[8px]">
+                <span class="font-semibold" :class="on ? 'text-[14px] text-accent-ink' : 'text-[13px] text-ink'">האם לנדף את הטינקטורה?</span>
+                <span class="text-ink-3" :class="on ? 'text-[12px]' : 'text-[11.5px]'">{{ on ? 'ברירת מחדל: ללא נידוף — תמצית באלכוהול בלבד.' : 'ללא נידוף (ברירת מחדל)' }}</span>
             </span>
         </label>
 
-        <div v-if="on" style="margin-top: 16px">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 4px">
+        <div v-if="on" class="mt-[16px]">
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[10px] mt-[4px]">
                 <label
                     v-for="opt in CARRIER_OPTIONS" :key="opt.id"
-                    :style="{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '10px',
-                        padding: '12px 14px',
-                        border: '1px solid ' + ((formula.evaporation || 'none') === opt.id ? 'var(--accent)' : 'var(--line)'),
-                        background: (formula.evaporation || 'none') === opt.id ? 'var(--accent-tint)' : '#fff',
-                        borderRadius: 'var(--r-control)',
-                        cursor: 'pointer',
-                        boxShadow: (formula.evaporation || 'none') === opt.id ? 'inset 0 0 0 1px var(--accent)' : 'none',
-                        transition: 'background-color .12s ease, border-color .12s ease',
-                    }"
+                    class="flex items-start gap-[10px] px-[14px] py-[12px] border rounded-control cursor-pointer transition-[background-color,border-color] duration-[.12s] ease-[ease]"
+                    :class="(formula.evaporation || 'none') === opt.id
+                        ? 'border-accent bg-accent-tint shadow-[inset_0_0_0_1px_var(--accent)]'
+                        : 'border-line bg-white shadow-none'"
                     @click="setF({ evaporation: opt.id })"
                 >
                     <span
-                        :style="{
-                            width: '18px', height: '18px',
-                            borderRadius: '50%',
-                            border: '2px solid ' + ((formula.evaporation || 'none') === opt.id ? 'var(--accent)' : 'var(--line-strong)'),
-                            background: 'var(--surface)',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0,
-                            marginTop: '2px',
-                        }"
+                        class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 mt-[2px] bg-surface border-2 rounded-full"
+                        :class="(formula.evaporation || 'none') === opt.id ? 'border-accent' : 'border-line-strong'"
                     >
-                        <span v-if="(formula.evaporation || 'none') === opt.id" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent)" />
+                        <span v-if="(formula.evaporation || 'none') === opt.id" class="w-[8px] h-[8px] rounded-full bg-accent" />
                     </span>
-                    <div style="flex: 1; min-width: 0">
-                        <div :style="{ fontSize: '13.5px', fontWeight: (formula.evaporation || 'none') === opt.id ? 700 : 600, color: (formula.evaporation || 'none') === opt.id ? 'var(--accent-ink)' : 'var(--ink)', lineHeight: 1.35 }">{{ opt.label }}</div>
-                        <div style="font-size: 11.5px; color: var(--ink-3); margin-top: 2px; line-height: 1.4">{{ opt.hint }}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-[13.5px] leading-[1.35]" :class="(formula.evaporation || 'none') === opt.id ? 'font-bold text-accent-ink' : 'font-semibold text-ink'">{{ opt.label }}</div>
+                        <div class="mt-[2px] text-[11.5px] leading-[1.4] text-ink-3">{{ opt.hint }}</div>
                     </div>
                 </label>
             </div>

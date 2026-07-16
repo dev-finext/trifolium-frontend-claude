@@ -21,19 +21,17 @@ const STAGES = [
 </script>
 
 <template>
-    <div class="card" :style="{ padding: '28px 28px 24px', opacity: cancelled ? 0.55 : 1 }">
-        <div style="display: flex; align-items: flex-start">
+    <div class="card pt-[28px] px-[28px] pb-[24px]" :class="cancelled ? 'opacity-55' : 'opacity-100'">
+        <div class="flex items-start">
             <template v-for="(s, i) in STAGES" :key="s.key">
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; flex-shrink: 0; width: 96px">
+                <div class="flex flex-col items-center gap-[10px] min-w-0 shrink-0 w-[96px]">
                     <div
-                        :style="{
-                            width: '44px', height: '44px', borderRadius: '50%',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            background: i < activeIndex ? 'var(--accent)' : i === activeIndex ? 'var(--accent-tint)' : 'var(--surface-sunk)',
-                            border: '1.5px solid ' + (i <= activeIndex ? 'var(--accent)' : 'var(--line-strong)'),
-                            color: i < activeIndex ? '#fff' : i === activeIndex ? 'var(--accent)' : 'var(--ink-4)',
-                            position: 'relative',
-                        }"
+                        class="relative flex items-center justify-center w-[44px] h-[44px] border-[1.5px] rounded-full"
+                        :class="[
+                            i < activeIndex ? 'bg-accent' : i === activeIndex ? 'bg-accent-tint' : 'bg-surface-sunk',
+                            i <= activeIndex ? 'border-accent' : 'border-line-strong',
+                            i < activeIndex ? 'text-white' : i === activeIndex ? 'text-accent' : 'text-ink-4',
+                        ]"
                     >
                         <Icon
                             :name="i < activeIndex ? 'check' : s.icon"
@@ -43,50 +41,37 @@ const STAGES = [
                         />
                         <span
                             v-if="i === activeIndex"
-                            :style="{
-                                position: 'absolute', inset: '-5px', borderRadius: '50%',
-                                border: '1.5px solid var(--accent)', opacity: 0.35,
-                            }"
+                            class="absolute inset-[-5px] border-[1.5px] border-accent rounded-full opacity-35"
                         />
                     </div>
-                    <div style="text-align: center">
+                    <div class="text-center">
                         <div
-                            :style="{
-                                fontSize: '13px', fontWeight: i <= activeIndex ? 600 : 500,
-                                color: i === activeIndex ? 'var(--accent)' : i < activeIndex ? 'var(--ink-2)' : 'var(--ink-4)',
-                            }"
+                            class="text-[13px]"
+                            :class="[
+                                i <= activeIndex ? 'font-semibold' : 'font-medium',
+                                i === activeIndex ? 'text-accent' : i < activeIndex ? 'text-ink-2' : 'text-ink-4',
+                            ]"
                         >{{ s.label }}</div>
-                        <div class="small" style="color: var(--ink-4); margin-top: 2px; line-height: 1.4">{{ s.sub }}</div>
+                        <div class="small mt-[2px] leading-[1.4] text-ink-4">{{ s.sub }}</div>
                     </div>
                 </div>
                 <div
                     v-if="i !== STAGES.length - 1"
-                    :style="{
-                        flex: 1, height: '2px', marginTop: '21px',
-                        background: i < activeIndex ? 'var(--accent)' : 'var(--line)',
-                        borderRadius: '2px',
-                    }"
+                    class="flex-1 h-[2px] mt-[21px] rounded-[2px]"
+                    :class="i < activeIndex ? 'bg-accent' : 'bg-(--line)'"
                 />
             </template>
         </div>
         <div
             v-if="cancelled"
-            :style="{
-                marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--line)',
-                display: 'flex', alignItems: 'center', gap: '10px',
-                fontSize: '13px', color: '#a23a2d', fontWeight: 500,
-            }"
+            class="flex items-center gap-[10px] mt-[22px] pt-[18px] text-[13px] font-medium text-[#a23a2d] border-t border-t-line"
         >
             <Icon name="info" :size="16" color="#a23a2d" />
             הזמנה זו בוטלה. לא בוצעה רקיחה ולא חויב תשלום.
         </div>
         <div
             v-else-if="route === 'patient'"
-            :style="{
-                marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--line)',
-                display: 'flex', alignItems: 'center', gap: '10px',
-                fontSize: '13px', color: 'var(--ink-2)',
-            }"
+            class="flex items-center gap-[10px] mt-[22px] pt-[18px] text-[13px] text-ink-2 border-t border-t-line"
         >
             <Icon name="info" :size="16" color="var(--warning)" />
             קישור תשלום נשלח לוואטסאפ של המטופל. ההזמנה תקודם למעבדה אוטומטית עם אישור התשלום.

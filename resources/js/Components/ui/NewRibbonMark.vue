@@ -11,12 +11,7 @@ defineProps({
 <template>
     <span
         aria-label="פיצ'ר חדש"
-        :style="{
-            position: 'absolute', top: `${top}px`, left: `${left}px`, zIndex: 6,
-            transform: 'rotate(-45deg)', transformOrigin: 'center',
-            background: 'var(--accent)', color: 'var(--on-accent)', fontFamily: 'var(--font-heb)',
-            fontSize: '10px', fontWeight: 800, letterSpacing: '0.06em', lineHeight: 1,
-            padding: '3px 34px', pointerEvents: 'none',
-        }"
+        class="absolute z-[6] origin-center [transform:rotate(-45deg)] py-[3px] px-[34px] font-heb text-[10px] font-extrabold tracking-[0.06em] leading-[1] text-on-accent bg-accent pointer-events-none"
+        :style="{ top: `${top}px`, left: `${left}px` }"
     >חדש</span>
 </template>

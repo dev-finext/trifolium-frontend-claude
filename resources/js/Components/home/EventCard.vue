@@ -12,78 +12,29 @@ const hover = ref(false);
 
 <template>
     <div
-        :style="{
-            background: 'var(--surface)',
-            border: '1px solid ' + (hover ? 'var(--ink-2)' : 'var(--line)'),
-            borderRadius: 'var(--r-card)',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            cursor: 'pointer',
-            transform: hover ? 'translateY(-3px)' : 'none',
-            boxShadow: hover ? '0 8px 24px -8px rgba(31, 46, 29, 0.18)' : 'none',
-            transition: 'transform .25s ease, box-shadow .25s ease, border-color .15s ease',
-        }"
+        class="flex flex-col overflow-hidden cursor-pointer bg-surface border rounded-card [transition:transform_.25s_ease,box-shadow_.25s_ease,border-color_.15s_ease]"
+        :class="[
+            hover ? 'border-ink-2' : 'border-line',
+            hover ? '[transform:translateY(-3px)] shadow-[0_8px_24px_-8px_rgba(31,46,29,0.18)]' : '[transform:none] shadow-none',
+        ]"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
         <!-- Image — always in full color -->
-        <div style="height: 160px; position: relative; border-bottom: 1px solid var(--line); overflow: hidden">
+        <div class="relative h-[160px] overflow-hidden border-b border-b-line">
             <ItemCover kind="event" :item="event" />
         </div>
 
-        <div style="padding: 16px; flex: 1; display: flex; flex-direction: column">
-            <div
-                :style="{
-                    fontSize: '11px',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: 'var(--accent)',
-                    fontWeight: 600,
-                    marginBottom: '10px',
-                }"
-            >{{ event.cat }}</div>
+        <div class="flex flex-col flex-1 p-[16px]">
+            <div class="mb-[10px] text-[11px] font-semibold tracking-[0.12em] uppercase text-accent">{{ event.cat }}</div>
 
-            <div
-                :style="{
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    lineHeight: 1.35,
-                    color: 'var(--ink)',
-                    marginBottom: '8px',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                }"
-            >{{ event.title }}</div>
+            <div class="mb-[8px] text-[15px] font-bold leading-[1.35] text-ink line-clamp-2">{{ event.title }}</div>
 
-            <div
-                :style="{
-                    fontSize: '13px',
-                    fontWeight: 300,
-                    lineHeight: 1.5,
-                    color: 'var(--ink-2)',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    marginBottom: '14px',
-                    flex: 1,
-                }"
-            >{{ event.desc }}</div>
+            <div class="flex-1 mb-[14px] text-[13px] font-light leading-[1.5] text-ink-2 line-clamp-2">{{ event.desc }}</div>
 
-            <div
-                :style="{
-                    paddingTop: '12px',
-                    borderTop: '1px solid var(--line)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }"
-            >
+            <div class="flex justify-between items-center pt-[12px] border-t border-t-line">
                 <span class="small num muted">{{ event.date }}</span>
-                <span style="font-size: 12px; color: var(--accent); font-weight: 500">
+                <span class="text-[12px] font-medium text-accent">
                     לקריאה ←
                 </span>
             </div>

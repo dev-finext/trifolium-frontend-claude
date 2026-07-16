@@ -27,49 +27,28 @@ function view() {
     <div role="status" aria-live="polite" aria-atomic="true">
     <div
         v-if="cart.state.toast"
-        :style="{
-            position: 'fixed', bottom: '28px', left: '50%', transform: 'translateX(-50%)',
-            zIndex: 300, display: 'flex', alignItems: 'center', gap: '14px',
-            background: 'var(--inverse-surface)', color: '#fff',
-            padding: '12px 14px 12px 18px', borderRadius: '10px',
-            boxShadow: '0 12px 32px rgba(20,28,24,0.32)',
-            animation: 'tf-toast-in .22s ease',
-            maxWidth: 'min(92vw, 460px)',
-        }"
+        class="fixed bottom-[28px] left-[50%] [transform:translateX(-50%)] z-[300] flex items-center gap-[14px] max-w-[min(92vw,460px)] py-[12px] pr-[14px] pl-[18px] text-[#fff] bg-inverse-surface rounded-[10px] shadow-[0_12px_32px_rgba(20,28,24,0.32)] animate-[tf-toast-in_.22s_ease]"
     >
         <span
-            :style="{
-                width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
-                background: 'rgba(255,255,255,0.16)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 bg-[rgba(255,255,255,0.16)] rounded-full"
         >
             <Icon name="check" :size="16" color="#fff" :stroke="2.4" />
         </span>
-        <div style="min-width: 0">
-            <div style="font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+        <div class="min-w-0">
+            <div class="whitespace-nowrap overflow-hidden text-ellipsis text-[13.5px] font-semibold">
                 {{ cart.state.toast.title }}
             </div>
-            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+            <div class="whitespace-nowrap overflow-hidden text-ellipsis text-[12px] text-[rgba(255,255,255,0.72)]">
                 {{ cart.state.toast.name }}
             </div>
         </div>
         <button
-            :style="{
-                flexShrink: 0, marginInlineStart: '4px',
-                background: 'var(--accent)', color: 'var(--on-accent)', border: 'none',
-                padding: '7px 14px', borderRadius: '7px', fontSize: '13px', fontWeight: 600,
-                cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
-            }"
+            class="shrink-0 ms-[4px] py-[7px] px-[14px] [font-family:inherit] text-[13px] font-semibold whitespace-nowrap text-on-accent bg-accent border-none rounded-[7px] cursor-pointer"
             @click="view"
         >{{ cart.state.toast.actionLabel || 'צפה בסל' }}</button>
         <button
             aria-label="סגור"
-            :style="{
-                flexShrink: 0, background: 'transparent', border: 'none',
-                color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: '4px',
-                display: 'inline-flex',
-            }"
+            class="inline-flex shrink-0 p-[4px] text-[rgba(255,255,255,0.6)] bg-transparent border-none cursor-pointer"
             @click="cart.dismissToast()"
         ><Icon name="x" :size="15" color="rgba(255,255,255,0.6)" /></button>
     </div>

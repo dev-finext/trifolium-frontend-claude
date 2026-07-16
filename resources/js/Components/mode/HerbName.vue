@@ -60,7 +60,7 @@ const secondaryStyle = computed(() => ({
 <template>
     <span
         v-if="inline"
-        style="display: inline-flex; align-items: baseline; gap: 8px; flex-wrap: wrap"
+        class="inline-flex items-baseline gap-[8px] flex-wrap"
     >
         <span :style="primaryStyle">{{ primary }}</span>
         <span v-if="!hideSecondary" :style="secondaryStyle">{{ secondary }}</span>
@@ -68,6 +68,6 @@ const secondaryStyle = computed(() => ({
     <template v-else>
         <!-- Block variant pins the primary to Inter 600/15px (design decision from the handoff). -->
         <div :style="{ ...primaryStyle, fontFamily: 'Inter', fontWeight: '600', fontSize: '15px' }">{{ primary }}</div>
-        <div v-if="!hideSecondary" :style="{ ...secondaryStyle, marginTop: '1px' }">{{ secondary }}</div>
+        <div v-if="!hideSecondary" class="mt-[1px]" :style="secondaryStyle">{{ secondary }}</div>
     </template>
 </template>

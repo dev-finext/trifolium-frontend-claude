@@ -53,8 +53,7 @@ const ftype = computed(() => FORMULA_TYPES.find((t) => t.id === props.formula.ty
     align-items: stretch;
     gap: 16px;
     padding: 16px 18px;
-    border-top: 3px solid var(--sf-blue);
-    transition: border-color .15s ease, box-shadow .15s ease;
+    transition: box-shadow .15s ease;
 }
 .sf-card:hover,
 .sf-card:focus-within { box-shadow: 0 10px 28px rgba(20, 28, 24, 0.08); }
@@ -98,12 +97,9 @@ const ftype = computed(() => FORMULA_TYPES.find((t) => t.id === props.formula.ty
     border-inline-start: 1px solid var(--line);
     padding-inline-start: 14px;
 }
-.sf-card__load {
-    width: 100%;
-    background: var(--sf-blue);
-    border-color: var(--sf-blue);
-    color: #fff;
-}
+/* The load button keeps the standard .btn surface look — the blue accent
+   lives in the emblem and type chip, not the action. */
+.sf-card__load { width: 100%; }
 .sf-card__load:hover { filter: brightness(0.94); }
 
 html.tf-mobile .sf-card { flex-wrap: wrap; }

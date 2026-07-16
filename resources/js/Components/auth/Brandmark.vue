@@ -10,14 +10,12 @@ defineProps({
 </script>
 
 <template>
+    <!-- The official lockup is ~4:1 — never overflow a narrow card (max-w-full). -->
     <img
         :src="logoUrl"
         alt="Trifolium"
-        :style="{
-            height: `${height}px`, width: 'auto', display: 'block',
-            // The official lockup is ~4:1 — never overflow a narrow card.
-            maxWidth: '100%', objectFit: 'contain',
-            filter: tone === 'light' ? 'brightness(0) invert(1)' : 'none',
-        }"
+        class="block w-auto max-w-full object-contain"
+        :class="tone === 'light' ? '[filter:brightness(0)_invert(1)]' : '[filter:none]'"
+        :style="{ height: `${height}px` }"
     />
 </template>

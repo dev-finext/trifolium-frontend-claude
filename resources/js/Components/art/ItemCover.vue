@@ -27,7 +27,7 @@ const uid = computed(() => `cv-${id.value || def.value.m}`);
 </script>
 
 <template>
-    <svg viewBox="0 0 320 192" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block">
+    <svg viewBox="0 0 320 192" preserveAspectRatio="xMidYMid slice" class="block w-full h-full">
         <defs>
             <linearGradient :id="`${uid}-bg`" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" :stop-color="p.bg1" />

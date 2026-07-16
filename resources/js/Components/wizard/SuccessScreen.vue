@@ -28,32 +28,32 @@ function goHome() {
 </script>
 
 <template>
-    <div class="card" style="padding: 64px 32px; text-align: center">
+    <div class="card py-[64px] px-[32px] text-center">
         <div
-            style="width: 80px; height: 80px; border-radius: 50%; background: var(--accent-tint-strong); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px"
+            class="inline-flex items-center justify-center w-[80px] h-[80px] mb-[20px] text-accent bg-accent-tint-strong rounded-[50%]"
         >
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 6L9 17l-5-5" />
             </svg>
         </div>
 
-        <h2 style="font-size: 24px; font-weight: 600; margin: 0 0 8px">
+        <h2 class="m-0 mb-[8px] text-[24px] font-semibold">
             {{ noPatient ? 'הפורמולה נשמרה בהצלחה' : 'ההזמנה נשלחה בהצלחה' }}
         </h2>
 
-        <p class="muted" style="margin: 0; font-size: 14px; max-width: 480px; margin-inline: auto">
+        <p class="muted m-0 mx-auto max-w-[480px] text-[14px]">
             <template v-if="noPatient">
-                הפורמולה <strong style="color: var(--ink-2)">{{ formulaName || 'ללא שם' }}</strong> נשמרה בטיוטות שלך. ניתן לקשר אותה למטופל ולהפוך אותה להזמנה בכל רגע.
+                הפורמולה <strong class="text-ink-2">{{ formulaName || 'ללא שם' }}</strong> נשמרה בטיוטות שלך. ניתן לקשר אותה למטופל ולהפוך אותה להזמנה בכל רגע.
             </template>
             <template v-else>
-                הפורמולה עבור <strong style="color: var(--ink-2)">{{ patientLabel }}</strong> נוספה אל <strong style="color: var(--ink-2)">סל הקניות</strong> — ניתן להשלים את הרכישה משם בכל רגע.
+                הפורמולה עבור <strong class="text-ink-2">{{ patientLabel }}</strong> נוספה אל <strong class="text-ink-2">סל הקניות</strong> — ניתן להשלים את הרכישה משם בכל רגע.
             </template>
         </p>
 
-        <div class="mt-32" style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap">
+        <div class="mt-[32px] flex flex-wrap justify-center gap-[12px]">
             <a
                 v-if="noPatient"
-                style="font-size: 14px; color: var(--accent); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px"
+                class="inline-flex items-center gap-[6px] text-[14px] font-semibold text-accent cursor-pointer"
             >
                 קשר למטופל ושלח להזמנה
                 <Icon name="arrow_left" :size="14" />

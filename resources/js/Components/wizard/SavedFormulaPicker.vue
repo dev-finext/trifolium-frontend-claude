@@ -33,43 +33,24 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 
 <template>
     <div
-        :style="{
-            position: 'fixed', inset: 0,
-            background: 'rgba(20, 18, 14, 0.46)',
-            zIndex: 100,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-            backdropFilter: 'blur(2px)',
-        }"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-[24px] bg-[rgba(20,18,14,0.46)] backdrop-blur-[2px]"
         @click="emit('close')"
     >
         <div
-            :style="{
-                background: 'var(--surface)',
-                borderRadius: 'var(--r-card)',
-                width: 'min(880px, 100%)',
-                maxHeight: '86vh',
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 30px 80px rgba(0,0,0,0.22)',
-                overflow: 'hidden',
-            }"
+            class="flex flex-col w-[min(880px,100%)] max-h-[86vh] bg-surface rounded-card overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.22)]"
             @click.stop
         >
             <!-- Header -->
-            <div style="padding: 20px 24px 16px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 16px">
-                <div style="flex: 1">
-                    <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 4px">הפורמולות שלי</div>
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.005em">בחר פורמולה לטעינה</h3>
-                    <p class="muted" style="margin: 4px 0 0; font-size: 13px">
+            <div class="flex items-center gap-[16px] px-[24px] pt-[20px] pb-[16px] border-b border-b-line">
+                <div class="flex-1">
+                    <div class="mb-[4px] text-[11px] tracking-[0.18em] uppercase font-semibold text-accent">הפורמולות שלי</div>
+                    <h3 class="m-0 text-[18px] font-semibold tracking-[-0.005em]">בחר פורמולה לטעינה</h3>
+                    <p class="muted m-0 mt-[4px] text-[13px]">
                         התכולה תטען למעבדה — שם, סוג, נפח ורכיבים. תוכל לערוך אותה בהמשך.
                     </p>
                 </div>
                 <button
-                    class="btn--icon" aria-label="סגור"
-                    style="width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink-2); flex-shrink: 0"
+                    class="btn--icon w-[32px] h-[32px] shrink-0 text-ink-2 bg-surface border border-line rounded-full" aria-label="סגור"
                     @click="emit('close')"
                 >
                     <Icon name="x" :size="14" />
@@ -77,16 +58,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
             </div>
 
             <!-- Search -->
-            <div style="padding: 14px 24px; border-bottom: 1px solid var(--line)">
+            <div class="px-[24px] py-[14px] border-b border-b-line">
                 <SearchInput v-model="search" placeholder="חפש לפי שם פורמולה או רכיב …" />
             </div>
 
             <!-- List -->
-            <div style="flex: 1; overflow-y: auto; padding: 12px 16px">
-                <div v-if="filtered.length === 0" class="muted small" style="padding: 40px; text-align: center">
+            <div class="flex-1 overflow-y-auto px-[16px] py-[12px]">
+                <div v-if="filtered.length === 0" class="muted small p-[40px] text-center">
                     לא נמצאו תוצאות מתאימות.
                 </div>
-                <div v-else class="col gap-8">
+                <div v-else class="col gap-[8px]">
                     <SavedFormulaRow
                         v-for="f in filtered" :key="f.id"
                         :saved="f"
@@ -102,17 +83,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
             </div>
 
             <!-- Footer -->
-            <div style="padding: 14px 24px; border-top: 1px solid var(--line); background: var(--surface-sunk); display: flex; align-items: center; justify-content: space-between; gap: 14px">
+            <div class="flex items-center justify-between gap-[14px] px-[24px] py-[14px] bg-surface-sunk border-t border-t-line">
                 <div class="small muted">
-                    <template v-if="selected">נבחר: <strong style="color: var(--ink)">{{ selected.name }}</strong> · טעינתה תחליף את הפורמולה הנוכחית</template>
+                    <template v-if="selected">נבחר: <strong class="text-ink">{{ selected.name }}</strong> · טעינתה תחליף את הפורמולה הנוכחית</template>
                     <template v-else>בחר פורמולה מהרשימה מעל.</template>
                 </div>
-                <div style="display: flex; gap: 10px">
+                <div class="flex gap-[10px]">
                     <button class="btn btn--ghost" @click="emit('close')">בטל</button>
                     <button
-                        class="btn btn--primary"
+                        class="btn btn--primary px-[24px]"
+                        :class="selected ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
                         :disabled="!selected"
-                        :style="{ opacity: selected ? 1 : 0.4, cursor: selected ? 'pointer' : 'not-allowed', paddingInline: '24px' }"
                         @click="selected && emit('pick', selected)"
                     >
                         טען את הפורמולה

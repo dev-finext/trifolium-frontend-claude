@@ -1,0 +1,637 @@
+/* ═════════════════════════════════════════════════════════════
+   Trifolium — responsive tiers.
+   Mobile drawer + phone layout/app-shell/wizard (html.tf-mobile,
+   ≤760px) and tablet refinements (html.tf-tablet, 761–1080px).
+   Tier classes are set by resources/js/lib/mobile-layout.js.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE NAV DRAWER — base (hidden on desktop, shown ≤760px)
+   The four destinations + account actions live here on phones.
+   ═════════════════════════════════════════════════════════════ */
+.nav__burger { display: none; }
+.nav-drawer { display: none; }
+
+/* Formula-type picker: card grid on desktop, dropdown on phones. */
+.ftype-select-wrap { display: none; }
+.ftype-select { height: 44px; }
+
+/* Volume selector: pills on desktop, dropdown on phones. */
+.vol-select-wrap { display: none; }
+
+.nav-drawer__scrim {
+  position: absolute; inset: 0;
+  background: rgba(20, 28, 24, 0.42);
+  opacity: 0; transition: opacity .26s ease;
+}
+.nav-drawer__panel {
+  position: absolute; top: 0; bottom: 0; inset-inline-end: 0;
+  width: min(86vw, 344px);
+  background: var(--surface);
+  box-shadow: -18px 0 50px rgba(20, 28, 24, 0.22);
+  transform: translateX(110%);
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+  padding: 14px 14px 32px;
+  display: flex; flex-direction: column;
+}
+[dir="rtl"] .nav-drawer__panel { transform: translateX(-110%); }
+.nav-drawer--open .nav-drawer__scrim { opacity: 1; }
+.nav-drawer--open .nav-drawer__panel { transform: translateX(0); }
+
+.nav-drawer__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 4px 4px 14px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.nav-drawer__section {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-4); font-weight: 700;
+  padding: 14px 8px 6px;
+}
+.nav-drawer__item {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; text-align: right; flex-direction: row-reverse;
+  padding: 13px 12px; border: none; background: transparent;
+  border-radius: var(--r-card); cursor: pointer;
+  font-family: inherit; font-size: 15.5px; font-weight: 600; color: var(--ink-2);
+}
+.nav-drawer__item:active { background: var(--surface-sunk); }
+.nav-drawer__item--active { background: var(--accent-tint); color: var(--accent-ink); }
+.nav-drawer__badge {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  background: var(--accent); color: var(--on-accent);
+  padding: 2px 8px; border-radius: var(--r-pill);
+}
+.nav-drawer__count {
+  min-width: 22px; height: 22px; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent); color: var(--on-accent);
+  border-radius: var(--r-pill); font-size: 12px; font-weight: 700;
+}
+
+/* Inline "חדש" pill — hidden by default; shown only on phones, where it
+   replaces the diagonal corner ribbon (see the mobile block). Placed inline
+   beside a button's label so it never floats or collides. */
+.tf-new-badge { display: none; }
+
+/* Compact name+points identity — phones only. On desktop the full user menu
+   already carries the name and points, so this stays hidden (otherwise it
+   duplicates both in the left cluster). Shown in the mobile nav block. */
+.nav__mobile-id { display: none; }
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE LAYOUT — everything ≤760px
+   ═════════════════════════════════════════════════════════════ */
+/* ── Mobile layout ──────────────────────────────────────────────
+   Applied whenever <html> carries .tf-mobile — toggled at ≤760px by
+   resources/js/lib/mobile-layout.js. Uses CSS nesting so the entire
+   block stays scoped under the class. */
+html.tf-mobile {
+  &, body { font-size: 15px; }
+  body { padding-bottom: 64px; }
+
+  /* Prevent iOS zoom-on-focus for form fields */
+  .input, .select, textarea.input,
+  input[type="text"], input[type="number"], input[type="email"],
+  input[type="password"], input[type="tel"], select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* ---- Top bar: burger · logo · cart ---- */
+  .nav {
+    grid-template-columns: auto 1fr auto;
+    height: 56px; padding: 0 8px;
+  }
+  .nav__links { gap: 0; }
+  .nav__links > *:not(.nav__burger) { display: none !important; }
+  .nav__burger {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; padding: 0;
+    background: transparent; border: none; cursor: pointer;
+  }
+  .nav__desktop-only { display: none !important; }
+  .nav__logo { height: 38px !important; }
+
+  /* ---- Drawer becomes active ---- */
+  .nav-drawer {
+    display: block; position: fixed; inset: 0;
+    z-index: 200; pointer-events: none;
+  }
+  .nav-drawer--open { pointer-events: auto; }
+
+  /* ---- Page shell ---- */
+  .page { padding: 20px 14px 88px; }
+  .page__inner, .page__inner--wide { max-width: 100%; }
+  .page-head {
+    flex-direction: column; align-items: stretch;
+    gap: 12px; margin-bottom: 22px; padding-bottom: 16px;
+  }
+  .page-title { font-size: 22px; }
+  .section-title { margin-bottom: 12px; }
+
+  /* ---- Grid collapse hammer: stack every multi-column grid ----
+     Grids are declared via grid-cols-* utility classes, so the hammers key on
+     the class attribute (they used to key on the inline style attribute). */
+  [class*="grid-cols-"] { grid-template-columns: 1fr !important; }
+  /* Grid items default to min-width:auto and refuse to shrink below their
+     content — release them so stacked columns actually fit the phone. */
+  [class*="grid-cols-"] > * { min-width: 0; }
+  /* Fluid auto grids: keep them fluid rather than a single column */
+  [class*="auto-fit"], [class*="auto-fill"] {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+  }
+  /* Tile / KPI / card grids read better as two columns on phones */
+  [class*="repeat(3,1fr)"], [class*="repeat(4,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* ---- Auth: drop the decorative brand panel, form goes full-width ---- */
+  [class*="1.05fr_0.95fr"] > div:last-child { display: none !important; }
+  [data-screen-label^="A"] .card { box-shadow: 0 1px 2px rgba(31,46,29,0.06), 0 12px 34px rgba(20,32,18,0.16) !important; }
+
+  /* ---- Wizard step-indicator (top steps bar) is hidden on mobile ----
+     Each step carries its own back / continue buttons inline. */
+  .wizard-step-indicator { display: none !important; }
+
+  /* ---- Wizard sticky summary bar: keep Back/Next, hide the detail cells ---- */
+  .wizard-footer-summary { display: none !important; }
+  .wizard-footer-bar > div { padding: 0 12px !important; }
+
+  /* ---- Formula prep: nothing may spill off the screen ----
+     overflow-x: clip (NOT hidden) — hidden turns the ancestor into a scroll
+     container and silently breaks every position:sticky inside it (top bar,
+     wizard progress header). clip just crops. */
+  #app { overflow-x: clip; }
+  .page__inner, .page__inner--wide { overflow-x: clip; }
+  .card { max-width: 100%; }
+  /* The wizard magnifies itself 1.13× on desktop — reset on phones so the
+     compose zone never runs past the viewport edge. */
+  .formula-prep > div[class*="zoom:"] { zoom: 1 !important; }
+  .formula-prep section.card { padding: 18px 14px !important; }
+  .formula-prep .card { max-width: 100%; }
+  .formula-prep img, .formula-prep svg, .formula-prep table { max-width: 100%; }
+
+  /* ---- Selected-ingredients table: strip to essentials on phones ----
+     Too much data for a narrow screen. Drop the non-critical columns
+     (percentage + price), shrink the component name, and drop each row's
+     info chips onto their own line so they never crush the name.
+     Parts (the core control) and remove stay. Nothing spills off-screen. */
+  .sel-table .sel-col-pct, .sel-table .sel-col-price,
+  .sel-table th.sel-col-pct, .sel-table th.sel-col-price,
+  .sel-table td.sel-c-pct, .sel-table td.sel-c-price { display: none !important; }
+
+  .sel-table { table-layout: auto !important; width: 100% !important; }
+  .sel-table th, .sel-table td { padding: 10px 8px !important; }
+  .sel-table th { font-size: 11px !important; letter-spacing: 0.02em !important; }
+  .sel-table td.sel-c-num, .sel-table th.sel-col-num { padding-inline: 6px !important; font-size: 12px !important; }
+
+  /* Component name — smaller; info chips stay BESIDE the name (name shrinks
+     and wraps within its own space rather than pushing the chips away). */
+  .sel-table td.sel-c-name { padding-inline: 8px !important; }
+  .sel-name-inner { gap: 4px 6px !important; flex-wrap: nowrap !important; }
+  .sel-name-text { flex: 1 1 auto !important; min-width: 0 !important; }
+  .sel-c-name .sel-name-text > div:first-child {
+    font-size: 11px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    line-height: 1.15 !important;
+  }
+  .sel-c-name .sel-name-text > div:nth-child(2) { font-size: 9.5px !important; }
+  .sel-chips { flex: 0 0 auto; }
+  .sel-chips button { width: 22px !important; height: 22px !important; }
+
+  /* Parts stepper — shrink so the row always fits a narrow screen */
+  .sel-table td.sel-c-parts { padding: 10px 4px !important; }
+  .sel-c-parts input.no-spin { width: 34px !important; height: 34px !important; }
+  .sel-c-parts button { width: 26px !important; height: 34px !important; font-size: 16px !important; }
+
+  /* הוראות לבית המרקחת — compact card + shorter textarea */
+  .pharmacy-notes-card > div:first-child { padding: 8px 14px !important; }
+  .pharmacy-notes-card > div:first-child span { font-size: 12px !important; }
+  .pharmacy-notes-card > div:last-child { padding: 10px 14px 14px !important; }
+  .pharmacy-notes-card textarea { min-height: 60px !important; padding: 8px 12px !important; line-height: 1.45 !important; }
+
+  /* Ingredient search bar — stack the search field and the preset button,
+     both full-width, and shrink their height. */
+  .ingredient-search-row { flex-wrap: wrap !important; padding: 10px !important; gap: 8px !important; }
+  .ingredient-search-row > div:first-child { flex: 1 1 100% !important; }
+  .ingredient-search-row .ingredient-search-input { height: 44px !important; }
+  .ingredient-search-row > button {
+    flex: 1 1 100% !important;
+    height: 42px !important;
+    padding-inline: 16px !important; /* corner ribbon is gone on phones → no reserve */
+    gap: 7px !important;
+    font-size: 12.5px !important;
+  }
+
+  /* Formula-type selection becomes a dropdown; hide the desktop card grid. */
+  .ftype-grid { display: none !important; }
+  .ftype-select-wrap { display: block; margin-top: 4px; }
+  .ftype-select { height: 48px; font-size: 16px !important; }
+
+  /* Volume selection becomes a dropdown; hide the desktop pill row. */
+  .vol-pills { display: none !important; }
+  .vol-select-wrap { display: block !important; margin-top: 4px; }
+  .vol-select { height: 48px; width: 100%; font-size: 16px !important; }
+
+  /* Zone D (volume/stats bar + bottle composition + legend) is a desktop-only
+     summary — the sticky footer already carries the key figures on mobile. */
+  .zone-d { display: none !important; }
+
+  /* Daily-dose card: compact 3-across (כמות · יחידה · פעמים) with the
+     timing tags on their own full-width row, and smaller icons. */
+  .dose-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .dose-grid > div { padding: 12px 7px 14px !important; gap: 7px !important; }
+  .dose-grid > div > svg { width: 24px !important; height: 24px !important; }
+  .dose-grid > div:last-child {
+    grid-column: 1 / -1;
+    border-left: none !important;
+    border-top: 1px solid var(--line);
+    align-items: stretch !important;
+  }
+  .dose-grid > div:last-child > div:nth-child(2) { text-align: center; }
+
+  /* ---- Preset / saved-formula picker: fill the screen, single column ---- */
+  .preset-picker-overlay { padding: 8px !important; }
+  .preset-picker-modal { width: 100% !important; max-height: 94vh !important; border-radius: 14px !important; }
+  /* The four libraries as a 2×2 chip grid — all visible at once, no hidden
+     horizontal scroll. The per-tab "i" info buttons are dropped on phones:
+     the header already shows the active library's title + description. */
+  .preset-picker-tabs {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px !important;
+    padding: 12px 12px 14px !important;
+    overflow: visible !important;
+  }
+  .preset-picker-tabs .ppt-item {
+    gap: 0 !important;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color .12s, background .12s;
+  }
+  .preset-picker-tabs .ppt-item--active {
+    border-color: var(--accent);
+    background: var(--accent-tint);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .preset-picker-tabs .ppt-tab {
+    width: 100%;
+    justify-content: center;
+    text-align: center !important;
+    padding: 12px 8px !important;
+    font-size: 12.5px !important;
+    line-height: 1.3;
+    white-space: normal !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+  }
+  .preset-picker-tabs .ppt-item--active .ppt-tab {
+    color: var(--accent-ink) !important;
+    font-weight: 700 !important;
+  }
+  .preset-picker-tabs .ppt-info { display: none !important; }
+  /* Stack: the list owns the sheet; the detail slides in below once a formula
+     is chosen. Before any selection the empty placeholder is hidden entirely. */
+  .preset-picker-body { flex-direction: column !important; overflow-y: auto !important; }
+  .preset-picker-list {
+    width: 100% !important; flex: 1 1 auto !important;
+    min-height: 32vh; max-height: none;
+    overflow-x: hidden !important;
+    border-inline-end: none !important;
+    border-bottom: 1px solid var(--line);
+  }
+  .preset-picker-detail--empty { display: none !important; }
+  .preset-picker-detail {
+    flex: 0 0 auto !important;
+    padding: 16px 16px 20px !important;
+    overflow-x: hidden !important;
+    border-top: 3px solid var(--accent-tint-strong);
+    background: var(--surface);
+  }
+  .preset-picker-footer { padding: 11px 14px !important; gap: 10px !important; }
+  .preset-picker-footer .small { display: none; }
+  .preset-picker-footer > div:last-child { flex: 1; }
+  .preset-picker-footer .btn { flex: 1; }
+}
+
+/* Small phones — tighten the two-column tile grids to one column */
+@media (max-width: 440px) {
+  [class*="repeat(3,1fr)"], [class*="repeat(4,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .page { padding: 18px 12px 88px; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE APP SHELL — refinements on top of the base tf-mobile
+   layer above. Phones get an app-like frame: bottom tab bar
+   (Components/navbar/BottomTabBar.vue), a minimal top bar, the
+   compliance strip in-flow at the page end, and no web footer.
+   ═════════════════════════════════════════════════════════════ */
+/* The circular-mark logo exists only on phones (desktop shows the full lockup). */
+.nav__logo-mark { display: none; }
+html.tf-mobile {
+  /* Reserve room for the fixed tab bar (60px + iPhone home indicator). */
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  .page { padding-bottom: 28px; }
+
+  /* Top bar: burger · logo only — cart lives in the tab bar. */
+  .nav__top-cart { display: none !important; }
+
+  /* Native apps don't have web footers: hide the link columns + contact
+     strip; keep the legal compliance strip, in-flow at the page end
+     (static — the fixed slot belongs to the tab bar now). */
+  footer { margin-top: 40px; }
+  footer > div:not(:last-child) { display: none !important; } /* beats inline display */
+  #site-compliance-strip {
+    position: static !important;
+    box-shadow: none !important;
+    border-top: none;
+  }
+
+  /* Touch feedback: cards and buttons acknowledge the press instantly. */
+  .btn:active { transform: scale(0.98); }
+  .card:active { border-color: var(--line-strong); }
+
+  /* ---- Top bar: identity (name + points) + truly centered logo ----
+     Sides are uneven (burger vs. identity), so the logo centers itself
+     absolutely instead of trusting the grid columns. On phones the full
+     lockup gives way to the circular brand mark. */
+  .nav { position: sticky; top: 0; }
+  .nav__logo-full { display: none !important; }
+  .nav__logo-mark { display: block !important; height: 42px !important; width: 42px; }
+  .nav__center {
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    transform: translateX(-50%);
+  }
+  .nav__mobile-id { display: inline-flex !important; align-items: center; gap: 10px; }
+  .nav__mobile-id__name {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+    max-width: 84px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .nav__mobile-id .num { font-size: 13.5px !important; }
+
+  /* ---- Back-to-top floats ABOVE the tab bar (was covering "ראשי") ---- */
+  .back-to-top {
+    bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+    inset-inline-start: 14px !important;
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  /* ---- "חדש" flag: the desktop diagonal corner band doesn't read on small
+     boxes (it floats, detached, or collides with wrapped labels). On phones
+     the corner mark is dropped entirely and replaced by a clean inline pill
+     (.tf-new-badge) that sits in the content flow, right beside the label —
+     the same treatment as the mobile drawer badge, so every "חדש" flag reads
+     identically across the app. ---- */
+  [aria-label="פיצ'ר חדש"] { display: none !important; }
+  .tf-new-badge {
+    display: inline-flex; align-items: center;
+    flex-shrink: 0;
+    background: var(--accent); color: var(--on-accent);
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.04em;
+    line-height: 1; padding: 3px 8px 4px;
+    border-radius: var(--r-pill);
+    box-shadow: 0 2px 6px -2px rgba(42, 64, 40, 0.5);
+  }
+  /* Corner variant — the flag tucks into the card's top-inline-start (right,
+     RTL) corner instead of flowing after the label. The round icon leaves that
+     corner empty, so it clears the emblem; the label sits to the inline-end, so
+     it clears the text too. Used on the "ללא מטופל" secondary action. */
+  .tf-new-badge--corner {
+    position: absolute;
+    top: 5px;
+    inset-inline-start: 5px;
+    z-index: 3;
+    font-size: 8.5px;
+    padding: 2px 7px 3px;
+  }
+
+  /* ---- Daily-dose card (מינון יומי): compact + professional ----
+     The decorative column icons are dropped; labels tighten; the timing
+     tags become slim chips. */
+  .dose-grid > div > svg { display: none !important; }
+  .dose-grid > div { padding: 10px 8px 12px !important; gap: 5px !important; }
+  .dose-grid > div > div:first-of-type {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em;
+    color: var(--ink-3) !important;
+  }
+  .dose-grid button { height: 30px !important; font-size: 12px !important; padding-inline: 11px !important; }
+
+  /* ---- Cart lines: the 210px price rail becomes a bottom strip ---- */
+  .cart-card { flex-direction: column; }
+  /* Bodies declare min-width:300px for the desktop two-part layout — on a
+     phone that inflates the card past the viewport. Let them shrink. */
+  .cart-card [class*="min-w-[300px]"],
+  .pending-card [class*="min-w-[300px]"],
+  .cart-card > div,
+  .pending-card > div { min-width: 0 !important; }
+  /* Stacked layout: each part spans the card; nowrap meta lines may wrap. */
+  .cart-card > div { width: 100% !important; }
+  .cart-card > div:first-child { padding: 16px 14px !important; gap: 14px !important; }
+  .cart-card [class*="whitespace-nowrap"] { white-space: normal !important; }
+  .price-rail {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-inline-end: none !important;
+    border-top: 1px solid var(--line);
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+    align-items: center;
+  }
+  .price-rail > div:first-child {
+    grid-column: 1 / -1;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+
+  /* ---- Pending (on-hold) cards: action rail → bottom strip ---- */
+  .pending-card > div:first-child { padding: 16px 14px !important; }
+  .pending-card__rail {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-inline-start: none !important;
+    border-top: 1px solid var(--line);
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+    align-items: center;
+  }
+  .pending-card__rail > div:first-child {
+    grid-column: 1 / -1;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   WIZARD ON PHONES — the core flow gets a native-app treatment:
+   a slim sticky progress header, a solid full-width action bar
+   pinned to the bottom edge (the tab bar is absent inside the
+   wizard), and touch-first pickers (horizontal snap-scroll cards
+   and pills instead of the prototype's <select> fallbacks).
+   ═════════════════════════════════════════════════════════════ */
+/* Progress header — hidden everywhere except phones. */
+.wizard-mobile-progress { display: none; }
+
+html.tf-mobile {
+  .wizard-mobile-progress {
+    display: block;
+    position: sticky;
+    top: 56px;                    /* right under the mobile top bar */
+    z-index: 30;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px 12px;
+  }
+  .wizard-mobile-progress__row {
+    display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+  }
+  .wizard-mobile-progress__step {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    background: var(--accent-tint); border-radius: 999px; padding: 2px 9px;
+  }
+  .wizard-mobile-progress__label { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .wizard-mobile-progress__track { display: flex; gap: 5px; }
+  .wizard-mobile-progress__seg {
+    flex: 1; height: 3.5px; border-radius: 999px;
+    background: var(--line); transition: background .25s ease;
+  }
+  .wizard-mobile-progress__seg--done { background: var(--accent); }
+
+  /* ---- Bottom action bar: full-width, solid, pinned to the edge ---- */
+  .wizard-footer-bar { bottom: 0 !important; height: auto !important; }
+  .wizard-footer-inner {
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 60px;
+    margin: 0 !important;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 0 !important;
+    border-inline: none !important;
+    border-bottom: none !important;
+    box-shadow: 0 -8px 24px -16px rgba(31, 46, 29, 0.4) !important;
+  }
+  /* The primary (continue) action reads as THE button. */
+  .wizard-footer-inner > div:last-child button {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #fff !important;
+    height: 42px !important;
+    padding-inline: 20px !important;
+    font-size: 14.5px !important;
+  }
+  .wizard-footer-inner > div:last-child button:disabled {
+    background: var(--surface-sunk) !important;
+    border-color: var(--line) !important;
+    color: var(--ink-4) !important;
+  }
+  .wizard-footer-inner > div:first-child button { height: 42px !important; }
+
+  /* Compact live summary in the middle of the bar (full one is hidden). */
+  .wizard-footer-mini {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12.5px; font-weight: 600; color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .wizard-footer-mini__dot { color: var(--line-strong); }
+
+  /* ---- Formula-type picker: glyph cards in a horizontal snap strip ----
+     (Overrides the base layer's dropdown fallback — the cards ARE the
+     professional, app-like experience; scrolling sideways is native.) */
+  .ftype-select-wrap { display: none !important; }
+  .ftype-grid {
+    display: grid !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: column;
+    grid-auto-columns: 96px;
+    gap: 10px !important;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 2px 2px 10px;
+    margin-inline: -2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .ftype-grid::-webkit-scrollbar { display: none; }
+  .ftype-grid > * { scroll-snap-align: start; }
+
+  /* ---- Orders list: the 8-column table becomes stacked order cards ----
+     A 776px table has no honest home on a phone. Each row re-lays out as a
+     card: patient (bold) · formula · status, with the order id + date as a
+     quiet top line. Phone / type / the "צפה" link are dropped — the whole
+     card is tappable and the details live on the order page. */
+  .orders-table { table-layout: auto !important; }
+  .orders-table colgroup, .orders-table thead { display: none; }
+  .orders-table, .orders-table tbody { display: block; width: 100% !important; }
+  .orders-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'id     date'
+      'patient patient'
+      'formula formula'
+      'status  status';
+    padding: 13px 16px 14px;
+    border-bottom: 1px solid var(--line) !important;
+  }
+  .orders-table tbody tr:active { background: var(--accent-tint) !important; }
+  .orders-table td { display: block; padding: 0 !important; border: none; }
+  .orders-table td:nth-child(1) { grid-area: id; font-size: 11.5px !important; }
+  .orders-table td:nth-child(6) { grid-area: date; font-size: 11.5px !important; }
+  .orders-table td:nth-child(2) { grid-area: patient; font-size: 15.5px !important; font-weight: 700 !important; margin-top: 3px; }
+  .orders-table td:nth-child(4) { grid-area: formula; font-size: 13.5px !important; margin-top: 1px; }
+  .orders-table td:nth-child(7) { grid-area: status; margin-top: 7px; }
+  .orders-table td:nth-child(3),
+  .orders-table td:nth-child(5),
+  .orders-table td:nth-child(8) { display: none; }
+
+  /* ---- Volume picker: keep the pills, let them scroll sideways ---- */
+  .vol-select-wrap { display: none !important; }
+  .vol-pills {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .vol-pills::-webkit-scrollbar { display: none; }
+  .vol-pills > * { flex-shrink: 0; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   TABLET / SMALL LAPTOP — html.tf-tablet (761–1080px).
+   The desktop design, breathing a little tighter: 4-across tiles
+   become 2×2, 3-across card grids become 2, chrome paddings shrink.
+   ═════════════════════════════════════════════════════════════ */
+html.tf-tablet {
+  .nav { padding: 0 14px; }
+  .nav__links { gap: 14px; }
+  .nav__link { font-size: 13.5px; }
+  /* User menu slims to avatar-only (name + chevron hidden) so the four
+     destinations, logo and actions all fit an 800px-class viewport. */
+  .nav [aria-haspopup='true'] > span:nth-child(2),
+  .nav [aria-haspopup='true'] > svg { display: none; }
+  .nav [aria-haspopup='true'] { padding: 4px !important; }
+
+  .page { padding: 32px 20px 72px; }
+
+  /* Tile / card grid hammers (grid-cols-* utility grids) */
+  [class*="repeat(4,1fr)"], [class*="repeat(3,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Footer: brand + three link columns → two columns */
+  footer [class*="1.4fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px 40px !important; }
+}
+

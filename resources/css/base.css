@@ -1,0 +1,96 @@
+/* ═════════════════════════════════════════════════════════════
+   Trifolium — design tokens + element defaults.
+   All colors/spacing/typography decisions live in the :root tokens
+   below — change them there. app.css mirrors them into the Tailwind
+   theme (bg-accent, text-ink-3, rounded-card, …).
+   ═════════════════════════════════════════════════════════════ */
+
+/* Hide native number-input spinners (we provide our own +/− steppers). */
+input[type="number"].no-spin::-webkit-inner-spin-button,
+input[type="number"].no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"].no-spin {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+
+:root {
+  --bg: #f6f8f5;            /* near-white with a whisper of green */
+  --surface: #ffffff;
+  --surface-sunk: #eef1ec;
+  --ink: #1f2e1d;           /* deep sage — replaces near-black system-wide */
+  --ink-2: #36433a;
+  --ink-3: #54614f;
+  --ink-4: #6f776a;         /* was #8a9384 (3.19:1 — failed AA); now ~4.7:1 */
+  --line: #e2e6dd;
+  --line-strong: #cdd4c5;
+  --accent: #3d5a3a;        /* deep herbal green */
+  --accent-ink: #2a4028;
+  --accent-tint: #eef2eb;
+  --accent-tint-strong: #dde6d9;
+  --danger: #a23a2d;
+  --danger-tint: #f3e3e0;
+  --warning: #8a5f16;       /* was #a87521 (4.06:1 — failed AA for body text) */
+  --success: #3d5a3a;
+  /* Order/status dots — semantic tokens (were hard-coded hexes) */
+  --status-prep: #3d6d2e;
+  --status-ready: #2e5b8c;
+  --status-wait: #8a5f16;
+
+  /* Foreground for text/icons sitting on the accent-green fill (primary
+     buttons, badges, ribbon). A token so dark mode can flip it. */
+  --on-accent: #ffffff;
+  /* A deliberately-dark chip surface that stays dark in BOTH themes (cart
+     toast, selected segment) — with its own always-light ink. */
+  --inverse-surface: #1f2e1d;
+  --inverse-ink: #f4f6ef;
+
+  --r-card: 6px;
+  --r-control: 6px;
+  --r-pill: 999px;
+
+  --h-input: 40px;
+  --h-button: 40px;
+  --h-nav: 64px;
+
+  --maxw: 960px;
+  --maxw-lab: 1080px;
+
+  /* Font stacks are defined in app.css's @theme block (single source shared
+     with the font-heb / font-latin utilities); var(--font-heb) etc. resolve
+     to the values emitted there. */
+
+  /* Wizard sticky summary-bar shadow (shipped default: the "בולט" preset). */
+  --summary-shadow: 0 20px 48px rgba(31, 46, 29, 0.28);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-heb);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  direction: rtl;
+}
+
+body { min-height: 100vh; padding-bottom: 44px; }
+
+/* Latin numerals stay in Inter */
+.num, .latin {
+  font-family: var(--font-latin);
+  font-feature-settings: 'tnum' 1;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; color: inherit; }
+

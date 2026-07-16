@@ -12,7 +12,7 @@ const emit = defineEmits(['qty', 'remove', 'hold']);
 </script>
 
 <template>
-    <div class="card cart-card" style="display: flex; align-items: stretch; flex-wrap: wrap">
+    <div class="card cart-card flex items-stretch flex-wrap">
         <ShelfBody v-if="item.kind === 'shelf'" :item="item" />
         <FormulaBody v-else :item="item" />
         <PriceRail

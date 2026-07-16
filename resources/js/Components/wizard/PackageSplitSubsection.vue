@@ -47,58 +47,33 @@ const split = computed(() => {
 </script>
 
 <template>
-    <div style="margin-top: 16px">
+    <div class="mt-[16px]">
         <!-- The offer — a checkbox row -->
         <label
-            :style="{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '14px 16px',
-                border: '1px solid ' + (on ? 'var(--accent)' : 'var(--line)'),
-                background: on ? 'var(--accent-tint)' : 'var(--surface-sunk)',
-                borderRadius: 'var(--r-card)',
-                cursor: 'pointer',
-                transition: 'background-color .12s ease, border-color .12s ease',
-            }"
+            class="flex items-center gap-[12px] px-[16px] py-[14px] border rounded-card cursor-pointer transition-[background-color,border-color] duration-[.12s] ease-[ease]"
+            :class="on ? 'border-accent bg-accent-tint' : 'border-line bg-surface-sunk'"
             @click.prevent="toggle"
         >
             <span
-                :style="{
-                    width: '20px', height: '20px',
-                    borderRadius: '5px',
-                    flexShrink: 0,
-                    border: '2px solid ' + (on ? 'var(--accent)' : 'var(--line-strong)'),
-                    background: on ? 'var(--accent)' : '#fff',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'background-color .12s ease, border-color .12s ease',
-                }"
+                class="inline-flex items-center justify-center w-[20px] h-[20px] shrink-0 border-2 rounded-[5px] transition-[background-color,border-color] duration-[.12s] ease-[ease]"
+                :class="on ? 'border-accent bg-accent' : 'border-line-strong bg-white'"
             >
                 <Icon v-if="on" name="check" :size="13" color="#fff" :stroke="3" />
             </span>
-            <span style="flex: 1; min-width: 0">
-                <span :style="{ display: 'block', fontSize: '14px', fontWeight: 600, color: on ? 'var(--accent-ink)' : 'var(--ink)' }">האם תרצה לחלק לשקיות אבקה נפרדות?</span>
-                <span style="display: block; font-size: 12px; color: var(--ink-3); margin-top: 2px">חלוקת הכמות הכוללת למספר שקיות אבקה זהות.</span>
+            <span class="flex-1 min-w-0">
+                <span class="block text-[14px] font-semibold" :class="on ? 'text-accent-ink' : 'text-ink'">האם תרצה לחלק לשקיות אבקה נפרדות?</span>
+                <span class="block mt-[2px] text-[12px] text-ink-3">חלוקת הכמות הכוללת למספר שקיות אבקה זהות.</span>
             </span>
         </label>
 
         <!-- Expanded — package count + cost note + per-package calc -->
-        <div v-if="on" style="margin-top: 12px; padding: 18px; background: var(--surface-sunk); border: 1px solid var(--line); border-radius: var(--r-card)">
-            <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div v-if="on" class="mt-[12px] p-[18px] bg-surface-sunk border border-line rounded-card">
+            <div class="flex flex-wrap items-start gap-[24px]">
                 <Field label="מספר שקיות">
-                    <div style="display: inline-flex; align-items: center; gap: 8px">
+                    <div class="inline-flex items-center gap-[8px]">
                         <div
-                            :style="{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                border: '1px solid ' + (invalid ? 'var(--danger)' : 'var(--line-strong)'),
-                                borderRadius: 'var(--r-control)',
-                                overflow: 'hidden',
-                                height: '40px',
-                                background: 'var(--surface)',
-                            }"
+                            class="inline-flex items-center h-[40px] bg-surface border rounded-control overflow-hidden"
+                            :class="invalid ? 'border-danger' : 'border-line-strong'"
                         >
                             <StepBtn label="−" :disabled="count <= 2" @click="dec" />
                             <input
@@ -106,29 +81,28 @@ const split = computed(() => {
                                 :min="2"
                                 :step="1"
                                 :value="formula.packageCount"
-                                class="num no-spin"
-                                style="width: 64px; height: 100%; border: none; border-inline: 1px solid var(--line); text-align: center; font-size: 15px; font-weight: 600; color: var(--ink); outline: none; background: transparent; -moz-appearance: textfield"
+                                class="num no-spin w-[64px] h-full text-center text-[15px] font-semibold text-ink bg-transparent outline-none [-moz-appearance:textfield] border-0 border-s border-e border-line"
                                 @input="setCount($event.target.value)"
                             />
                             <StepBtn label="+" :disabled="maxPacks != null && count >= maxPacks" @click="inc" />
                         </div>
-                        <span style="font-size: 13px; color: var(--ink-3)">שקיות</span>
+                        <span class="text-[13px] text-ink-3">שקיות</span>
                     </div>
 
                     <!-- Validation messaging -->
-                    <div v-if="invalid" style="font-size: 12px; color: var(--danger); margin-top: 8px; font-weight: 500">
+                    <div v-if="invalid" class="mt-[8px] text-[12px] font-medium text-danger">
                         <template v-if="belowMin">יש לחלק ל-<span class="num">2</span> שקיות לפחות</template>
                         <template v-else>מקסימום <span class="num">{{ maxPacks }}</span> שקיות — כל שקית חייבת להכיל לפחות <span class="num">{{ MIN_PER_PACKAGE }}</span> {{ unit }}</template>
                     </div>
-                    <div v-else-if="hasVolume" class="small muted mt-8">
+                    <div v-else-if="hasVolume" class="small muted mt-[8px]">
                         עד <span class="num">{{ maxPacks }}</span> שקיות (מינימום <span class="num">{{ MIN_PER_PACKAGE }}</span> {{ unit }} לשקית)
                     </div>
-                    <div v-else class="small muted mt-8">בחר נפח פורמולה כדי לחשב את החלוקה</div>
+                    <div v-else class="small muted mt-[8px]">בחר נפח פורמולה כדי לחשב את החלוקה</div>
                 </Field>
 
                 <!-- Per-package volume calc -->
                 <Field v-if="hasVolume && !invalid" label="כל שקית תכיל">
-                    <div style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; background: var(--accent-tint); border: 1px solid var(--accent); border-radius: var(--r-control); font-size: 14px; font-weight: 600; color: var(--accent-ink)">
+                    <div class="inline-flex items-center gap-[8px] h-[40px] px-[14px] py-0 text-[14px] font-semibold text-accent-ink bg-accent-tint border border-accent rounded-control">
                         <Icon name="flask" :size="14" color="var(--accent)" />
                         <template v-if="split.rem === 0">
                             <span class="num">{{ count }}</span> שקיות × <span class="num">{{ split.base }}</span> {{ unit }}
@@ -143,11 +117,11 @@ const split = computed(() => {
             </div>
 
             <!-- Cost note -->
-            <div style="display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-2); line-height: 1.5">
-                <Icon name="info" :size="15" color="var(--ink-3)" style="margin-top: 1px; flex-shrink: 0" />
+            <div class="flex items-start gap-[10px] mt-[16px] pt-[14px] text-[13px] leading-[1.5] text-ink-2 border-t border-t-line">
+                <Icon name="info" :size="15" color="var(--ink-3)" class="mt-[1px] shrink-0" />
                 <span>
-                    כל שקית נוספת מעבר לראשונה מתומחרת ב-<strong class="num" style="color: var(--ink)">₪10</strong>.
-                    <template v-if="!invalid && count > 1"> תוספת לפורמולה זו: <strong class="num" style="color: var(--ink)">₪{{ (count - 1) * 10 }}</strong> ({{ count - 1 }} שקיות נוספות).</template>
+                    כל שקית נוספת מעבר לראשונה מתומחרת ב-<strong class="num text-ink">₪10</strong>.
+                    <template v-if="!invalid && count > 1"> תוספת לפורמולה זו: <strong class="num text-ink">₪{{ (count - 1) * 10 }}</strong> ({{ count - 1 }} שקיות נוספות).</template>
                 </span>
             </div>
         </div>

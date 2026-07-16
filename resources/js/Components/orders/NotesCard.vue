@@ -18,39 +18,31 @@ const c = computed(() => (accentTone.value ? 'var(--accent)' : AMBER));
 
 <template>
     <div
-        class="card"
+        class="card p-0 overflow-hidden"
         :style="{
-            padding: 0, overflow: 'hidden',
             borderInlineStart: '3px solid ' + c,
         }"
     >
         <div
-            :style="{
-                padding: '12px 20px',
-                background: accentTone ? 'var(--accent-tint)' : 'transparent',
-                borderBottom: '1px solid var(--line)',
-                display: 'flex', alignItems: 'center', gap: '9px',
-            }"
+            class="flex items-center gap-[9px] py-[12px] px-[20px] border-b border-b-line"
+            :class="accentTone ? 'bg-accent-tint' : 'bg-transparent'"
         >
             <span
+                class="inline-flex items-center justify-center w-[24px] h-[24px] shrink-0 rounded-full"
                 :style="{
-                    width: '24px', height: '24px', borderRadius: '50%',
                     background: accentTone ? c : 'transparent',
                     border: accentTone ? 'none' : '1.5px solid ' + c,
                     color: accentTone ? '#fff' : c,
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }"
             >
                 <Icon :name="icon" :size="13" :color="accentTone ? '#fff' : c" />
             </span>
             <span
-                :style="{
-                    fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase',
-                    fontWeight: 700, color: accentTone ? 'var(--accent-ink)' : c,
-                }"
+                class="text-[11px] tracking-[0.06em] uppercase font-bold"
+                :style="{ color: accentTone ? 'var(--accent-ink)' : c }"
             >{{ eyebrow }}</span>
         </div>
-        <div style="padding: 16px 20px; font-size: 14px; line-height: 1.6; color: var(--ink-2)">
+        <div class="py-[16px] px-[20px] text-[14px] leading-[1.6] text-ink-2">
             {{ text }}
         </div>
     </div>

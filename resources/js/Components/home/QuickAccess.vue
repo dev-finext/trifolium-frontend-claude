@@ -16,55 +16,32 @@ const hoverId = ref(null);
 </script>
 
 <template>
-    <section class="quick-access" style="padding: 0 24px; margin-top: -46px; position: relative; z-index: 2">
+    <section class="quick-access relative z-[2] py-0 px-[24px] mt-[-46px]">
         <div
-            :style="{
-                maxWidth: '1200px',
-                margin: '0 auto',
-                background: 'var(--surface)',
-                border: '1px solid var(--line)',
-                borderRadius: 'var(--r-card)',
-                boxShadow: '0 12px 32px -16px rgba(40, 30, 20, 0.18), 0 2px 6px -2px rgba(40, 30, 20, 0.08)',
-                overflow: 'hidden',
-            }"
+            class="max-w-[1200px] mx-auto my-0 bg-surface border border-line rounded-card overflow-hidden shadow-[0_12px_32px_-16px_rgba(40,30,20,0.18),0_2px_6px_-2px_rgba(40,30,20,0.08)]"
         >
-            <div style="height: 88px; display: grid; grid-template-columns: repeat(4, 1fr)">
+            <div class="grid grid-cols-4 h-[88px]">
                 <button
                     v-for="(t, i) in QUICK_TILES"
                     :key="t.id"
-                    :style="{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '14px',
-                        background: hoverId === t.id ? 'var(--accent-tint)' : 'transparent',
-                        border: 'none',
-                        borderLeft: i === QUICK_TILES.length - 1 ? 'none' : '1px solid var(--line)',
-                        cursor: 'pointer',
-                        transition: 'background .2s ease',
-                        padding: '0 16px',
-                        fontFamily: 'inherit',
-                    }"
+                    class="flex items-center justify-center gap-[14px] py-0 px-[16px] border-none cursor-pointer transition-[background] duration-200 ease-[ease] [font-family:inherit]"
+                    :class="[
+                        hoverId === t.id ? 'bg-accent-tint' : 'bg-transparent',
+                        i === QUICK_TILES.length - 1 ? '' : '[border-left:1px_solid_var(--line)]',
+                    ]"
                     @click="visit(t.route)"
                     @mouseenter="hoverId = t.id"
                     @mouseleave="hoverId = null"
                 >
                     <Icon :name="t.icon" :size="22" :color="hoverId === t.id ? 'var(--accent)' : 'var(--ink)'" />
-                    <div style="text-align: right; display: flex; flex-direction: column; gap: 2px">
+                    <div class="flex flex-col gap-[2px] text-right">
                         <span
-                            :style="{
-                                fontSize: '13px',
-                                fontWeight: 700,
-                                color: hoverId === t.id ? 'var(--accent)' : 'var(--ink)',
-                                transition: 'color .2s',
-                            }"
+                            class="text-[13px] font-bold transition-[color] duration-200"
+                            :class="hoverId === t.id ? 'text-accent' : 'text-ink'"
                         >{{ t.label }}</span>
                         <span
-                            :style="{
-                                fontSize: '11px',
-                                color: hoverId === t.id ? 'var(--accent)' : 'var(--ink-3)',
-                                transition: 'color .2s',
-                            }"
+                            class="text-[11px] transition-[color] duration-200"
+                            :class="hoverId === t.id ? 'text-accent' : 'text-ink-3'"
                         >{{ t.sub }}</span>
                     </div>
                 </button>

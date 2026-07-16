@@ -74,37 +74,28 @@ function submit() {
     <div class="page">
         <div class="page__inner">
             <!-- Centered header -->
-            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 32px">
-                <h1 class="page-title" style="margin: 0; font-size: 30px">יצירת קשר</h1>
+            <div class="flex items-center justify-center gap-[12px] mb-[32px]">
+                <h1 class="page-title m-0 text-[30px]">יצירת קשר</h1>
                 <span
-                    :style="{
-                        width: '40px', height: '40px', borderRadius: '11px',
-                        background: 'var(--accent-tint)',
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    }"
+                    class="inline-flex items-center justify-center w-[40px] h-[40px] bg-accent-tint rounded-[11px]"
                 >
                     <Icon name="mail" :size="20" color="var(--accent)" />
                 </span>
             </div>
 
             <div
-                :style="{
-                    display: 'grid',
-                    gridTemplateColumns: 'minmax(0, 1fr) 340px',
-                    gap: '28px',
-                    alignItems: 'stretch',
-                }"
+                class="grid grid-cols-[minmax(0,1fr)_340px] items-stretch gap-[28px]"
             >
                 <!-- Form card (start side) -->
-                <form novalidate class="card" style="padding: 28px 32px 32px" @submit.prevent="submit">
-                    <h2 style="margin: 0 0 4px; font-size: 19px; font-weight: 600; color: var(--ink)">
+                <form novalidate class="card pt-[28px] px-[32px] pb-[32px]" @submit.prevent="submit">
+                    <h2 class="m-0 mb-[4px] text-[19px] font-semibold text-ink">
                         טופס יצירת קשר
                     </h2>
-                    <p class="page-sub" style="margin: 0 0 28px">
+                    <p class="page-sub m-0 mb-[28px]">
                         מלאי את פרטי ההתקשרות וניצור עמך קשר בהקדם האפשרי
                     </p>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px">
+                    <div class="grid grid-cols-[1fr_1fr] gap-y-[20px] gap-x-[24px]">
                         <ContactField
                             id="contact-name"
                             v-model="form.name"
@@ -139,7 +130,7 @@ function submit() {
                             enterkeyhint="next"
                             :error="errors.phone"
                         />
-                        <div style="grid-column: 1 / -1">
+                        <div class="col-span-full">
                             <ContactField
                                 id="contact-message"
                                 v-model="form.message"
@@ -153,13 +144,13 @@ function submit() {
                         </div>
                     </div>
 
-                    <div style="margin-top: 26px; display: flex; align-items: center; gap: 16px">
-                        <button type="submit" class="btn btn--primary" style="min-width: 96px" :disabled="sending">
+                    <div class="flex items-center gap-[16px] mt-[26px]">
+                        <button type="submit" class="btn btn--primary min-w-[96px]" :disabled="sending">
                             {{ sending ? 'שולח…' : 'שלחי' }}
                         </button>
                         <span
                             v-if="sent"
-                            style="display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--accent); font-weight: 500"
+                            class="inline-flex items-center gap-[7px] text-[13.5px] font-medium text-accent"
                         >
                             <Icon name="check" :size="16" color="var(--accent)" :stroke="2.4" />
                             ההודעה נשלחה — ניצור איתך קשר בהקדם
@@ -168,48 +159,40 @@ function submit() {
                 </form>
 
                 <!-- Contact details card (end side) -->
-                <aside class="card" style="padding: 28px 26px 30px">
-                    <h2 style="margin: 0 0 22px; font-size: 18px; font-weight: 600; color: var(--ink); text-align: center">
+                <aside class="card pt-[28px] px-[26px] pb-[30px]">
+                    <h2 class="m-0 mb-[22px] text-[18px] font-semibold text-center text-ink">
                         פרטי התקשרות
                     </h2>
 
-                    <div style="font-weight: 700; font-size: 15px; color: var(--ink); text-align: center; margin-bottom: 18px">
+                    <div class="mb-[18px] text-[15px] font-bold text-center text-ink">
                         {{ CONTACT_INFO.company }}
                     </div>
 
-                    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+                    <ul class="flex flex-col gap-[14px] m-0 p-0 list-none">
                         <InfoRow icon="map_pin">
                             <div>{{ CONTACT_INFO.address }}</div>
-                            <div style="color: var(--ink-3); font-size: 12.5px; margin-top: 2px">{{ CONTACT_INFO.hours }}</div>
+                            <div class="mt-[2px] text-[12.5px] text-ink-3">{{ CONTACT_INFO.hours }}</div>
                         </InfoRow>
                         <InfoRow icon="phone">
-                            <a :href="`tel:${CONTACT_INFO.phone}`" class="num" dir="ltr" style="display: inline-block">{{ CONTACT_INFO.phone }}</a>
+                            <a :href="`tel:${CONTACT_INFO.phone}`" class="num inline-block" dir="ltr">{{ CONTACT_INFO.phone }}</a>
                         </InfoRow>
                         <InfoRow icon="mail">
                             <a :href="`mailto:${CONTACT_INFO.email}`" class="latin">{{ CONTACT_INFO.email }}</a>
                         </InfoRow>
                     </ul>
 
-                    <div style="height: 1px; background: var(--line); margin: 22px 0" />
+                    <div class="h-[1px] my-[22px] mx-0 bg-(--line)" />
 
-                    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+                    <ul class="flex flex-col gap-[14px] m-0 p-0 list-none">
                         <li v-for="s in SOCIALS" :key="s.id">
                             <a
                                 href="#"
-                                class="tf-social-link"
-                                :style="{
-                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px',
-                                    fontSize: '14px', color: 'var(--ink-2)', transition: 'color .15s',
-                                }"
+                                class="tf-social-link flex items-center justify-end gap-[12px] text-[14px] text-ink-2 transition-[color] duration-150"
                                 @click.prevent
                             >
                                 <span>{{ s.label }}</span>
                                 <span
-                                    :style="{
-                                        width: '30px', height: '30px', borderRadius: '8px', flexShrink: 0,
-                                        border: '1px solid var(--line)', background: 'var(--bg)',
-                                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    }"
+                                    class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 bg-bg border border-line rounded-[8px]"
                                 >
                                     <SocialGlyph :id="s.id" :size="15" />
                                 </span>

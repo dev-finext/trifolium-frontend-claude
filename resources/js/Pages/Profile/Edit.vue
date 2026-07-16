@@ -113,38 +113,33 @@ function save() {
 
             <!-- Breadcrumb -->
             <a
-                style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); cursor: pointer; margin-bottom: 18px"
+                class="inline-flex items-center gap-[6px] mb-[18px] text-[13px] text-ink-3 cursor-pointer"
                 @click="goBack"
             >
                 <Icon name="arrow_right" :size="15" /> חזרה ללוח הבקרה
             </a>
 
             <!-- Head -->
-            <div style="margin-bottom: 26px">
-                <h1 class="page-title" style="margin: 0">עריכת פרטים אישיים</h1>
-                <p class="page-sub" style="margin-top: 6px">
+            <div class="mb-[26px]">
+                <h1 class="page-title m-0">עריכת פרטים אישיים</h1>
+                <p class="page-sub mt-[6px]">
                     עדכן את שמך, ההתמחות, פרטי המרפאה והסיסמה שלך.
                 </p>
             </div>
 
             <div
                 v-if="saved"
-                :style="{
-                    display: 'flex', alignItems: 'center', gap: '11px', marginBottom: '20px',
-                    padding: '13px 16px', borderRadius: 'var(--r-card)',
-                    background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                    color: 'var(--accent-ink)', fontSize: '13.5px', fontWeight: 600,
-                }"
+                class="flex items-center gap-[11px] mb-[20px] py-[13px] px-[16px] text-[13.5px] font-semibold text-accent-ink bg-accent-tint border border-accent-tint-strong rounded-card"
             >
                 <Icon name="check" :size="17" color="var(--accent)" :stroke="2.2" />
                 הפרטים נשמרו בהצלחה.
             </div>
 
             <!-- Identity card -->
-            <div class="col gap-16">
+            <div class="col gap-[16px]">
                 <!-- Personal -->
                 <ProfileSection title="פרטים אישיים" desc="השם יוצג במסמכי ההזמנה ובתקשורת עם המטופלים.">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                    <div class="grid grid-cols-2 gap-[16px]">
                         <ProfileField label="שם פרטי" required autocomplete="given-name" :error="errors.firstName" :model-value="form.firstName" @update:model-value="setField('firstName', $event)" />
                         <ProfileField label="שם משפחה" required autocomplete="family-name" :error="errors.lastName" :model-value="form.lastName" @update:model-value="setField('lastName', $event)" />
                     </div>
@@ -152,7 +147,7 @@ function save() {
 
                 <!-- Specialization -->
                 <ProfileSection title="התמחות" desc="בחר את סוג הטיפול ותחום ההתמחות מתוך הרשימות.">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                    <div class="grid grid-cols-2 gap-[16px]">
                         <ProfileSelect
                             label="סוג טיפול"
                             :model-value="form.treatment"
@@ -172,7 +167,7 @@ function save() {
 
                 <!-- Contact — read-only -->
                 <ProfileSection title="פרטי התקשרות" desc="האימייל והטלפון נעולים לעריכה ומשמשים לזיהוי החשבון.">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                    <div class="grid grid-cols-2 gap-[16px]">
                         <ReadOnlyField label="אימייל" :value="form.email" dir="ltr" />
                         <ReadOnlyField label="טלפון נייד" :value="form.phone" dir="ltr" />
                     </div>
@@ -180,13 +175,13 @@ function save() {
 
                 <!-- Professional -->
                 <ProfileSection title="פרטים מקצועיים" desc="שם המרפאה ומספר הרישיון מופיעים מול בית המרקחת.">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                    <div class="grid grid-cols-2 gap-[16px]">
                         <ProfileField label="שם המרפאה / העסק" :model-value="form.clinic" @update:model-value="setField('clinic', $event)" />
                         <ProfileField
                             label="מספר רישיון"
                             :model-value="form.license"
                             dir="ltr"
-                            :style="{ textAlign: 'right' }"
+                            class="text-right"
                             @update:model-value="setField('license', $event)"
                         />
                     </div>
@@ -207,10 +202,10 @@ function save() {
 
             <!-- Save bar -->
             <div
-                style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line)"
+                class="flex items-center justify-end gap-[12px] mt-[22px] pt-[22px] border-t border-line"
             >
                 <button class="btn btn--ghost" @click="goBack">ביטול</button>
-                <button class="btn btn--primary" style="padding-inline: 26px" @click="save">
+                <button class="btn btn--primary px-[26px]" @click="save">
                     <Icon name="check" :size="16" :stroke="2.2" /> שמור שינויים
                 </button>
             </div>

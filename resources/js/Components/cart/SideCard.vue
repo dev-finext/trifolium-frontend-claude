@@ -6,9 +6,9 @@ defineProps({
 </script>
 
 <template>
-    <div class="card" style="padding: 20px">
-        <h3 style="margin: 0 0 4px; font-size: 16px; font-weight: 600">{{ title }}</h3>
-        <div class="divider" style="margin: 12px 0 16px" />
+    <div class="card p-[20px]">
+        <h3 class="m-0 mb-[4px] text-[16px] font-semibold">{{ title }}</h3>
+        <div class="divider mx-0 mt-[12px] mb-[16px]" />
         <slot />
     </div>
 </template>

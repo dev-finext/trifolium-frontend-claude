@@ -22,15 +22,13 @@ const c = computed(() => TONES[props.tone] || TONES.green);
 
 <template>
     <span
+        class="inline-flex items-center gap-[8px] py-[6px] px-[14px] text-[13px] font-semibold rounded-[999px]"
         :style="{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            padding: '6px 14px', borderRadius: '999px',
             background: c.bg, color: c.fg,
-            fontSize: '13px', fontWeight: 600,
             border: '1px solid ' + c.bd,
         }"
     >
-        <span :style="{ width: '8px', height: '8px', borderRadius: '50%', background: c.dot }" />
+        <span class="w-[8px] h-[8px] rounded-full" :style="{ background: c.dot }" />
         {{ label }}
     </span>
 </template>

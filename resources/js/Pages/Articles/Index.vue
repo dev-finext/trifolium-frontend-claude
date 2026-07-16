@@ -46,23 +46,19 @@ const groups = computed(() => {
     <div class="page">
         <div class="page__inner">
             <!-- Header -->
-            <div class="articles-head" style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px">
+            <div class="articles-head flex items-center gap-[14px] mb-[8px]">
                 <span
-                    :style="{
-                        width: '44px', height: '44px', borderRadius: '12px',
-                        background: 'var(--accent-tint)',
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    }"
+                    class="inline-flex items-center justify-center w-[44px] h-[44px] bg-accent-tint rounded-[12px]"
                 >
                     <Icon name="file_text" :size="22" color="var(--accent)" />
                 </span>
                 <div>
-                    <h1 class="page-title" style="margin: 0">מאמרים מקצועיים</h1>
+                    <h1 class="page-title m-0">מאמרים מקצועיים</h1>
                     <p class="page-sub">ספריית ידע קלינית ברפואת צמחים — מחקר, מונוגרפיות וטיפים מהשטח</p>
                 </div>
                 <!-- Style switch — reorders the library by the chosen approach -->
-                <div style="margin-inline-start: auto; display: flex; align-items: center; gap: 10px">
-                    <span style="font-size: 12.5px; color: var(--ink-3); font-weight: 500; white-space: nowrap">
+                <div class="flex items-center gap-[10px] ms-auto">
+                    <span class="text-[12.5px] font-medium whitespace-nowrap text-ink-3">
                         סדר תצוגה לפי סגנון
                     </span>
                     <ModeSwitch :mode="mode" @request="requestMode" />
@@ -71,14 +67,7 @@ const groups = computed(() => {
 
             <!-- Category filter -->
             <div
-                :style="{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '8px',
-                    margin: '24px 0 28px',
-                    paddingBottom: '24px',
-                    borderBottom: '1px solid var(--line)',
-                }"
+                class="flex flex-wrap gap-[8px] mt-[24px] mx-0 mb-[28px] pb-[24px] border-b border-b-line"
             >
                 <button
                     v-for="c in cats"
@@ -86,7 +75,7 @@ const groups = computed(() => {
                     :class="'tag' + (activeCat === c ? ' tag--selected' : '')"
                     @click="activeCat = c"
                 >{{ c }}</button>
-                <span style="margin-inline-start: auto; align-self: center; font-size: 13px; color: var(--ink-3)">
+                <span class="ms-auto self-center text-[13px] text-ink-3">
                     <span class="num">{{ list.length }}</span> מאמרים
                 </span>
             </div>
@@ -95,26 +84,21 @@ const groups = computed(() => {
             <template v-for="(g, gi) in groups" :key="g.key">
                 <div
                     v-if="gi > 0"
-                    style="display: flex; align-items: center; gap: 14px; margin: 44px 0 30px"
+                    class="flex items-center gap-[14px] mt-[44px] mx-0 mb-[30px]"
                 >
-                    <span style="flex: 1; height: 1px; background: var(--line)" />
-                    <span style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-4); white-space: nowrap">סגנון נוסף</span>
-                    <span style="flex: 1; height: 1px; background: var(--line)" />
+                    <span class="flex-1 h-[1px] bg-(--line)" />
+                    <span class="text-[12.5px] font-semibold tracking-[0.04em] whitespace-nowrap text-ink-4">סגנון נוסף</span>
+                    <span class="flex-1 h-[1px] bg-(--line)" />
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px">
+                <div class="flex items-center gap-[10px] mb-[18px]">
                     <ModeGlyph :mode="g.key" :size="16" />
-                    <h2 style="margin: 0; font-size: 17px; font-weight: 700; color: var(--ink)">{{ g.label }}</h2>
-                    <span style="font-size: 12.5px; color: var(--ink-3)">
+                    <h2 class="m-0 text-[17px] font-bold text-ink">{{ g.label }}</h2>
+                    <span class="text-[12.5px] text-ink-3">
                         <span class="num">{{ g.items.length }}</span> מאמרים
                     </span>
                 </div>
                 <div
-                    :style="{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))',
-                        gap: '22px',
-                        alignItems: 'stretch',
-                    }"
+                    class="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] items-stretch gap-[22px]"
                 >
                     <ArticleCard v-for="a in g.items" :key="a.id" :article="a" />
                 </div>
