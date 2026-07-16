@@ -9,8 +9,10 @@ import { ref } from 'vue';
 
 const TF_ADDR_KEY = 'tf:addresses:v1';
 
-// Seed: the practitioner's saved addresses. The first is the primary
-// (default) one — mirrors what used to be the single locked address.
+// ⚠️ DEMO DATA — the seed below is sample content, not part of the app.
+// In production the practitioner's saved addresses come from the backend;
+// delete this seed (return [] / fetch instead) when wiring real data.
+// The first address is the primary (default) one.
 export const TF_DEFAULT_ADDRESSES = [
     {
         id: 'addr-clinic',

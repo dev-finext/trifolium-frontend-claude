@@ -1,5 +1,10 @@
+// ╔═══════════════════════════════════════════════════════════════════════╗
+// ║  ⚠️  DEMO DATA — NOT PART OF THE APPLICATION. DO NOT SHIP.             ║
+// ╚═══════════════════════════════════════════════════════════════════════╝
+//
 // Select option data for the registration form (realistic Hebrew).
-// TODO(backend): cities/streets should come from a real address service.
+// TODO(backend): cities/streets should come from a real address service;
+// treatments/specialties from a managed vocabulary table.
 
 export const TF_CITIES = [
     'תל אביב-יפו', 'ירושלים', 'חיפה', 'באר שבע', 'ראשון לציון', 'פתח תקווה',

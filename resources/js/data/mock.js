@@ -1,10 +1,16 @@
-// Mock data — the API contract sketch.
+// ╔═══════════════════════════════════════════════════════════════════════╗
+// ║  ⚠️  DEMO DATA — NOT PART OF THE APPLICATION. DO NOT SHIP.             ║
+// ║                                                                        ║
+// ║  Everything in this file (herbs, patients, formulas, orders, articles) ║
+// ║  is sample content that exists only so the frontend can be browsed     ║
+// ║  without a backend. In production ALL of it comes from the database.   ║
+// ║  Delete this file once every consumer receives real Inertia props.     ║
+// ╚═══════════════════════════════════════════════════════════════════════╝
 //
-// Ported verbatim from the design handoff (data.js). Every exported array/object
-// shows the exact shape the matching Laravel endpoint should return; replace
-// consumers of this module with real Inertia props / API calls incrementally.
-// (Pages already declare these as prop defaults, so a controller that passes
-// real data simply wins over the mock.)
+// Each exported array/object shows the exact shape the matching Laravel
+// endpoint should return; replace consumers of this module with real Inertia
+// props / API calls incrementally. (Pages already declare these as prop
+// defaults, so a controller that passes real data simply wins over the mock.)
 import echinaceaImg from '@img/echinacea.jpg';
 // Herbs (צמחי מרפא) — common Western/Chinese/Mediterranean medicinal plants used in Israeli practice
 const HERBS = [

@@ -36,9 +36,17 @@
 //   Translate a new screen/feature by adding pairs to dictionary.js. You only
 //   need the strings relevant to understanding the system — not every label.
 //   Missing keys simply stay Hebrew. See docs/I18N-GUIDE.md.
+//
+//   dictionary.js       — hardcoded UI strings (ships with the app).
+//   dictionary.demo.js  — translations of the demo dataset's content (patient
+//                         names, formula names, herb notes). DELETE together
+//                         with data/mock.js when the real backend arrives.
 // ============================================================================
-import DICT from '@/i18n/dictionary.js';
+import APP_DICT from '@/i18n/dictionary.js';
+import DEMO_DICT from '@/i18n/dictionary.demo.js';
 import { PATTERNS } from '@/i18n/patterns.js';
+
+const DICT = { ...DEMO_DICT, ...APP_DICT };
 
 const HEB = /[֐-׿]/;
 const SKIP_TAGS = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, TEXTAREA: 1 };
