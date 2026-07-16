@@ -137,32 +137,32 @@ function onRxToggle() {
 </script>
 
 <template>
-    <div class="col gap-24">
+    <div class="col gap-[24px]">
         <div>
-            <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 6px">סיכום הפורמולה</h2>
-            <p class="muted" style="margin: 0; font-size: 14px">
+            <h2 class="m-0 mb-[6px] text-[20px] font-semibold">סיכום הפורמולה</h2>
+            <p class="muted m-0 text-[14px]">
                 בדקו את הפרטים והוסיפו לסל הקניות — מי משלם ואופן התשלום ייקבעו בסל.
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: flex-start">
+        <div class="grid grid-cols-[1fr_360px] items-start gap-[24px]">
 
             <!-- Left column — formula summary -->
             <FormulaSummaryCard :formula="formula" :patient-label="patientLabel" :total-vol="totalVol" />
 
             <!-- Right column — pricing -->
-            <div class="col gap-16">
-                <div class="card" style="padding: 20px">
-                    <h3 style="margin: 0 0 16px; font-size: 14px; font-weight: 600">פירוט תמחור</h3>
+            <div class="col gap-[16px]">
+                <div class="card p-[20px]">
+                    <h3 class="m-0 mb-[16px] text-[14px] font-semibold">פירוט תמחור</h3>
 
                     <PriceLine label="מחיר בסיס" :value="`₪${base}`" />
                     <PriceLine label="הנחת מטפל 20%" :value="`−₪${practitionerDisc}`" muted />
                     <PriceLine label="הנחת מטופל 10%" :value="`−₪${patientDisc}`" muted />
 
                     <!-- Total -->
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ink)">
-                        <span style="font-size: 13px; color: var(--ink-2); font-weight: 600">סה״כ</span>
-                        <span style="font-size: 28px; font-weight: 700; color: var(--accent)">
+                    <div class="flex justify-between items-baseline mt-[14px] pt-[14px] border-t border-t-ink">
+                        <span class="text-[13px] font-semibold text-ink-2">סה״כ</span>
+                        <span class="text-[28px] font-bold text-accent">
                             ₪<span class="num">{{ subtotal }}</span>
                         </span>
                     </div>
@@ -171,15 +171,15 @@ function onRxToggle() {
                 <!-- Pharmacy notes preview (internal) -->
                 <div
                     v-if="formula.internalNotes"
-                    style="background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden"
+                    class="bg-surface border border-line rounded-card overflow-hidden"
                 >
-                    <div style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 700; color: #a87521; letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px">
-                        <span style="width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #a87521; display: inline-flex; align-items: center; justify-content: center">
+                    <div class="flex items-center gap-[8px] px-[14px] py-[10px] text-[11px] font-bold tracking-[0.06em] uppercase text-[#a87521] border-b border-b-line">
+                        <span class="inline-flex items-center justify-center w-[22px] h-[22px] rounded-full border-[1.5px] border-[#a87521]">
                             <Icon name="alert" :size="11" color="#a87521" />
                         </span>
                         תצוגה: הנחיות לבית המרקחת
                     </div>
-                    <div style="padding: 12px 14px; font-size: 13px; color: var(--ink-2); line-height: 1.55">
+                    <div class="px-[14px] py-[12px] text-[13px] leading-[1.55] text-ink-2">
                         {{ formula.internalNotes }}
                     </div>
                 </div>
@@ -191,44 +191,28 @@ function onRxToggle() {
 
         <!-- Pharmaceutical-preparation confirmation (required) -->
         <label
-            :style="{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '16px 18px',
-                background: rxConfirmed ? 'var(--accent-tint)' : 'var(--surface)',
-                border: '1px solid ' + (rxConfirmed ? 'var(--accent)' : 'var(--line-strong)'),
-                borderRadius: 'var(--r-card)',
-                cursor: 'pointer',
-                transition: 'all .15s',
-            }"
+            class="flex items-center gap-[12px] px-[18px] py-[16px] border rounded-card cursor-pointer transition-all duration-150"
+            :class="rxConfirmed ? 'bg-accent-tint border-accent' : 'bg-surface border-line-strong'"
             @click.prevent="onRxToggle"
         >
             <span
-                :style="{
-                    width: '22px', height: '22px', borderRadius: '6px',
-                    border: '1.5px solid ' + (rxConfirmed ? 'var(--accent)' : 'var(--line-strong)'),
-                    background: rxConfirmed ? 'var(--accent)' : '#fff',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0, transition: 'all .15s',
-                }"
+                class="inline-flex items-center justify-center w-[22px] h-[22px] shrink-0 border-[1.5px] rounded-[6px] transition-all duration-150"
+                :class="rxConfirmed ? 'border-accent bg-accent' : 'border-line-strong bg-white'"
             >
                 <Icon v-if="rxConfirmed" name="check" :size="14" color="#fff" :stroke="2.6" />
             </span>
-            <span style="font-size: 14px; font-weight: 600; color: var(--ink)">
+            <span class="text-[14px] font-semibold text-ink">
                 אני מאשר/ת הכנה רוקחית
-                <span style="color: var(--accent); margin-inline-start: 4px">*</span>
+                <span class="text-accent ms-[4px]">*</span>
             </span>
         </label>
 
         <!-- CTA -->
-        <div class="col gap-12">
+        <div class="col gap-[12px]">
             <button
-                class="btn btn--accent"
+                class="btn btn--accent w-full h-[48px] text-[16px] font-semibold"
+                :class="rxConfirmed ? 'opacity-100 cursor-pointer' : 'opacity-45 cursor-not-allowed'"
                 :disabled="!rxConfirmed"
-                :style="{
-                    width: '100%', height: '48px', fontSize: '16px', fontWeight: 600,
-                    opacity: rxConfirmed ? 1 : 0.45,
-                    cursor: rxConfirmed ? 'pointer' : 'not-allowed',
-                }"
                 @click="addToCart"
             >
                 <Icon name="cart" :size="18" color="#fff" /> הוסף לסל הקניות

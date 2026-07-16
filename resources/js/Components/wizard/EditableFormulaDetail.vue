@@ -19,44 +19,43 @@ const rows = computed(() => props.f.ingredients.map((ing) => ({
 
 <template>
     <div>
-        <div style="margin-bottom: 18px">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap">
-                <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--ink)">{{ f.name }}</h2>
-                <span v-if="ftype" style="font-size: 11.5px; font-weight: 600; color: var(--ink-2); background: var(--surface-sunk); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px">
+        <div class="mb-[18px]">
+            <div class="flex items-center flex-wrap gap-[10px] mb-[8px]">
+                <h2 class="m-0 text-[20px] font-bold text-ink">{{ f.name }}</h2>
+                <span v-if="ftype" class="px-[10px] py-[2px] text-[11.5px] font-semibold text-ink-2 bg-surface-sunk border border-line rounded-[999px]">
                     {{ ftype.heb }}
                 </span>
             </div>
-            <p style="margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.6">
+            <p class="m-0 text-[13px] leading-[1.6] text-ink-2">
                 {{ f.description || f.summary }}
             </p>
         </div>
 
-        <div style="border-radius: var(--r-card); border: 1px solid var(--line); overflow: hidden">
-            <div style="background: var(--surface-sunk); padding: 8px 16px; border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3)">
+        <div class="border border-line rounded-card overflow-hidden">
+            <div class="px-[16px] py-[8px] text-[11px] font-bold tracking-[0.1em] uppercase text-ink-3 bg-surface-sunk border-b border-b-line">
                 הרכב הפורמולה
             </div>
             <div
                 v-for="(r, i) in rows" :key="r.ing.herbId"
-                :style="{
-                    display: 'flex', alignItems: 'center', gap: '12px',
-                    padding: '9px 16px',
-                    borderBottom: i === rows.length - 1 ? 'none' : '1px solid var(--line)',
-                    background: i % 2 === 0 ? 'transparent' : 'var(--surface-sunk)',
-                }"
+                class="flex items-center gap-[12px] px-[16px] py-[9px]"
+                :class="[
+                    i === rows.length - 1 ? '' : 'border-b border-b-line',
+                    i % 2 === 0 ? 'bg-transparent' : 'bg-surface-sunk',
+                ]"
             >
-                <span style="font-size: 12px; color: var(--ink-4); width: 18px; text-align: center; flex-shrink: 0">{{ i + 1 }}</span>
-                <div style="flex: 1; min-width: 0">
-                    <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap">
-                        <span style="font-size: 14px; font-weight: 600; color: var(--ink)">{{ r.herb ? r.herb.heb : r.ing.herbId }}</span>
-                        <span v-if="r.herb && r.herb.lat" style="font-size: 12px; font-style: italic; color: var(--ink-3); font-family: var(--font-latin)">{{ r.herb.lat }}</span>
+                <span class="w-[18px] shrink-0 text-center text-[12px] text-ink-4">{{ i + 1 }}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-baseline flex-wrap gap-[8px]">
+                        <span class="text-[14px] font-semibold text-ink">{{ r.herb ? r.herb.heb : r.ing.herbId }}</span>
+                        <span v-if="r.herb && r.herb.lat" class="text-[12px] italic font-latin text-ink-3">{{ r.herb.lat }}</span>
                     </div>
                 </div>
-                <span class="num" style="font-size: 13px; color: var(--ink-3); flex-shrink: 0">{{ r.pct }}%</span>
+                <span class="num shrink-0 text-[13px] text-ink-3">{{ r.pct }}%</span>
             </div>
         </div>
 
-        <div style="margin-top: 14px; display: flex; align-items: flex-start; gap: 7px; font-size: 12.5px; color: var(--ink-3); line-height: 1.6">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 2px; flex-shrink: 0">
+        <div class="flex items-start gap-[7px] mt-[14px] text-[12.5px] leading-[1.6] text-ink-3">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="mt-[2px] shrink-0">
                 <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
             </svg>
             נטענת כנקודת פתיחה הניתנת לעריכה מלאה — ניתן לשנות רכיבים, מינונים ונפח לאחר הטעינה.

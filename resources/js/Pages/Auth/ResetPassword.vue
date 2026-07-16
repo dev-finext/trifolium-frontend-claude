@@ -49,20 +49,16 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
     <AuthSplitCard data-screen-label="A6 בחירת סיסמה חדשה">
         <form novalidate @submit.prevent="submit">
             <span
-                :style="{
-                    width: '46px', height: '46px', borderRadius: '50%',
-                    background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px',
-                }"
+                class="inline-flex items-center justify-center w-[46px] h-[46px] mb-[18px] bg-accent-tint border border-accent-tint-strong rounded-[50%]"
             ><Icon name="lock" :size="22" color="var(--accent)" /></span>
-            <h1 :style="{ margin: 0, fontSize: '23px', fontWeight: 600, letterSpacing: '-0.01em', lineHeight: 1.3 }">
+            <h1 class="m-0 text-[23px] font-semibold leading-[1.3] tracking-[-0.01em]">
                 בחירת סיסמה חדשה
             </h1>
-            <p class="page-sub" :style="{ margin: '8px 0 30px', textWrap: 'pretty', lineHeight: 1.7 }">
+            <p class="page-sub mt-[8px] mx-0 mb-[30px] leading-[1.7] text-pretty">
                 בחרו סיסמה חדשה לחשבונכם. מומלץ להשתמש בסיסמה שאינכם משתמשים בה במקום אחר.
             </p>
 
-            <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
+            <div class="flex flex-col gap-[18px]">
                 <PasswordField
                     ref="pwField"
                     label="סיסמה חדשה" :model-value="pw"
@@ -72,18 +68,15 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
                 />
 
                 <!-- live requirement checklist -->
-                <div :style="{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', marginTop: '-6px' }">
+                <div class="flex flex-wrap gap-y-[6px] gap-x-[16px] mt-[-6px]">
                     <span
                         v-for="r in RULES" :key="r.id"
-                        :style="{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: r.test(pw) ? 'var(--accent)' : 'var(--ink-4)', transition: 'color .15s' }"
+                        class="inline-flex items-center gap-[6px] text-[12.5px] transition-[color] duration-150"
+                        :class="r.test(pw) ? 'text-accent' : 'text-ink-4'"
                     >
                         <span
-                            :style="{
-                                width: '15px', height: '15px', borderRadius: '50%', flexShrink: 0,
-                                border: '1.5px solid ' + (r.test(pw) ? 'var(--accent)' : 'var(--line-strong)'),
-                                background: r.test(pw) ? 'var(--accent)' : 'transparent',
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all .15s',
-                            }"
+                            class="inline-flex items-center justify-center w-[15px] h-[15px] shrink-0 border-[1.5px] rounded-[50%] transition-all duration-150"
+                            :class="r.test(pw) ? 'border-accent bg-accent' : 'border-line-strong bg-transparent'"
                         ><Icon v-if="r.test(pw)" name="check" :size="9" color="#fff" :stroke="3" /></span>
                         {{ r.label }}
                     </span>
@@ -97,7 +90,7 @@ function onConfirm(v) { confirm.value = v; err.value = { ...err.value, confirm: 
                     @update:model-value="onConfirm"
                 />
 
-                <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 6px">
+                <button type="submit" class="btn btn--primary w-full mt-[6px]">
                     שמירת הסיסמה
                 </button>
             </div>

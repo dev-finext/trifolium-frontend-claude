@@ -49,28 +49,19 @@ const goArticles = () => visit('articles');
 </script>
 
 <template>
-    <section style="padding: 40px 24px">
-        <div style="max-width: 1200px; margin: 0 auto">
+    <section class="py-[40px] px-[24px]">
+        <div class="max-w-[1200px] mx-auto my-0">
             <SectionHeader title="מאמרים מקצועיים" link-label="לכל המאמרים" @link-click="goArticles" />
 
-            <div style="position: relative">
+            <div class="relative">
                 <!-- Prev (newer, toward start) -->
                 <CarouselArrow dir="prev" :disabled="atStart" @click="scrollByCards('prev')" />
 
                 <div
                     ref="trackRef"
-                    class="tf-carousel-track"
-                    :style="{
-                        display: 'flex',
-                        gap: '20px',
-                        overflowX: 'auto',
-                        scrollSnapType: 'x mandatory',
-                        scrollPadding: '0 4px',
-                        paddingBottom: '8px',
-                        scrollbarWidth: 'none',
-                    }"
+                    class="tf-carousel-track flex gap-[20px] overflow-x-auto snap-x snap-mandatory [scroll-padding:0_4px] pb-[8px] [scrollbar-width:none]"
                 >
-                    <div v-for="a in articles" :key="a.id" style="flex: 0 0 300px; scroll-snap-align: start">
+                    <div v-for="a in articles" :key="a.id" class="flex-[0_0_300px] snap-start">
                         <ArticleCard :article="a" />
                     </div>
                 </div>

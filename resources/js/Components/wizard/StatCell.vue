@@ -11,25 +11,13 @@ defineProps({
 
 <template>
     <div
-        :style="{
-            padding: '11px 18px',
-            borderLeft: last ? 'none' : '1px solid var(--line)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            minHeight: '58px',
-            justifyContent: 'center',
-        }"
+        class="flex flex-col justify-center gap-[4px] min-h-[58px] px-[18px] py-[11px]"
+        :class="last ? '' : 'border-l border-line'"
     >
         <div class="field-label">{{ label }}</div>
         <div
-            :style="{
-                fontSize: big ? '19px' : '15px',
-                fontWeight: big ? 700 : 600,
-                color: accent ? 'var(--accent)' : 'var(--ink)',
-                letterSpacing: big ? '-0.01em' : '0',
-                lineHeight: 1.2,
-            }"
+            class="leading-[1.2]"
+            :class="[big ? 'text-[19px] font-bold tracking-[-0.01em]' : 'text-[15px] font-semibold tracking-[0]', accent ? 'text-accent' : 'text-ink']"
         >
             <slot />
         </div>

@@ -16,29 +16,10 @@ const emit = defineEmits(['update:checked']);
 
 <template>
     <div
-        :style="{
-            background: '#fdf7ec',
-            border: '1px solid #e7d4ad',
-            borderInlineStart: '3px solid var(--warning)',
-            borderRadius: 'var(--r-card)',
-            padding: '16px 18px',
-            display: 'flex',
-            gap: '13px',
-            alignItems: 'flex-start',
-        }"
+        class="flex items-start gap-[13px] py-[16px] px-[18px] bg-[#fdf7ec] border border-[#e7d4ad] [border-inline-start:3px_solid_var(--warning)] rounded-card"
     >
         <span
-            :style="{
-                width: '30px', height: '30px',
-                borderRadius: '50%',
-                background: 'var(--warning)',
-                color: '#fff',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                marginTop: '1px',
-            }"
+            class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 mt-[1px] text-[#fff] bg-warning rounded-full"
         >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M10.3 3.2 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0z" />
@@ -46,54 +27,27 @@ const emit = defineEmits(['update:checked']);
                 <path d="M12 17h.01" />
             </svg>
         </span>
-        <div style="flex: 1; min-width: 0">
+        <div class="flex-1 min-w-0">
             <div
-                :style="{
-                    fontSize: '11px',
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    color: '#8a6516',
-                    marginBottom: '7px',
-                }"
+                class="mb-[7px] text-[11px] tracking-[0.06em] uppercase font-bold text-[#8a6516]"
             >
                 הצהרת בטיחות — שילוב צמחי מרפא ותרופות
             </div>
             <p
-                :style="{
-                    margin: 0,
-                    fontSize: '13px',
-                    lineHeight: 1.75,
-                    color: 'var(--ink-2)',
-                    textWrap: 'pretty',
-                }"
+                class="m-0 text-[13px] leading-[1.75] [text-wrap:pretty] text-ink-2"
             >
                 ידוע לי שעלולה להיות סתירה בין צמחי מרפא לתרופות מרשם או תרופות אחרות ותוספי מזון. במתן אישור זה, הסכמה לתנאי זה אני מצהיר כי בדקתי את נכונות ההכנה / המרשם והתאמתו למטופל / לקוח ובפרט בדקתי שימוש במדללי דם, תרופות לל״ד, סוכר, תרופות אנטי דיכאוניות, תרופות פסיכיאטריות אחרות, תרופות ביולוגיות או כימותרפיות או כל קבוצת תרופות אחרת ותוספי מזון אשר עלולה לייצר סתירה או תופעות לוואי אל מול ההכנה.
             </p>
             <div
                 v-if="patientMeds"
-                :style="{
-                    marginTop: '10px',
-                    fontSize: '12.5px',
-                    color: 'var(--ink-3)',
-                    lineHeight: 1.6,
-                }"
+                class="mt-[10px] text-[12.5px] leading-[1.6] text-ink-3"
             >
-                <strong style="color: var(--ink-2); font-weight: 700">תרופות שדווחו עבור המטופל:</strong>
+                <strong class="font-bold text-ink-2">תרופות שדווחו עבור המטופל:</strong>
                 {{ ' ' }}{{ patientMeds }}
             </div>
             <label
                 v-if="confirmable"
-                class="meds-ack"
-                :style="{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    marginTop: '14px',
-                    paddingTop: '13px',
-                    borderTop: '1px solid #e7d4ad',
-                    cursor: 'pointer',
-                }"
+                class="meds-ack flex items-center gap-[10px] mt-[14px] pt-[13px] border-t border-t-[#e7d4ad] cursor-pointer"
             >
                 <!-- Real, keyboard-operable native checkbox (visually hidden;
                      Space toggles it natively). The styled box below is the
@@ -106,27 +60,17 @@ const emit = defineEmits(['update:checked']);
                     @change="emit('update:checked', $event.target.checked)"
                 />
                 <span
-                    class="meds-ack__box"
+                    class="meds-ack__box inline-flex items-center justify-center w-[22px] h-[22px] shrink-0 border-[1.5px] rounded-[6px] transition-all duration-[120ms]"
+                    :class="checked ? 'border-accent bg-accent' : 'border-[#c9a85f] bg-[#fff]'"
                     aria-hidden="true"
-                    :style="{
-                        width: '22px', height: '22px',
-                        borderRadius: '6px',
-                        border: '1.5px solid ' + (checked ? 'var(--accent)' : '#c9a85f'),
-                        background: checked ? 'var(--accent)' : '#fff',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        transition: 'all .12s',
-                    }"
                 >
                     <svg v-if="checked" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 6L9 17l-5-5" />
                     </svg>
                 </span>
-                <span style="font-size: 13px; font-weight: 600; color: var(--ink)">
+                <span class="text-[13px] font-semibold text-ink">
                     קראתי ואני מאשר/ת את הצהרת הבטיחות
-                    <span style="color: var(--danger); margin-inline-start: 3px">*</span>
+                    <span class="ms-[3px] text-danger">*</span>
                 </span>
             </label>
         </div>

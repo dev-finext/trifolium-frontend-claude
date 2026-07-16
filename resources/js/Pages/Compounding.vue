@@ -250,8 +250,8 @@ function goForward() { if (canForward.value) go(step.value + 1); }
 
 <template>
     <Head title="הכנת פורמולה" />
-    <div class="formula-prep" style="background: var(--bg)">
-        <div style="zoom: 1.13">
+    <div class="formula-prep bg-bg">
+        <div class="[zoom:1.13]">
 
             <!-- Step indicator -->
             <StepIndicator
@@ -283,9 +283,9 @@ function goForward() { if (canForward.value) go(step.value + 1); }
             </div>
 
             <!-- Step content -->
-            <main style="padding: 40px 24px 120px">
-                <div style="max-width: var(--maxw-lab); margin: 0 auto">
-                    <div v-if="step === 1" style="max-width: 720px; margin: 0 auto">
+            <main class="pt-[40px] px-[24px] pb-[120px]">
+                <div class="max-w-(--maxw-lab) my-0 mx-auto">
+                    <div v-if="step === 1" class="max-w-[720px] my-0 mx-auto">
                         <WizardStep2
                             :option="patientOption"
                             :existing-patient-id="existingPatientId"

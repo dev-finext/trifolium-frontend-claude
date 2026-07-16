@@ -10,14 +10,10 @@ defineProps({
 <template>
     <div
         dir="rtl"
-        :style="{
-            display: 'flex', alignItems: 'center', gap: '10px',
-            padding: first ? '10px 14px 7px' : '11px 14px 7px',
-            borderTop: first ? 'none' : '1px solid var(--line)',
-            background: 'var(--surface-sunk)',
-        }"
+        class="flex items-center gap-[10px] px-[14px] pb-[7px] bg-surface-sunk"
+        :class="first ? 'pt-[10px]' : 'pt-[11px] border-t border-line'"
     >
-        <span style="font-size: 11px; letter-spacing: .08em; font-weight: 700; color: var(--ink-3); white-space: nowrap">{{ label }}</span>
-        <span style="flex: 1; height: 1px; background: var(--line)" />
+        <span class="text-[11px] tracking-[.08em] font-bold text-ink-3 whitespace-nowrap">{{ label }}</span>
+        <span class="flex-1 h-[1px] bg-(--line)" />
     </div>
 </template>

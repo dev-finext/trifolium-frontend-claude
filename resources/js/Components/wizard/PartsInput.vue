@@ -26,28 +26,17 @@ function onInput(e) {
     commit(e.target.value);
 }
 
-const btnStyle = {
-    width: '28px', height: '32px',
-    border: '1px solid var(--line-strong)',
-    background: 'var(--surface)',
-    color: 'var(--ink-2)',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'var(--font-latin)',
-    fontSize: '17px',
-    lineHeight: 1,
-    flexShrink: 0,
-};
+// Shared stepper-button classes (formerly the btnStyle inline-style object).
+const btnClass = 'inline-flex items-center justify-center w-[28px] h-[32px] shrink-0 font-latin text-[17px] leading-[1] text-ink-2 bg-surface border border-line-strong cursor-pointer';
 </script>
 
 <template>
-    <div style="display: inline-flex; align-items: stretch">
+    <div class="inline-flex items-stretch">
         <button
             type="button"
             aria-label="הפחת חלק"
-            :style="{ ...btnStyle, borderRadius: 'var(--r-control) 0 0 var(--r-control)', borderRight: 'none' }"
+            :class="btnClass"
+            class="border-r-0 rounded-[var(--r-control)_0_0_var(--r-control)]"
             @click="step(-1)"
         >−</button>
         <input
@@ -55,29 +44,16 @@ const btnStyle = {
             :min="0"
             :step="1"
             :value="draft"
-            class="num no-spin"
+            class="num no-spin w-[46px] h-[32px] p-0 text-center text-[14px] font-semibold outline-none [direction:ltr] [-moz-appearance:textfield] bg-surface border border-line-strong rounded-none"
             aria-label="מספר חלקים"
-            :style="{
-                width: '46px',
-                height: '32px',
-                border: '1px solid var(--line-strong)',
-                borderRadius: 0,
-                padding: 0,
-                background: 'var(--surface)',
-                textAlign: 'center',
-                fontSize: '14px',
-                fontWeight: 600,
-                outline: 'none',
-                direction: 'ltr',
-                MozAppearance: 'textfield',
-            }"
             @input="onInput"
             @blur="draft = String(value ?? '')"
         />
         <button
             type="button"
             aria-label="הוסף חלק"
-            :style="{ ...btnStyle, borderRadius: '0 var(--r-control) var(--r-control) 0', borderLeft: 'none' }"
+            :class="btnClass"
+            class="border-l-0 rounded-[0_var(--r-control)_var(--r-control)_0]"
             @click="step(1)"
         >+</button>
     </div>

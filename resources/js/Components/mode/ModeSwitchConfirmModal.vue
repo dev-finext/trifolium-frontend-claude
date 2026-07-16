@@ -21,7 +21,7 @@ const targetLabel = computed(() => (props.targetMode === 'chinese' ? 'סיני' 
         @confirm="$emit('confirm')"
         @cancel="$emit('cancel')"
     >
-        החלפה לסגנון <strong style="color: var(--ink)">{{ targetLabel }}</strong> תמחק את הפורמולה
+        החלפה לסגנון <strong class="text-ink">{{ targetLabel }}</strong> תמחק את הפורמולה
         הנוכחית ותתחיל רקיחה מחדש בסגנון זה. פרטי המטופל יישמרו, ולא ניתן לשחזר את הפורמולה.
     </DangerConfirmModal>
 </template>

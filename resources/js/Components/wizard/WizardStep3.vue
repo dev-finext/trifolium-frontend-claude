@@ -94,7 +94,7 @@ const blocker = computed(() => {
 </script>
 
 <template>
-    <div class="col gap-24">
+    <div class="col gap-[24px]">
         <ZoneA :formula="formula" :set-f="setF" />
         <ZoneBC :formula="formula" :set-f="setF" :patient-meds="patientMeds" :load-saved-formula="loadSavedFormula" />
         <ZoneD :formula="formula" :ftype="ftype" :patient-label="patientLabel" :no-patient="noPatient" />
@@ -106,7 +106,7 @@ const blocker = computed(() => {
         <!-- Usage directions — embedded at the end of the compounding flow -->
         <slot name="directions" />
 
-        <div class="col gap-12">
+        <div class="col gap-[12px]">
             <ValidationNote
                 v-if="!noPatient && !canNext && blocker"
                 :message="blocker.msg"
@@ -119,21 +119,20 @@ const blocker = computed(() => {
             />
             <div
                 v-if="savingList"
-                style="display: flex; align-items: center; gap: 12px; background: var(--accent-tint); color: var(--accent-ink, var(--accent)); border: 1px solid var(--accent); border-radius: var(--r-card); padding: 12px 16px; font-size: 13px; font-weight: 600"
+                class="flex items-center gap-[12px] px-[16px] py-[12px] text-[13px] font-semibold text-[color:var(--accent-ink,var(--accent))] bg-accent-tint border border-accent rounded-card"
             >
-                <div style="width: 18px; height: 18px; flex-shrink: 0; border: 2.5px solid var(--accent-tint-strong); border-top-color: var(--accent); border-radius: 50%; animation: tf-spin 0.7s linear infinite" />
+                <div class="w-[18px] h-[18px] shrink-0 border-[2.5px] border-accent-tint-strong border-t-accent rounded-[50%] animate-[tf-spin_0.7s_linear_infinite]" />
                 <span>שומר את הפורמולה — מעביר אותך אל הפורמולות שלי…</span>
             </div>
-            <div style="display: flex; justify-content: space-between">
+            <div class="flex justify-between">
                 <button class="btn btn--ghost" @click="emit('back')">
                     <Icon name="arrow_right" :size="16" /> חזור
                 </button>
-                <div style="display: flex; align-items: center; gap: 12px">
+                <div class="flex items-center gap-[12px]">
                     <button
-                        class="btn btn--ghost save-to-list-btn"
+                        class="btn btn--ghost save-to-list-btn justify-center gap-0 text-[12.5px]"
                         title="שמירת הפורמולה לרשימה שלי"
                         aria-label="שמירת הפורמולה לרשימה שלי"
-                        style="font-size: 12.5px; gap: 0; justify-content: center"
                         @click="onSaveToList"
                     >
                         <Icon name="save" :size="15" />
@@ -141,10 +140,10 @@ const blocker = computed(() => {
                     </button>
                     <button
                         v-if="!noPatient"
-                        class="btn btn--primary"
+                        class="btn btn--primary ps-[28px] pe-[28px]"
                         :disabled="!canNext"
                         :title="blocker ? blocker.msg : undefined"
-                        :style="{ opacity: canNext ? 1 : 0.4, cursor: canNext ? 'pointer' : 'not-allowed', paddingInline: '28px' }"
+                        :class="canNext ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
                         @click="emit('next')"
                     >
                         המשך לאישור

@@ -29,34 +29,26 @@ const fid = (k) => `addr-${props.addr.id}-${k}`;
 
 <template>
     <div
-        :style="{
-            border: '1px solid ' + (isPrimary ? 'var(--accent)' : 'var(--line)'),
-            borderRadius: 'var(--r-card)', padding: '16px 18px',
-            background: isPrimary ? 'var(--accent-tint)' : 'var(--surface)',
-            transition: 'border-color .15s, background .15s',
-        }"
+        class="py-[16px] px-[18px] border rounded-card transition-[border-color,background] duration-150"
+        :class="isPrimary ? 'border-accent bg-accent-tint' : 'border-line bg-surface'"
     >
         <!-- header: title + primary badge / actions -->
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px">
-            <div style="display: flex; align-items: center; gap: 9px; min-width: 0">
+        <div class="flex items-center justify-between gap-[12px] mb-[14px]">
+            <div class="flex items-center gap-[9px] min-w-0">
                 <Icon name="map_pin" :size="16" color="var(--accent)" />
-                <span style="font-size: 14px; font-weight: 600">כתובת {{ index + 1 }}</span>
+                <span class="text-[14px] font-semibold">כתובת {{ index + 1 }}</span>
                 <span
                     v-if="isPrimary"
-                    :style="{
-                        padding: '2px 9px', borderRadius: '999px', fontSize: '11px', fontWeight: 700,
-                        background: 'var(--accent)', color: '#fff',
-                    }"
+                    class="py-[2px] px-[9px] text-[11px] font-bold bg-accent text-white rounded-[999px]"
                 >ברירת מחדל</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0">
+            <div class="flex items-center gap-[6px] shrink-0">
                 <button v-if="!isPrimary" class="btn btn--ghost btn--sm" @click="$emit('make-primary')">
                     קבע כברירת מחדל
                 </button>
                 <button
                     v-if="canDelete"
-                    class="btn btn--ghost btn--sm"
-                    style="color: var(--danger); border-color: var(--line)"
+                    class="btn btn--ghost btn--sm text-danger border-line"
                     aria-label="מחק כתובת"
                     @click="$emit('delete')"
                 >
@@ -65,18 +57,18 @@ const fid = (k) => `addr-${props.addr.id}-${k}`;
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
-            <div style="grid-column: 1 / -1">
+        <div class="grid grid-cols-2 gap-[14px]">
+            <div class="col-span-full">
                 <FieldLabel :for="fid('label')">תיאור הכתובת</FieldLabel>
                 <input :id="fid('label')" class="input" :value="addr.label" placeholder="לדוגמה: מרפאה, בית" @input="set('label')($event.target.value)" />
             </div>
-            <div style="grid-column: 1 / -1">
+            <div class="col-span-full">
                 <FieldLabel :for="fid('name')">שם המקבל/ת</FieldLabel>
                 <input :id="fid('name')" class="input" :value="addr.name" placeholder="שם מלא" autocomplete="name" @input="set('name')($event.target.value)" />
             </div>
-            <div style="grid-column: 1 / -1">
+            <div class="col-span-full">
                 <FieldLabel :for="fid('street')">
-                    רחוב ומספר<span aria-hidden="true" style="color: var(--danger); margin-inline-start: 3px">*</span>
+                    רחוב ומספר<span aria-hidden="true" class="ms-[3px] text-danger">*</span>
                 </FieldLabel>
                 <input
                     :id="fid('street')"
@@ -87,14 +79,14 @@ const fid = (k) => `addr-${props.addr.id}-${k}`;
                     aria-required="true"
                     :aria-invalid="errs.street ? 'true' : undefined"
                     :aria-describedby="errs.street ? fid('street') + '-error' : undefined"
-                    :style="errs.street ? { borderColor: 'var(--danger)' } : undefined"
+                    :class="errs.street ? 'border-danger' : ''"
                     @input="set('street')($event.target.value)"
                 />
                 <ErrMsg v-if="errs.street" :id="fid('street') + '-error'" role="alert">{{ errs.street }}</ErrMsg>
             </div>
-            <div style="grid-column: 1 / -1">
+            <div class="col-span-full">
                 <FieldLabel :for="fid('city')">
-                    עיר<span aria-hidden="true" style="color: var(--danger); margin-inline-start: 3px">*</span>
+                    עיר<span aria-hidden="true" class="ms-[3px] text-danger">*</span>
                 </FieldLabel>
                 <input
                     :id="fid('city')"
@@ -105,18 +97,18 @@ const fid = (k) => `addr-${props.addr.id}-${k}`;
                     aria-required="true"
                     :aria-invalid="errs.city ? 'true' : undefined"
                     :aria-describedby="errs.city ? fid('city') + '-error' : undefined"
-                    :style="errs.city ? { borderColor: 'var(--danger)' } : undefined"
+                    :class="errs.city ? 'border-danger' : ''"
                     @input="set('city')($event.target.value)"
                 />
                 <ErrMsg v-if="errs.city" :id="fid('city') + '-error'" role="alert">{{ errs.city }}</ErrMsg>
             </div>
-            <div style="grid-column: 1 / -1">
+            <div class="col-span-full">
                 <FieldLabel :for="fid('phone')">
-                    טלפון ליצירת קשר<span aria-hidden="true" style="color: var(--danger); margin-inline-start: 3px">*</span>
+                    טלפון ליצירת קשר<span aria-hidden="true" class="ms-[3px] text-danger">*</span>
                 </FieldLabel>
                 <input
                     :id="fid('phone')"
-                    class="input"
+                    class="input text-right"
                     :value="addr.phone"
                     placeholder="טלפון"
                     dir="ltr"
@@ -126,7 +118,7 @@ const fid = (k) => `addr-${props.addr.id}-${k}`;
                     aria-required="true"
                     :aria-invalid="errs.phone ? 'true' : undefined"
                     :aria-describedby="errs.phone ? fid('phone') + '-error' : undefined"
-                    :style="errs.phone ? { textAlign: 'right', borderColor: 'var(--danger)' } : { textAlign: 'right' }"
+                    :class="errs.phone ? 'border-danger' : ''"
                     @input="set('phone')($event.target.value)"
                 />
                 <ErrMsg v-if="errs.phone" :id="fid('phone') + '-error'" role="alert">{{ errs.phone }}</ErrMsg>

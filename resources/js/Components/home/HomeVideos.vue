@@ -26,20 +26,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 </script>
 
 <template>
-    <section
-        :style="{
-            background: 'var(--surface-sunk)',
-            borderTop: '1px solid var(--line)',
-            padding: '56px 24px 72px',
-        }"
-    >
-        <div style="max-width: 1200px; margin: 0 auto">
+    <section class="pt-[56px] px-[24px] pb-[72px] bg-surface-sunk border-t border-t-line">
+        <div class="max-w-[1200px] mx-auto my-0">
             <SectionHeader
                 title="סרטוני הדרכה"
                 subtitle="למד כיצד להשתמש במערכת בצעדים פשוטים"
                 link-label="לכל הסרטונים"
             />
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px">
+            <div class="grid grid-cols-3 gap-[20px]">
                 <VideoCard
                     v-for="(v, i) in cards"
                     :key="v.id"

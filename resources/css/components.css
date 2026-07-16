@@ -292,12 +292,12 @@
   font-weight: 600;
 }
 
-/* ---------- Utility ---------- */
+/* ---------- Utility ----------
+   Spacing helpers (.gap-N / .mt-N) were removed: their names collided with
+   Tailwind's rem-based scale, so all usages now use exact arbitrary values
+   (gap-[16px], mt-[8px], …). .row/.col stay — no Tailwind equivalent. */
 .row { display: flex; align-items: center; }
 .col { display: flex; flex-direction: column; }
-.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-12 { gap: 12px; }
-.gap-16 { gap: 16px; } .gap-24 { gap: 24px; } .gap-32 { gap: 32px; }
-.mt-8 { margin-top: 8px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; } .mt-32 { margin-top: 32px; }
 .muted { color: var(--ink-3); font-weight: 500; }
 .small { font-size: 12px; font-weight: 500; }
 .divider { height: 1px; background: var(--line); width: 100%; }

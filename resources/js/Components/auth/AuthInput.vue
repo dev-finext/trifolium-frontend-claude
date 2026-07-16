@@ -49,7 +49,7 @@ defineExpose({ focus: () => inputEl.value?.focus() });
 <template>
     <div>
         <label v-if="label" class="field-label" :for="inputId">
-            {{ label }}<span v-if="required" aria-hidden="true" :style="{ color: 'var(--danger)', marginInlineStart: '2px' }">*</span>
+            {{ label }}<span v-if="required" aria-hidden="true" class="ms-[2px] text-danger">*</span>
         </label>
         <div class="input-wrap">
             <span v-if="icon" class="lead-icon"><Icon :name="icon" :size="16" /></span>
@@ -57,7 +57,7 @@ defineExpose({ focus: () => inputEl.value?.focus() });
                 :id="inputId"
                 ref="inputEl"
                 class="input"
-                :class="{ 'with-icon': icon, num: numeric }"
+                :class="{ 'with-icon': icon, num: numeric, 'text-right': isLatin, 'border-danger': error }"
                 :type="type"
                 :value="modelValue"
                 :placeholder="placeholder"
@@ -73,10 +73,6 @@ defineExpose({ focus: () => inputEl.value?.focus() });
                 :aria-invalid="error ? 'true' : undefined"
                 :aria-describedby="error ? errorId : undefined"
                 v-bind="latinAttrs"
-                :style="{
-                    ...(isLatin ? { textAlign: 'right' } : {}),
-                    ...(error ? { borderColor: 'var(--danger)' } : {}),
-                }"
                 @input="emit('update:modelValue', $event.target.value)"
             />
         </div>

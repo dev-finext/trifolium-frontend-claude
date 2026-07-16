@@ -36,7 +36,7 @@ const { dialogRef } = useModal(() => emit('close'));
 
 <template>
     <div
-        style="position: fixed; inset: 0; z-index: 200; background: rgba(20,30,18,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 48px 24px; overflow-y: auto; backdrop-filter: blur(2px)"
+        class="fixed inset-0 flex items-start justify-center py-[48px] px-[24px] overflow-y-auto bg-[rgba(20,30,18,0.45)] z-[200] backdrop-blur-[2px]"
         @click="emit('close')"
     >
         <div
@@ -45,24 +45,24 @@ const { dialogRef } = useModal(() => emit('close'));
             aria-modal="true"
             tabindex="-1"
             aria-labelledby="edit-patient-title"
-            style="width: 560px; max-width: 100%; background: var(--surface); border-radius: 12px; overflow: hidden; margin: auto; box-shadow: 0 40px 80px -30px rgba(20,30,18,0.6)"
+            class="w-[560px] max-w-full m-auto overflow-hidden bg-surface rounded-[12px] shadow-[0_40px_80px_-30px_rgba(20,30,18,0.6)]"
             @click.stop
         >
             <!-- header -->
-            <div style="display: flex; align-items: center; gap: 14px; padding: 20px 24px; border-bottom: 1px solid var(--line); position: relative">
+            <div class="relative flex items-center gap-[14px] py-[20px] px-[24px] border-b border-line">
                 <PatientAvatar :initials="patient.initials" sel />
-                <div style="flex: 1; min-width: 0">
-                    <div style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px">
+                <div class="flex-1 min-w-0">
+                    <div class="mb-[3px] text-[11px] tracking-[.08em] uppercase font-semibold text-ink-3">
                         עריכת פרטי מטופל
                     </div>
-                    <div id="edit-patient-title" style="font-size: 17px; font-weight: 700; color: var(--ink)">
+                    <div id="edit-patient-title" class="text-[17px] font-bold text-ink">
                         {{ `${form.firstName} ${form.lastName}`.trim() || patient.heb }}
                     </div>
                 </div>
                 <button
                     type="button"
                     aria-label="סגירה"
-                    style="width: 34px; height: 34px; border-radius: 8px; border: none; background: var(--surface-sunk); cursor: pointer; display: inline-flex; align-items: center; justify-content: center"
+                    class="inline-flex items-center justify-center w-[34px] h-[34px] bg-surface-sunk border-none rounded-[8px] cursor-pointer"
                     @click="emit('close')"
                 >
                     <Icon name="x" :size="18" color="var(--ink-2)" />
@@ -70,7 +70,7 @@ const { dialogRef } = useModal(() => emit('close'));
             </div>
 
             <!-- body — the same fields as new-patient, pre-filled -->
-            <div style="padding: 22px 24px 26px">
+            <div class="pt-[22px] px-[24px] pb-[26px]">
                 <NewPatientForm
                     v-model:value="form"
                     :can-continue="canSave"

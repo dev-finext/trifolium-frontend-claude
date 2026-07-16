@@ -140,37 +140,25 @@ function patientToForm(p, edit) {
         <!-- Hero search — the dominant path (existing patient) -->
         <div class="input-wrap">
             <span
-                :style="{
-                    position: 'absolute',
-                    insetInlineStart: '16px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: existingActive ? 'var(--accent)' : 'var(--ink-3)',
-                    pointerEvents: 'none',
-                }"
+                class="absolute start-[16px] top-[50%] -translate-y-1/2 pointer-events-none"
+                :class="existingActive ? 'text-accent' : 'text-ink-3'"
             >
                 <Icon name="search" :size="20" />
             </span>
             <input
-                class="input"
+                class="input h-[56px] text-[15.5px] ps-[50px] border-[1.5px]"
+                :class="existingActive
+                    ? 'border-accent shadow-[0_4px_14px_-10px_rgba(61,90,58,0.35)]'
+                    : 'border-line-strong shadow-[0_4px_14px_-10px_rgba(20,18,14,0.25)]'"
                 :value="search"
                 placeholder="חפש מטופל לפי שם או טלפון…"
-                :style="{
-                    height: '56px',
-                    fontSize: '15.5px',
-                    paddingInlineStart: '50px',
-                    border: '1.5px solid ' + (existingActive ? 'var(--accent)' : 'var(--line-strong)'),
-                    boxShadow: existingActive
-                        ? '0 4px 14px -10px rgba(61,90,58,0.35)'
-                        : '0 4px 14px -10px rgba(20,18,14,0.25)',
-                }"
                 @input="onSearchInput"
                 @focus="emit('update:option', 'existing')"
             />
         </div>
 
         <!-- Secondary paths -->
-        <div style="display: flex; gap: 12px; margin-top: 14px">
+        <div class="flex gap-[12px] mt-[14px]">
             <SecondaryAction
                 icon="user"
                 label="מטופל חדש"
@@ -178,7 +166,7 @@ function patientToForm(p, edit) {
                 :active="option === 'new'"
                 @click="emit('update:option', 'new')"
             />
-            <NewRibbon style="flex: 1; display: flex">
+            <NewRibbon class="flex flex-1">
                 <SecondaryAction
                     icon="save"
                     label="ללא מטופל"
@@ -191,23 +179,16 @@ function patientToForm(p, edit) {
         </div>
 
         <!-- Content area — depends on the selected option -->
-        <div style="margin-top: 24px; margin-bottom: 28px">
+        <div class="mt-[24px] mb-[28px]">
             <div v-if="option === 'existing' && trimmed">
-                <div style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 12px">
+                <div class="mb-[12px] text-[11px] tracking-[.08em] uppercase font-semibold text-ink-3">
                     תוצאות חיפוש
                 </div>
                 <div
-                    :style="{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '12px',
-                        maxHeight: scrolls ? '444px' : 'none',
-                        overflowY: scrolls ? 'auto' : 'visible',
-                        paddingInlineEnd: scrolls ? '6px' : 0,
-                        marginInlineEnd: scrolls ? '-6px' : 0,
-                    }"
+                    class="flex flex-col gap-[12px]"
+                    :class="scrolls ? 'max-h-[444px] overflow-y-auto pe-[6px] me-[-6px]' : 'max-h-none overflow-y-visible pe-0 me-0'"
                 >
-                    <div v-if="rows.length === 0" class="muted small" style="padding: 16px; text-align: center">
+                    <div v-if="rows.length === 0" class="muted small p-[16px] text-center">
                         לא נמצאו תוצאות.
                     </div>
                     <template v-else>
@@ -225,14 +206,14 @@ function patientToForm(p, edit) {
                         />
                     </template>
                 </div>
-                <div v-if="rows.length > 0" class="small muted mt-16">
+                <div v-if="rows.length > 0" class="small muted mt-[16px]">
                     מציג {{ rows.length }} מתוך {{ patientsTotal }} מטופלים פעילים
                 </div>
             </div>
 
             <div
                 v-if="option === 'new'"
-                style="border: 1px solid var(--line); border-top: 2px solid var(--accent); background: var(--surface); border-radius: var(--r-card); padding: 24px 24px 26px; box-shadow: 0 6px 18px -12px rgba(20,18,14,0.18)"
+                class="pt-[24px] px-[24px] pb-[26px] bg-surface border border-line [border-top:2px_solid_var(--accent)] rounded-card shadow-[0_6px_18px_-12px_rgba(20,18,14,0.18)]"
             >
                 <NewPatientForm
                     :value="newPatient"
@@ -246,18 +227,14 @@ function patientToForm(p, edit) {
         </div>
 
         <!-- Continue -->
-        <div :style="{ display: 'flex', justifyContent: showBack ? 'space-between' : 'flex-end' }">
+        <div class="flex" :class="showBack ? 'justify-between' : 'justify-end'">
             <button v-if="showBack" class="btn btn--ghost" @click="emit('back')">
                 <Icon name="arrow_right" :size="16" /> חזור
             </button>
             <button
-                class="btn btn--primary"
+                class="btn btn--primary px-[28px]"
+                :class="canNext ? 'opacity-100 cursor-pointer' : 'opacity-40 cursor-not-allowed'"
                 :disabled="!canNext"
-                :style="{
-                    opacity: canNext ? 1 : 0.4,
-                    cursor: canNext ? 'pointer' : 'not-allowed',
-                    paddingInline: '28px',
-                }"
                 @click="emit('next')"
             >
                 המשך לרקיחת פורמולה

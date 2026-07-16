@@ -29,7 +29,7 @@ function onRemove(id) {
     <div class="page">
         <div class="page__inner page__inner--wide">
             <!-- Header -->
-            <div class="page-head" style="margin-bottom: 24px">
+            <div class="page-head mb-[24px]">
                 <div>
                     <h1 class="page-title">הזמנות בהמתנה</h1>
                     <p class="page-sub">
@@ -39,7 +39,7 @@ function onRemove(id) {
             </div>
 
             <EmptyPending v-if="cart.state.pendingItems.length === 0" />
-            <div v-else class="col gap-16">
+            <div v-else class="col gap-[16px]">
                 <PendingCard
                     v-for="it in cart.state.pendingItems"
                     :key="it.id"

@@ -20,53 +20,25 @@ const emit = defineEmits(['click']);
 <template>
     <button
         type="button"
-        :style="{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            flex: 1,
-            textAlign: 'right',
-            padding: '13px 16px',
-            border: '1px solid ' + (active ? 'var(--accent)' : 'var(--line)'),
-            background: active ? 'var(--accent-tint)' : 'var(--surface)',
-            borderRadius: 'var(--r-card)',
-            cursor: 'pointer',
-            boxShadow: active ? 'inset 0 0 0 1px var(--accent)' : 'none',
-            fontFamily: 'inherit',
-            transition: 'all .15s',
-        }"
+        class="relative flex items-center gap-[12px] flex-1 px-[16px] py-[13px] text-right [font-family:inherit] border rounded-card cursor-pointer transition-all duration-150"
+        :class="active ? 'border-accent bg-accent-tint shadow-[inset_0_0_0_1px_var(--accent)]' : 'border-line bg-surface shadow-none'"
         @click="emit('click')"
     >
         <!-- "חדש" flag — tucked into the top-inline-start (right, RTL) corner,
              in the round icon's empty corner, clear of the label text. -->
         <span v-if="badge" class="tf-new-badge tf-new-badge--corner">{{ badge }}</span>
         <span
-            :style="{
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                flexShrink: 0,
-                background: active ? 'var(--accent)' : 'var(--surface-sunk)',
-                color: active ? '#fff' : 'var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }"
+            class="flex items-center justify-center w-[34px] h-[34px] shrink-0 rounded-[50%]"
+            :class="active ? 'bg-accent text-white' : 'bg-surface-sunk text-accent'"
         >
             <Icon :name="icon" :size="17" />
         </span>
         <span>
             <span
-                :style="{
-                    display: 'block',
-                    fontSize: '13.5px',
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    color: active ? 'var(--accent-ink)' : 'var(--ink)',
-                }"
+                class="block text-[13.5px] font-semibold leading-[1.3]"
+                :class="active ? 'text-accent-ink' : 'text-ink'"
             >{{ label }}</span>
-            <span style="display: block; font-size: 11.5px; color: var(--ink-3); font-weight: 300">{{ sub }}</span>
+            <span class="block text-[11.5px] font-light text-ink-3">{{ sub }}</span>
         </span>
     </button>
 </template>

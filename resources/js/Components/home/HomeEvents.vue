@@ -10,10 +10,10 @@ defineProps({
 </script>
 
 <template>
-    <section style="padding: 56px 24px 28px">
-        <div style="max-width: 1200px; margin: 0 auto">
+    <section class="pt-[56px] px-[24px] pb-[28px]">
+        <div class="max-w-[1200px] mx-auto my-0">
             <SectionHeader title="עדכונים ואירועים" link-label="לכל האירועים" />
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px">
+            <div class="grid grid-cols-4 gap-[16px]">
                 <EventCard v-for="e in events" :key="e.id" :event="e" />
             </div>
         </div>

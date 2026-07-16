@@ -24,22 +24,11 @@ function onClick(e) {
         type="button"
         :title="title"
         :aria-label="title"
+        class="inline-flex items-center justify-center w-[24px] h-[24px] p-0 border-none rounded-[50%] cursor-pointer shrink-0 transition-[filter,transform] duration-[140ms]"
+        :class="hover ? 'brightness-[0.96] [transform:translateY(-1px)]' : 'filter-none [transform:none]'"
         :style="{
-            width: '24px',
-            height: '24px',
-            borderRadius: '50%',
             background: tone.bg,
             color: tone.fg,
-            border: 'none',
-            padding: 0,
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            flexShrink: 0,
-            filter: hover ? 'brightness(0.96)' : 'none',
-            transform: hover ? 'translateY(-1px)' : 'none',
-            transition: 'filter .14s ease, transform .14s ease',
         }"
         @click="onClick"
         @mouseenter="hover = true"

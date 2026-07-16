@@ -94,15 +94,10 @@ function clear() {
 </script>
 
 <template>
-    <div style="position: relative">
+    <div class="relative">
         <button
             title="ניקוי חתימה"
-            :style="{
-                position: 'absolute', top: '8px', left: '8px', zIndex: 2,
-                width: '30px', height: '30px', borderRadius: '8px', border: '1px solid var(--line)',
-                background: 'var(--surface)', cursor: 'pointer', display: 'inline-flex',
-                alignItems: 'center', justifyContent: 'center',
-            }"
+            class="absolute top-[8px] left-[8px] z-[2] inline-flex items-center justify-center w-[30px] h-[30px] bg-surface border border-line rounded-[8px] cursor-pointer"
             @click="clear"
         >
             <Icon name="x" :size="15" color="var(--danger)" />
@@ -111,11 +106,7 @@ function clear() {
             ref="canvasRef"
             role="img"
             aria-label="אזור חתימה — חתמו כאן באמצעות העכבר או האצבע"
-            :style="{
-                width: '100%', height: '230px', display: 'block',
-                border: '1px solid var(--line)', borderRadius: 'var(--r-card)',
-                background: '#fff', touchAction: 'none', cursor: 'crosshair',
-            }"
+            class="block w-full h-[230px] bg-white border border-line rounded-card touch-none cursor-crosshair"
             @mousedown="start"
             @mousemove="move"
             @mouseup="end"

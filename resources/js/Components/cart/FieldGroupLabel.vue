@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    <div style="font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px"><slot /></div>
+    <div class="mb-[8px] text-[13px] font-semibold text-ink-2"><slot /></div>
 </template>

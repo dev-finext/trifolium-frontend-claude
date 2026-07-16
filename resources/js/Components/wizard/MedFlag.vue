@@ -5,7 +5,7 @@ import Icon from '@/Components/ui/Icon.vue';
 
 <template>
     <span
-        style="display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px 2px 7px; border-radius: 999px; font-size: 11.5px; font-weight: 600; background: var(--danger-tint); color: var(--danger); white-space: nowrap"
+        class="inline-flex items-center gap-[5px] py-[2px] pr-[9px] pl-[7px] text-[11.5px] font-semibold bg-danger-tint text-danger rounded-[999px] whitespace-nowrap"
     >
         <Icon name="alert" :size="12" :stroke="2" /> נוטל/ת תרופות
     </span>

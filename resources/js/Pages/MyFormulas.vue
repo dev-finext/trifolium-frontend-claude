@@ -73,61 +73,54 @@ const totalUses = computed(() => savedFormulas.state.list.reduce((s, f) => s + (
 
             <!-- Breadcrumb -->
             <a
-                style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); cursor: pointer; margin-bottom: 18px"
+                class="inline-flex items-center gap-[6px] mb-[18px] text-[13px] text-ink-3 cursor-pointer"
                 @click="goBack"
             >
                 <Icon name="arrow_right" :size="15" /> חזרה ללוח הבקרה
             </a>
 
             <!-- Head -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px">
+            <div class="flex items-start justify-between flex-wrap gap-[20px] mb-[24px]">
                 <div>
                     <div
-                        :style="{
-                            fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase',
-                            color: 'var(--accent)', fontWeight: 700, marginBottom: '8px',
-                        }"
+                        class="mb-[8px] text-[11px] font-bold tracking-[0.16em] uppercase text-accent"
                     >האיזור האישי שלי</div>
-                    <h1 class="page-title" style="margin: 0">רשימת הפורמולות שלי</h1>
-                    <p class="page-sub" style="margin-top: 6px">
+                    <h1 class="page-title m-0">רשימת הפורמולות שלי</h1>
+                    <p class="page-sub mt-[6px]">
                         <span class="num">{{ savedFormulas.state.list.length }}</span> פורמולות שמורות · נטענו יחד <span class="num">{{ totalUses }}</span> פעמים. טען כל פורמולה ישירות למעבדה.
                     </p>
                 </div>
             </div>
 
             <!-- Search -->
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 18px">
-                <div style="width: 320px; max-width: 100%">
+            <div class="flex justify-end mb-[18px]">
+                <div class="w-[320px] max-w-full">
                     <SearchInput v-model="search" placeholder="חפש לפי שם פורמולה או רכיב …" />
                 </div>
             </div>
 
             <!-- ── הפורמולות שלי section ── -->
-            <div style="margin-bottom: 48px">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px">
-                    <h2 style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3)">הפורמולות שלי</h2>
+            <div class="mb-[48px]">
+                <div class="flex items-center gap-[10px] mb-[16px]">
+                    <h2 class="m-0 text-[14px] font-bold tracking-[0.08em] uppercase text-ink-3">הפורמולות שלי</h2>
                     <span class="small muted">({{ filtered.length }})</span>
                 </div>
 
-                <div v-if="filtered.length === 0" class="card" style="padding: 48px 24px; text-align: center">
+                <div v-if="filtered.length === 0" class="card py-[48px] px-[24px] text-center">
                     <div
-                        :style="{
-                            width: '48px', height: '48px', borderRadius: '50%', background: 'var(--surface-sunk)',
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            marginBottom: '14px', color: 'var(--ink-3)',
-                        }"
+                        class="inline-flex items-center justify-center w-[48px] h-[48px] mb-[14px] text-ink-3 bg-surface-sunk rounded-[50%]"
                     ><Icon :name="search ? 'search' : 'clipboard_list'" :size="22" /></div>
-                    <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px">
+                    <div class="mb-[6px] text-[15px] font-medium">
                         {{ search ? 'לא נמצאו פורמולות מתאימות' : 'עדיין אין פורמולות שמורות' }}
                     </div>
-                    <div class="small muted" style="margin-bottom: 18px">
+                    <div class="small muted mb-[18px]">
                         {{ search ? 'נסה מונח חיפוש אחר' : 'כל פורמולה שתשמור במעבדה תופיע כאן לטעינה מהירה' }}
                     </div>
                     <button class="btn btn--ghost" @click="search ? (search = '') : goCompose()">
                         {{ search ? 'נקה חיפוש' : 'צור פורמולה ראשונה' }}
                     </button>
                 </div>
-                <div v-else class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px">
+                <div v-else class="formula-grid grid grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-[16px]">
                     <MyFormulaCard
                         v-for="f in filtered"
                         :key="f.id"
@@ -145,30 +138,30 @@ const totalUses = computed(() => savedFormulas.state.list.reduce((s, f) => s + (
             <!-- ── פורמולות מערכת section ── -->
             <div>
                 <!-- Section divider -->
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px">
-                    <div style="flex: 1; height: 1px; background: var(--line)" />
-                    <div style="text-align: center; flex-shrink: 0">
-                        <div style="display: flex; align-items: center; gap: 8px; justify-content: center">
+                <div class="flex items-center gap-[18px] mb-[20px]">
+                    <div class="flex-1 h-[1px] bg-(--line)" />
+                    <div class="text-center shrink-0">
+                        <div class="flex items-center justify-center gap-[8px]">
                             <Icon name="clipboard_list" :size="16" color="oklch(0.54 0.10 240)" />
-                            <span style="font-size: 15px; font-weight: 600; color: var(--ink)">פורמולות מערכת</span>
+                            <span class="text-[15px] font-semibold text-ink">פורמולות מערכת</span>
                         </div>
-                        <div class="small muted" style="margin-top: 3px">פורמולות מוכנות שנוצרו על ידי צוות טריפוליום · ניתן לערוך הכל</div>
+                        <div class="small muted mt-[3px]">פורמולות מוכנות שנוצרו על ידי צוות טריפוליום · ניתן לערוך הכל</div>
                     </div>
-                    <div style="flex: 1; height: 1px; background: var(--line)" />
+                    <div class="flex-1 h-[1px] bg-(--line)" />
                 </div>
 
                 <!-- System search -->
-                <div style="display: flex; align-items: center; gap: 10px; justify-content: flex-end; margin-bottom: 18px">
+                <div class="flex items-center justify-end gap-[10px] mb-[18px]">
                     <span class="small muted">({{ filteredSystem.length }})</span>
-                    <div style="width: 320px; max-width: 100%">
+                    <div class="w-[320px] max-w-full">
                         <SearchInput v-model="searchSystem" placeholder="חפש פורמולת מערכת לפי שם או רכיב …" />
                     </div>
                 </div>
 
-                <div v-if="filteredSystem.length === 0" class="card" style="padding: 32px 24px; text-align: center">
+                <div v-if="filteredSystem.length === 0" class="card py-[32px] px-[24px] text-center">
                     <div class="small muted">לא נמצאו שבלונות מערכת מתאימות לחיפוש</div>
                 </div>
-                <div v-else class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px">
+                <div v-else class="formula-grid grid grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-[16px]">
                     <SystemFormulaCard
                         v-for="f in filteredSystem"
                         :key="f.id"

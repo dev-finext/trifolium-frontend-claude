@@ -11,18 +11,13 @@ defineProps({
 
 <template>
     <SideCard title="מטופל">
-        <div style="display: flex; align-items: center; gap: 12px">
+        <div class="flex items-center gap-[12px]">
             <span
-                :style="{
-                    width: '42px', height: '42px', borderRadius: '50%',
-                    background: 'var(--accent-tint-strong)', color: 'var(--accent-ink)',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '15px', fontWeight: 600, flexShrink: 0,
-                }"
+                class="inline-flex items-center justify-center w-[42px] h-[42px] shrink-0 text-[15px] font-semibold bg-accent-tint-strong text-accent-ink rounded-full"
             >{{ initialsFromName(name) }}</span>
-            <div style="min-width: 0">
-                <div style="font-size: 15px; font-weight: 600">{{ name }}</div>
-                <div class="small muted num" dir="ltr" style="text-align: right">{{ phone }}</div>
+            <div class="min-w-0">
+                <div class="text-[15px] font-semibold">{{ name }}</div>
+                <div class="small muted num text-right" dir="ltr">{{ phone }}</div>
             </div>
         </div>
     </SideCard>

@@ -7,9 +7,9 @@
 <template>
     <div
         aria-hidden="true"
-        :style="{ position: 'absolute', inset: '0', zIndex: 0, overflow: 'hidden', pointerEvents: 'none' }"
+        class="absolute inset-0 z-0 overflow-hidden pointer-events-none"
     >
-        <div style="position: absolute; inset: 0; background: linear-gradient(160deg, #eef2ec 0%, #e4ece1 55%, #dae4d6 100%)" />
-        <div style="position: absolute; inset: 0; background: radial-gradient(110% 80% at 28% 22%, rgba(255,255,255,0.55), rgba(255,255,255,0) 60%)" />
+        <div class="absolute inset-0 bg-[linear-gradient(160deg,#eef2ec_0%,#e4ece1_55%,#dae4d6_100%)]" />
+        <div class="absolute inset-0 bg-[radial-gradient(110%_80%_at_28%_22%,rgba(255,255,255,0.55),rgba(255,255,255,0)_60%)]" />
     </div>
 </template>

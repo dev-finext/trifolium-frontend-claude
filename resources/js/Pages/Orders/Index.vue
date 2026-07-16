@@ -93,24 +93,24 @@ const toggleKpi = (kpiStatus) => {
 
             <!-- Breadcrumb back -->
             <a
-                style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); cursor: pointer; margin-bottom: 18px"
+                class="inline-flex items-center gap-[6px] mb-[18px] text-[13px] text-ink-3 cursor-pointer"
                 @click="goHome"
             >
                 <Icon name="arrow_right" :size="15" /> חזרה ללוח הבקרה
             </a>
 
             <!-- Page head -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px">
+            <div class="flex items-start justify-between flex-wrap gap-[20px] mb-[22px]">
                 <div>
-                    <h1 class="page-title" style="margin: 0">כל ההזמנות</h1>
-                    <p class="page-sub" style="margin-top: 6px">
+                    <h1 class="page-title m-0">כל ההזמנות</h1>
+                    <p class="page-sub mt-[6px]">
                         כל ההזמנות האחרונות שלך במקום אחד — סינון, חיפוש וצפייה בכל הזמנה.
                     </p>
                 </div>
             </div>
 
             <!-- KPI tiles -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px">
+            <div class="grid grid-cols-[repeat(3,1fr)] gap-[14px] mb-[24px]">
                 <KpiTile
                     v-for="k in kpis"
                     :key="k.status"
@@ -121,42 +121,29 @@ const toggleKpi = (kpiStatus) => {
             </div>
 
             <!-- Filter panel -->
-            <div class="card" style="padding: 0; margin-bottom: 18px; overflow: hidden">
+            <div class="card p-0 mb-[18px] overflow-hidden">
                 <!-- Panel header -->
                 <div
-                    :style="{
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px',
-                        padding: '13px 18px', borderBottom: '1px solid var(--line)', background: 'var(--surface-sunk)',
-                    }"
+                    class="flex items-center justify-between gap-[12px] py-[13px] px-[18px] bg-surface-sunk border-b border-line"
                 >
-                    <div style="display: flex; align-items: center; gap: 9px">
+                    <div class="flex items-center gap-[9px]">
                         <Icon name="filter" :size="16" color="var(--ink-2)" />
-                        <span style="font-size: 14px; font-weight: 600">סינון וחיפוש</span>
+                        <span class="text-[14px] font-semibold">סינון וחיפוש</span>
                         <span
                             v-if="hasFilter"
-                            class="num"
-                            :style="{
-                                fontSize: '11.5px', fontWeight: 600, color: 'var(--accent)',
-                                background: 'var(--accent-tint)', borderRadius: '999px', padding: '2px 9px',
-                            }"
+                            class="num py-[2px] px-[9px] text-[11.5px] font-semibold text-accent bg-accent-tint rounded-[999px]"
                         >{{ filtered.length }} תוצאות</span>
                     </div>
                     <button
                         v-if="hasFilter"
-                        :style="{
-                            display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'none',
-                            border: 'none', fontSize: '13px', color: 'var(--ink-3)', fontWeight: 500, padding: '4px',
-                        }"
+                        class="inline-flex items-center gap-[5px] p-[4px] text-[13px] font-medium text-ink-3 bg-transparent border-none"
                         @click="clearAll"
                     ><Icon name="x" :size="13" /> נקה הכל</button>
                 </div>
 
                 <!-- Fields — RTL flows right→left, so general search sits on the right -->
                 <div
-                    :style="{
-                        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(178px, 1fr))',
-                        gap: '14px', padding: '18px',
-                    }"
+                    class="grid grid-cols-[repeat(auto-fit,minmax(178px,1fr))] gap-[14px] p-[18px]"
                 >
                     <Field label="חיפוש כללי">
                         <SearchInput v-model="search" placeholder="מטופל, פורמולה או מס׳ הזמנה" />
@@ -196,38 +183,34 @@ const toggleKpi = (kpiStatus) => {
             </div>
 
             <!-- Table -->
-            <div v-if="filtered.length === 0" class="card" style="padding: 64px 24px; text-align: center">
+            <div v-if="filtered.length === 0" class="card py-[64px] px-[24px] text-center">
                 <div
-                    :style="{
-                        width: '56px', height: '56px', borderRadius: '50%', background: 'var(--surface-sunk)',
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        marginBottom: '16px', color: 'var(--ink-3)',
-                    }"
+                    class="inline-flex items-center justify-center w-[56px] h-[56px] mb-[16px] text-ink-3 bg-surface-sunk rounded-[50%]"
                 ><Icon name="search" :size="24" /></div>
-                <div style="font-size: 16px; font-weight: 500; margin-bottom: 6px">לא נמצאו הזמנות מתאימות</div>
-                <div class="small muted" style="margin-bottom: 20px">נסה לשנות את הסינון או לנקות את החיפוש</div>
+                <div class="mb-[6px] text-[16px] font-medium">לא נמצאו הזמנות מתאימות</div>
+                <div class="small muted mb-[20px]">נסה לשנות את הסינון או לנקות את החיפוש</div>
                 <button class="btn btn--ghost" @click="clearAll">נקה סינון</button>
             </div>
-            <div v-else class="card" style="padding: 0; overflow: hidden">
+            <div v-else class="card p-0 overflow-hidden">
                 <!-- .orders-table: on phones the mobile stylesheet re-lays this
                      table out as stacked order cards (see app.css). -->
-                <table class="orders-table" style="width: 100%; border-collapse: collapse; table-layout: fixed">
+                <table class="orders-table w-full border-collapse table-fixed">
                     <colgroup>
-                        <col style="width: 108px" />
-                        <col style="width: 120px" />
-                        <col style="width: 130px" />
+                        <col class="w-[108px]" />
+                        <col class="w-[120px]" />
+                        <col class="w-[130px]" />
                         <col />
-                        <col style="width: 80px" />
-                        <col style="width: 120px" />
-                        <col style="width: 140px" />
-                        <col style="width: 78px" />
+                        <col class="w-[80px]" />
+                        <col class="w-[120px]" />
+                        <col class="w-[140px]" />
+                        <col class="w-[78px]" />
                     </colgroup>
                     <thead>
                         <tr>
                             <th
                                 v-for="h in ['מס׳ הזמנה', 'מטופל', 'טלפון לקוח', 'פורמולה', 'סוג', 'תאריך', 'סטטוס', 'פעולות']"
                                 :key="h"
-                                style="text-align: right; padding: 12px 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; border-bottom: 1px solid var(--line); background: var(--surface-sunk)"
+                                class="py-[12px] px-[16px] text-right text-[11px] tracking-[0.08em] uppercase font-semibold text-ink-3 bg-surface-sunk border-b border-line"
                             >{{ h }}</th>
                         </tr>
                     </thead>
@@ -235,27 +218,27 @@ const toggleKpi = (kpiStatus) => {
                         <tr
                             v-for="(o, i) in filtered"
                             :key="o.id"
-                            :style="{
-                                background: hoverId === o.id ? 'var(--accent-tint)' : 'transparent',
-                                borderBottom: i === filtered.length - 1 ? 'none' : '1px solid var(--line)',
-                                transition: 'background .12s ease', cursor: 'pointer',
-                            }"
+                            class="cursor-pointer transition-[background] duration-[120ms] ease-[ease]"
+                            :class="[
+                                hoverId === o.id ? 'bg-accent-tint' : 'bg-transparent',
+                                i === filtered.length - 1 ? '' : 'border-b border-line',
+                            ]"
                             @mouseenter="hoverId = o.id"
                             @mouseleave="hoverId = null"
                             @click="openOrder(o)"
                         >
-                            <td style="padding: 14px 16px; font-size: 13px" class="num muted">{{ o.id }}</td>
-                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 500">{{ o.patient }}</td>
-                            <td style="padding: 14px 16px; font-size: 13px; color: var(--ink-2); direction: ltr; text-align: right" class="num">{{ o.phone }}</td>
-                            <td style="padding: 14px 16px; font-size: 14px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ o.formula }}</td>
-                            <td style="padding: 14px 16px; font-size: 13px; color: var(--ink-3)">{{ o.type }}</td>
-                            <td style="padding: 14px 16px; font-size: 13px; color: var(--ink-3)" class="num">{{ o.date }}</td>
-                            <td style="padding: 14px 16px">
+                            <td class="num muted py-[14px] px-[16px] text-[13px]">{{ o.id }}</td>
+                            <td class="py-[14px] px-[16px] text-[14px] font-medium">{{ o.patient }}</td>
+                            <td class="num py-[14px] px-[16px] text-[13px] text-ink-2 [direction:ltr] text-right">{{ o.phone }}</td>
+                            <td class="py-[14px] px-[16px] text-[14px] text-ink-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ o.formula }}</td>
+                            <td class="py-[14px] px-[16px] text-[13px] text-ink-3">{{ o.type }}</td>
+                            <td class="num py-[14px] px-[16px] text-[13px] text-ink-3">{{ o.date }}</td>
+                            <td class="py-[14px] px-[16px]">
                                 <StatusDot :tone="o.dot">{{ o.status }}</StatusDot>
                             </td>
-                            <td style="padding: 14px 16px">
+                            <td class="py-[14px] px-[16px]">
                                 <a
-                                    style="color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600"
+                                    class="text-[13px] font-semibold text-accent cursor-pointer"
                                     @click.stop="openOrder(o)"
                                 >צפה</a>
                             </td>
@@ -265,13 +248,13 @@ const toggleKpi = (kpiStatus) => {
             </div>
 
             <!-- Footer count -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 10px">
+            <div class="flex items-center justify-between flex-wrap mt-[14px] gap-[10px]">
                 <span class="small muted">
                     מציג <span class="num">{{ filtered.length }}</span> מתוך <span class="num">{{ props.orders.length }}</span> הזמנות
                 </span>
                 <a
                     v-if="hasFilter"
-                    style="font-size: 13px; color: var(--ink-3); cursor: pointer"
+                    class="text-[13px] text-ink-3 cursor-pointer"
                     @click="clearAll"
                 >נקה סינון</a>
             </div>

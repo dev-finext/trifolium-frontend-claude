@@ -100,8 +100,8 @@ function onPickEditable(f) {
 </script>
 
 <template>
-    <section style="position: relative" id="tf-anchor-ingredients">
-        <div class="card" style="position: relative; overflow: visible; display: flex; flex-direction: column">
+    <section class="relative" id="tf-anchor-ingredients">
+        <div class="card relative flex flex-col overflow-visible">
             <IngredientSearchBar
                 v-model:query="search"
                 :results="filtered"
@@ -127,19 +127,19 @@ function onPickEditable(f) {
         <div
             v-if="interactionAlerts.length > 0"
             role="alert"
-            style="margin-top: 16px; display: flex; align-items: flex-start; gap: 11px; padding: 12px 16px; background: #faf0ed; border: 1px solid #e6c3ba; border-radius: var(--r-card); color: var(--danger)"
+            class="flex items-start gap-[11px] mt-[16px] py-[12px] px-[16px] text-danger bg-[#faf0ed] border border-[#e6c3ba] rounded-card"
         >
-            <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--danger); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px">
+            <span class="inline-flex items-center justify-center shrink-0 w-[22px] h-[22px] mt-[1px] text-white bg-danger rounded-[50%]">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 7v6" />
                     <path d="M12 17h.01" />
                 </svg>
             </span>
-            <div style="min-width: 0">
-                <div style="font-size: 13.5px; font-weight: 600; line-height: 1.45">אינטראקציה אפשרית — המשך באחריות המטפל</div>
+            <div class="min-w-0">
+                <div class="text-[13.5px] font-semibold leading-[1.45]">אינטראקציה אפשרית — המשך באחריות המטפל</div>
                 <div
                     v-for="(a, i) in interactionAlerts.slice(0, 2)" :key="i"
-                    style="font-size: 12.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.5; font-weight: 500"
+                    class="mt-[4px] text-[12.5px] font-medium leading-[1.5] text-ink-2"
                 >
                     <strong>{{ a.herb.lat }}</strong> + <strong>{{ a.drug }}</strong> — {{ a.k.note }}
                 </div>

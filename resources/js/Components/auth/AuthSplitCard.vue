@@ -10,32 +10,17 @@ defineProps({
 </script>
 
 <template>
-    <div
-        :style="{
-            minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '24px', background: 'var(--bg)', position: 'relative',
-        }"
-    >
+    <div class="relative flex items-center justify-center min-h-[100vh] p-[24px] bg-bg">
         <AuthBg />
         <div
-            class="card"
-            :style="{
-                position: 'relative', zIndex: 1,
-                width: '100%', maxWidth: `${maxWidth}px`, display: 'grid', gridTemplateColumns: '1.05fr 0.95fr',
-                boxShadow: '0 1px 2px rgba(31,46,29,0.06), 0 24px 70px rgba(20,32,18,0.30)',
-            }"
+            class="card relative z-[1] grid grid-cols-[1.05fr_0.95fr] w-full shadow-[0_1px_2px_rgba(31,46,29,0.06),0_24px_70px_rgba(20,32,18,0.30)]"
+            :style="{ maxWidth: `${maxWidth}px` }"
         >
-            <div style="padding: 46px 48px 44px"><slot /></div>
-            <div
-                :style="{
-                    background: 'var(--accent)', color: '#fff',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    gap: '18px', padding: '48px 36px', textAlign: 'center',
-                }"
-            >
+            <div class="pt-[46px] px-[48px] pb-[44px]"><slot /></div>
+            <div class="flex flex-col items-center justify-center gap-[18px] py-[48px] px-[36px] text-center text-[#fff] bg-accent">
                 <Brandmark tone="light" :height="108" />
-                <div :style="{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.3)' }" />
-                <p :style="{ margin: 0, fontSize: '15px', fontWeight: 400, color: 'rgba(255,255,255,0.86)', letterSpacing: '0.02em' }">
+                <div class="w-[40px] h-[1px] bg-[rgba(255,255,255,0.3)]" />
+                <p class="m-0 text-[15px] font-normal tracking-[0.02em] text-[rgba(255,255,255,0.86)]">
                     בית מרקחת לצמחי מרפא
                 </p>
             </div>

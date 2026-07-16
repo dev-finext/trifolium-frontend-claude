@@ -9,36 +9,25 @@ const emit = defineEmits(['select']);
 
 <template>
     <label
-        :style="{
-            display: 'flex', alignItems: 'flex-start', gap: '11px', cursor: 'pointer',
-            padding: '11px 13px', borderRadius: 'var(--r-control)',
-            border: '1px solid ' + (selected ? 'var(--accent)' : 'var(--line)'),
-            background: selected ? 'var(--accent-tint)' : 'var(--surface)',
-            transition: 'border-color .15s, background .15s',
-        }"
+        class="flex items-start gap-[11px] px-[13px] py-[11px] cursor-pointer border rounded-control transition-[border-color,background] duration-150"
+        :class="selected ? 'border-accent bg-accent-tint' : 'border-line bg-surface'"
         @click="emit('select')"
     >
         <span
-            :style="{
-                width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0, marginTop: '1px',
-                border: '1.5px solid ' + (selected ? 'var(--accent)' : 'var(--line-strong)'),
-                background: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0 mt-[1px] bg-white border-[1.5px] rounded-[50%]"
+            :class="selected ? 'border-accent' : 'border-line-strong'"
         >
-            <span v-if="selected" style="width: 9px; height: 9px; border-radius: 50%; background: var(--accent)" />
+            <span v-if="selected" class="w-[9px] h-[9px] bg-accent rounded-[50%]" />
         </span>
-        <span style="min-width: 0; flex: 1">
-            <span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
-                <span style="font-size: 13.5px; font-weight: 600; color: var(--ink)">{{ addr.label || addr.name || 'כתובת' }}</span>
+        <span class="min-w-0 flex-1">
+            <span class="flex items-center gap-[8px] flex-wrap">
+                <span class="text-[13.5px] font-semibold text-ink">{{ addr.label || addr.name || 'כתובת' }}</span>
                 <span
                     v-if="addr.primary"
-                    :style="{
-                        padding: '1px 8px', borderRadius: '999px', fontSize: '10.5px', fontWeight: 700,
-                        background: 'var(--accent)', color: '#fff',
-                    }"
+                    class="px-[8px] py-[1px] text-[10.5px] font-bold text-white bg-accent rounded-[999px]"
                 >ברירת מחדל</span>
             </span>
-            <span class="small muted" style="display: block; margin-top: 3px; font-size: 12px; line-height: 1.45">
+            <span class="small muted block mt-[3px] text-[12px] leading-[1.45]">
                 {{ [addr.street, addr.city].filter(Boolean).join(', ') }}
             </span>
         </span>

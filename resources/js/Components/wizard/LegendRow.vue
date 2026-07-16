@@ -13,64 +13,46 @@ defineProps({
 </script>
 
 <template>
-    <div style="display: flex; align-items: center; gap: 12px; padding: 4px 0; direction: ltr">
+    <div class="flex items-center gap-[12px] px-0 py-[4px] [direction:ltr]">
         <span
-            :style="{
-                width: '10px', height: '10px',
-                borderRadius: '3px',
-                background: seg.overflowed ? 'var(--danger)' : seg.color,
-                flexShrink: 0,
-            }"
+            class="w-[10px] h-[10px] shrink-0 rounded-[3px]"
+            :style="{ background: seg.overflowed ? 'var(--danger)' : seg.color }"
         />
-        <div style="min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 1px">
+        <div class="flex flex-col flex-1 min-w-0 gap-[1px]">
             <HerbName :herb="seg.herb" :primary-size="13" :secondary-size="11.5" :primary-weight="500" hide-secondary />
         </div>
 
-        <span style="width: 64px; height: 5px; background: var(--surface-sunk); border-radius: 999px; overflow: hidden; flex-shrink: 0">
+        <span class="w-[64px] h-[5px] shrink-0 bg-surface-sunk rounded-[999px] overflow-hidden">
             <span
+                class="block h-full rounded-[999px] transition-[width] duration-[.4s] ease-[ease]"
                 :style="{
-                    display: 'block',
-                    height: '100%',
                     width: `${Math.min(100, seg.pct)}%`,
                     background: seg.overflowed ? 'var(--danger)' : seg.color,
-                    borderRadius: '999px',
-                    transition: 'width .4s ease',
                 }"
             />
         </span>
 
-        <span v-if="chineseUnit" style="display: inline-flex; align-items: center; gap: 6px; width: 132px; justify-content: flex-end">
+        <span v-if="chineseUnit" class="inline-flex items-center justify-end gap-[6px] w-[132px]">
             <span
                 v-if="showParts"
-                style="display: inline-flex; align-items: baseline; gap: 2px; padding: 1px 7px; border-radius: 999px; background: var(--surface-sunk); border: 1px solid var(--line); flex-shrink: 0"
+                class="inline-flex items-baseline gap-[2px] shrink-0 px-[7px] py-[1px] bg-surface-sunk border border-line rounded-[999px]"
             >
-                <span class="num" style="font-size: 11.5px; font-weight: 700; color: var(--accent-ink)">{{ seg.parts }}</span>
-                <span style="font-size: 10px; color: var(--ink-3)">ח׳</span>
+                <span class="num text-[11.5px] font-bold text-accent-ink">{{ seg.parts }}</span>
+                <span class="text-[10px] text-ink-3">ח׳</span>
             </span>
             <span
-                :style="{
-                    fontSize: '12px',
-                    color: seg.overflowed ? '#a13030' : 'var(--ink-2)',
-                    textAlign: 'left',
-                    fontWeight: 600,
-                    whiteSpace: 'nowrap',
-                }"
+                class="text-[12px] text-left font-semibold whitespace-nowrap"
+                :class="seg.overflowed ? 'text-[#a13030]' : 'text-ink-2'"
             >
                 <span class="num">{{ seg.qty }}</span> {{ chineseUnit }}
-                <span style="color: var(--ink-3); font-weight: 500"> · </span>
-                <span class="num" style="color: var(--ink-3); font-weight: 500">{{ fmtPct(seg.pct) }}%</span>
+                <span class="text-ink-3 font-medium"> · </span>
+                <span class="num text-ink-3 font-medium">{{ fmtPct(seg.pct) }}%</span>
             </span>
         </span>
         <span
             v-else
-            class="num"
-            :style="{
-                fontSize: '12.5px',
-                color: seg.overflowed ? '#a13030' : 'var(--ink-2)',
-                width: '56px',
-                textAlign: 'left',
-                fontWeight: 600,
-            }"
+            class="num w-[56px] text-[12.5px] text-left font-semibold"
+            :class="seg.overflowed ? 'text-[#a13030]' : 'text-ink-2'"
         >{{ fmtPct(seg.pct) }}%</span>
     </div>
 </template>

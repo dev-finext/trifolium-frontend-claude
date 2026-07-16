@@ -12,38 +12,30 @@ defineProps({
 </script>
 
 <template>
-    <div style="flex: 1; padding: 20px 24px; min-width: 0">
+    <div class="flex-1 min-w-0 px-[24px] py-[20px]">
         <!-- patient header + type badge -->
-        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px">
+        <div class="flex items-start justify-between gap-[12px] flex-wrap mb-[10px]">
             <PatientLine :name="item.patient" :phone="item.phone" />
             <TypeBadge kind="shelf" />
         </div>
 
-        <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
-            <h3 style="margin: 0; font-size: 19px; font-weight: 600">{{ item.name }}</h3>
+        <div class="flex items-baseline gap-[10px] flex-wrap">
+            <h3 class="m-0 text-[19px] font-semibold">{{ item.name }}</h3>
             <span class="small muted num">{{ item.vol }}</span>
         </div>
 
-        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px">
+        <div class="flex flex-wrap gap-[6px] mt-[12px]">
             <span
                 v-for="(t, i) in item.tags"
                 :key="i"
-                :style="{
-                    display: 'inline-flex', alignItems: 'center', gap: '5px',
-                    padding: '3px 10px', borderRadius: '999px',
-                    background: 'var(--accent-tint)', color: 'var(--accent-ink)',
-                    fontSize: '12px', fontWeight: 500,
-                }"
+                class="inline-flex items-center gap-[5px] px-[10px] py-[3px] text-[12px] font-medium text-accent-ink bg-accent-tint rounded-[999px]"
             >
                 <Icon name="leaf" :size="11" color="var(--accent)" /> {{ t }}
             </span>
         </div>
 
         <p
-            :style="{
-                margin: '14px 0 0', fontSize: '13.5px', lineHeight: 1.65,
-                color: 'var(--ink-3)', textWrap: 'pretty', maxWidth: '560px',
-            }"
+            class="max-w-[560px] m-0 mt-[14px] text-[13.5px] leading-[1.65] text-ink-3 text-pretty"
         >{{ item.desc }}</p>
     </div>
 </template>

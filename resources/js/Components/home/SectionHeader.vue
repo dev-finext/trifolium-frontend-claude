@@ -16,24 +16,15 @@ const hasLink = Boolean(getCurrentInstance()?.vnode.props?.onLinkClick);
 </script>
 
 <template>
-    <div
-        :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            marginBottom: '20px',
-            paddingBottom: '16px',
-            borderBottom: '1px solid var(--line)',
-        }"
-    >
+    <div class="flex justify-between items-end mb-[20px] pb-[16px] border-b border-b-line">
         <div>
-            <h2 style="font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin: 0; color: var(--ink)">{{ title }}</h2>
-            <p v-if="subtitle" class="small muted" style="margin: 4px 0 0">{{ subtitle }}</p>
+            <h2 class="m-0 text-[22px] font-semibold tracking-[-0.01em] text-ink">{{ title }}</h2>
+            <p v-if="subtitle" class="small muted mt-[4px] mx-0 mb-0">{{ subtitle }}</p>
         </div>
         <a
             v-if="linkLabel"
+            class="cursor-pointer text-[13px] font-medium text-ink-2"
             :class="{ 'tf-section-link': hasLink }"
-            style="font-size: 13px; color: var(--ink-2); cursor: pointer; font-weight: 500"
             @click="emit('link-click')"
         >{{ linkLabel }} ←</a>
     </div>

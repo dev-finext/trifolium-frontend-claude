@@ -36,36 +36,29 @@ function onAdd(e) {
 <template>
     <div
         dir="ltr"
-        :style="{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '11px 14px',
-            borderBottom: '1px solid var(--line)',
-            cursor: 'pointer',
-            background: hover ? 'var(--accent-tint)' : 'transparent',
-        }"
+        class="flex items-center gap-[12px] px-[14px] py-[11px] border-b border-line cursor-pointer"
+        :class="hover ? 'bg-accent-tint' : 'bg-transparent'"
         @click="onAdd()"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
         <!-- Name block — Latin primary (italic), Hebrew/pinyin below (muted) -->
-        <div style="flex: 1; min-width: 0">
+        <div class="flex-1 min-w-0">
             <HerbName :herb="herb" :primary-size="15" :secondary-size="12.5" :primary-weight="600" parallel />
         </div>
 
         <!-- Inline red warning labels — text only, no icons, no popups -->
-        <div v-if="pills.length > 0" dir="rtl" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; max-width: 260px">
+        <div v-if="pills.length > 0" dir="rtl" class="flex flex-wrap justify-end gap-[5px] max-w-[260px]">
             <span
                 v-for="(p, i) in pills" :key="i"
-                style="font-size: 11.5px; font-weight: 600; color: #a13030; background: rgba(162, 48, 48, 0.08); border: 1px solid rgba(162, 48, 48, 0.22); border-radius: 999px; padding: 2px 9px; white-space: nowrap"
+                class="px-[9px] py-[2px] text-[11.5px] font-semibold whitespace-nowrap text-[#a13030] bg-[rgba(162,48,48,0.08)] border border-[rgba(162,48,48,0.22)] rounded-[999px]"
             >{{ p }}</span>
         </div>
 
         <!-- Green + button -->
         <button
             aria-label="הוסף רכיב"
-            style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0"
+            class="inline-flex items-center justify-center w-[30px] h-[30px] shrink-0 text-white bg-accent border border-accent rounded-[50%] cursor-pointer"
             @click="onAdd($event)"
         >
             <Icon name="plus" :size="15" :stroke="2.4" />

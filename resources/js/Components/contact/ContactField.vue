@@ -48,12 +48,13 @@ const describedBy = computed(() => {
 <template>
     <div>
         <FieldLabel :for="uid">
-            {{ label }}<span v-if="required" aria-hidden="true" style="color: var(--danger); margin-inline-start: 3px">*</span>
+            {{ label }}<span v-if="required" aria-hidden="true" class="text-danger ms-[3px]">*</span>
         </FieldLabel>
         <textarea
             v-if="textarea"
             :id="uid"
-            class="input"
+            class="input h-auto py-[12px] px-[14px] resize-y leading-[1.6]"
+            :class="error ? 'border-danger' : ''"
             :rows="5"
             :placeholder="placeholder"
             :value="modelValue"
@@ -63,13 +64,13 @@ const describedBy = computed(() => {
             :aria-invalid="error ? 'true' : undefined"
             :aria-describedby="describedBy"
             :enterkeyhint="enterkeyhint"
-            :style="{ height: 'auto', padding: '12px 14px', resize: 'vertical', lineHeight: 1.6, ...(error ? { borderColor: 'var(--danger)' } : {}) }"
             @input="$emit('update:modelValue', $event.target.value)"
         />
         <input
             v-else
             :id="uid"
             class="input"
+            :class="[isLtrValue ? 'text-right' : '', error ? 'border-danger' : '']"
             :type="type"
             :placeholder="placeholder"
             :value="modelValue"
@@ -85,13 +86,12 @@ const describedBy = computed(() => {
             :autocapitalize="isEmailType ? 'off' : undefined"
             :autocorrect="isEmailType ? 'off' : undefined"
             :spellcheck="isEmailType ? false : undefined"
-            :style="{ ...(isLtrValue ? { textAlign: 'right' } : {}), ...(error ? { borderColor: 'var(--danger)' } : {}) }"
             @input="$emit('update:modelValue', $event.target.value)"
         />
         <div
             v-if="textarea && maxlength"
             :id="counterId"
-            style="margin-top: 6px; font-size: 11.5px; color: var(--ink-3); text-align: start"
+            class="mt-[6px] text-[11.5px] text-ink-3 text-start"
             dir="ltr"
         >
             {{ (modelValue || '').length }}/{{ maxlength }}

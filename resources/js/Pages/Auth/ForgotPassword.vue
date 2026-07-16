@@ -39,20 +39,16 @@ function onInput(v) { email.value = v; err.value = ''; }
     <AuthSplitCard data-screen-label="A4 שכחתי סיסמה">
         <form novalidate @submit.prevent="submit">
             <span
-                :style="{
-                    width: '46px', height: '46px', borderRadius: '50%',
-                    background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px',
-                }"
+                class="inline-flex items-center justify-center w-[46px] h-[46px] mb-[18px] bg-accent-tint border border-accent-tint-strong rounded-[50%]"
             ><Icon name="lock" :size="22" color="var(--accent)" /></span>
-            <h1 :style="{ margin: 0, fontSize: '23px', fontWeight: 600, letterSpacing: '-0.01em', lineHeight: 1.3 }">
+            <h1 class="m-0 text-[23px] font-semibold leading-[1.3] tracking-[-0.01em]">
                 שחזור סיסמה
             </h1>
-            <p class="page-sub" :style="{ margin: '8px 0 32px', textWrap: 'pretty', lineHeight: 1.7 }">
+            <p class="page-sub mt-[8px] mx-0 mb-[32px] leading-[1.7] text-pretty">
                 הזינו את כתובת הדוא״ל המשויכת לחשבון. אם קיים חשבון תואם, נשלח אליו קישור לאיפוס הסיסמה.
             </p>
 
-            <div :style="{ display: 'flex', flexDirection: 'column', gap: '18px' }">
+            <div class="flex flex-col gap-[18px]">
                 <AuthInput
                     ref="emailField"
                     label="כתובת דוא״ל" icon="mail" type="email"
@@ -60,7 +56,7 @@ function onInput(v) { email.value = v; err.value = ''; }
                     auto-complete="email" enterkeyhint="go" :error="err"
                     @update:model-value="onInput"
                 />
-                <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 6px">
+                <button type="submit" class="btn btn--primary w-full mt-[6px]">
                     שלחו לי קישור לאיפוס
                 </button>
             </div>

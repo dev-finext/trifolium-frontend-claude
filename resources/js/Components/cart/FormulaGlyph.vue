@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-    <svg v-if="typeId === 'capsule'" width="92" height="104" viewBox="0 0 92 104" fill="none" style="display: block">
+    <svg v-if="typeId === 'capsule'" width="92" height="104" viewBox="0 0 92 104" fill="none" class="block">
         <ellipse cx="46" cy="96" rx="30" ry="5" fill="rgba(31,46,29,0.10)" />
         <!-- jar -->
         <rect x="20" y="20" width="52" height="14" rx="4" fill="var(--accent-ink)" />
@@ -24,7 +24,7 @@ defineProps({
     </svg>
 
     <!-- tincture dropper bottle + graduated beaker -->
-    <svg v-else width="98" height="104" viewBox="0 0 98 104" fill="none" style="display: block">
+    <svg v-else width="98" height="104" viewBox="0 0 98 104" fill="none" class="block">
         <ellipse cx="49" cy="97" rx="40" ry="5" fill="rgba(31,46,29,0.10)" />
         <!-- dropper bottle -->
         <g transform="translate(34,4)">

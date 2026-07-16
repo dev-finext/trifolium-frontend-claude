@@ -35,26 +35,17 @@ function toTop() {
 
 <template>
     <button
-        class="back-to-top"
+        class="back-to-top fixed bottom-[28px] start-[28px] z-[150] flex items-center justify-center w-[48px] h-[48px] border rounded-[50%] cursor-pointer [font-family:inherit] shadow-[0_8px_22px_-8px_rgba(31,46,29,0.34)] [transition:opacity_.25s_ease,transform_.25s_ease,background_.15s_ease,border-color_.15s_ease]"
         aria-label="חזרה לראש הדף"
         title="חזרה לראש הדף"
-        :style="{
-            position: 'fixed', bottom: '28px', insetInlineStart: '28px', zIndex: 150,
-            width: '48px', height: '48px', borderRadius: '50%',
-            background: hover ? 'var(--accent)' : 'var(--surface)',
-            border: '1px solid ' + (hover ? 'var(--accent)' : 'var(--line)'),
-            boxShadow: '0 8px 22px -8px rgba(31,46,29,0.34)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', fontFamily: 'inherit',
-            opacity: shown ? 1 : 0,
-            transform: shown ? 'translateY(0)' : 'translateY(12px)',
-            pointerEvents: shown ? 'auto' : 'none',
-            transition: 'opacity .25s ease, transform .25s ease, background .15s ease, border-color .15s ease',
-        }"
+        :class="[
+            hover ? 'bg-accent border-accent' : 'bg-surface border-line',
+            shown ? 'opacity-100 [transform:translateY(0)] pointer-events-auto' : 'opacity-0 [transform:translateY(12px)] pointer-events-none',
+        ]"
         @click="toTop"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
-        <Icon name="chevron_down" :size="22" :color="hover ? '#fff' : 'var(--ink-2)'" style="transform: rotate(180deg)" />
+        <Icon name="chevron_down" :size="22" :color="hover ? '#fff' : 'var(--ink-2)'" class="[transform:rotate(180deg)]" />
     </button>
 </template>

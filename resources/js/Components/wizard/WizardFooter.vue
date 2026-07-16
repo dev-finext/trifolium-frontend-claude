@@ -70,50 +70,23 @@ onBeforeUnmount(() => {
 <template>
     <div
         ref="barRef"
-        class="wizard-footer-bar"
-        :style="{
-            position: 'fixed',
-            bottom: `${bottom}px`,
-            left: 0,
-            right: 0,
-            height: '84px',
-            background: 'transparent',
-            border: 'none',
-            boxShadow: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            pointerEvents: 'none',
-            zIndex: 40,
-        }"
+        class="wizard-footer-bar fixed left-0 right-0 z-40 flex items-center h-[84px] bg-transparent border-none shadow-none pointer-events-none"
+        :style="{ bottom: `${bottom}px` }"
     >
         <div
-            class="wizard-footer-inner"
-            :style="{
-                maxWidth: 'min(1080px, calc(var(--maxw-lab) - 24px))',
-                width: '100%',
-                margin: '0 auto',
-                height: '60px',
-                padding: '0 20px',
-                background: 'var(--surface)',
-                border: '1px solid var(--line-strong)',
-                borderRadius: '16px',
-                boxShadow: 'var(--summary-shadow, 0 20px 48px rgba(31,46,29,0.28))',
-                pointerEvents: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-            }"
+            class="wizard-footer-inner flex items-center w-full max-w-[min(1080px,calc(var(--maxw-lab)_-_24px))] h-[60px] my-0 mx-auto px-[20px] py-0 bg-surface border border-line-strong rounded-[16px] shadow-[var(--summary-shadow,0_20px_48px_rgba(31,46,29,0.28))] pointer-events-auto"
         >
             <!-- חזור — right edge (start) in RTL. -->
-            <div style="flex: 1; display: flex; justify-content: flex-start">
+            <div class="flex-1 flex justify-start">
                 <StepNavBtn dir="back" label="חזור" compact :disabled="!canBack" @click="canBack && emit('back')" />
             </div>
 
             <!-- Summary — centered in the middle of the bar. -->
-            <div class="wizard-footer-summary" style="display: flex; align-items: center; justify-content: center">
+            <div class="wizard-footer-summary flex items-center justify-center">
                 <FooterCell label="סיכום" highlight />
                 <FooterCell label="מטופל" :value="noPatient ? 'ללא מטופל' : (patientLabel || '—')" :warning="noPatient" />
                 <FooterCell label="סוג">
-                    <span style="display: inline-flex; align-items: center; gap: 6px">
+                    <span class="inline-flex items-center gap-[6px]">
                         <Icon name="flask" :size="14" color="var(--ink-2)" />
                         {{ preparation }}
                     </span>
@@ -135,7 +108,7 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- הבא — left edge (end) in RTL. -->
-            <div style="flex: 1; display: flex; justify-content: flex-end">
+            <div class="flex-1 flex justify-end">
                 <StepNavBtn dir="forward" label="הבא" compact :disabled="!canForward" @click="canForward && emit('forward')" />
             </div>
         </div>

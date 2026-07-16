@@ -34,7 +34,7 @@ const add = () => emit('update:list', [...props.list, {
 </script>
 
 <template>
-    <div style="display: flex; flex-direction: column; gap: 14px">
+    <div class="flex flex-col gap-[14px]">
         <AddressCardEditor
             v-for="(a, i) in list"
             :key="a.id"
@@ -46,7 +46,7 @@ const add = () => emit('update:list', [...props.list, {
             @make-primary="makePrimary(a.id)"
             @delete="remove(a.id)"
         />
-        <button class="btn btn--ghost" style="align-self: flex-start" @click="add">
+        <button class="btn btn--ghost self-start" @click="add">
             <Icon name="plus" :size="16" /> הוסף כתובת
         </button>
     </div>

@@ -14,9 +14,9 @@ defineProps({
         <PriceRow label="הנחת מטפל 20%" :value="`−₪${pricing.practitionerDisc}`" muted />
         <PriceRow label="הנחת מטופל 10%" :value="`−₪${pricing.patientDisc}`" muted />
         <PriceRow v-if="pricing.pointsApplied > 0" label="ניצול נקודות" :value="`−₪${pricing.pointsApplied}`" accent />
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--ink)">
-            <span style="font-size: 13px; color: var(--ink-2); font-weight: 600">סה״כ</span>
-            <span style="font-size: 24px; font-weight: 700; color: var(--accent)">
+        <div class="flex justify-between items-baseline mt-[10px] pt-[12px] border-t border-t-(--ink)">
+            <span class="text-[13px] font-semibold text-ink-2">סה״כ</span>
+            <span class="text-[24px] font-bold text-accent">
                 ₪<span class="num">{{ pricing.total }}</span>
             </span>
         </div>

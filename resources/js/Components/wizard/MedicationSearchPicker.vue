@@ -114,7 +114,7 @@ function onKeydown(e) {
 </script>
 
 <template>
-    <div ref="wrapRef" style="position: relative">
+    <div ref="wrapRef" class="relative">
         <!-- Search input -->
         <div class="input-wrap">
             <span class="lead-icon"><Icon name="search" :size="14" /></span>
@@ -138,7 +138,7 @@ function onKeydown(e) {
             v-if="open && (matches.length > 0 || showManualOption)"
             id="medpick-listbox"
             role="listbox"
-            style="position: absolute; top: calc(100% + 4px); inset-inline-start: 0; inset-inline-end: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-control); box-shadow: 0 12px 28px -16px rgba(20,18,14,0.28); z-index: 20; max-height: 280px; overflow: auto; padding: 4px"
+            class="absolute top-[calc(100%+4px)] start-0 end-0 z-20 max-h-[280px] overflow-auto p-[4px] bg-surface border border-line rounded-control shadow-[0_12px_28px_-16px_rgba(20,18,14,0.28)]"
         >
             <div
                 v-for="(m, i) in matches"
@@ -146,9 +146,8 @@ function onKeydown(e) {
                 :id="`medpick-opt-${i}`"
                 role="option"
                 :aria-selected="activeIndex === i"
-                class="tf-medpick-option"
+                class="tf-medpick-option flex items-center gap-[8px] px-[12px] py-[9px] text-[13.5px] text-ink rounded-[6px] cursor-pointer"
                 :class="{ 'is-active': activeIndex === i }"
-                style="padding: 9px 12px; border-radius: 6px; font-size: 13.5px; color: var(--ink); cursor: pointer; display: flex; align-items: center; gap: 8px"
                 @click="add(m)"
                 @mousemove="activeIndex = i"
             >
@@ -159,23 +158,9 @@ function onKeydown(e) {
                 :id="`medpick-opt-${matches.length}`"
                 role="option"
                 :aria-selected="activeIndex === matches.length"
-                class="tf-medpick-manual"
-                :class="{ 'is-active': activeIndex === matches.length }"
+                class="tf-medpick-manual flex items-center gap-[8px] px-[12px] pb-[9px] text-[13px] font-medium text-accent rounded-[6px] cursor-pointer"
+                :class="[{ 'is-active': activeIndex === matches.length }, matches.length > 0 ? 'pt-[11px] mt-[4px] border-t border-line' : 'pt-[9px] mt-0']"
                 @mousemove="activeIndex = matches.length"
-                :style="{
-                    padding: '9px 12px',
-                    borderRadius: '6px',
-                    fontSize: '13px',
-                    color: 'var(--accent)',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    borderTop: matches.length > 0 ? '1px solid var(--line)' : 'none',
-                    marginTop: matches.length > 0 ? '4px' : 0,
-                    paddingTop: matches.length > 0 ? '11px' : '9px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                }"
                 @click="add(q)"
             >
                 <Icon name="plus" :size="13" />
@@ -184,18 +169,17 @@ function onKeydown(e) {
         </div>
 
         <!-- Selected tags -->
-        <div v-if="modelValue.length > 0" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px">
+        <div v-if="modelValue.length > 0" class="flex flex-wrap gap-[8px] mt-[10px]">
             <span
                 v-for="m in modelValue"
                 :key="m"
-                style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 6px 5px 12px; background: var(--surface-sunk); border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; color: var(--ink)"
+                class="inline-flex items-center gap-[6px] pt-[5px] pr-[6px] pb-[5px] pl-[12px] text-[12.5px] text-ink bg-surface-sunk border border-line rounded-[999px]"
             >
                 {{ m }}
                 <button
                     type="button"
-                    class="tf-medpick-remove"
+                    class="tf-medpick-remove inline-flex items-center justify-center w-[18px] h-[18px] p-0 text-ink-3 bg-transparent border-none rounded-[50%] cursor-pointer"
                     :aria-label="`הסר ${m}`"
-                    style="width: 18px; height: 18px; border: none; background: transparent; color: var(--ink-3); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; padding: 0"
                     @click="remove(m)"
                 >
                     <Icon name="x" :size="11" :stroke="2.4" />

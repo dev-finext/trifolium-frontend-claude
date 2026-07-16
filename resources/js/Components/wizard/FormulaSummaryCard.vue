@@ -20,13 +20,13 @@ const herbFor = (id) => HERBS.find((h) => h.id === id);
 
 <template>
     <div class="card">
-        <div style="padding: 24px; border-bottom: 1px solid var(--line)">
+        <div class="p-[24px] border-b border-b-line">
             <div class="field-label">פורמולה</div>
-            <h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 600">
+            <h2 class="m-0 mt-[4px] text-[22px] font-semibold">
                 <template v-if="formula.name">{{ formula.name }}</template>
                 <span v-else class="muted">— ללא שם —</span>
             </h2>
-            <div class="small muted mt-8" style="display: flex; gap: 14px; flex-wrap: wrap">
+            <div class="small muted mt-[8px] flex flex-wrap gap-[14px]">
                 <span><strong>סוג:</strong> {{ ftype.heb }}</span>
                 <span v-if="patientLabel"><strong>מטופל:</strong> {{ patientLabel }}</span>
                 <span><strong>נפח:</strong> {{ totalVol }}</span>
@@ -35,13 +35,13 @@ const herbFor = (id) => HERBS.find((h) => h.id === id);
         </div>
 
         <!-- Ingredients table -->
-        <table style="width: 100%; border-collapse: collapse">
+        <table class="w-full border-collapse">
             <thead>
                 <tr>
                     <th
                         v-for="(h, i) in ['#', 'שם רכיב', 'כמות', '%']"
                         :key="i"
-                        style="text-align: right; padding: 10px 20px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; border-bottom: 1px solid var(--line); background: var(--surface-sunk)"
+                        class="px-[20px] py-[10px] text-right text-[11px] tracking-[0.06em] uppercase font-semibold text-ink-3 bg-surface-sunk border-b border-b-line"
                     >{{ h }}</th>
                 </tr>
             </thead>
@@ -49,15 +49,15 @@ const herbFor = (id) => HERBS.find((h) => h.id === id);
                 <tr
                     v-for="(row, i) in formula.ingredients"
                     :key="row.herbId"
-                    :style="{ borderBottom: i === formula.ingredients.length - 1 ? 'none' : '1px solid var(--line)' }"
+                    :class="i === formula.ingredients.length - 1 ? '' : 'border-b border-b-line'"
                 >
-                    <td style="padding: 12px 20px" class="num muted">{{ i + 1 }}</td>
-                    <td style="padding: 12px 20px">
-                        <div style="font-size: 14px; font-weight: 500">{{ herbFor(row.herbId).heb }}</div>
-                        <div class="small muted latin" style="font-size: 11px; font-style: italic">{{ herbFor(row.herbId).lat }}</div>
+                    <td class="num muted px-[20px] py-[12px]">{{ i + 1 }}</td>
+                    <td class="px-[20px] py-[12px]">
+                        <div class="text-[14px] font-medium">{{ herbFor(row.herbId).heb }}</div>
+                        <div class="small muted latin text-[11px] italic">{{ herbFor(row.herbId).lat }}</div>
                     </td>
-                    <td style="padding: 12px 20px; font-size: 13px" class="num">{{ row.qty }} {{ ftype.unit }}</td>
-                    <td style="padding: 12px 20px; font-size: 13px; color: var(--ink-2)" class="num">{{ (totalQty ? (row.qty / totalQty) * 100 : 0).toFixed(1) }}%</td>
+                    <td class="num px-[20px] py-[12px] text-[13px]">{{ row.qty }} {{ ftype.unit }}</td>
+                    <td class="num px-[20px] py-[12px] text-[13px] text-ink-2">{{ (totalQty ? (row.qty / totalQty) * 100 : 0).toFixed(1) }}%</td>
                 </tr>
             </tbody>
         </table>
@@ -65,9 +65,9 @@ const herbFor = (id) => HERBS.find((h) => h.id === id);
         <!-- Patient-facing instructions -->
         <div
             v-if="formula.externalNotes"
-            style="padding: 14px 20px; background: var(--accent-tint); border-top: 1px solid var(--line); font-size: 13px; color: var(--accent-ink); line-height: 1.55"
+            class="px-[20px] py-[14px] text-[13px] leading-[1.55] text-accent-ink bg-accent-tint border-t border-t-line"
         >
-            <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px">
+            <div class="mb-[4px] text-[11px] tracking-[0.06em] uppercase font-bold">
                 הנחיות למטופל
             </div>
             {{ formula.externalNotes }}

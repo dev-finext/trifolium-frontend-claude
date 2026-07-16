@@ -24,9 +24,9 @@ const selected = computed(() => (
 
 <template>
     <div>
-        <div v-if="addresses.length > 1" style="margin-bottom: 14px">
+        <div v-if="addresses.length > 1" class="mb-[14px]">
             <FieldGroupLabel>בחר/י כתובת למשלוח:</FieldGroupLabel>
-            <div style="display: flex; flex-direction: column; gap: 8px">
+            <div class="flex flex-col gap-[8px]">
                 <AddrPickRow
                     v-for="a in addresses"
                     :key="a.id"
@@ -38,18 +38,14 @@ const selected = computed(() => (
         </div>
         <AddressBlock v-if="selected" :addr="selected" read-only />
         <div
-            :style="{
-                marginTop: '10px', padding: '9px 12px', borderRadius: 'var(--r-control)',
-                background: 'var(--surface-sunk)', display: 'flex', alignItems: 'center',
-                gap: '8px', fontSize: '12.5px', lineHeight: 1.5, color: 'var(--ink-3)',
-            }"
+            class="flex items-center gap-[8px] mt-[10px] px-[12px] py-[9px] text-[12.5px] leading-[1.5] text-ink-3 bg-surface-sunk rounded-control"
         >
-            <Icon name="info" :size="14" color="var(--ink-4)" :style="{ flexShrink: 0 }" />
+            <Icon name="info" :size="14" color="var(--ink-4)" class="shrink-0" />
             <span>
                 {{ addresses.length > 1 ? 'לעריכה או להוספת כתובות יש ' : 'לשינוי או להוספת כתובות יש ' }}
                 <a
                     href="#"
-                    style="color: var(--accent-ink); font-weight: 600; text-decoration: underline"
+                    class="font-semibold text-accent-ink underline"
                     @click.prevent="visit('profile')"
                 >לערוך פרטים אישיים</a>.
             </span>

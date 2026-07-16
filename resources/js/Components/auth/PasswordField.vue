@@ -36,7 +36,7 @@ defineExpose({ focus: () => inputEl.value?.focus() });
             <input
                 :id="inputId"
                 ref="inputEl"
-                class="input with-icon"
+                class="input with-icon pl-[40px]"
                 :type="show ? 'text' : 'password'"
                 :value="modelValue"
                 :placeholder="placeholder"
@@ -47,17 +47,13 @@ defineExpose({ focus: () => inputEl.value?.focus() });
                 spellcheck="false"
                 :aria-invalid="error ? 'true' : undefined"
                 :aria-describedby="error ? errorId : undefined"
-                :style="{ paddingLeft: '40px', ...(error ? { borderColor: 'var(--danger)' } : {}) }"
+                :class="error ? 'border-danger' : ''"
                 @input="emit('update:modelValue', $event.target.value)"
             />
             <button
                 type="button"
                 :aria-label="show ? 'הסתר סיסמה' : 'הצג סיסמה'"
-                :style="{
-                    position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'transparent', border: 'none', padding: '4px', cursor: 'pointer',
-                    display: 'inline-flex', color: 'var(--ink-3)',
-                }"
+                class="absolute left-[8px] top-[50%] translate-y-[-50%] inline-flex p-[4px] text-ink-3 bg-transparent border-none cursor-pointer"
                 @click="show = !show"
             ><Icon :name="show ? 'eye_off' : 'eye'" :size="17" /></button>
         </div>

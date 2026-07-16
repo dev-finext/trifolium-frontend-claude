@@ -15,31 +15,18 @@ const hover = ref(false);
 
 <template>
     <button
-        :style="{
-            display: 'flex', alignItems: 'center', gap: '12px',
-            width: '100%', textAlign: 'right',
-            padding: '10px 12px', border: '1px solid var(--line)',
-            borderRadius: 'var(--r-control)', cursor: 'pointer',
-            background: hover ? 'var(--accent-tint)' : 'var(--surface)',
-            borderColor: hover ? 'var(--accent)' : 'var(--line)',
-            transition: 'background .12s, border-color .12s',
-            fontFamily: 'inherit',
-        }"
+        class="flex items-center gap-[12px] w-full text-right py-[10px] px-[12px] border rounded-control cursor-pointer transition-[background,border-color] duration-120 [font-family:inherit]"
+        :class="hover ? 'bg-accent-tint border-accent' : 'bg-surface border-line'"
         @click="emit('pick')"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
         <span
-            :style="{
-                width: '36px', height: '36px', flexShrink: 0, borderRadius: '50%',
-                background: 'var(--accent-tint)', color: 'var(--accent)',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '13px', fontWeight: 600,
-            }"
+            class="inline-flex items-center justify-center w-[36px] h-[36px] shrink-0 text-[13px] font-semibold text-accent bg-accent-tint rounded-[50%]"
         >{{ patient.initials }}</span>
-        <span style="flex: 1; min-width: 0">
-            <span style="display: block; font-size: 14.5px; font-weight: 600; color: var(--ink)">{{ patient.heb }}</span>
-            <span class="small muted" style="display: block; margin-top: 1px">
+        <span class="flex-1 min-w-0">
+            <span class="block text-[14.5px] font-semibold text-ink">{{ patient.heb }}</span>
+            <span class="small muted block mt-[1px]">
                 גיל {{ patient.age }} · {{ patient.last }}
             </span>
         </span>

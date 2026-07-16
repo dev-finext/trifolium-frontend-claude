@@ -87,28 +87,27 @@ function focusBorder(e, on) {
 </script>
 
 <template>
-    <div class="col gap-16">
+    <div class="col gap-[16px]">
 
         <!-- ─── Card 1: מינון יומי ─────────────────────────── -->
-        <section class="card" style="padding: 0; overflow: hidden">
+        <section class="card p-0 overflow-hidden">
 
             <!-- Title row -->
-            <div style="padding: 10px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: flex-start">
-                <span style="font-size: 13.5px; font-weight: 700; color: var(--accent)">מינון יומי</span>
+            <div class="flex justify-start px-[20px] py-[10px] border-b border-line">
+                <span class="text-[13.5px] font-bold text-accent">מינון יומי</span>
             </div>
 
             <!-- 4-column grid -->
-            <div class="dose-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr 2fr">
+            <div class="dose-grid grid grid-cols-[1fr_1fr_1fr_2fr]">
 
                 <!-- כמות -->
                 <DoseCol icon="scale" label="כמות">
                     <input
                         type="number"
                         min="0"
-                        class="input num"
+                        class="input num w-full h-[40px] text-center text-[15px] font-semibold box-border"
                         :value="formula.dose?.qty ?? 10"
                         placeholder="כמות"
-                        style="width: 100%; text-align: center; font-size: 15px; font-weight: 600; height: 40px; box-sizing: border-box"
                         @input="setDose({ qty: +$event.target.value || 0 })"
                     />
                 </DoseCol>
@@ -116,9 +115,8 @@ function focusBorder(e, on) {
                 <!-- יחידת מידה -->
                 <DoseCol icon="drop" label="יחידת מידה">
                     <select
-                        class="select"
+                        class="select w-full h-[40px] text-[14px] box-border"
                         :value="doseUnitValue"
-                        style="width: 100%; height: 40px; font-size: 14px; box-sizing: border-box"
                         @change="setDose({ unit: $event.target.value })"
                     >
                         <option v-for="u in unitIds" :key="u" :value="u">{{ STEP4_UNIT_LABELS[u] || u }}</option>
@@ -128,9 +126,8 @@ function focusBorder(e, on) {
                 <!-- פעמים ביום -->
                 <DoseCol icon="gauge" label="פעמים ביום">
                     <select
-                        class="select"
+                        class="select w-full h-[40px] text-[14px] box-border"
                         :value="formula.dose?.perDay || ''"
-                        style="width: 100%; height: 40px; font-size: 14px; box-sizing: border-box"
                         @change="setDose({ perDay: +$event.target.value || 0 })"
                     >
                         <option value="">אנא בחר/י</option>
@@ -140,25 +137,13 @@ function focusBorder(e, on) {
 
                 <!-- זמן לקיחה -->
                 <DoseCol icon="moon" label="זמן לקיחה" is-last>
-                    <div style="display: flex; flex-direction: column; gap: 8px">
-                        <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <div class="flex flex-col gap-[8px]">
+                        <div class="flex flex-wrap gap-[6px]">
                             <button
                                 v-for="tag in TIMING_TAGS"
                                 :key="tag"
-                                :style="{
-                                    height: '34px',
-                                    paddingInline: '14px',
-                                    borderRadius: '999px',
-                                    border: '1px solid ' + ((formula.tags || []).includes(tag) ? '#546b7c' : 'var(--line-strong)'),
-                                    background: (formula.tags || []).includes(tag) ? '#546b7c' : 'var(--surface)',
-                                    color: (formula.tags || []).includes(tag) ? '#fff' : 'var(--ink-2)',
-                                    fontSize: '13px',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'background-color .12s, border-color .12s, color .12s',
-                                    fontFamily: 'inherit',
-                                    whiteSpace: 'nowrap',
-                                }"
+                                class="h-[34px] px-[14px] rounded-[999px] border text-[13px] font-semibold cursor-pointer transition-[background-color,border-color,color] duration-[120ms] [font-family:inherit] whitespace-nowrap"
+                                :class="(formula.tags || []).includes(tag) ? 'border-[#546b7c] bg-[#546b7c] text-white' : 'border-line-strong bg-surface text-ink-2'"
                                 @click="toggleTag(tag)"
                             >{{ tag }}</button>
 
@@ -167,7 +152,7 @@ function focusBorder(e, on) {
                                 v-for="t in customTags"
                                 :key="t"
                                 title="הסר"
-                                style="height: 34px; padding-inline: 14px; border-radius: 999px; border: 1px solid #546b7c; background: #546b7c; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px"
+                                class="inline-flex items-center gap-[6px] h-[34px] px-[14px] rounded-[999px] border border-[#546b7c] bg-[#546b7c] text-white text-[13px] font-semibold cursor-pointer [font-family:inherit] whitespace-nowrap"
                                 @click="toggleTag(t)"
                             >
                                 {{ t }}
@@ -181,14 +166,14 @@ function focusBorder(e, on) {
                                 :value="tagDraft"
                                 maxlength="15"
                                 placeholder="הקלד ולחץ Enter"
-                                style="height: 34px; padding-inline: 12px; border-radius: 999px; border: 1px solid var(--accent); outline: none; font-size: 13px; font-family: inherit; width: 160px; background: var(--surface); color: var(--ink)"
+                                class="h-[34px] w-[160px] px-[12px] rounded-[999px] border border-accent outline-none text-[13px] [font-family:inherit] bg-surface text-ink"
                                 @input="tagDraft = $event.target.value"
                                 @keydown="onTagKeydown"
                                 @blur="commitTag"
                             />
                             <button
                                 v-else
-                                style="height: 34px; padding-inline: 14px; border-radius: 999px; border: 1px dashed var(--line-strong); background: var(--surface); color: var(--ink-3); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 5px"
+                                class="inline-flex items-center gap-[5px] h-[34px] px-[14px] rounded-[999px] border border-dashed border-line-strong bg-surface text-ink-3 text-[13px] font-semibold cursor-pointer [font-family:inherit]"
                                 @click="startAddingTag"
                             >
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
@@ -197,21 +182,8 @@ function focusBorder(e, on) {
                         </div>
                         <button
                             :disabled="!hasTags"
-                            :style="{
-                                alignSelf: 'flex-start',
-                                height: '28px',
-                                paddingInline: '12px',
-                                borderRadius: '999px',
-                                border: '1px solid var(--line)',
-                                background: 'var(--surface-sunk)',
-                                color: hasTags ? 'var(--ink-3)' : 'var(--ink-4)',
-                                fontSize: '12px',
-                                fontWeight: 500,
-                                cursor: hasTags ? 'pointer' : 'default',
-                                fontFamily: 'inherit',
-                                opacity: hasTags ? 1 : 0.45,
-                                transition: 'opacity .12s',
-                            }"
+                            class="self-start h-[28px] px-[12px] rounded-[999px] border border-line bg-surface-sunk text-[12px] font-medium [font-family:inherit] transition-opacity duration-[120ms]"
+                            :class="hasTags ? 'text-ink-3 cursor-pointer opacity-100' : 'text-ink-4 cursor-default opacity-45'"
                             @click="clearTags"
                         >נקה</button>
                     </div>
@@ -220,14 +192,14 @@ function focusBorder(e, on) {
             </div>
 
             <!-- הנחיות נוספות עבור המטופל/ת -->
-            <div style="border-top: 1px solid var(--line); padding: 14px 20px 18px">
-                <div style="font-size: 13px; font-weight: 600; color: var(--ink-2); text-align: right; margin-bottom: 8px">
+            <div class="border-t border-line pt-[14px] px-[20px] pb-[18px]">
+                <div class="mb-[8px] text-[13px] font-semibold text-ink-2 text-right">
                     הנחיות נוספות עבור המטופל/ת
                 </div>
                 <textarea
                     :value="formula.externalNotes || ''"
                     placeholder="הנחיות נוספות עבור המטופל/ת"
-                    style="display: block; width: 100%; min-height: 72px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: var(--surface); color: var(--ink); box-sizing: border-box"
+                    class="block w-full min-h-[72px] border border-line rounded-control px-[14px] py-[10px] text-[14px] leading-[1.55] [font-family:inherit] outline-none resize-y bg-surface text-ink box-border"
                     @input="setF({ externalNotes: $event.target.value })"
                     @focus="focusBorder($event, true)"
                     @blur="focusBorder($event, false)"
@@ -236,25 +208,25 @@ function focusBorder(e, on) {
         </section>
 
         <!-- ─── Card 2: הוראות לבית המרקחת ────────────────── -->
-        <section class="card pharmacy-notes-card" style="padding: 0; overflow: hidden">
-            <div style="padding: 10px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: flex-start">
-                <span style="font-size: 13.5px; font-weight: 700; color: var(--accent)">הוראות לבית המרקחת</span>
+        <section class="card pharmacy-notes-card p-0 overflow-hidden">
+            <div class="flex justify-start px-[20px] py-[10px] border-b border-line">
+                <span class="text-[13.5px] font-bold text-accent">הוראות לבית המרקחת</span>
             </div>
-            <div style="padding: 16px 20px 20px">
+            <div class="pt-[16px] px-[20px] pb-[20px]">
                 <textarea
                     :value="formula.internalNotes || ''"
-                    style="display: block; width: 100%; min-height: 110px; border: 1px solid var(--line); border-radius: var(--r-control); padding: 10px 14px; font-size: 14px; line-height: 1.55; font-family: inherit; outline: none; resize: vertical; background: var(--surface); color: var(--ink); box-sizing: border-box"
+                    class="block w-full min-h-[110px] border border-line rounded-control px-[14px] py-[10px] text-[14px] leading-[1.55] [font-family:inherit] outline-none resize-y bg-surface text-ink box-border"
                     @input="setF({ internalNotes: $event.target.value })"
                 />
             </div>
         </section>
 
         <!-- Nav — hidden when embedded in step 3 -->
-        <div v-if="!embedded" style="display: flex; justify-content: space-between">
+        <div v-if="!embedded" class="flex justify-between">
             <button class="btn btn--ghost" @click="emit('back')">
                 <Icon name="arrow_right" :size="16" /> חזור
             </button>
-            <button class="btn btn--primary" style="padding-inline: 28px" @click="emit('next')">
+            <button class="btn btn--primary px-[28px]" @click="emit('next')">
                 המשך לאישור
                 <Icon name="arrow_left" :size="16" />
             </button>

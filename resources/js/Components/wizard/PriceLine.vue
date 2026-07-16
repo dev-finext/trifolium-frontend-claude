@@ -10,15 +10,11 @@ defineProps({
 </script>
 
 <template>
-    <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0">
-        <span style="font-size: 13px; color: var(--ink-2)">{{ label }}</span>
+    <div class="flex justify-between items-baseline px-0 py-[8px]">
+        <span class="text-[13px] text-ink-2">{{ label }}</span>
         <span
-            class="num"
-            :style="{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: accent ? 'var(--accent)' : muted ? 'var(--ink-3)' : 'var(--ink)',
-            }"
+            class="num text-[14px] font-medium"
+            :class="accent ? 'text-accent' : muted ? 'text-ink-3' : 'text-ink'"
         >{{ value }}</span>
     </div>
 </template>

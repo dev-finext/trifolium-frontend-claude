@@ -15,25 +15,23 @@ defineEmits(['update:modelValue']);
 </script>
 
 <template>
-    <div :style="{ gridColumn: span2 ? '1 / -1' : 'auto' }">
-        <label class="field-label" style="margin-bottom: 6px">{{ label }}</label>
+    <div :class="span2 ? 'col-span-full' : 'col-auto'">
+        <label class="field-label mb-[6px]">{{ label }}</label>
         <div v-if="readOnly" class="input-wrap">
-            <span class="lead-icon" style="right: auto; left: 11px; color: var(--ink-4)">
+            <span class="lead-icon right-auto left-[11px] text-ink-4">
                 <Icon name="lock" :size="14" />
             </span>
             <input
-                class="input" :value="modelValue" readonly tabindex="-1" :dir="dir"
-                :style="{
-                    background: 'var(--surface-sunk)', color: 'var(--ink-2)',
-                    cursor: 'default', paddingLeft: '34px', height: '42px', fontSize: '14px',
-                    ...(dir === 'ltr' ? { textAlign: 'right' } : {}),
-                }"
+                class="input h-[42px] pl-[34px] text-[14px] text-ink-2 bg-surface-sunk cursor-default"
+                :class="dir === 'ltr' ? 'text-right' : ''"
+                :value="modelValue" readonly tabindex="-1" :dir="dir"
             />
         </div>
         <input
             v-else
-            class="input" :value="modelValue" :placeholder="placeholder" :dir="dir"
-            :style="{ height: '42px', fontSize: '14px', ...(dir === 'ltr' ? { textAlign: 'right' } : {}) }"
+            class="input h-[42px] text-[14px]"
+            :class="dir === 'ltr' ? 'text-right' : ''"
+            :value="modelValue" :placeholder="placeholder" :dir="dir"
             @input="$emit('update:modelValue', $event.target.value)"
         />
     </div>

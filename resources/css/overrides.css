@@ -17,7 +17,7 @@
 .btn--primary:focus-visible,
 .btn--accent:focus-visible,
 .tabbar__item--active:focus-visible,
-[style*="var(--accent)"]:focus-visible { outline-color: #f4efe1; }
+[class~="bg-accent"]:focus-visible, .btn--primary:focus-visible { outline-color: #f4efe1; }
 
 /* A11 · Skip-to-content link (first focusable element). */
 .skip-link {
@@ -80,7 +80,7 @@ html.tf-mobile {
 
   /* M13 · Articles list header: stack vertically instead of a wide flex row */
   .articles-head { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
-  .articles-head [style*="nowrap"] { white-space: normal !important; }
+  .articles-head [class*="whitespace-nowrap"] { white-space: normal !important; }
 
   /* M14 · Article detail hero: reduce desktop padding/title on phones */
   .article-hero { padding: 20px 18px !important; }

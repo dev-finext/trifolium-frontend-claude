@@ -17,16 +17,13 @@ defineEmits(['update:modelValue']);
     <div>
         <FieldLabel>{{ label }}</FieldLabel>
         <div class="input-wrap">
-            <span class="lead-icon" style="right: auto; left: 10px">
+            <span class="lead-icon right-auto left-[10px]">
                 <Icon name="chevron_down" :size="16" />
             </span>
             <select
-                class="select"
+                class="select appearance-none [-webkit-appearance:none] pl-[34px] cursor-pointer"
+                :class="modelValue ? 'text-ink' : 'text-ink-4'"
                 :value="modelValue"
-                :style="{
-                    appearance: 'none', WebkitAppearance: 'none', paddingLeft: '34px',
-                    color: modelValue ? 'var(--ink)' : 'var(--ink-4)', cursor: 'pointer',
-                }"
                 @change="$emit('update:modelValue', $event.target.value)"
             >
                 <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>

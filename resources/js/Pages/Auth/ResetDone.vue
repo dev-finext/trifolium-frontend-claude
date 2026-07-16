@@ -10,34 +10,22 @@ import { visit } from '@/lib/routes';
     <Head title="הסיסמה עודכנה" />
     <div
         data-screen-label="A7 הסיסמה עודכנה"
-        :style="{
-            minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '24px', background: 'var(--bg)', position: 'relative',
-        }"
+        class="relative flex min-h-screen items-center justify-center p-[24px] bg-bg"
     >
         <AuthBg />
         <div
-            class="card"
-            :style="{
-                position: 'relative', zIndex: 1, width: '100%', maxWidth: '460px',
-                padding: '44px 40px 40px', textAlign: 'center',
-                boxShadow: '0 1px 2px rgba(31,46,29,0.06), 0 24px 70px rgba(20,32,18,0.30)',
-            }"
+            class="card relative z-[1] w-full max-w-[460px] pt-[44px] px-[40px] pb-[40px] text-center shadow-[0_1px_2px_rgba(31,46,29,0.06),0_24px_70px_rgba(20,32,18,0.30)]"
         >
             <div
-                :style="{
-                    width: '72px', height: '72px', borderRadius: '50%', margin: '0 auto 22px',
-                    background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                }"
+                class="inline-flex items-center justify-center w-[72px] h-[72px] mt-0 mx-auto mb-[22px] bg-accent-tint border border-accent-tint-strong rounded-[50%]"
             >
                 <Icon name="check" :size="34" color="var(--accent)" :stroke="2.4" />
             </div>
-            <h1 :style="{ margin: '0 0 12px', fontSize: '22px', fontWeight: 600 }">הסיסמה עודכנה</h1>
-            <p :style="{ margin: '0 0 28px', fontSize: '14.5px', lineHeight: 1.7, color: 'var(--ink-3)', textWrap: 'pretty' }">
+            <h1 class="mt-0 mx-0 mb-[12px] text-[22px] font-semibold">הסיסמה עודכנה</h1>
+            <p class="mt-0 mx-0 mb-[28px] text-[14.5px] leading-[1.7] text-ink-3 text-pretty">
                 הסיסמה החדשה נשמרה בהצלחה. ניתן להתחבר למערכת באמצעות הסיסמה החדשה.
             </p>
-            <button class="btn btn--primary" style="width: 100%" @click="visit('login')">
+            <button class="btn btn--primary w-full" @click="visit('login')">
                 כניסה למערכת
             </button>
         </div>

@@ -13,24 +13,16 @@ const hover = ref(false);
 
 <template>
     <span
-        style="position: relative; display: inline-flex; align-items: center; gap: 7px; cursor: default"
+        class="relative inline-flex items-center gap-[7px] cursor-default"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
     >
         <GoldCoin :size="20" />
-        <span class="num" style="font-size: 15.5px; font-weight: 700; color: var(--ink)">{{ value }}</span>
+        <span class="num text-[15.5px] font-bold text-ink">{{ value }}</span>
         <span
             v-if="hover"
             role="tooltip"
-            :style="{
-                position: 'absolute', top: 'calc(100% + 10px)', left: '50%',
-                transform: 'translateX(-50%)',
-                whiteSpace: 'nowrap', padding: '5px 9px', borderRadius: '7px',
-                background: 'var(--ink)', color: 'var(--surface)',
-                fontSize: '11.5px', fontWeight: 600, lineHeight: 1, zIndex: 90,
-                boxShadow: '0 6px 18px rgba(20,28,24,0.22)', pointerEvents: 'none',
-                animation: 'tf-tip-in .12s ease both',
-            }"
+            class="absolute top-[calc(100%_+_10px)] left-[50%] [transform:translateX(-50%)] z-[90] py-[5px] px-[9px] whitespace-nowrap text-[11.5px] font-semibold leading-[1] bg-(--ink) text-(--surface) rounded-[7px] shadow-[0_6px_18px_rgba(20,28,24,0.22)] pointer-events-none animate-[tf-tip-in_.12s_ease_both]"
         >נקודות זכות למימוש</span>
     </span>
 </template>

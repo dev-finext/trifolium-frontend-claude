@@ -19,95 +19,36 @@ function open() {
 
 <template>
     <div
-        :style="{
-            background: 'var(--surface)',
-            border: '1px solid ' + (hover ? 'var(--ink-2)' : 'var(--line)'),
-            borderRadius: 'var(--r-card)',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            cursor: 'pointer',
-            height: '100%',
-            transform: hover ? 'translateY(-3px)' : 'none',
-            boxShadow: hover ? '0 8px 24px -8px rgba(31, 46, 29, 0.18)' : 'none',
-            transition: 'transform .25s ease, box-shadow .25s ease, border-color .15s ease',
-        }"
+        class="flex flex-col h-full overflow-hidden cursor-pointer bg-surface border rounded-card [transition:transform_.25s_ease,box-shadow_.25s_ease,border-color_.15s_ease]"
+        :class="[
+            hover ? 'border-ink-2' : 'border-line',
+            hover ? '[transform:translateY(-3px)] shadow-[0_8px_24px_-8px_rgba(31,46,29,0.18)]' : '[transform:none] shadow-none',
+        ]"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
         @click="open"
     >
-        <div style="height: 180px; position: relative; border-bottom: 1px solid var(--line); overflow: hidden">
+        <div class="relative h-[180px] overflow-hidden border-b border-b-line">
             <div
-                :style="{
-                    width: '100%', height: '100%',
-                    transform: hover ? 'scale(1.04)' : 'scale(1)',
-                    transition: 'transform .4s ease',
-                }"
+                class="w-full h-full transition-[transform] duration-400 ease-[ease]"
+                :class="hover ? '[transform:scale(1.04)]' : '[transform:scale(1)]'"
             >
                 <ItemCover kind="article" :item="article" />
             </div>
             <span
-                :style="{
-                    position: 'absolute', top: '12px', right: '12px',
-                    background: 'rgba(255,255,255,0.92)',
-                    color: 'var(--accent)',
-                    fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em',
-                    padding: '4px 10px', borderRadius: '999px',
-                    backdropFilter: 'blur(4px)',
-                    whiteSpace: 'nowrap',
-                }"
+                class="absolute top-[12px] right-[12px] py-[4px] px-[10px] text-[11px] font-bold tracking-[0.04em] whitespace-nowrap text-accent bg-[rgba(255,255,255,0.92)] rounded-[999px] backdrop-blur-[4px]"
             >{{ article.cat }}</span>
         </div>
 
-        <div style="padding: 18px; display: flex; flex-direction: column; flex: 1">
-            <div
-                :style="{
-                    fontSize: '15.5px',
-                    fontWeight: 700,
-                    lineHeight: 1.35,
-                    color: 'var(--accent)',
-                    marginBottom: '10px',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    minHeight: '42px',
-                }"
-            >{{ article.title }}</div>
+        <div class="flex flex-col flex-1 p-[18px]">
+            <div class="min-h-[42px] mb-[10px] text-[15.5px] font-bold leading-[1.35] text-accent line-clamp-2">{{ article.title }}</div>
 
-            <div
-                :style="{
-                    fontSize: '13px',
-                    fontWeight: 300,
-                    lineHeight: 1.55,
-                    color: 'var(--ink-2)',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    marginBottom: '16px',
-                    flex: 1,
-                }"
-            >{{ article.excerpt }}</div>
+            <div class="flex-1 mb-[16px] text-[13px] font-light leading-[1.55] text-ink-2 line-clamp-3">{{ article.excerpt }}</div>
 
-            <div
-                :style="{
-                    paddingTop: '12px',
-                    borderTop: '1px solid var(--line)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }"
-            >
+            <div class="flex justify-between items-center pt-[12px] border-t border-t-line">
                 <span class="small num muted">{{ article.date }}</span>
                 <span
-                    :style="{
-                        display: 'inline-flex', alignItems: 'center', gap: '6px',
-                        border: '1px solid var(--line)',
-                        borderRadius: '999px', padding: '5px 12px',
-                        fontSize: '12px', color: 'var(--accent)', fontWeight: 600,
-                        whiteSpace: 'nowrap',
-                    }"
+                    class="inline-flex items-center gap-[6px] py-[5px] px-[12px] text-[12px] font-semibold whitespace-nowrap text-accent border border-line rounded-[999px]"
                 >לקריאת הכתבה</span>
             </div>
         </div>

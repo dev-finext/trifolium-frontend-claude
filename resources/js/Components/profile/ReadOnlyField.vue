@@ -15,22 +15,18 @@ defineProps({
     <div>
         <FieldLabel>{{ label }}</FieldLabel>
         <div class="input-wrap">
-            <span class="lead-icon" style="right: auto; left: 11px; color: var(--ink-4)">
+            <span class="lead-icon right-auto left-[11px] text-ink-4">
                 <Icon name="lock" :size="15" />
             </span>
             <input
-                class="input"
+                class="input pl-[36px] cursor-default bg-surface-sunk text-ink-2"
+                :class="dir === 'ltr' ? 'text-right' : ''"
                 :value="value"
                 readonly
                 tabindex="-1"
                 :dir="dir"
-                :style="{
-                    background: 'var(--surface-sunk)', color: 'var(--ink-2)',
-                    cursor: 'default', paddingLeft: '36px',
-                    ...(dir === 'ltr' ? { textAlign: 'right' } : {}),
-                }"
             />
         </div>
-        <div class="small muted" style="margin-top: 6px">לא ניתן לעריכה. לשינוי יש לפנות לתמיכה.</div>
+        <div class="small muted mt-[6px]">לא ניתן לעריכה. לשינוי יש לפנות לתמיכה.</div>
     </div>
 </template>

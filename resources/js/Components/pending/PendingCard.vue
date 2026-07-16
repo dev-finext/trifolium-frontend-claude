@@ -68,33 +68,23 @@ function viewOrder(item) {
 </script>
 
 <template>
-    <div class="card pending-card" style="display: flex; align-items: stretch; flex-wrap: wrap">
+    <div class="card pending-card flex items-stretch flex-wrap">
         <!-- thumbnail + body -->
-        <div :style="{ flex: 1, minWidth: '300px', padding: '20px', display: 'flex', gap: '18px', alignItems: 'flex-start' }">
+        <div class="flex items-start gap-[18px] flex-1 min-w-[300px] p-[20px]">
             <div
-                :style="{
-                    width: '92px', height: '100px', flexShrink: 0, overflow: 'hidden',
-                    borderRadius: 'var(--r-card)', border: '1px solid var(--line)',
-                    background: 'var(--surface-sunk)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }"
+                class="flex items-center justify-center w-[92px] h-[100px] shrink-0 bg-surface-sunk border border-line rounded-card overflow-hidden"
             >
                 <FormulaGlyph v-if="isFormula" :type-id="item.typeId" />
                 <ProductIllustration v-else :heb="item.name" />
             </div>
 
-            <div style="flex: 1; min-width: 0">
+            <div class="flex-1 min-w-0">
                 <!-- title + type badge -->
-                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
-                    <h3 style="margin: 0; font-size: 17px; font-weight: 600">{{ item.name }}</h3>
+                <div class="flex items-center gap-[10px] flex-wrap">
+                    <h3 class="m-0 text-[17px] font-semibold">{{ item.name }}</h3>
                     <span
-                        :style="{
-                            display: 'inline-flex', alignItems: 'center', gap: '6px',
-                            padding: '3px 10px', borderRadius: '999px', fontSize: '11.5px', fontWeight: 600,
-                            background: isFormula ? 'var(--accent-tint-strong)' : 'var(--surface-sunk)',
-                            color: isFormula ? 'var(--accent-ink)' : 'var(--ink-2)',
-                            border: isFormula ? '1px solid transparent' : '1px solid var(--line)',
-                        }"
+                        class="inline-flex items-center gap-[6px] px-[10px] py-[3px] text-[11.5px] font-semibold border rounded-[999px]"
+                        :class="isFormula ? 'bg-accent-tint-strong text-accent-ink border-transparent' : 'bg-surface-sunk text-ink-2 border-line'"
                     >
                         <Icon :name="isFormula ? 'flask' : 'package'" :size="12" :color="isFormula ? 'var(--accent)' : 'var(--ink-3)'" />
                         {{ isFormula ? 'פורמולה בהכנה אישית' : 'מוצר מדף' }}
@@ -102,34 +92,31 @@ function viewOrder(item) {
                 </div>
 
                 <!-- meta line -->
-                <div class="small muted" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 10px">
-                    <span style="display: inline-flex; align-items: center; gap: 6px">
+                <div class="small muted flex items-center gap-[12px] flex-wrap mt-[10px]">
+                    <span class="inline-flex items-center gap-[6px]">
                         <Icon name="user" :size="13" color="var(--ink-4)" />
                         {{ item.patient }}
                     </span>
                     <span v-if="item.phone" class="num" dir="ltr">{{ item.phone }}</span>
-                    <span style="color: var(--line-strong)">·</span>
-                    <span style="display: inline-flex; align-items: center; gap: 6px">
+                    <span class="text-(--line-strong)">·</span>
+                    <span class="inline-flex items-center gap-[6px]">
                         <Icon name="clock" :size="13" color="var(--ink-4)" />
                         הוקפא {{ item.heldAt }}
                     </span>
                     <template v-if="item.orderId">
-                        <span style="color: var(--line-strong)">·</span>
+                        <span class="text-(--line-strong)">·</span>
                         <span class="num">{{ item.orderId }}</span>
                     </template>
-                    <span style="color: var(--line-strong)">·</span>
+                    <span class="text-(--line-strong)">·</span>
                     <span>{{ item.reason }}</span>
                 </div>
 
                 <!-- summary -->
                 <p
-                    :style="{
-                        margin: '10px 0 0', fontSize: '13.5px', lineHeight: 1.6, color: 'var(--ink-2)',
-                        textWrap: 'pretty',
-                    }"
+                    class="m-0 mt-[10px] text-[13.5px] leading-[1.6] text-ink-2 text-pretty"
                 >
                     {{ summary }}
-                    <span class="muted" style="margin-inline-start: 8px">
+                    <span class="muted ms-[8px]">
                         · {{ item.vol }}<template v-if="item.qty > 1"> · ×<span class="num">{{ item.qty }}</span></template>
                     </span>
                 </p>
@@ -138,43 +125,35 @@ function viewOrder(item) {
 
         <!-- action rail -->
         <div
-            class="pending-card__rail"
-            :style="{
-                width: '200px', flexShrink: 0, padding: '20px',
-                display: 'flex', flexDirection: 'column', gap: '12px',
-                borderInlineStart: '1px solid var(--line)',
-            }"
+            class="pending-card__rail flex flex-col gap-[12px] w-[200px] shrink-0 p-[20px] border-s border-line"
         >
             <div>
-                <div class="field-label" style="margin-bottom: 2px">סה״כ</div>
-                <div class="num" style="font-size: 22px; font-weight: 700">₪{{ fmtP(total) }}</div>
+                <div class="field-label mb-[2px]">סה״כ</div>
+                <div class="num text-[22px] font-bold">₪{{ fmtP(total) }}</div>
             </div>
 
-            <button class="btn btn--ghost btn--sm" style="width: 100%" @click="emit('return', item)">
+            <button class="btn btn--ghost btn--sm w-full" @click="emit('return', item)">
                 <Icon name="cart" :size="14" /> העבר לסל
             </button>
 
             <button
                 v-if="isFormula"
-                class="btn btn--primary btn--sm"
-                style="width: 100%"
+                class="btn btn--primary btn--sm w-full"
                 @click="openPendingFormulaInLab(item)"
             >
                 <Icon name="edit" :size="14" color="#fff" /> עריכה במעבדה
             </button>
 
-            <div style="display: flex; gap: 8px">
+            <div class="flex gap-[8px]">
                 <button
                     v-if="item.orderId"
-                    class="btn btn--ghost btn--sm"
-                    style="flex: 1"
+                    class="btn btn--ghost btn--sm flex-1"
                     @click="viewOrder(item)"
                 >
                     צפה
                 </button>
                 <button
-                    class="btn btn--ghost btn--sm"
-                    style="flex: 1; color: var(--danger)"
+                    class="btn btn--ghost btn--sm flex-1 text-danger"
                     @click="emit('remove', item.id)"
                 >
                     <Icon name="x" :size="13" color="var(--danger)" /> הסר

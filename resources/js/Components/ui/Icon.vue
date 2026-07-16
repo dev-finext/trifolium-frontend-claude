@@ -93,7 +93,7 @@ const markup = computed(() => PATHS[props.name] || null);
         :stroke-width="stroke"
         stroke-linecap="round"
         stroke-linejoin="round"
-        style="flex-shrink: 0"
+        class="shrink-0"
         :role="label ? 'img' : undefined"
         :aria-label="label || undefined"
         :aria-hidden="label ? undefined : 'true'"

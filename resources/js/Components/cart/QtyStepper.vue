@@ -23,7 +23,7 @@ function btnStyle(disabled) {
 </script>
 
 <template>
-    <div class="qty-stepper" style="display: flex; align-items: center; gap: 8px" role="group" aria-label="כמות">
+    <div class="qty-stepper flex items-center gap-[8px]" role="group" aria-label="כמות">
         <button
             class="qty-step"
             type="button"
@@ -35,15 +35,10 @@ function btnStyle(disabled) {
             <Icon name="minus" :size="15" :color="qty <= 1 ? 'var(--ink-4)' : 'var(--on-accent)'" :stroke="2.2" />
         </button>
         <span
-            class="num qty-count"
+            class="num qty-count min-w-[40px] h-[30px] text-center text-[15px] font-semibold leading-[28px] bg-surface border border-line rounded-control"
             role="status"
             aria-live="polite"
             :aria-label="`כמות: ${qty}`"
-            :style="{
-                minWidth: '40px', textAlign: 'center', fontSize: '15px', fontWeight: 600,
-                border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                height: '30px', lineHeight: '28px', background: 'var(--surface)',
-            }"
         >{{ qty }}</span>
         <button
             class="qty-step"

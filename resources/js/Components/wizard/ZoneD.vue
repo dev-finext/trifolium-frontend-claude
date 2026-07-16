@@ -43,14 +43,14 @@ const hasContent = computed(() => segments.value.length > 0);
 </script>
 
 <template>
-    <section class="card zone-d" style="overflow: hidden">
+    <section class="card zone-d overflow-hidden">
         <!-- Stats bar — נפח כולל comes from Zone A -->
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line)">
+        <div class="grid grid-cols-[repeat(4,1fr)] border-b border-b-line">
             <StatCell label="נפח כולל" big accent>
                 <template v-if="volume != null">
-                    <span class="num">{{ volume }}</span> <span style="font-size: 14px; font-weight: 500">{{ volumeUnit }}</span>
+                    <span class="num">{{ volume }}</span> <span class="text-[14px] font-medium">{{ volumeUnit }}</span>
                 </template>
-                <span v-else style="color: var(--ink-3); font-size: 14px; font-weight: 500">טרם נבחר</span>
+                <span v-else class="text-[14px] font-medium text-ink-3">טרם נבחר</span>
             </StatCell>
 
             <StatCell label="רכיבים" big>
@@ -58,22 +58,22 @@ const hasContent = computed(() => segments.value.length > 0);
             </StatCell>
             <StatCell label="סוג פורמולה">{{ ftype && ftype.heb }}</StatCell>
             <StatCell label="מטופל" last>
-                <span v-if="noPatient" style="color: var(--warning)">ללא מטופל</span>
+                <span v-if="noPatient" class="text-warning">ללא מטופל</span>
                 <template v-else>{{ patientLabel || '—' }}</template>
             </StatCell>
         </div>
 
         <!-- Body -->
-        <div v-if="!hasContent" style="padding: 64px 24px; text-align: center; color: var(--ink-3)">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ink-4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; margin-bottom: 12px">
+        <div v-if="!hasContent" class="px-[24px] py-[64px] text-center text-ink-3">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ink-4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block mb-[12px]">
                 <path d="M12 2a10 10 0 1 0 10 10h-10V2z" />
                 <path d="M12 2a10 10 0 0 1 10 10" />
             </svg>
-            <div style="font-weight: 600; color: var(--ink-2); margin-bottom: 4px">הוסף רכיבים כדי לראות את התרשים</div>
+            <div class="mb-[4px] font-semibold text-ink-2">הוסף רכיבים כדי לראות את התרשים</div>
             <div class="small">התרשים מתעדכן בזמן אמת.</div>
         </div>
 
-        <div v-else style="display: grid; grid-template-columns: 220px 1fr; gap: 28px; padding: 16px 24px; align-items: center">
+        <div v-else class="grid grid-cols-[220px_1fr] items-center gap-[28px] px-[24px] py-[16px]">
             <BottleChart
                 :segments="segments"
                 :total-pct="tRounded"
@@ -84,7 +84,7 @@ const hasContent = computed(() => segments.value.length > 0);
             <!-- Legend + physical volume -->
             <div>
                 <FieldLabel>פירוט הרכב</FieldLabel>
-                <div class="col gap-4" style="margin-bottom: 10px">
+                <div class="col gap-[4px] mb-[10px]">
                     <LegendRow
                         v-for="(seg, i) in segments" :key="i"
                         :seg="seg"
@@ -94,14 +94,14 @@ const hasContent = computed(() => segments.value.length > 0);
                 </div>
                 <div
                     v-if="volume != null"
-                    style="padding-top: 8px; border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--ink-3); display: flex; align-items: center; gap: 8px"
+                    class="flex items-center gap-[8px] pt-[8px] text-[12.5px] text-ink-3 [border-top:1px_dashed_var(--line)]"
                 >
                     <Icon name="flask" :size="12" color="var(--ink-3)" />
                     <template v-if="isChinese">
-                        נפח כולל: <span class="num" style="color: var(--ink-2); font-weight: 600">{{ volume }}</span> {{ volumeUnit }} · <span class="num" style="color: var(--ink-2); font-weight: 600">{{ totalParts }}</span> חלקים
+                        נפח כולל: <span class="num font-semibold text-ink-2">{{ volume }}</span> {{ volumeUnit }} · <span class="num font-semibold text-ink-2">{{ totalParts }}</span> חלקים
                     </template>
                     <template v-else>
-                        נפח כולל: <span class="num" style="color: var(--ink-2); font-weight: 600">{{ volume }}</span> {{ volumeUnit }}
+                        נפח כולל: <span class="num font-semibold text-ink-2">{{ volume }}</span> {{ volumeUnit }}
                     </template>
                 </div>
             </div>

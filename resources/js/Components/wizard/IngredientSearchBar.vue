@@ -67,29 +67,26 @@ function onFocus() {
 </script>
 
 <template>
-    <div ref="wrapRef" style="position: relative; z-index: 20">
+    <div ref="wrapRef" class="relative z-[20]">
         <!-- Search field — prominent accent-bordered box -->
         <div
-            class="ingredient-search-row"
-            style="position: relative; padding: 12px 14px; background: var(--accent-tint); border-bottom: 1px solid var(--line); border-top-left-radius: var(--r-card); border-top-right-radius: var(--r-card); display: flex; gap: 10px; align-items: center"
+            class="ingredient-search-row relative flex items-center gap-[10px] py-[12px] px-[14px] bg-accent-tint border-b border-line rounded-tl-card rounded-tr-card"
         >
-            <div style="flex: 1; position: relative; display: flex; align-items: center; background: var(--surface); border: 1.5px solid var(--accent); border-radius: var(--r-control); box-shadow: 0 1px 4px rgba(20, 18, 14, 0.06)">
-                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--accent); pointer-events: none; display: inline-flex">
+            <div class="relative flex flex-1 items-center bg-surface border-[1.5px] border-accent rounded-control shadow-[0_1px_4px_rgba(20,18,14,0.06)]">
+                <span class="absolute left-[14px] top-[50%] -translate-y-1/2 inline-flex text-accent pointer-events-none">
                     <Icon name="search" :size="20" />
                 </span>
                 <input
                     ref="inputRef"
                     :value="query"
                     placeholder="חיפוש רכיב להוספה..."
-                    class="ingredient-search-input"
-                    style="width: 100%; height: 50px; border: none; outline: none; background: transparent; padding-inline-start: 50px; padding-inline-end: 18px; font-size: 16px; font-weight: 600; font-family: inherit; color: var(--ink); border-radius: var(--r-control)"
+                    class="ingredient-search-input w-full h-[50px] ps-[50px] pe-[18px] border-none outline-none bg-transparent text-[16px] font-semibold [font-family:inherit] text-ink rounded-control"
                     @input="onInput"
                     @focus="onFocus"
                 />
             </div>
             <button
-                class="tf-preset-btn"
-                style="position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 8px; height: 50px; padding-inline-start: 18px; padding-inline-end: 44px; border: 1.5px solid var(--accent); border-radius: var(--r-control); background: var(--surface); color: var(--accent); font-size: 13.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; white-space: nowrap; font-family: inherit; transition: background .12s, color .12s"
+                class="tf-preset-btn relative overflow-hidden inline-flex items-center gap-[8px] shrink-0 h-[50px] ps-[18px] pe-[44px] text-[13.5px] font-bold [font-family:inherit] whitespace-nowrap text-accent bg-surface border-[1.5px] border-accent rounded-control cursor-pointer transition-[background,color] duration-[120ms] ease-[ease]"
                 @click="emit('open-preset')"
             >
                 <NewRibbonMark :top="9" :left="-32" />
@@ -107,9 +104,9 @@ function onFocus() {
         <!-- Floating results dropdown — overlays the table below -->
         <div
             v-if="open"
-            style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--line); border-top: none; border-bottom-left-radius: var(--r-card); border-bottom-right-radius: var(--r-card); box-shadow: 0 18px 40px rgba(20, 18, 14, 0.16); max-height: 360px; overflow-y: auto; z-index: 60"
+            class="absolute top-full left-0 right-0 max-h-[360px] overflow-y-auto bg-surface border border-line border-t-0 rounded-bl-card rounded-br-card shadow-[0_18px_40px_rgba(20,18,14,0.16)] z-[60]"
         >
-            <div v-if="available.length === 0" class="muted" style="padding: 20px 18px; font-size: 14px; text-align: center">
+            <div v-if="available.length === 0" class="muted py-[20px] px-[18px] text-[14px] text-center">
                 {{ query ? 'לא נמצאו רכיבים מתאימים' : 'כל הרכיבים המתאימים כבר נוספו' }}
             </div>
             <template v-else-if="grouped">

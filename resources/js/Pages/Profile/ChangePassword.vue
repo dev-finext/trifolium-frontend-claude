@@ -72,56 +72,45 @@ function submit() {
     <Head title="שינוי סיסמה" />
     <div
         data-screen-label="שינוי סיסמה"
-        :style="{
-            minHeight: '100vh', background: 'var(--bg)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
-        }"
+        class="flex items-center justify-center min-h-[100vh] p-[24px] bg-bg"
     >
-        <div class="card" style="width: 100%; max-width: 480px; padding: 40px 40px 36px">
+        <div class="card w-full max-w-[480px] p-[40px] pb-[36px]">
 
-            <div v-if="done" style="text-align: center">
+            <div v-if="done" class="text-center">
                 <div
-                    :style="{
-                        width: '72px', height: '72px', borderRadius: '50%', margin: '0 auto 22px',
-                        background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    }"
+                    class="inline-flex items-center justify-center w-[72px] h-[72px] mt-0 mx-auto mb-[22px] bg-accent-tint border border-accent-tint-strong rounded-full"
                 >
                     <Icon name="check" :size="34" color="var(--accent)" :stroke="2.4" />
                 </div>
-                <h1 style="margin: 0 0 12px; font-size: 22px; font-weight: 600">הסיסמה עודכנה</h1>
-                <p style="margin: 0 0 28px; font-size: 14.5px; line-height: 1.7; color: var(--ink-3); text-wrap: pretty">
+                <h1 class="m-0 mb-[12px] text-[22px] font-semibold">הסיסמה עודכנה</h1>
+                <p class="m-0 mb-[28px] text-[14.5px] leading-[1.7] text-ink-3 text-pretty">
                     הסיסמה שלך הוחלפה בהצלחה. השתמש בסיסמה החדשה בכניסה הבאה למערכת.
                 </p>
-                <button class="btn btn--primary" style="min-width: 180px" @click="goProfile">
+                <button class="btn btn--primary min-w-[180px]" @click="goProfile">
                     חזרה לפרטים האישיים
                 </button>
             </div>
 
             <form novalidate v-else @submit.prevent="submit">
                 <a
-                    style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); cursor: pointer; margin-bottom: 22px"
+                    class="inline-flex items-center gap-[6px] mb-[22px] text-[13px] text-ink-3 cursor-pointer"
                     @click="goProfile"
                 >
                     <Icon name="arrow_right" :size="15" /> חזרה לפרטים האישיים
                 </a>
 
                 <span
-                    :style="{
-                        width: '46px', height: '46px', borderRadius: '50%',
-                        background: 'var(--accent-tint)', border: '1px solid var(--accent-tint-strong)',
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px',
-                    }"
+                    class="inline-flex items-center justify-center w-[46px] h-[46px] mb-[16px] bg-accent-tint border border-accent-tint-strong rounded-full"
                 ><Icon name="lock" :size="22" color="var(--accent)" /></span>
 
-                <h1 style="margin: 0; font-size: 23px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3">
+                <h1 class="m-0 text-[23px] font-semibold leading-[1.3] tracking-[-0.01em]">
                     שינוי סיסמה
                 </h1>
-                <p class="page-sub" style="margin: 8px 0 30px; text-wrap: pretty; line-height: 1.7">
+                <p class="page-sub mt-[8px] mx-0 mb-[30px] leading-[1.7] text-pretty">
                     הזן את סיסמתך הנוכחית, ולאחר מכן בחר סיסמה חדשה לחשבונך.
                 </p>
 
-                <div style="display: flex; flex-direction: column; gap: 18px">
+                <div class="flex flex-col gap-[18px]">
                     <CPPasswordField
                         ref="currentField"
                         label="סיסמה נוכחית"
@@ -133,7 +122,7 @@ function submit() {
                         @update:model-value="setCurrent"
                     />
 
-                    <div style="height: 1px; background: var(--line); margin: 2px 0" />
+                    <div class="h-[1px] my-[2px] mx-0 bg-line" />
 
                     <CPPasswordField
                         ref="nextField"
@@ -146,22 +135,16 @@ function submit() {
                     />
 
                     <!-- live requirement checklist -->
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: -6px">
+                    <div class="flex flex-wrap gap-y-[6px] gap-x-[16px] mt-[-6px]">
                         <span
                             v-for="r in CP_RULES"
                             :key="r.id"
-                            :style="{
-                                display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12.5px',
-                                color: r.test(next) ? 'var(--accent)' : 'var(--ink-4)', transition: 'color .15s',
-                            }"
+                            class="inline-flex items-center gap-[6px] text-[12.5px] transition-[color] duration-150"
+                            :class="r.test(next) ? 'text-accent' : 'text-ink-4'"
                         >
                             <span
-                                :style="{
-                                    width: '15px', height: '15px', borderRadius: '50%', flexShrink: 0,
-                                    border: '1.5px solid ' + (r.test(next) ? 'var(--accent)' : 'var(--line-strong)'),
-                                    background: r.test(next) ? 'var(--accent)' : 'transparent',
-                                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all .15s',
-                                }"
+                                class="inline-flex items-center justify-center w-[15px] h-[15px] shrink-0 rounded-full border-[1.5px] transition-all duration-150"
+                                :class="r.test(next) ? 'bg-accent border-accent' : 'bg-transparent border-line-strong'"
                             ><Icon v-if="r.test(next)" name="check" :size="9" color="#fff" :stroke="3" /></span>
                             {{ r.label }}
                         </span>
@@ -177,9 +160,9 @@ function submit() {
                         @update:model-value="setConfirm"
                     />
 
-                    <div style="display: flex; gap: 12px; margin-top: 6px">
-                        <button type="button" class="btn btn--ghost" style="flex: 0 0 auto" @click="goProfile">ביטול</button>
-                        <button type="submit" class="btn btn--primary" style="flex: 1">
+                    <div class="flex gap-[12px] mt-[6px]">
+                        <button type="button" class="btn btn--ghost flex-[0_0_auto]" @click="goProfile">ביטול</button>
+                        <button type="submit" class="btn btn--primary flex-1">
                             <Icon name="check" :size="16" :stroke="2.2" /> שמירת הסיסמה
                         </button>
                     </div>

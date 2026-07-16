@@ -17,35 +17,28 @@ const lineTotal = computed(() => props.item.price * props.item.qty);
 
 <template>
     <div
-        class="price-rail"
-        :style="{
-            width: '210px', flexShrink: 0,
-            padding: '22px 22px',
-            display: 'flex', flexDirection: 'column', gap: '14px',
-            borderInlineEnd: '1px solid var(--line)',
-        }"
+        class="price-rail flex flex-col gap-[14px] w-[210px] shrink-0 px-[22px] py-[22px] border-e border-line"
     >
         <div>
-            <div class="num small muted" style="font-size: 12.5px">
+            <div class="num small muted text-[12.5px]">
                 ₪{{ fmt(item.price) }} × {{ item.qty }}
             </div>
-            <div class="num" style="font-size: 22px; font-weight: 700; color: var(--ink); margin-top: 2px">
+            <div class="num mt-[2px] text-[22px] font-bold text-ink">
                 ₪{{ fmt(lineTotal) }}
             </div>
         </div>
 
         <div>
-            <div class="field-label" style="margin-bottom: 7px">כמות יחידות</div>
+            <div class="field-label mb-[7px]">כמות יחידות</div>
             <QtyStepper :qty="item.qty" @change="(q) => emit('qty', q)" />
         </div>
 
-        <div style="display: flex; gap: 8px; flex-wrap: wrap">
-            <button v-if="editable" class="btn btn--ghost btn--sm" style="flex: 1" @click="emit('edit')">
+        <div class="flex gap-[8px] flex-wrap">
+            <button v-if="editable" class="btn btn--ghost btn--sm flex-1" @click="emit('edit')">
                 <Icon name="edit" :size="13" /> עריכה
             </button>
             <button
-                class="btn btn--ghost btn--sm"
-                style="flex: 1; color: var(--danger); border-color: var(--line)"
+                class="btn btn--ghost btn--sm flex-1 text-danger border-line"
                 @click="emit('remove')"
             >
                 <Icon name="x" :size="13" color="var(--danger)" /> הסר
@@ -53,8 +46,7 @@ const lineTotal = computed(() => props.item.price * props.item.qty);
         </div>
 
         <button
-            class="btn btn--ghost btn--sm"
-            style="width: 100%; color: var(--ink-3); justify-content: center; gap: 7px"
+            class="btn btn--ghost btn--sm w-full justify-center gap-[7px] text-ink-3"
             @click="emit('hold')"
         >
             <Icon name="clock" :size="13" color="var(--ink-3)" /> העבר להזמנות בהמתנה

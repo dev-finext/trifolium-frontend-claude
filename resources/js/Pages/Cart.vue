@@ -186,12 +186,12 @@ const TF_PICKUP_LOCATION = {
         <div class="page__inner page__inner--wide">
 
             <!-- Centered header -->
-            <div style="text-align: center; margin-bottom: 32px">
-                <div style="display: inline-flex; align-items: center; gap: 12px; white-space: nowrap">
+            <div class="text-center mb-[32px]">
+                <div class="inline-flex items-center gap-[12px] whitespace-nowrap">
                     <Icon name="cart" :size="28" color="var(--accent)" :stroke="1.6" />
-                    <h1 class="page-title" style="margin: 0; white-space: nowrap">סל הקניות</h1>
+                    <h1 class="page-title m-0 whitespace-nowrap">סל הקניות</h1>
                 </div>
-                <p class="page-sub" style="margin-top: 8px">
+                <p class="page-sub mt-[8px]">
                     <template v-if="items.length > 0">
                         סיכום הרכישות שלך · <span class="num">{{ items.length }}</span> פריטים · <span class="num">{{ unitCount }}</span> יחידות ממתינות לתשלום
                     </template>
@@ -200,10 +200,10 @@ const TF_PICKUP_LOCATION = {
             </div>
 
             <EmptyCart v-if="items.length === 0" />
-            <div v-else style="display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: flex-start">
+            <div v-else class="grid grid-cols-[1fr_340px] items-start gap-[24px]">
 
                 <!-- MAIN — item list -->
-                <div class="col gap-16">
+                <div class="col gap-[16px]">
                     <CartCard
                         v-for="it in items"
                         :key="it.id"
@@ -215,46 +215,38 @@ const TF_PICKUP_LOCATION = {
                 </div>
 
                 <!-- SIDEBAR -->
-                <div class="col gap-16" style="position: sticky; top: 80px">
+                <div class="col gap-[16px] sticky top-[80px]">
 
                     <!-- Payment — chosen first; who pays drives the shipping options -->
                     <SideCard title="פרטי תשלום">
                         <FieldGroupLabel>מבצע התשלום:</FieldGroupLabel>
-                        <div style="display: flex; gap: 24px">
+                        <div class="flex gap-[24px]">
                             <RadioRow label="אני" :checked="payer === 'me'" @change="payer = 'me'" />
                             <RadioRow label="המטופל/ת" :checked="payer === 'patient'" @change="payer = 'patient'" />
                         </div>
 
                         <!-- When the practitioner pays → choose loyalty points or a customer discount -->
-                        <div v-if="payer === 'me'" style="margin-top: 16px">
+                        <div v-if="payer === 'me'" class="mt-[16px]">
                             <FieldGroupLabel>לצבור נקודות או לתת הנחה ללקוח?</FieldGroupLabel>
-                            <div style="display: flex; flex-direction: column; gap: 4px">
+                            <div class="flex flex-col gap-[4px]">
                                 <RadioRow label="צבירת נקודות זכות" :checked="benefit === 'points'" @change="benefit = 'points'" />
                                 <RadioRow label="הנחה ללקוח" :checked="benefit === 'discount'" @change="benefit = 'discount'" />
                             </div>
                             <div
-                                :style="{
-                                    marginTop: '12px', padding: '10px 12px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--accent-tint)', display: 'flex', gap: '8px',
-                                    fontSize: '12.5px', lineHeight: 1.55, color: 'var(--accent-ink)',
-                                }"
+                                class="flex gap-[8px] mt-[12px] py-[10px] px-[12px] text-[12.5px] leading-[1.55] text-accent-ink bg-accent-tint rounded-control"
                             >
-                                <Icon :name="benefit === 'points' ? 'coin' : 'sparkles'" :size="15" color="var(--accent)" :style="{ flexShrink: 0, marginTop: '1px' }" />
+                                <Icon :name="benefit === 'points' ? 'coin' : 'sparkles'" :size="15" color="var(--accent)" class="shrink-0 mt-[1px]" />
                                 <span v-if="benefit === 'points'"><strong class="num">{{ pointsEarned }}</strong> נקודות זכות יועברו לחשבונך <span class="muted">(10%)</span>.</span>
                                 <span v-else>הנחה של <strong>₪<span class="num">{{ fmt(customerDiscount) }}</span></strong> על כלל ההזמנה <span class="muted">(5% · מוצרי מדף בלבד)</span>. לא חל על פורמולות בהנחה אישית.</span>
                             </div>
                         </div>
 
-                        <div v-if="payer === 'patient'" style="margin-top: 16px">
-                            <div v-if="cartPatients.length > 0" style="margin-bottom: 14px">
+                        <div v-if="payer === 'patient'" class="mt-[16px]">
+                            <div v-if="cartPatients.length > 0" class="mb-[14px]">
                                 <FieldGroupLabel>איזה מטופל/ת משלם/ת?</FieldGroupLabel>
                                 <div
                                     v-if="cartPatients.length === 1"
-                                    :style="{
-                                        display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px',
-                                        border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                                        background: 'var(--surface)', fontSize: '14px', fontWeight: 600,
-                                    }"
+                                    class="flex items-center gap-[8px] py-[10px] px-[12px] text-[14px] font-semibold bg-surface border border-line rounded-control"
                                 >
                                     <Icon name="user" :size="15" color="var(--accent)" /> {{ cartPatients[0].name }}
                                 </div>
@@ -262,29 +254,21 @@ const TF_PICKUP_LOCATION = {
                             </div>
 
                             <FieldGroupLabel>לצבור נקודות או לתת הנחה למטופל/ת?</FieldGroupLabel>
-                            <div style="display: flex; flex-direction: column; gap: 4px">
+                            <div class="flex flex-col gap-[4px]">
                                 <RadioRow label="צבירת נקודות זכות" :checked="benefit === 'points'" @change="benefit = 'points'" />
                                 <RadioRow label="הנחה למטופל/ת" :checked="benefit === 'discount'" @change="benefit = 'discount'" />
                             </div>
                             <div
-                                :style="{
-                                    marginTop: '12px', padding: '10px 12px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--accent-tint)', display: 'flex', gap: '8px',
-                                    fontSize: '12.5px', lineHeight: 1.55, color: 'var(--accent-ink)',
-                                }"
+                                class="flex gap-[8px] mt-[12px] py-[10px] px-[12px] text-[12.5px] leading-[1.55] text-accent-ink bg-accent-tint rounded-control"
                             >
-                                <Icon :name="benefit === 'points' ? 'coin' : 'sparkles'" :size="15" color="var(--accent)" :style="{ flexShrink: 0, marginTop: '1px' }" />
+                                <Icon :name="benefit === 'points' ? 'coin' : 'sparkles'" :size="15" color="var(--accent)" class="shrink-0 mt-[1px]" />
                                 <span v-if="benefit === 'points'"><strong class="num">{{ pointsEarned }}</strong> נקודות זכות יצברו בחשבונך <span class="muted">(10%)</span>.</span>
                                 <span v-else>הנחה של <strong>₪<span class="num">{{ fmt(customerDiscount) }}</span></strong> למטופל/ת על כלל ההזמנה <span class="muted">(10%)</span>.</span>
                             </div>
                             <div
-                                :style="{
-                                    marginTop: '10px', padding: '10px 12px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--surface-sunk)', display: 'flex', gap: '8px',
-                                    fontSize: '12.5px', lineHeight: 1.5, color: 'var(--ink-3)',
-                                }"
+                                class="flex gap-[8px] mt-[10px] py-[10px] px-[12px] text-[12.5px] leading-[1.5] text-ink-3 bg-surface-sunk rounded-control"
                             >
-                                <Icon name="whatsapp" :size="15" color="var(--ink-4)" :style="{ flexShrink: 0, marginTop: '1px' }" />
+                                <Icon name="whatsapp" :size="15" color="var(--ink-4)" class="shrink-0 mt-[1px]" />
                                 קישור לתשלום יישלח לוואטסאפ של המטופל/ת לאחר אישור ההזמנה.
                             </div>
                         </div>
@@ -293,103 +277,80 @@ const TF_PICKUP_LOCATION = {
                     <!-- Delivery — depends on the payer chosen above -->
                     <SideCard title="משלוח">
                         <FieldGroupLabel>אופן המשלוח:</FieldGroupLabel>
-                        <div style="display: flex; gap: 18px; margin-bottom: 16px; flex-wrap: wrap">
+                        <div class="flex flex-wrap gap-[18px] mb-[16px]">
                             <RadioRow label="אליי" :checked="ship === 'me'" @change="ship = 'me'" />
                             <RadioRow label="אל המטופל/ת" :checked="ship === 'patient'" @change="ship = 'patient'" />
                             <RadioRow label="איסוף עצמי" :checked="ship === 'pickup'" @change="ship = 'pickup'" />
                         </div>
 
                         <!-- Ship to me → saved-address picker (defaults to primary) -->
-                        <div v-if="ship === 'me'" style="margin-bottom: 16px">
+                        <div v-if="ship === 'me'" class="mb-[16px]">
                             <MeAddressPicker :addresses="addresses" :selected-id="meAddrId" @select="meAddrId = $event" />
                         </div>
 
                         <!-- Self pickup → pharmacy collection point -->
-                        <div v-if="ship === 'pickup'" style="margin-bottom: 16px">
+                        <div v-if="ship === 'pickup'" class="mb-[16px]">
                             <div
-                                :style="{
-                                    border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                                    padding: '14px 15px', background: 'var(--surface)',
-                                }"
+                                class="py-[14px] px-[15px] bg-surface border border-line rounded-control"
                             >
-                                <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 8px">
+                                <div class="flex items-center gap-[9px] mb-[8px]">
                                     <Icon name="map_pin" :size="16" color="var(--accent)" />
-                                    <span style="font-size: 14px; font-weight: 600">{{ TF_PICKUP_LOCATION.name }}</span>
+                                    <span class="text-[14px] font-semibold">{{ TF_PICKUP_LOCATION.name }}</span>
                                 </div>
-                                <div class="small" style="color: var(--ink-2); line-height: 1.6">
+                                <div class="small leading-[1.6] text-ink-2">
                                     {{ TF_PICKUP_LOCATION.street }}, {{ TF_PICKUP_LOCATION.city }}
                                 </div>
-                                <div class="small muted" style="margin-top: 6px; display: flex; align-items: center; gap: 7px">
+                                <div class="small muted flex items-center gap-[7px] mt-[6px]">
                                     <Icon name="clock" :size="13" color="var(--ink-4)" /> {{ TF_PICKUP_LOCATION.hours }}
                                 </div>
-                                <div class="small muted num" dir="ltr" style="margin-top: 4px; text-align: right">{{ TF_PICKUP_LOCATION.phone }}</div>
+                                <div class="small muted num mt-[4px] text-right" dir="ltr">{{ TF_PICKUP_LOCATION.phone }}</div>
                             </div>
                             <div
-                                :style="{
-                                    marginTop: '10px', padding: '9px 12px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--surface-sunk)', display: 'flex', alignItems: 'center',
-                                    gap: '8px', fontSize: '12.5px', lineHeight: 1.5, color: 'var(--ink-3)',
-                                }"
+                                class="flex items-center gap-[8px] mt-[10px] py-[9px] px-[12px] text-[12.5px] leading-[1.5] text-ink-3 bg-surface-sunk rounded-control"
                             >
-                                <Icon name="info" :size="14" color="var(--ink-4)" :style="{ flexShrink: 0 }" />
+                                <Icon name="info" :size="14" color="var(--ink-4)" class="shrink-0" />
                                 נודיע לך בהודעה כשההזמנה מוכנה לאיסוף.
                             </div>
                         </div>
 
                         <!-- Ship to patient — address entry only when the practitioner pays -->
-                        <div v-if="ship === 'patient'" style="margin-bottom: 16px">
-                            <div v-if="payer === 'patient' && activePatient" style="margin-bottom: 14px">
+                        <div v-if="ship === 'patient'" class="mb-[16px]">
+                            <div v-if="payer === 'patient' && activePatient" class="mb-[14px]">
                                 <FieldGroupLabel>נמען המשלוח</FieldGroupLabel>
                                 <div
-                                    :style="{
-                                        display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px',
-                                        border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                                        background: 'var(--surface-sunk)', fontSize: '14px', fontWeight: 600,
-                                    }"
+                                    class="flex items-center gap-[8px] py-[10px] px-[12px] text-[14px] font-semibold bg-surface-sunk border border-line rounded-control"
                                 >
                                     <Icon name="lock" :size="14" color="var(--ink-4)" /> {{ activePatient.name }}
                                 </div>
-                                <div class="small muted" style="margin-top: 6px; font-size: 11.5px">
+                                <div class="small muted mt-[6px] text-[11.5px]">
                                     המשלוח נשלח למטופל/ת שמשלם/ת. לשינוי יש לעדכן את בחירת המשלם בפרטי התשלום.
                                 </div>
                             </div>
-                            <div v-if="payer !== 'patient' && multiPatient" style="margin-bottom: 14px">
+                            <div v-if="payer !== 'patient' && multiPatient" class="mb-[14px]">
                                 <FieldGroupLabel>לאיזה מטופל/ת לשלוח את כל הסל?</FieldGroupLabel>
                                 <PatientSelect v-model="shipPatient" :patients="cartPatients" />
-                                <div class="small muted" style="margin-top: 6px; font-size: 11.5px">
+                                <div class="small muted mt-[6px] text-[11.5px]">
                                     כל פריטי הסל יישלחו לכתובת אחת.
                                 </div>
                             </div>
                             <div
                                 v-if="payer === 'patient'"
-                                :style="{
-                                    padding: '11px 13px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--accent-tint)', display: 'flex', gap: '9px',
-                                    fontSize: '12.5px', lineHeight: 1.6, color: 'var(--accent-ink)',
-                                }"
+                                class="flex gap-[9px] py-[11px] px-[13px] text-[12.5px] leading-[1.6] text-accent-ink bg-accent-tint rounded-control"
                             >
-                                <Icon name="whatsapp" :size="16" color="var(--accent)" :style="{ flexShrink: 0, marginTop: '1px' }" />
+                                <Icon name="whatsapp" :size="16" color="var(--accent)" class="shrink-0 mt-[1px]" />
                                 <span>המטופל/ת ימלא/ת את כתובת המשלוח בעצמו/ה — הבקשה תישלח אליו/ה יחד עם קישור לתשלום בוואטסאפ. אין צורך להזין כתובת כעת.</span>
                             </div>
                             <div
                                 v-else-if="cartPatients.length === 0"
-                                :style="{
-                                    padding: '10px 12px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--surface-sunk)', fontSize: '12.5px',
-                                    lineHeight: 1.5, color: 'var(--ink-3)',
-                                }"
+                                class="py-[10px] px-[12px] text-[12.5px] leading-[1.5] text-ink-3 bg-surface-sunk rounded-control"
                             >
                                 אין מטופל/ת משויך/ת לפריטים בסל. שייכו מטופל/ת כדי שנשלח אליו/ה קישור למילוי כתובת המשלוח.
                             </div>
                             <div
                                 v-else-if="!multiPatient || shipPatient"
-                                :style="{
-                                    padding: '11px 13px', borderRadius: 'var(--r-control)',
-                                    background: 'var(--accent-tint)', display: 'flex', gap: '9px',
-                                    fontSize: '12.5px', lineHeight: 1.6, color: 'var(--accent-ink)',
-                                }"
+                                class="flex gap-[9px] py-[11px] px-[13px] text-[12.5px] leading-[1.6] text-accent-ink bg-accent-tint rounded-control"
                             >
-                                <Icon name="whatsapp" :size="16" color="var(--accent)" :style="{ flexShrink: 0, marginTop: '1px' }" />
+                                <Icon name="whatsapp" :size="16" color="var(--accent)" class="shrink-0 mt-[1px]" />
                                 <span>המטופל/ת ימלא/ת את כתובת המשלוח בעצמו/ה — יישלח אליו/ה קישור למילוי הכתובת. אין צורך להזין כתובת כעת.</span>
                             </div>
                         </div>
@@ -411,18 +372,13 @@ const TF_PICKUP_LOCATION = {
                             maxlength="300"
                             placeholder="הערות (לא חובה)"
                             rows="3"
-                            :style="{
-                                width: '100%', resize: 'vertical', minHeight: '70px',
-                                border: '1px solid var(--line)', borderRadius: 'var(--r-control)',
-                                padding: '10px 12px', fontSize: '14px', color: 'var(--ink)',
-                                background: 'var(--surface)', outline: 'none', fontFamily: 'inherit',
-                            }"
+                            class="w-full min-h-[70px] resize-y py-[10px] px-[12px] text-[14px] [font-family:inherit] text-ink bg-surface border border-line rounded-control outline-none"
                         />
                     </SideCard>
 
                     <!-- Summary -->
-                    <div class="card" style="padding: 20px">
-                        <h3 style="margin: 0 0 16px; font-size: 16px; font-weight: 600">סיכום הזמנה</h3>
+                    <div class="card p-[20px]">
+                        <h3 class="m-0 mb-[16px] text-[16px] font-semibold">סיכום הזמנה</h3>
                         <SumRow label="סכום ביניים" :value="`₪${fmt(subtotal)}`" />
                         <SumRow
                             v-if="customerDiscount > 0"
@@ -435,49 +391,38 @@ const TF_PICKUP_LOCATION = {
                             :value="ship === 'pickup' ? 'ללא עלות' : (shipping === 0 ? 'חינם' : `₪${fmt(shipping)}`)"
                             :accent="shipping === 0"
                         />
-                        <div v-if="shipping > 0" class="small muted" style="margin-top: 2px; font-size: 11.5px">
+                        <div v-if="shipping > 0" class="small muted mt-[2px] text-[11.5px]">
                             משלוח חינם בהזמנה מעל <span class="num">₪250</span>
                         </div>
                         <div
-                            :style="{
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                                marginTop: '14px', paddingTop: '14px', borderTop: '1px solid var(--ink)',
-                            }"
+                            class="flex justify-between items-baseline mt-[14px] pt-[14px] border-t border-t-ink"
                         >
-                            <span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">סה״כ לתשלום</span>
-                            <span style="font-size: 26px; font-weight: 700; color: var(--accent)">
+                            <span class="text-[14px] font-semibold text-ink-2">סה״כ לתשלום</span>
+                            <span class="text-[26px] font-bold text-accent">
                                 ₪<span class="num">{{ fmt(total) }}</span>
                             </span>
                         </div>
 
                         <div
                             v-if="pointsEarned > 0"
-                            :style="{
-                                marginTop: '14px', padding: '10px 12px', borderRadius: 'var(--r-control)',
-                                background: 'var(--accent-tint)', display: 'flex', alignItems: 'center',
-                                gap: '8px', fontSize: '13px', color: 'var(--accent-ink)',
-                            }"
+                            class="flex items-center gap-[8px] mt-[14px] py-[10px] px-[12px] text-[13px] text-accent-ink bg-accent-tint rounded-control"
                         >
-                            <Icon name="coin" :size="16" color="var(--accent)" :style="{ flexShrink: 0 }" />
+                            <Icon name="coin" :size="16" color="var(--accent)" class="shrink-0" />
                             <span>תצברו <strong class="num">{{ pointsEarned }}</strong> נקודות זכות בהזמנה זו <span class="muted">(10%)</span></span>
                         </div>
 
                         <!-- TODO(backend): post the order (lines, payer, shipping choice, POA,
                              benefit) to checkout; the success popup keys off the response. -->
                         <button
-                            class="btn btn--accent"
+                            class="btn btn--accent w-full h-[48px] mt-[16px] text-[16px] font-semibold"
+                            :class="canCheckout ? 'opacity-100 cursor-pointer' : 'opacity-50 cursor-not-allowed'"
                             :disabled="!canCheckout"
-                            :style="{
-                                width: '100%', height: '48px', fontSize: '16px', fontWeight: 600, marginTop: '16px',
-                                opacity: canCheckout ? 1 : 0.5,
-                                cursor: canCheckout ? 'pointer' : 'not-allowed',
-                            }"
                             @click="canCheckout && (placed = true)"
                         >
                             <Icon :name="payer === 'patient' ? 'whatsapp' : 'check'" :size="18" color="#fff" />
                             {{ payer === 'patient' ? 'שלח לתשלום למטופל/ת' : 'המשך לתשלום' }}
                         </button>
-                        <div class="small muted" style="text-align: center; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px">
+                        <div class="small muted flex items-center justify-center gap-[6px] mt-[12px] text-center">
                             <Icon name="info" :size="13" color="var(--ink-4)" />
                             הנחת מטפל 20% כלולה במחירים
                         </div>
@@ -490,47 +435,33 @@ const TF_PICKUP_LOCATION = {
                  from the confirmation. They use the explicit action inside. -->
             <div
                 v-if="placed"
-                :style="{
-                    position: 'fixed', inset: 0, zIndex: 1200,
-                    background: 'rgba(20,28,18,0.5)', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center',
-                    padding: '24px 20px', overflowY: 'auto',
-                }"
+                class="fixed inset-0 z-[1200] flex items-center justify-center py-[24px] px-[20px] overflow-y-auto bg-[rgba(20,28,18,0.5)]"
             >
                 <div
                     dir="rtl"
                     role="dialog"
                     aria-modal="true"
                     aria-label="ההזמנה נשלחה"
-                    :style="{
-                        width: '100%', maxWidth: '440px', background: 'var(--surface)',
-                        borderRadius: 'var(--r-card)', overflow: 'hidden',
-                        boxShadow: '0 24px 60px rgba(0,0,0,0.3)',
-                        textAlign: 'center', padding: '38px 30px 30px',
-                    }"
+                    class="w-full max-w-[440px] pt-[38px] px-[30px] pb-[30px] text-center bg-surface rounded-card overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.3)]"
                     @click.stop
                 >
                     <div
-                        :style="{
-                            width: '72px', height: '72px', borderRadius: '50%', margin: '0 auto 20px',
-                            background: 'var(--accent-tint)', color: 'var(--accent)',
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        }"
+                        class="inline-flex items-center justify-center w-[72px] h-[72px] mt-0 mx-auto mb-[20px] text-accent bg-accent-tint rounded-[50%]"
                     >
                         <Icon name="check" :size="36" color="var(--accent)" />
                     </div>
-                    <h3 style="margin: 0 0 8px; font-size: 21px; font-weight: 700; color: var(--ink)">
+                    <h3 class="m-0 mb-[8px] text-[21px] font-bold text-ink">
                         {{ payer === 'patient' ? 'הבקשה נשלחה למטופל/ת' : 'ההזמנה התקבלה בהצלחה' }}
                     </h3>
-                    <p class="small muted" style="margin: 0 auto 6px; max-width: 320px; line-height: 1.6">
+                    <p class="small muted mt-0 mx-auto mb-[6px] max-w-[320px] leading-[1.6]">
                         {{ payer === 'patient'
                             ? 'קישור לתשלום נשלח למטופל/ת. ההזמנה תעבור לרקיחה מיד עם השלמת התשלום.'
                             : 'תודה! ההזמנה שלך התקבלה ונכנסה לטיפול. נעדכן אותך בכל שלב.' }}
                     </p>
-                    <div class="small muted" style="margin: 0 0 24px">
-                        מספר הזמנה: <strong class="num" style="color: var(--ink)">{{ orderNo }}</strong>
+                    <div class="small muted m-0 mb-[24px]">
+                        מספר הזמנה: <strong class="num text-ink">{{ orderNo }}</strong>
                     </div>
-                    <button class="btn btn--accent" style="width: 100%; height: 46px; font-size: 15px; font-weight: 600" @click="goToOrder">
+                    <button class="btn btn--accent w-full h-[46px] text-[15px] font-semibold" @click="goToOrder">
                         <Icon name="package" :size="17" color="#fff" /> צפייה בהזמנה
                     </button>
                 </div>

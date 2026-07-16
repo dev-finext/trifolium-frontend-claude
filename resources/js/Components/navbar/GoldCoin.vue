@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-    <svg :width="size" :height="size" viewBox="0 0 24 24" style="display: block; flex-shrink: 0" aria-hidden="true">
+    <svg :width="size" :height="size" viewBox="0 0 24 24" class="block shrink-0" aria-hidden="true">
         <defs>
             <linearGradient id="tf-gc" x1="0" y1="0" x2="0.35" y2="1">
                 <stop offset="0%" stop-color="#F7DE92" />

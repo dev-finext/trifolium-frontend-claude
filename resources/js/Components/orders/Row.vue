@@ -11,10 +11,10 @@ defineProps({
 </script>
 
 <template>
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
-        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-3)">
+    <div class="flex items-center justify-between gap-[10px]">
+        <span class="inline-flex items-center gap-[8px] text-[13px] text-ink-3">
             <Icon :name="icon" :size="14" color="var(--ink-4)" /> {{ label }}
         </span>
-        <span :style="{ fontSize: '13px', fontWeight: 500, color: valueMuted ? 'var(--ink-3)' : 'var(--ink)', textAlign: 'left' }">{{ value }}</span>
+        <span class="text-[13px] font-medium text-left" :class="valueMuted ? 'text-ink-3' : 'text-ink'">{{ value }}</span>
     </div>
 </template>

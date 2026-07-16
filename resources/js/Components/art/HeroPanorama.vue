@@ -47,7 +47,7 @@ const P = {
 </script>
 
 <template>
-    <svg viewBox="0 0 1600 520" :preserveAspectRatio="aspect" style="width: 100%; height: 100%; display: block" aria-hidden="true">
+    <svg viewBox="0 0 1600 520" :preserveAspectRatio="aspect" class="block w-full h-full" aria-hidden="true">
         <defs>
             <linearGradient id="hp-bg" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" :stop-color="P.light" />

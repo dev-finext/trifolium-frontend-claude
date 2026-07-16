@@ -35,7 +35,7 @@ const describedBy = computed(() => (props.error ? errorId : undefined));
 <template>
     <div>
         <FieldLabel :for="uid">
-            {{ label }}<span v-if="required" aria-hidden="true" style="color: var(--danger); margin-inline-start: 3px">*</span>
+            {{ label }}<span v-if="required" aria-hidden="true" class="ms-[3px] text-danger">*</span>
         </FieldLabel>
         <input
             :id="uid"
@@ -47,11 +47,11 @@ const describedBy = computed(() => (props.error ? errorId : undefined));
             :aria-required="required || undefined"
             :aria-invalid="error ? 'true' : undefined"
             :aria-describedby="describedBy"
-            :style="error ? { borderColor: 'var(--danger)' } : undefined"
+            :class="error ? 'border-danger' : ''"
             v-bind="$attrs"
             @input="$emit('update:modelValue', $event.target.value)"
         />
         <ErrMsg v-if="error" :id="errorId" role="alert">{{ error }}</ErrMsg>
-        <div v-if="hint && !error" class="small muted" style="margin-top: 6px">{{ hint }}</div>
+        <div v-if="hint && !error" class="small muted mt-[6px]">{{ hint }}</div>
     </div>
 </template>

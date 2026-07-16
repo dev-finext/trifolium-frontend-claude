@@ -26,25 +26,20 @@ const c = computed(() => TONES[props.tone] || TONES.ink);
 
 <template>
     <button
+        class="flex items-center gap-[14px] py-[16px] px-[18px] text-right [font-family:inherit] cursor-pointer rounded-card transition-all duration-150"
         :style="{
-            textAlign: 'right', cursor: 'pointer', fontFamily: 'inherit',
-            display: 'flex', alignItems: 'center', gap: '14px', padding: '16px 18px',
             background: active ? c.tint : 'var(--surface)',
             border: '1px solid ' + (active ? c.ring : 'var(--line)'),
-            borderRadius: 'var(--r-card)', transition: 'all .15s',
         }"
         @click="$emit('click')"
     >
         <span
-            :style="{
-                width: '42px', height: '42px', borderRadius: '50%', flexShrink: 0,
-                background: c.tint, color: c.fg,
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            }"
+            class="inline-flex items-center justify-center w-[42px] h-[42px] shrink-0 rounded-full"
+            :style="{ background: c.tint, color: c.fg }"
         ><Icon :name="icon" :size="20" :color="c.fg" /></span>
-        <div style="display: flex; flex-direction: column; gap: 1px">
-            <span class="num" :style="{ fontSize: '24px', fontWeight: 700, lineHeight: 1.1, color: c.fg }">{{ count }}</span>
-            <span style="font-size: 12.5px; color: var(--ink-3); font-weight: 500">{{ label }}</span>
+        <div class="flex flex-col gap-[1px]">
+            <span class="num text-[24px] font-bold leading-[1.1]" :style="{ color: c.fg }">{{ count }}</span>
+            <span class="text-[12.5px] font-medium text-ink-3">{{ label }}</span>
         </div>
     </button>
 </template>

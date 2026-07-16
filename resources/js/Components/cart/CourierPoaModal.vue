@@ -49,12 +49,7 @@ function onTzInput(e) {
 <template>
     <div
         v-if="open"
-        :style="{
-            position: 'fixed', inset: 0, zIndex: 1000,
-            background: 'rgba(20,28,18,0.5)', display: 'flex',
-            alignItems: 'flex-start', justifyContent: 'center',
-            padding: '32px 20px', overflowY: 'auto',
-        }"
+        class="fixed inset-0 z-[1000] flex items-start justify-center px-[20px] py-[32px] bg-[rgba(20,28,18,0.5)] overflow-y-auto"
         @click="emit('close')"
     >
         <div
@@ -64,39 +59,29 @@ function onTzInput(e) {
             aria-modal="true"
             tabindex="-1"
             aria-labelledby="poa-title"
-            :style="{
-                width: '100%', maxWidth: '720px', background: 'var(--surface)',
-                borderRadius: 'var(--r-card)', overflow: 'hidden',
-                boxShadow: '0 24px 60px rgba(0,0,0,0.3)',
-            }"
+            class="w-full max-w-[720px] bg-surface rounded-card overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.3)]"
             @click.stop
         >
             <!-- Red header -->
             <div
-                :style="{
-                    background: '#ec5b53', color: '#fff', padding: '16px 22px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px',
-                }"
+                class="flex items-center justify-between gap-[12px] px-[22px] py-[16px] text-white bg-[#ec5b53]"
             >
-                <h3 id="poa-title" :style="{ margin: 0, fontSize: '17px', fontWeight: 600, textWrap: 'pretty' }">
+                <h3 id="poa-title" class="m-0 text-[17px] font-semibold text-pretty">
                     טופס ייפוי כוח לקבלת תכשירים מבית מרקחת טריפוליום באמצעות שליח
                 </h3>
                 <button
                     aria-label="סגירה"
-                    :style="{
-                        background: 'transparent', border: 'none', color: '#fff',
-                        cursor: 'pointer', flexShrink: 0, padding: '4px', lineHeight: 0,
-                    }"
+                    class="shrink-0 p-[4px] leading-[0] text-white bg-transparent border-none cursor-pointer"
                     @click="emit('close')"
                 >
                     <Icon name="x" :size="20" color="#fff" />
                 </button>
             </div>
 
-            <div style="padding: 22px 24px 26px">
-                <div class="small muted" style="margin-bottom: 16px">אני החתום מטה:</div>
+            <div class="pt-[22px] px-[24px] pb-[26px]">
+                <div class="small muted mb-[16px]">אני החתום מטה:</div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px">
+                <div class="grid grid-cols-[1fr_1fr_1fr] gap-[14px] mb-[20px]">
                     <div>
                         <FieldLabel for="poa-name">שם מלא</FieldLabel>
                         <input id="poa-name" class="input" :value="name" placeholder="שם מלא" @input="name = $event.target.value" />
@@ -105,9 +90,8 @@ function onTzInput(e) {
                         <FieldLabel for="poa-tz">מספר ת.ז.</FieldLabel>
                         <input
                             id="poa-tz"
-                            class="input num" :value="tz" placeholder="000000000" dir="ltr"
+                            class="input num text-center" :value="tz" placeholder="000000000" dir="ltr"
                             inputmode="numeric" maxlength="9"
-                            style="text-align: center"
                             :aria-invalid="tzError"
                             :aria-describedby="tzError ? 'poa-tz-error' : undefined"
                             @input="onTzInput"
@@ -116,7 +100,7 @@ function onTzInput(e) {
                             v-if="tzError"
                             id="poa-tz-error"
                             role="alert"
-                            :style="{ marginTop: '6px', fontSize: '12px', lineHeight: 1.4, color: 'var(--danger)' }"
+                            class="mt-[6px] text-[12px] leading-[1.4] text-danger"
                         >
                             מספר ת.ז. אינו תקין
                         </div>
@@ -125,40 +109,33 @@ function onTzInput(e) {
                         <FieldLabel for="poa-date">תאריך חתימה</FieldLabel>
                         <input
                             id="poa-date"
-                            class="input num" :value="today" readonly tabindex="-1" dir="ltr"
-                            style="text-align: center; background: var(--surface-sunk); color: var(--ink-2)"
+                            class="input num text-center text-ink-2 bg-surface-sunk" :value="today" readonly tabindex="-1" dir="ltr"
                         />
                     </div>
                 </div>
 
-                <p :style="{ margin: '0 0 18px', fontSize: '14px', lineHeight: 1.7, color: 'var(--ink-2)', textWrap: 'pretty' }">
+                <p class="m-0 mb-[18px] text-[14px] leading-[1.7] text-ink-2 text-pretty">
                     מייפה את בית המרקחת טריפוליום בכתובת רח׳ נוף 25, ערד, להעביר אליי תכשירים על ידי שליח.
                 </p>
 
-                <div style="margin-bottom: 18px">
-                    <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px">התחייבות:</div>
-                    <p :style="{ margin: '0 0 8px', fontSize: '13px', lineHeight: 1.7, color: 'var(--ink-2)', textWrap: 'pretty' }">
+                <div class="mb-[18px]">
+                    <div class="mb-[8px] text-[14px] font-bold">התחייבות:</div>
+                    <p class="m-0 mb-[8px] text-[13px] leading-[1.7] text-ink-2 text-pretty">
                         מתחייב לוותר על קבלת ייעוץ רוקחי כמקובל בבית מרקחת בעת ניפוק התכשירים ומסכים לקבל מידע וייעוץ תרופתי באמצעות טופס שיצורף לתכשירים ו/או לקבל מידע נוסף באמצעים המפורטים בפרטי ההתקשרות עם בית המרקחת.
                     </p>
-                    <p style="margin: 0; font-size: 13px; line-height: 1.7; color: var(--ink-3)">
+                    <p class="m-0 text-[13px] leading-[1.7] text-ink-3">
                         ✱ אחריות הספקת התכשיר הינה של הרוקח האחראי בבית המרקחת וההובלה תיעשה בעזרת שליח.
                     </p>
                 </div>
 
-                <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px">חתימה:</div>
+                <div class="mb-[8px] text-[14px] font-bold">חתימה:</div>
                 <SignaturePad @ink-change="hasSig = $event" />
 
                 <!-- TODO(backend): persist the signed POA (name, ID number, signature) with the order. -->
                 <button
                     :disabled="!canSubmit"
-                    :style="{
-                        marginTop: '18px', height: '46px', paddingInline: '24px', fontSize: '15px', fontWeight: 600,
-                        display: 'inline-flex', alignItems: 'center', gap: '9px',
-                        background: canSubmit ? 'var(--accent)' : 'var(--surface-sunk)',
-                        color: canSubmit ? '#fff' : 'var(--ink-4)',
-                        border: 'none', borderRadius: 'var(--r-control)',
-                        cursor: canSubmit ? 'pointer' : 'not-allowed',
-                    }"
+                    class="inline-flex items-center gap-[9px] mt-[18px] h-[46px] ps-[24px] pe-[24px] text-[15px] font-semibold border-none rounded-control"
+                    :class="canSubmit ? 'bg-accent text-white cursor-pointer' : 'bg-surface-sunk text-ink-4 cursor-not-allowed'"
                     @click="emit('confirm', { name: name.trim(), tz: tz.trim(), date: today })"
                 >
                     <Icon name="check" :size="17" :color="canSubmit ? '#fff' : 'var(--ink-4)'" :stroke="2.2" />

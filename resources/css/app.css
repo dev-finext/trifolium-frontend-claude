@@ -10,11 +10,16 @@
      6. tailwind utilities — LAST, so a utility class on an element beats a
         same-specificity legacy class the way inline styles used to.
    ═════════════════════════════════════════════════════════════ */
+/* The legacy sheets live in one cascade layer; utilities stay UNLAYERED.
+   Layered normal rules lose to unlayered ones regardless of specificity, so
+   a utility class beats any legacy selector — exactly like the inline styles
+   it replaced. Legacy !important (the mobile hammers in overrides.css) still
+   beats utilities — exactly like it used to beat inline styles. */
 @import 'tailwindcss/theme.css';
-@import './base.css';
-@import './components.css';
-@import './responsive.css';
-@import './overrides.css';
+@import './base.css' layer(app);
+@import './components.css' layer(app);
+@import './responsive.css' layer(app);
+@import './overrides.css' layer(app);
 @import 'tailwindcss/utilities.css';
 
 /* Design tokens → Tailwind theme. `inline` emits var() references, so the
@@ -52,7 +57,13 @@
     --radius-card: var(--r-card);
     --radius-control: var(--r-control);
     --radius-pill: var(--r-pill);
+}
 
-    --font-heb: var(--font-heb);
-    --font-latin: var(--font-latin);
+/* Font stacks live HERE (not in base.css) — @theme emits them as :root vars,
+   so legacy var(--font-heb) references and the font-heb/font-latin utilities
+   share this single definition. (An alias like --font-heb: var(--font-heb)
+   would be self-referential and collapse to the browser default font.) */
+@theme {
+    --font-heb: 'Assistant', 'Heebo', 'Rubik', 'Segoe UI', sans-serif;
+    --font-latin: 'Inter', 'Helvetica Neue', sans-serif;
 }

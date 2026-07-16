@@ -19,24 +19,12 @@ const sideStyle = computed(() => (props.dir === 'prev' ? { right: '-18px' } : { 
     <button
         :disabled="disabled"
         :aria-label="dir === 'prev' ? 'הקודם' : 'הבא'"
-        :style="{
-            position: 'absolute',
-            top: '38%',
-            ...sideStyle,
-            width: '44px',
-            height: '44px',
-            borderRadius: '50%',
-            background: 'var(--surface)',
-            border: '1px solid ' + (hover && !disabled ? 'var(--ink-2)' : 'var(--line)'),
-            boxShadow: disabled ? 'none' : '0 6px 18px -8px rgba(31,46,29,0.30)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: disabled ? 'default' : 'pointer',
-            opacity: disabled ? 0.35 : 1,
-            zIndex: 3,
-            transition: 'all .15s ease',
-        }"
+        class="absolute top-[38%] flex items-center justify-center w-[44px] h-[44px] bg-surface border rounded-[50%] z-[3] transition-all duration-150 ease-[ease]"
+        :class="[
+            hover && !disabled ? 'border-ink-2' : 'border-line',
+            disabled ? 'shadow-none cursor-default opacity-[0.35]' : 'shadow-[0_6px_18px_-8px_rgba(31,46,29,0.30)] cursor-pointer opacity-100',
+        ]"
+        :style="sideStyle"
         @click="$emit('click')"
         @mouseenter="hover = true"
         @mouseleave="hover = false"

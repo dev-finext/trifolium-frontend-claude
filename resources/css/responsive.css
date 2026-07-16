@@ -130,25 +130,25 @@ html.tf-mobile {
   .page-title { font-size: 22px; }
   .section-title { margin-bottom: 12px; }
 
-  /* ---- Grid collapse hammer: stack every multi-column inline grid ---- */
-  [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  /* ---- Grid collapse hammer: stack every multi-column grid ----
+     Grids are declared via grid-cols-* utility classes, so the hammers key on
+     the class attribute (they used to key on the inline style attribute). */
+  [class*="grid-cols-"] { grid-template-columns: 1fr !important; }
   /* Grid items default to min-width:auto and refuse to shrink below their
      content — release them so stacked columns actually fit the phone. */
-  [style*="grid-template-columns"] > * { min-width: 0; }
+  [class*="grid-cols-"] > * { min-width: 0; }
   /* Fluid auto grids: keep them fluid rather than a single column */
-  [style*="auto-fit"], [style*="auto-fill"] {
+  [class*="auto-fit"], [class*="auto-fill"] {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
   }
   /* Tile / KPI / card grids read better as two columns on phones */
-  [style*="repeat(3, 1fr)"], [style*="repeat(4, 1fr)"],
-  [style*="repeat(3,1fr)"], [style*="repeat(4,1fr)"] {
+  [class*="repeat(3,1fr)"], [class*="repeat(4,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
     grid-template-columns: 1fr 1fr !important;
   }
-  /* Release grids that hard-code a tall desktop height when stacked */
-  [style*="height: 480"], [style*="height:480"] { height: auto !important; }
 
   /* ---- Auth: drop the decorative brand panel, form goes full-width ---- */
-  [style*="1.05fr 0.95fr"] > div:last-child { display: none !important; }
+  [class*="1.05fr_0.95fr"] > div:last-child { display: none !important; }
   [data-screen-label^="A"] .card { box-shadow: 0 1px 2px rgba(31,46,29,0.06), 0 12px 34px rgba(20,32,18,0.16) !important; }
 
   /* ---- Wizard step-indicator (top steps bar) is hidden on mobile ----
@@ -168,7 +168,7 @@ html.tf-mobile {
   .card { max-width: 100%; }
   /* The wizard magnifies itself 1.13× on desktop — reset on phones so the
      compose zone never runs past the viewport edge. */
-  .formula-prep > div[style*="zoom"] { zoom: 1 !important; }
+  .formula-prep > div[class*="zoom:"] { zoom: 1 !important; }
   .formula-prep section.card { padding: 18px 14px !important; }
   .formula-prep .card { max-width: 100%; }
   .formula-prep img, .formula-prep svg, .formula-prep table { max-width: 100%; }
@@ -321,8 +321,8 @@ html.tf-mobile {
 
 /* Small phones — tighten the two-column tile grids to one column */
 @media (max-width: 440px) {
-  [style*="repeat(3, 1fr)"], [style*="repeat(4, 1fr)"],
-  [style*="repeat(3,1fr)"], [style*="repeat(4,1fr)"] {
+  [class*="repeat(3,1fr)"], [class*="repeat(4,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
     grid-template-columns: 1fr 1fr !important;
   }
   .page { padding: 18px 12px 88px; }
@@ -431,14 +431,14 @@ html.tf-mobile {
   .cart-card { flex-direction: column; }
   /* Bodies declare min-width:300px for the desktop two-part layout — on a
      phone that inflates the card past the viewport. Let them shrink. */
-  .cart-card [style*="min-width: 300px"],
-  .pending-card [style*="min-width: 300px"],
+  .cart-card [class*="min-w-[300px]"],
+  .pending-card [class*="min-w-[300px]"],
   .cart-card > div,
   .pending-card > div { min-width: 0 !important; }
   /* Stacked layout: each part spans the card; nowrap meta lines may wrap. */
   .cart-card > div { width: 100% !important; }
   .cart-card > div:first-child { padding: 16px 14px !important; gap: 14px !important; }
-  .cart-card [style*="nowrap"] { white-space: normal !important; }
+  .cart-card [class*="whitespace-nowrap"] { white-space: normal !important; }
   .price-rail {
     width: 100% !important;
     padding: 12px 14px !important;
@@ -625,13 +625,13 @@ html.tf-tablet {
 
   .page { padding: 32px 20px 72px; }
 
-  /* Tile / card grid hammers (inline grids from the design) */
-  [style*="repeat(4, 1fr)"], [style*="repeat(4,1fr)"],
-  [style*="repeat(3, 1fr)"], [style*="repeat(3,1fr)"] {
+  /* Tile / card grid hammers (grid-cols-* utility grids) */
+  [class*="repeat(4,1fr)"], [class*="repeat(3,1fr)"],
+  .grid-cols-3, .grid-cols-4 {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
   /* Footer: brand + three link columns → two columns */
-  footer [style*="1.4fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px 40px !important; }
+  footer [class*="1.4fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px 40px !important; }
 }
 

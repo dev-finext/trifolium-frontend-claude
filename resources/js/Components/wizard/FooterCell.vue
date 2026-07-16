@@ -13,26 +13,15 @@ defineProps({
 
 <template>
     <div
-        :style="{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '0 18px',
-            borderLeft: last ? 'none' : '1px solid var(--line)',
-            height: '24px',
-            fontSize: '13px',
-            whiteSpace: 'nowrap',
-        }"
+        class="flex items-center gap-[8px] h-[24px] px-[18px] py-0 text-[13px] whitespace-nowrap"
+        :class="last ? '' : 'border-l border-line'"
     >
         <span
-            style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600"
+            class="text-[11px] tracking-[0.08em] uppercase font-semibold text-ink-3"
         >{{ label }}</span>
         <span
             v-if="$slots.default || value !== undefined"
-            :style="{
-                color: warning ? 'var(--warning)' : (highlight ? 'var(--ink)' : 'var(--ink-2)'),
-                fontWeight: warning || highlight ? 600 : 500,
-            }"
+            :class="[warning ? 'text-warning' : (highlight ? 'text-ink' : 'text-ink-2'), warning || highlight ? 'font-semibold' : 'font-medium']"
         >
             <slot>{{ value }}</slot>
         </span>

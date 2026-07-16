@@ -59,8 +59,9 @@ input[type="number"].no-spin {
   --maxw: 960px;
   --maxw-lab: 1080px;
 
-  --font-heb: 'Assistant', 'Heebo', 'Rubik', 'Segoe UI', sans-serif;
-  --font-latin: 'Inter', 'Helvetica Neue', sans-serif;
+  /* Font stacks are defined in app.css's @theme block (single source shared
+     with the font-heb / font-latin utilities); var(--font-heb) etc. resolve
+     to the values emitted there. */
 
   /* Wizard sticky summary-bar shadow (shipped default: the "בולט" preset). */
   --summary-shadow: 0 20px 48px rgba(31, 46, 29, 0.28);
