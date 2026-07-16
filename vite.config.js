@@ -2,7 +2,7 @@
 //
 // Drop the `resources/` directory (and this file) into the Laravel project root.
 // `laravel-vite-plugin` wires the dev server + build manifest into Blade via
-// @vite(['resources/css/app.css', 'resources/js/app.js']).
+// @vite(['resources/css/app.css', 'resources/js/app.ts']).
 //
 // For running the frontend WITHOUT Laravel (design review / development of this
 // repo on its own), use `npm run preview`, which loads vite.preview.config.js.
@@ -19,7 +19,7 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.ts'],
             refresh: true,
         }),
         vue({

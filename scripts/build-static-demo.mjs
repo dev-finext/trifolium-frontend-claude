@@ -63,11 +63,11 @@ const mockSrc = fs.readFileSync(path.join(rootDir, 'resources/js/data/mock.js'),
 const articlesBlock = mockSrc.slice(mockSrc.indexOf('const ARTICLES = ['), mockSrc.indexOf('const VIDEOS'));
 const articleIds = [...articlesBlock.matchAll(/id:\s*'([^']+)'/g)].map((m) => m[1]);
 for (const id of articleIds) {
-    writeRoute(`/articles/${id}`, 'Articles/Show', { id });
+    writeRoute(`/articles/${id}`, 'articles/Show', { id });
     count++;
 }
 // One representative order — Orders/Show falls back to its demo order for any id.
-writeRoute('/orders/TF-2850', 'Orders/Show', { id: 'TF-2850' });
+writeRoute('/orders/TF-2850', 'orders/Show', { id: 'TF-2850' });
 count++;
 
 // ── 3. Pages plumbing ────────────────────────────────────────────────────────

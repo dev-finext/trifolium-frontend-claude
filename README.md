@@ -127,7 +127,7 @@ icon in the address bar.
   bodies for Inertia form submissions / API calls; callers won't change.
 - **Navigation** goes through [resources/js/lib/routes.js](resources/js/lib/routes.js)
   (logical name → URL). To adopt Ziggy/named routes, rewrite that one file.
-- **Auth user** is a hard-coded constant in `Layouts/AppLayout.vue`
+- **Auth user** is a hard-coded constant in `layouts/AppLayout.vue`
   (`TODO(backend)`) — replace with Inertia shared props.
 
 ---
@@ -139,10 +139,10 @@ for non-Hebrew-speaking developers — it is **not** a user-facing feature and h
 **no on-screen toggle**. Add `?lang=en` to any URL to read the UI in English;
 the layout stays **RTL in both languages** (only the words change).
 
-- `resources/js/i18n/overlay.js` — runs at boot; a no-op in Hebrew, and in
+- `resources/js/lib/i18n/overlay.js` — runs at boot; a no-op in Hebrew, and in
   English mode translates the DOM live from the dictionary (with a
   `MutationObserver` for Vue/Inertia re-renders). Components import/wrap nothing.
-- `resources/js/i18n/dictionary.js` — the **single maintenance point**: a flat
+- `resources/js/lib/i18n/dictionary.js` — the **single maintenance point**: a flat
   `"Hebrew" → "English"` map. Missing strings stay Hebrew (safe partial
   coverage). `patterns.js` handles interpolated number/unit strings.
 - Full how-to in [docs/I18N-GUIDE.md](docs/I18N-GUIDE.md). In short: add a
@@ -157,21 +157,23 @@ resources/
 ├── css/app.css               # Design tokens (:root) + all global styles (RTL, mobile)
 ├── img/                      # Brand assets (see resources/img/README.md — 2 files are placeholders)
 └── js/
-    ├── app.js                # Inertia boot — same entry for Laravel & standalone preview
-    ├── Layouts/AppLayout.vue # Navbar + footer + cart toast + mode-switch confirm
-    ├── Pages/                # One Inertia page per screen (Auth/, Articles/, Orders/, Profile/…)
-    ├── Components/
-    │   ├── ui/               # Icon, Field, SearchInput, StatusDot, MedsSafetyDeclaration, NewRibbon…
-    │   ├── mode/             # Western/Chinese style: HerbName, ModeSwitch, confirm modals…
-    │   ├── navbar/           # TheNavbar + drawer, user menu, points badge
-    │   ├── art/              # Decorative SVG illustrations & cover art (from the design)
-    │   ├── wizard/           # The multi-step formula wizard (core flow)
-    │   └── <page>/           # Page-private subcomponents (catalog/, cart/, orders/…)
-    ├── stores/               # Reactive singletons: cart, mode, wizard, saved-formulas
-    ├── composables/          # useAddresses (address book)
-    ├── i18n/                 # English DEV overlay (?lang=en): overlay.js + dictionary.js
-    ├── lib/                  # routes (nav contract), orders, herbs, mobile-layout
-    └── data/mock.js          # Mock data = API contract sketch
+    ├── app.ts                # Inertia boot — same entry for Laravel & standalone preview
+    ├── layouts/AppLayout.vue # Navbar + footer + cart toast + mode-switch confirm
+    ├── pages/                # One Inertia page per screen (auth/, articles/, orders/, profile/…)
+    ├── components/
+    │   ├── ui/               # Generic primitives (Icon, inputs, SearchInput, StatusDot…) — see its README
+    │   └── shared/           # App-aware components, grouped by domain — see its README
+    │       ├── navbar/       #   TheNavbar + drawer, user menu, points badge
+    │       ├── mode/         #   Western/Chinese style: HerbName, ModeSwitch, confirm modals
+    │       ├── art/          #   Decorative SVG illustrations & cover art
+    │       ├── wizard/       #   The multi-step formula wizard (core flow)
+    │       └── <domain>/     #   Page-scoped subcomponents (auth/, catalog/, cart/, orders/…)
+    ├── stores/               # Reactive singletons: cart, mode, wizard, savedFormulas
+    ├── composables/          # useIsMobile, useModal, useAddresses
+    ├── lib/                  # routes (nav contract), orders, herbs, validators, mobileLayout
+    ├── lib/i18n/             # English DEV overlay (?lang=en): overlay + dictionary + dictionary.demo
+    ├── types/                # TS shims — the codebase is JS; new files may be TS
+    └── data/                 # ⚠️ demo dataset (mock.js, user.js, options.js) = API contract sketch
 preview/                      # Dev-only Inertia mock server (delete in Laravel)
 docs/CONVERSION-GUIDE.md      # Design-handoff → Vue conventions (how this repo was built)
 ```
@@ -184,7 +186,7 @@ All visual decisions live in [resources/css/app.css](resources/css/app.css)
 (1080px in the wizard). Hebrew UI in **Assistant**, Latin text & all numerals
 in **Inter** (`.num` / `.latin` classes, tabular numerals), brand serif
 **Cormorant Garamond**. Icons are inline lucide-style SVG (1.5px stroke, never
-filled) — the full set is in `Components/ui/Icon.vue`.
+filled) — the full set is in `components/ui/Icon.vue`.
 
 **RTL:** `dir="rtl"` on `<html>`; the code uses logical properties
 (`margin-inline-*`, `inset-inline-*`) — never hard-code left/right.
@@ -197,7 +199,7 @@ those class names when refactoring.
 ## Two-mode system (מערבי / סיני)
 
 `stores/mode.js` holds the treatment style. It changes herb naming everywhere
-(`Components/mode/HerbName.vue`: Latin-primary in Western, pinyin-primary in
+(`components/shared/mode/HerbName.vue`: Latin-primary in Western, pinyin-primary in
 Chinese) and parts of the wizard. Switching mid-formula is destructive, so the
 store parks the request and `AppLayout` shows a confirmation modal; on confirm
 the wizard wipes the formula (keeps the patient) and restarts on the compose
