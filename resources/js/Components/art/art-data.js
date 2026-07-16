@@ -1,15 +1,13 @@
 // Shared non-component data for the decorative art components
 // (ported from the design handoff's placeholders.jsx + covers.jsx).
 
-// ── Palettes for the placeholder illustrations (placeholders.jsx) ─────
+// ── Palettes for the product-form illustrations (ProductIllustration) ─
 export const PALETTES = {
-    herb:   { bg1: '#dfe6d2', bg2: '#a5b495', ink: '#3d5a3a', accent: '#7d4a2a', light: '#f3f0e2' },
     earth:  { bg1: '#e8dfcb', bg2: '#a59478', ink: '#5a4128', accent: '#3d5a3a', light: '#f5ede0' },
     cool:   { bg1: '#dde4e7', bg2: '#8b9aa3', ink: '#2c4a6b', accent: '#3d5a3a', light: '#eaeff1' },
     warm:   { bg1: '#ecd9c4', bg2: '#b89272', ink: '#7a4628', accent: '#5a3a2a', light: '#f4e6d4' },
     green:  { bg1: '#d8e1c8', bg2: '#7e9268', ink: '#2e4527', accent: '#7d4a2a', light: '#ebf0df' },
     slate:  { bg1: '#d0d6d0', bg2: '#7d8a78', ink: '#374538', accent: '#6a503a', light: '#e2e6e0' },
-    ink:    { bg1: '#c2caca', bg2: '#5a6b6e', ink: '#1f2e1d', accent: '#a87521', light: '#dde3e3' },
 };
 
 // ── Cover palette from a hue (covers.jsx) ─────────────────────────────

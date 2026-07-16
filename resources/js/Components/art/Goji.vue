@@ -1,7 +1,7 @@
 <script setup>
 // Single goji berry — small red ovoid with tiny stem.
 // Renders an SVG <g>; relies on the `#cnhero-goji` radial gradient defined
-// in ChineseHeroIllustration's <defs>, so it is only meaningful inside it.
+// in HeroPanorama's <defs>, so it is only meaningful inside it.
 defineProps({
     scale: { type: Number, default: 1 },
 });

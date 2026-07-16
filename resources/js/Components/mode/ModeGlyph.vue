@@ -1,5 +1,5 @@
 <script setup>
-// Tiny mode glyph used inside ModeBadge (12px): yin-yang or outline mortar.
+// Tiny mode glyph (12px): yin-yang or outline mortar.
 import YinYang from '@/Components/mode/YinYang.vue';
 
 defineProps({
