@@ -1,0 +1,438 @@
+/* ═════════════════════════════════════════════════════════════
+   Trifolium — shared component classes.
+   Reusable UI vocabulary (.btn, .input, .card, .tag, .nav, page
+   scaffolding, shared animations). Screen-specific styling lives in
+   the components themselves as Tailwind utilities.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ---------- Field label (11px uppercase) ---------- */
+.field-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* ---------- Input ---------- */
+.input, .select {
+  height: var(--h-input);
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s ease;
+}
+.input::placeholder { color: var(--ink-4); }
+.input:focus, .select:focus {
+  border-color: var(--ink);
+  border-width: 1px;
+}
+.input.with-icon { padding-right: 36px; }
+.ingredient-search-input::placeholder { color: var(--ink-3); font-weight: 500; opacity: 1; }
+
+.input-wrap { position: relative; }
+.input-wrap .lead-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  height: var(--h-button);
+  padding: 0 16px;
+  border-radius: var(--r-control);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all .15s ease;
+  background: var(--surface);
+  color: var(--ink);
+}
+.btn--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+.btn--primary:hover { background: var(--accent-ink); }
+.btn--accent {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+.btn--accent:hover { background: var(--accent-ink); }
+.btn--ghost {
+  background: transparent;
+  border-color: var(--line);
+}
+.btn--ghost:hover { border-color: var(--ink); }
+.btn--text {
+  background: transparent;
+  border: none;
+  padding: 0 6px;
+  height: auto;
+  color: var(--ink-2);
+}
+.btn--text:hover { color: var(--ink); }
+.btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+.btn--icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-control);
+  color: var(--ink-2);
+}
+.btn--icon:hover { background: var(--surface); border-color: var(--line); color: var(--ink); }
+
+.saved-formula__del:hover {
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
+  background: var(--danger-tint) !important;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.card--selected {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+/* ---------- Status dot ---------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+.status--green::before { background: var(--status-prep); }
+.status--amber::before { background: var(--status-wait); }
+.status--red::before { background: var(--danger); }
+.status--blue::before { background: var(--status-ready); }
+.status--gray::before { background: var(--ink-4); }
+
+/* ---------- Tag (selectable chip) ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s ease;
+  user-select: none;
+}
+.tag:hover { border-color: var(--ink); color: var(--ink); }
+.tag--selected {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--h-nav);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
+}
+.nav__links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.nav__link {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: all .15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nav__link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.nav__link--active { color: var(--ink); }
+
+.nav__logo {
+  height: 64px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: contrast(1.02);
+}
+.nav__brand-mark {
+  /* fallback when image fails: a serif T */
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.nav__user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-start; /* In RTL this is the visual right; we want it on visual left, override below */
+}
+.nav__user { justify-content: flex-end; }  /* visual right under RTL */
+[dir="rtl"] .nav__user { justify-content: flex-start; }
+
+.nav__user .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-tint-strong);
+  color: var(--accent-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid var(--line-strong);
+}
+.nav__user .name { font-size: 14px; font-weight: 500; }
+.nav__user .points {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.nav__user .bell {
+  color: var(--ink-3);
+  position: relative;
+  cursor: pointer;
+}
+.nav__user .bell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- Page ---------- */
+.page { padding: 40px 24px 80px; }
+.page__inner { max-width: var(--maxw); margin: 0 auto; }
+.page__inner--wide { max-width: var(--maxw-lab); }
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+.page-sub {
+  font-size: 14px;
+  color: var(--ink-3);
+  margin: 0;
+}
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+
+/* ---------- Utility ---------- */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; } .gap-24 { gap: 24px; } .gap-32 { gap: 32px; }
+.mt-8 { margin-top: 8px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; } .mt-32 { margin-top: 32px; }
+.muted { color: var(--ink-3); font-weight: 500; }
+.small { font-size: 12px; font-weight: 500; }
+.divider { height: 1px; background: var(--line); width: 100%; }
+
+/* Formula preparation page — boost instructional / helper text weight so
+   every guidance note, label and hint reads clearly and confidently.
+   Scoped to .formula-prep so no other page is affected. */
+.formula-prep .muted { font-weight: 600; }
+.formula-prep .small { font-weight: 600; }
+.formula-prep p { font-weight: 500; }
+
+/* Hover image: grayscale → color */
+.hoverable-img {
+  filter: grayscale(1);
+  transition: filter .3s ease;
+}
+.hoverable-img:hover { filter: grayscale(0); }
+
+/* striped placeholder for imagery */
+.img-placeholder {
+  background-color: var(--surface-sunk);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 8px,
+    rgba(0,0,0,0.04) 8px,
+    rgba(0,0,0,0.04) 9px
+  );
+  color: var(--ink-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-latin);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+
+/* Scrollbar — subtle */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-4); }
+
+/* Carousel track — hide scrollbar (arrows drive navigation) */
+.tf-carousel-track::-webkit-scrollbar { height: 0; width: 0; display: none; }
+.tf-carousel-track { -ms-overflow-style: none; }
+
+/* Article body typography */
+.article-body p { text-wrap: pretty; }
+.article-body a { color: var(--accent); }
+
+/* ---------- Registration forms — larger text + higher-contrast fields ---------- */
+.reg-scope .field-label {
+  font-size: 13px;
+  color: var(--ink-2);
+  letter-spacing: 0.04em;
+}
+.reg-scope .input,
+.reg-scope .select {
+  height: 46px;
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+.reg-scope .input::placeholder { color: var(--ink-3); }
+.reg-scope .input:focus,
+.reg-scope .select:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-tint);
+}
+.reg-scope textarea.input { font-size: 15px; font-weight: 500; }
+/* Native dropdown option list — solid, legible, medium weight */
+.reg-scope .select option {
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 15px;
+  background: var(--surface);
+}
+.reg-scope .select option:disabled { color: var(--ink-4); }
+
+/* ─────────────────────────────────────────────────────────────
+   Formula-type icon glyphs (wizard step 3 cards).
+   The hover animation has been removed entirely — the decorative
+   moving parts are simply kept hidden so the glyphs read as clean
+   static line icons.
+   ───────────────────────────────────────────────────────────── */
+.ftype-svg { overflow: visible; }
+
+.tf-bub, .tf-cap, .tf-ribbon, .tf-aroma, .tf-stir, .tf-trail,
+.tf-pwd, .tf-steam, .tf-dome, .tf-leaf { opacity: 0; }
+
+/* Save-to-list button — icon only; label reveals on hover/focus */
+.save-to-list-btn .save-to-list-label {
+  display: inline-block;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-inline-start: 0;
+  transition: max-width 0.28s ease, opacity 0.2s ease, margin-inline-start 0.28s ease;
+}
+.save-to-list-btn:hover .save-to-list-label,
+.save-to-list-btn:focus-visible .save-to-list-label {
+  max-width: 240px;
+  opacity: 1;
+  margin-inline-start: 2px;
+}
+
+/* Validation-note target highlight — pulses the field a clicked
+   "continue is blocked" alert points to, after scrolling to it. */
+@keyframes tf-anchor-flash {
+  0%   { box-shadow: 0 0 0 0 rgba(162,58,45,0); }
+  18%  { box-shadow: 0 0 0 4px rgba(162,58,45,0.38); }
+  70%  { box-shadow: 0 0 0 4px rgba(162,58,45,0.22); }
+  100% { box-shadow: 0 0 0 0 rgba(162,58,45,0); }
+}
+.tf-anchor-flash {
+  animation: tf-anchor-flash 1.5s ease;
+  border-radius: var(--r-card);
+}
+
+/* ---------- Shared entrance animations (toast, popover, tooltip) ---------- */
+@keyframes tf-toast-in {
+  from { transform: translate(-50%, 12px); opacity: 0; }
+  to   { transform: translate(-50%, 0);    opacity: 1; }
+}
+@keyframes tf-pa-in {
+  from { transform: translateY(-6px); }
+  to   { transform: translateY(0); }
+}
+@keyframes tf-tip-in {
+  from { transform: translateY(-3px); }
+  to   { transform: translateY(0); }
+}
+

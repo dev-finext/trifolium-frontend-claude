@@ -13,12 +13,8 @@ defineProps({
 
 <template>
     <span
-        :style="{
-            position: 'relative',
-            display: 'inline-flex',
-            overflow: 'hidden',
-            borderRadius: `${radius}px`,
-        }"
+        class="relative inline-flex overflow-hidden"
+        :style="{ borderRadius: `${radius}px` }"
     >
         <slot />
         <NewRibbonMark :top="top" :left="left" />

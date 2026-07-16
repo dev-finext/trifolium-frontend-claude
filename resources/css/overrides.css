@@ -1,0 +1,111 @@
+/* ═════════════════════════════════════════════════════════════
+   Trifolium — accessibility, motion & touch overrides.
+   App-wide fixes (focus rings, skip link, reduced motion, iOS-PWA
+   safe areas, 44px touch targets). Loaded after the other layers on
+   purpose — these must win. Background: docs/UX-AUDIT.md.
+   ═════════════════════════════════════════════════════════════ */
+
+/* A1 · Visible keyboard focus on every interactive control. Mouse clicks
+   don't trigger :focus-visible, so this never shows on tap/click. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* On the accent-green ground (primary buttons, active tabs) a green ring
+   is invisible — use a light ring there. */
+.btn--primary:focus-visible,
+.btn--accent:focus-visible,
+.tabbar__item--active:focus-visible,
+[style*="var(--accent)"]:focus-visible { outline-color: #f4efe1; }
+
+/* A11 · Skip-to-content link (first focusable element). */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 8px;
+  top: -60px;
+  z-index: 500;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 10px 16px;
+  border-radius: var(--r-control);
+  font-weight: 700;
+  transition: top .15s ease;
+}
+.skip-link:focus { top: 8px; }
+
+/* A20 · Respect reduced-motion globally (the design's own opt-ins remain). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* M21 · Contain the iOS rubber-band so the shell reads as an app, not a page. */
+html { overscroll-behavior-y: none; }
+body { overscroll-behavior-y: contain; }
+
+/* ── Phone tier: touch targets, safe areas, native-app polish ── */
+html.tf-mobile {
+  /* M20 · Kill the grey iOS tap flash app-wide (focus/active states remain). */
+  a, button, [role="button"], .tag, .tabbar__item, .nav-drawer__item, label {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* M6/M7/M9/M11 · 44px minimum touch targets. */
+  .btn { min-height: 44px; }
+  .btn--sm { min-height: 40px; }
+  .btn--icon { width: 44px; height: 44px; }
+  .tag { min-height: 36px; }
+
+  /* M1/M4 · iOS safe-area: pad the sticky top bar past the notch. The nav is
+     position:sticky;top:0 — grow it by the inset and lift the logo cluster. */
+  .nav {
+    padding-top: env(safe-area-inset-top);
+    height: calc(56px + env(safe-area-inset-top));
+  }
+  .wizard-mobile-progress { top: calc(56px + env(safe-area-inset-top)) !important; }
+  /* keep the sticky filter/summary offsets in step with the taller bar */
+  .catalog-filters { top: calc(72px + env(safe-area-inset-top)) !important; }
+
+  /* M7 · cart quantity stepper to 40px */
+  .qty-step { width: 40px !important; height: 40px !important; }
+  .qty-count { height: 40px !important; line-height: 38px !important; }
+
+  /* M11 · password show/hide eye → 44px hit target */
+  .pw-eye { width: 44px !important; height: 44px !important; }
+
+  /* M13 · Articles list header: stack vertically instead of a wide flex row */
+  .articles-head { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+  .articles-head [style*="nowrap"] { white-space: normal !important; }
+
+  /* M14 · Article detail hero: reduce desktop padding/title on phones */
+  .article-hero { padding: 20px 18px !important; }
+  .article-hero h1 { font-size: 24px !important; line-height: 1.25 !important; }
+
+  /* M16 · Change-password: don't center in full 100vh behind the chrome */
+  .cp-shell { min-height: auto !important; padding-top: 20px !important; align-items: flex-start !important; }
+
+  /* M17 · Cart sidebar: drop the desktop sticky offset */
+  .cart-sidebar { position: static !important; top: auto !important; }
+
+  /* M18 · Catalog search fills width */
+  .catalog-search { width: 100% !important; }
+
+  /* My-formulas: the horizontal cards need a full-width single column on
+     phones (overrides the generic auto-fill→minmax(140) grid hammer). */
+  .formula-grid { grid-template-columns: 1fr !important; }
+
+  /* Quick-access on the phone home: drop the desktop hero-overlap, sit in-flow
+     under the panorama hero as a 2×2 tile card (the grid hammer makes the
+     inline repeat(4) → 2 cols). */
+  .quick-access { margin-top: 14px !important; padding: 0 14px !important; }
+  .quick-access > div > div { height: auto !important; }
+  .quick-access button { padding: 14px 12px !important; justify-content: flex-start !important; }
+  .quick-access button:nth-child(2) { border-inline-start: none !important; }
+  .quick-access button:nth-child(1), .quick-access button:nth-child(2) { border-bottom: 1px solid var(--line); }
+}
+
