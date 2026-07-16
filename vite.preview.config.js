@@ -5,7 +5,7 @@
 //
 // Dev: a tiny Vite middleware (preview/inertia-preview-plugin.js) speaks the
 // Inertia protocol and serves every page with mock props, so the exact same
-// resources/js/app.js entry works both here and inside Laravel.
+// resources/js/app.ts entry works both here and inside Laravel.
 //
 // Static demo (`--mode static`): builds preview/index.html as the entry, then
 // scripts/build-static-demo.mjs pre-renders one HTML per route. Because there
@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => {
                 // the plain compile check builds just the JS entry.
                 input: isStaticDemo
                     ? path.resolve(rootDir, 'preview/index.html')
-                    : path.resolve(rootDir, 'resources/js/app.js'),
+                    : path.resolve(rootDir, 'resources/js/app.ts'),
             },
         },
     };

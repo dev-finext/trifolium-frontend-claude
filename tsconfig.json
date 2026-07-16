@@ -1,0 +1,45 @@
+{
+    "compilerOptions": {
+        /* Language and Environment */
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "jsx": "preserve",
+        "jsxImportSource": "vue",
+
+        /* Modules */
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "paths": {
+            "@/*": ["./resources/js/*"],
+            "@img/*": ["./resources/img/*"]
+        },
+        "types": ["vite/client"],
+        "resolveJsonModule": true,
+
+        /* JavaScript Support — the codebase is plain JS today; TypeScript is
+           available for new files (see resources/js/types). */
+        "allowJs": true,
+
+        /* Emit */
+        "sourceMap": true,
+        "noEmit": true,
+
+        /* Interop Constraints */
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+
+        /* Type Checking */
+        "strict": true,
+
+        /* Completeness */
+        "skipLibCheck": true
+    },
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.vue"
+    ]
+}

@@ -9,29 +9,37 @@
 /** Static routes: pathname → page component. (Also consumed by scripts/build-static-demo.mjs.) */
 export const STATIC_ROUTES = {
     '/': 'Home',
-    '/login': 'Auth/Login',
-    '/register': 'Auth/Register',
-    '/register/submitted': 'Auth/Submitted',
-    '/forgot-password': 'Auth/ForgotPassword',
-    '/forgot-password/sent': 'Auth/ForgotSent',
-    '/reset-password': 'Auth/ResetPassword',
-    '/reset-password/done': 'Auth/ResetDone',
+    '/login': 'auth/Login',
+    '/register': 'auth/Register',
+    '/register/submitted': 'auth/Submitted',
+    '/forgot-password': 'auth/ForgotPassword',
+    '/forgot-password/sent': 'auth/ForgotSent',
+    '/reset-password': 'auth/ResetPassword',
+    '/reset-password/done': 'auth/ResetDone',
     '/catalog': 'Catalog',
     '/compounding': 'Compounding',
-    '/articles': 'Articles/Index',
-    '/orders': 'Orders/Index',
+    '/articles': 'articles/Index',
+    '/orders': 'orders/Index',
     '/cart': 'Cart',
     '/pending': 'Pending',
     '/contact': 'Contact',
-    '/profile': 'Profile/Edit',
-    '/profile/password': 'Profile/ChangePassword',
+    '/profile': 'profile/Edit',
+    '/profile/password': 'profile/ChangePassword',
     '/my-formulas': 'MyFormulas',
 };
 
 /** Dynamic routes: regex → component + captured props. */
 const DYNAMIC_ROUTES = [
-    { pattern: /^\/articles\/([^/]+)$/, component: 'Articles/Show', props: (m) => ({ id: m[1] }) },
-    { pattern: /^\/orders\/([^/]+)$/, component: 'Orders/Show', props: (m) => ({ id: m[1] }) },
+    {
+        pattern: /^\/articles\/([^/]+)$/,
+        component: 'articles/Show',
+        props: (m) => ({ id: m[1] }),
+    },
+    {
+        pattern: /^\/orders\/([^/]+)$/,
+        component: 'orders/Show',
+        props: (m) => ({ id: m[1] }),
+    },
 ];
 
 /**
@@ -40,12 +48,18 @@ const DYNAMIC_ROUTES = [
  */
 export function resolvePreviewRoute(pathname) {
     const clean = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+
     if (STATIC_ROUTES[clean]) {
         return { component: STATIC_ROUTES[clean], props: {} };
     }
+
     for (const route of DYNAMIC_ROUTES) {
         const m = clean.match(route.pattern);
-        if (m) return { component: route.component, props: route.props(m) };
+
+        if (m) {
+            return { component: route.component, props: route.props(m) };
+        }
     }
+
     return null;
 }

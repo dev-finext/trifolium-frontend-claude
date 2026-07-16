@@ -36,27 +36,52 @@ export default function inertiaPreview() {
                 // canvas-rendered snapshot of the running UI for inspection.
                 if (url.pathname === '/__snapshot' && req.method === 'POST') {
                     let body = '';
-                    req.on('data', (c) => { body += c; });
+                    req.on('data', (c) => {
+                        body += c;
+                    });
                     req.on('end', () => {
-                        const m = body.match(/^data:image\/(png|jpeg);base64,(.+)$/s);
-                        if (!m) { res.statusCode = 400; return res.end('expected an image data URL'); }
+                        const m = body.match(
+                            /^data:image\/(png|jpeg);base64,(.+)$/s,
+                        );
+
+                        if (!m) {
+                            res.statusCode = 400;
+
+                            return res.end('expected an image data URL');
+                        }
+
                         const dir = path.join(previewDir, '.snapshots');
                         fs.mkdirSync(dir, { recursive: true });
-                        const name = (url.searchParams.get('name') || 'snapshot').replace(/[^\w-]/g, '') + '.' + (m[1] === 'png' ? 'png' : 'jpg');
-                        fs.writeFileSync(path.join(dir, name), Buffer.from(m[2], 'base64'));
+                        const name =
+                            (
+                                url.searchParams.get('name') || 'snapshot'
+                            ).replace(/[^\w-]/g, '') +
+                            '.' +
+                            (m[1] === 'png' ? 'png' : 'jpg');
+                        fs.writeFileSync(
+                            path.join(dir, name),
+                            Buffer.from(m[2], 'base64'),
+                        );
                         res.end('saved ' + name);
                     });
+
                     return;
                 }
 
                 const match = resolvePreviewRoute(url.pathname);
-                if (!match) return next();
+
+                if (!match) {
+                    return next();
+                }
 
                 const page = {
                     component: match.component,
                     // Query-string params are merged in so flows like
                     // /forgot-password/sent?email=x work without a backend.
-                    props: { ...match.props, ...Object.fromEntries(url.searchParams) },
+                    props: {
+                        ...match.props,
+                        ...Object.fromEntries(url.searchParams),
+                    },
                     url: url.pathname + url.search,
                     version: 'preview',
                 };
@@ -67,12 +92,19 @@ export default function inertiaPreview() {
                     res.setHeader('X-Inertia', 'true');
                     res.setHeader('Vary', 'X-Inertia');
                     res.end(JSON.stringify(page));
+
                     return;
                 }
 
                 // Full page load → HTML shell with the page object embedded.
-                let html = fs.readFileSync(path.join(previewDir, 'index.html'), 'utf8');
-                html = html.replace('data-page="__PAGE__"', `data-page="${escapeAttribute(JSON.stringify(page))}"`);
+                let html = fs.readFileSync(
+                    path.join(previewDir, 'index.html'),
+                    'utf8',
+                );
+                html = html.replace(
+                    'data-page="__PAGE__"',
+                    `data-page="${escapeAttribute(JSON.stringify(page))}"`,
+                );
                 html = await server.transformIndexHtml(req.url, html);
                 res.setHeader('Content-Type', 'text/html; charset=utf-8');
                 res.end(html);

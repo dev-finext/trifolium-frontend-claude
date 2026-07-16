@@ -11,7 +11,9 @@ const STORAGE_KEY = 'trifolium_mode';
 
 function loadPersistedMode() {
     try {
-        return localStorage.getItem(STORAGE_KEY) === 'chinese' ? 'chinese' : 'western';
+        return localStorage.getItem(STORAGE_KEY) === 'chinese'
+            ? 'chinese'
+            : 'western';
     } catch {
         return 'western';
     }
@@ -28,7 +30,12 @@ const wizard = useWizardStore();
 
 function setMode(mode) {
     state.mode = mode;
-    try { localStorage.setItem(STORAGE_KEY, mode); } catch { /* private browsing */ }
+
+    try {
+        localStorage.setItem(STORAGE_KEY, mode);
+    } catch {
+        /* private browsing */
+    }
 }
 
 /**
@@ -36,7 +43,10 @@ function setMode(mode) {
  * Destructive only when a formula is in progress — then we ask first.
  */
 function requestMode(newMode) {
-    if (newMode === state.mode) return;
+    if (newMode === state.mode) {
+        return;
+    }
+
     if (wizard.state.dirty) {
         state.pendingMode = newMode;
     } else {
@@ -46,7 +56,10 @@ function requestMode(newMode) {
 
 /** Confirm the parked switch: apply it and tell the wizard to reset. */
 function confirmPendingMode() {
-    if (!state.pendingMode) return;
+    if (!state.pendingMode) {
+        return;
+    }
+
     setMode(state.pendingMode);
     state.pendingMode = null;
     wizard.bumpResetSignal();

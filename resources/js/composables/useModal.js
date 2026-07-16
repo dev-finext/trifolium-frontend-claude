@@ -18,7 +18,10 @@ export function useModal(onClose) {
     let prevFocus = null;
 
     function focusables() {
-        if (!dialogRef.value) return [];
+        if (!dialogRef.value) {
+            return [];
+        }
+
         // visible focusable descendants (offsetParent is null for display:none)
         return Array.from(dialogRef.value.querySelectorAll(FOCUSABLE)).filter(
             (el) => el.offsetParent !== null || el === document.activeElement,
@@ -26,27 +29,45 @@ export function useModal(onClose) {
     }
 
     function onKeydown(e) {
-        if (!dialogRef.value) return;
-        if (e.key === 'Escape') {
-            e.stopPropagation();
-            onClose && onClose();
+        if (!dialogRef.value) {
             return;
         }
-        if (e.key !== 'Tab') return;
+
+        if (e.key === 'Escape') {
+            e.stopPropagation();
+            onClose?.();
+
+            return;
+        }
+
+        if (e.key !== 'Tab') {
+            return;
+        }
+
         const f = focusables();
+
         if (f.length === 0) {
             e.preventDefault();
             dialogRef.value.focus();
+
             return;
         }
+
         const first = f[0];
         const last = f[f.length - 1];
         const active = document.activeElement;
+
         // wrap, and pull focus back inside if it has escaped the dialog
-        if (e.shiftKey && (active === first || !dialogRef.value.contains(active))) {
+        if (
+            e.shiftKey &&
+            (active === first || !dialogRef.value.contains(active))
+        ) {
             e.preventDefault();
             last.focus();
-        } else if (!e.shiftKey && (active === last || !dialogRef.value.contains(active))) {
+        } else if (
+            !e.shiftKey &&
+            (active === last || !dialogRef.value.contains(active))
+        ) {
             e.preventDefault();
             first.focus();
         }
@@ -61,8 +82,13 @@ export function useModal(onClose) {
 
     onBeforeUnmount(() => {
         document.removeEventListener('keydown', onKeydown, true);
+
         // restore focus to the opener (guard: it may have been removed)
-        if (prevFocus && typeof prevFocus.focus === 'function' && document.contains(prevFocus)) {
+        if (
+            prevFocus &&
+            typeof prevFocus.focus === 'function' &&
+            document.contains(prevFocus)
+        ) {
             prevFocus.focus();
         }
     });

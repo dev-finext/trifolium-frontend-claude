@@ -6,7 +6,11 @@
  */
 export function herbPinyin(herb) {
     const cn = herb && herb.cn ? herb.cn : '';
-    if (cn.includes('·')) return cn.split('·').pop().trim();
+
+    if (cn.includes('·')) {
+        return cn.split('·').pop().trim();
+    }
+
     // Fallback: strip CJK ranges if no separator present
     return cn.replace(/[　-〿㐀-䶿一-鿿豈-﫿]/g, '').trim();
 }

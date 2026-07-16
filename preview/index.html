@@ -5,50 +5,58 @@
     dir="rtl" lang="he", the Google Fonts links, and @vite/@inertia.
 -->
 <html dir="rtl" lang="he">
-<head>
-    <meta charset="utf-8" />
-    <!-- viewport-fit=cover: draw under the iPhone notch/home-indicator; the app
+    <head>
+        <meta charset="utf-8" />
+        <!-- viewport-fit=cover: draw under the iPhone notch/home-indicator; the app
          shell pads with env(safe-area-inset-*). maximum-scale intentionally NOT
          set (pinch-zoom stays available — accessibility). -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#f6f8f5" />
-    <meta name="apple-mobile-web-app-title" content="Trifolium" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <!-- iOS standalone launch (Add to Home Screen): full-screen, and a status
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <meta name="theme-color" content="#f6f8f5" />
+        <meta name="apple-mobile-web-app-title" content="Trifolium" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <!-- iOS standalone launch (Add to Home Screen): full-screen, and a status
          bar style that works with the safe-area top padding on .nav. -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <!-- Set the responsive tier class BEFORE the bundle loads, so the mobile
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <!-- Set the responsive tier class BEFORE the bundle loads, so the mobile
          stylesheet (incl. the 16px input-zoom guard) applies on first paint —
-         no flash of the desktop layout. lib/mobile-layout.js re-applies + adds
+         no flash of the desktop layout. lib/mobileLayout.js re-applies + adds
          resize listeners after hydration. -->
-    <script>
-        (function () {
-            try {
-                var c = document.documentElement.classList;
-                if (matchMedia('(max-width: 760px)').matches) c.add('tf-mobile');
-                else if (matchMedia('(min-width: 761px) and (max-width: 1080px)').matches) c.add('tf-tablet');
-            } catch (e) {}
-        })();
-    </script>
-    <!-- PWA: %BASE_URL% is substituted by Vite at build time, so these resolve
+        <script>
+            (function () {
+                try {
+                    var c = document.documentElement.classList;
+                    if (matchMedia('(max-width: 760px)').matches)
+                        c.add('tf-mobile');
+                    else if (
+                        matchMedia('(min-width: 761px) and (max-width: 1080px)')
+                            .matches
+                    )
+                        c.add('tf-tablet');
+                } catch (e) {}
+            })();
+        </script>
+        <!-- PWA: %BASE_URL% is substituted by Vite at build time, so these resolve
          correctly under the GitHub Pages subpath as well as at a domain root. -->
-    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="%BASE_URL%icons/icon-180.png" />
-    <title>Trifolium — בית המרקחת הדיגיטלי</title>
+        <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="%BASE_URL%icons/icon-180.png" />
+        <title>Trifolium — בית המרקחת הדיגיטלי</title>
 
-    <!-- Hebrew UI: Assistant · Latin text & numerals: Inter · Brand serif: Cormorant Garamond -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap"
-        rel="stylesheet"
-    />
+        <!-- Hebrew UI: Assistant · Latin text & numerals: Inter · Brand serif: Cormorant Garamond -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap"
+            rel="stylesheet"
+        />
 
-    <script type="module" src="/resources/js/app.js"></script>
-    <link rel="stylesheet" href="/resources/css/app.css" />
-</head>
-<body>
-    <div id="app" data-page="__PAGE__"></div>
-</body>
+        <script type="module" src="/resources/js/app.ts"></script>
+        <link rel="stylesheet" href="/resources/css/app.css" />
+    </head>
+    <body>
+        <div id="app" data-page="__PAGE__"></div>
+    </body>
 </html>

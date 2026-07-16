@@ -21,25 +21,25 @@ const STATIC_DEMO = import.meta.env.VITE_STATIC_DEMO === '1';
 
 const ROUTE_URLS = {
     // Auth flow
-    'login': '/login',
-    'register': '/register',
-    'submitted': '/register/submitted',
-    'forgot': '/forgot-password',
+    login: '/login',
+    register: '/register',
+    submitted: '/register/submitted',
+    forgot: '/forgot-password',
     'forgot-sent': '/forgot-password/sent',
-    'reset': '/reset-password',
+    reset: '/reset-password',
     'reset-done': '/reset-password/done',
     // App screens
-    'home': '/',
-    'catalog': '/catalog',
-    'compounding': '/compounding',
-    'articles': '/articles',
-    'article': '/articles/:id',
-    'orders': '/orders',
-    'order': '/orders/:id',
-    'cart': '/cart',
-    'pending': '/pending',
-    'contact': '/contact',
-    'profile': '/profile',
+    home: '/',
+    catalog: '/catalog',
+    compounding: '/compounding',
+    articles: '/articles',
+    article: '/articles/:id',
+    orders: '/orders',
+    order: '/orders/:id',
+    cart: '/cart',
+    pending: '/pending',
+    contact: '/contact',
+    profile: '/profile',
     'change-password': '/profile/password',
     'my-formulas': '/my-formulas',
 };
@@ -53,9 +53,13 @@ const ROUTE_URLS = {
  */
 export function routeUrl(name, params = {}) {
     let url = ROUTE_URLS[name];
-    if (!url) throw new Error(`Unknown route name: ${name}`);
+
+    if (!url) {
+        throw new Error(`Unknown route name: ${name}`);
+    }
 
     const query = {};
+
     for (const [key, value] of Object.entries(params)) {
         if (url.includes(`:${key}`)) {
             url = url.replace(`:${key}`, encodeURIComponent(value));
@@ -63,12 +67,16 @@ export function routeUrl(name, params = {}) {
             query[key] = value;
         }
     }
+
     // Static demo: routes are pre-rendered as <route>/index.html, so link
     // straight to the directory form ("/cart/") — works on any static host
     // without relying on a trailing-slash redirect.
-    if (STATIC_DEMO && url !== '/') url += '/';
+    if (STATIC_DEMO && url !== '/') {
+        url += '/';
+    }
 
     const qs = new URLSearchParams(query).toString();
+
     return BASE + (qs ? `${url}?${qs}` : url);
 }
 
@@ -77,17 +85,31 @@ export function routeUrl(name, params = {}) {
  * Used by the layout to highlight the active nav link.
  */
 export function routeNameFromUrl(url) {
-    let path = (url.split('?')[0].replace(/\/+$/, '')) || '/';
+    let path = url.split('?')[0].replace(/\/+$/, '') || '/';
+
     // Strip the deployment base so matching stays base-agnostic.
-    if (BASE && path.startsWith(BASE)) path = path.slice(BASE.length) || '/';
-    for (const [name, pattern] of Object.entries(ROUTE_URLS)) {
-        if (!pattern.includes(':') && pattern === path) return name;
+    if (BASE && path.startsWith(BASE)) {
+        path = path.slice(BASE.length) || '/';
     }
+
     for (const [name, pattern] of Object.entries(ROUTE_URLS)) {
-        if (!pattern.includes(':')) continue;
+        if (!pattern.includes(':') && pattern === path) {
+            return name;
+        }
+    }
+
+    for (const [name, pattern] of Object.entries(ROUTE_URLS)) {
+        if (!pattern.includes(':')) {
+            continue;
+        }
+
         const rx = new RegExp(`^${pattern.replace(/:[^/]+/g, '[^/]+')}$`);
-        if (rx.test(path)) return name;
+
+        if (rx.test(path)) {
+            return name;
+        }
     }
+
     return null;
 }
 
@@ -98,6 +120,7 @@ export function routeNameFromUrl(url) {
  */
 export function visit(name, params = {}) {
     let url = routeUrl(name, params);
+
     // Static demo (no server): full page load to the pre-rendered HTML.
     if (STATIC_DEMO) {
         // Carry the developer English overlay (?lang=en) across page loads —
@@ -105,12 +128,19 @@ export function visit(name, params = {}) {
         // only place the language choice lives. (In the real Inertia app the
         // overlay persists by itself: navigation never reloads the page.)
         try {
-            if (new URLSearchParams(window.location.search).get('lang') === 'en') {
+            if (
+                new URLSearchParams(window.location.search).get('lang') === 'en'
+            ) {
                 url += (url.includes('?') ? '&' : '?') + 'lang=en';
             }
-        } catch { /* ignore */ }
+        } catch {
+            /* ignore */
+        }
+
         window.location.assign(url);
+
         return;
     }
+
     router.visit(url);
 }
