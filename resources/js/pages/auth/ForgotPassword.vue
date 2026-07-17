@@ -53,9 +53,8 @@ function onInput(v) {
         <form novalidate @submit.prevent="submit">
             <span
                 class="mb-[18px] inline-flex h-[46px] w-[46px] items-center justify-center rounded-[50%] border border-accent-tint-strong bg-accent-tint"
-            >
-                <Icon name="lock" :size="22" color="var(--accent)" />
-            </span>
+                ><Icon name="lock" :size="22" color="var(--accent)"
+            /></span>
             <h1
                 class="m-0 text-[23px] leading-[1.3] font-semibold tracking-[-0.01em]"
             >
