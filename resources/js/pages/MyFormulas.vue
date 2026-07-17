@@ -4,6 +4,7 @@
 // delete, plus the ready-made system-formula templates below a divider.
 import { Head } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import TutorialVideo from '@/components/shared/help/TutorialVideo.vue';
 import MyFormulaCard from '@/components/shared/my-formulas/MyFormulaCard.vue';
 import SystemFormulaCard from '@/components/shared/my-formulas/SystemFormulaCard.vue';
 import Icon from '@/components/ui/Icon.vue';
@@ -106,7 +107,19 @@ const totalUses = computed(() =>
                     >
                         האיזור האישי שלי
                     </div>
-                    <h1 class="page-title m-0">רשימת הפורמולות שלי</h1>
+                    <h1 class="page-title m-0 flex items-center gap-[10px]">
+                        רשימת הפורמולות שלי
+                        <TutorialVideo
+                            video-id="my-formulas"
+                            title="הפורמולות שלי — שמירה וטעינה"
+                            duration="0:44"
+                            :steps="[
+                                'כל פורמולה שרקחתם נשמרת אוטומטית לספרייה האישית',
+                                'לוחצים \'טען למעבדה\' כדי לפתוח פורמולה לעריכה מחדש',
+                                'פורמולות המערכת מוכנות לטעינה והתאמה בכל רגע',
+                            ]"
+                        />
+                    </h1>
                     <p class="page-sub mt-[6px]">
                         <span class="num">{{
                             savedFormulas.state.list.length

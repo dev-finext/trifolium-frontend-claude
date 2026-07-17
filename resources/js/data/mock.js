@@ -1233,6 +1233,20 @@ const ORDERS = [
 // --- Events / updates (3-4 cards) ---
 const EVENTS = [
     {
+        // Community ZOOM lecture — featured video event (from the YouTube
+        // channel). TODO(content): set `youtube` to the lecture's video id to
+        // play it inline; until then the poster links to the channel.
+        id: 'e-cholesterol',
+        cat: 'הרצאת קהילה',
+        title: 'כולסטרול — פרוטוקול טיפולי',
+        desc: 'הרצאת ZOOM לקהילה · 1.7.2026',
+        date: '01.07.2026',
+        accentHue: 4,
+        kind: 'video',
+        youtube: '',
+        channelUrl: 'https://www.youtube.com/@Trifolium_Pharmacy',
+    },
+    {
         id: 'e1',
         cat: 'אירוע',
         title: 'כנס שנתי לרפואת צמחים — תל אביב',
