@@ -234,6 +234,25 @@ const shipValid = computed(() => {
 const canCheckout = computed(
     () => items.length > 0 && payerValid.value && shipValid.value,
 );
+// When checkout is blocked, tell the practitioner exactly what's missing
+// (F36 follow-up) — one actionable line per unmet requirement.
+const checkoutBlockers = computed(() => {
+    const out = [];
+
+    if (!payerValid.value) {
+        out.push('בחרו איזה מטופל/ת משלם/ת — תחת "פרטי תשלום"');
+    }
+
+    if (ship.value === 'me' && !meAddrId.value) {
+        out.push('בחרו כתובת למשלוח — תחת "משלוח"');
+    }
+
+    if (ship.value === 'patient' && !effectivePatientName.value) {
+        out.push('שייכו מטופל/ת למשלוח — לפריטים בסל אין מטופל/ת מקושר/ת');
+    }
+
+    return out;
+});
 
 // Self-pickup collection point at the pharmacy (איסוף עצמי).
 const TF_PICKUP_LOCATION = {
@@ -290,8 +309,13 @@ const TF_PICKUP_LOCATION = {
                     />
                 </div>
 
-                <!-- SIDEBAR -->
-                <div class="col sticky top-[80px] gap-[16px]">
+                <!-- SIDEBAR — on phones this whole column becomes the tinted
+                     "summary zone", introduced by the labelled divider below
+                     (both styled in overrides.css; divider hidden on desktop). -->
+                <div class="cart-sidebar col sticky top-[80px] gap-[16px]">
+                    <div class="cart-summary-divider hidden" aria-hidden="true">
+                        סיכום והזמנה
+                    </div>
                     <!-- Payment — chosen first; who pays drives the shipping options -->
                     <SideCard title="פרטי תשלום">
                         <FieldGroupLabel>מבצע התשלום:</FieldGroupLabel>
@@ -724,6 +748,38 @@ const TF_PICKUP_LOCATION = {
                                     : 'המשך לתשלום'
                             }}
                         </button>
+
+                        <!-- Why checkout is blocked — actionable, per requirement -->
+                        <div
+                            v-if="!canCheckout && checkoutBlockers.length"
+                            role="status"
+                            class="mt-[12px] rounded-card border border-[#ecd9b0] bg-[#fbf3e3] px-[14px] py-[11px]"
+                        >
+                            <div
+                                class="mb-[5px] flex items-center gap-[6px] text-[12.5px] font-bold text-warning"
+                            >
+                                <Icon
+                                    name="info"
+                                    :size="13"
+                                    color="var(--warning)"
+                                />
+                                כדי להמשיך לתשלום:
+                            </div>
+                            <ul
+                                class="m-0 flex list-none flex-col gap-[3px] p-0 text-[12.5px] leading-[1.55] text-ink-2"
+                            >
+                                <li
+                                    v-for="(b, i) in checkoutBlockers"
+                                    :key="i"
+                                    class="flex gap-[6px]"
+                                >
+                                    <span
+                                        class="mt-[7px] h-[4px] w-[4px] shrink-0 rounded-[50%] bg-warning"
+                                    ></span>
+                                    {{ b }}
+                                </li>
+                            </ul>
+                        </div>
                         <div
                             class="small muted mt-[12px] flex items-center justify-center gap-[6px] text-center"
                         >

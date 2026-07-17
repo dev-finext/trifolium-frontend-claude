@@ -1099,4 +1099,12 @@ export default {
     'A5 הקישור נשלח': 'A5 Link sent',
     'A6 בחירת סיסמה חדשה': 'A6 Choose new password',
     'A7 הסיסמה עודכנה': 'A7 Password updated',
+    'סיכום והזמנה': 'Summary & checkout',
+    'כדי להמשיך לתשלום:': 'To continue to payment:',
+    'בחרו איזה מטופל/ת משלם/ת — תחת "פרטי תשלום"':
+        'Choose which patient is paying — under "Payment details"',
+    'בחרו כתובת למשלוח — תחת "משלוח"':
+        'Choose a shipping address — under "Shipping"',
+    'שייכו מטופל/ת למשלוח — לפריטים בסל אין מטופל/ת מקושר/ת':
+        'Assign a patient for shipping — the cart items have no linked patient',
 };

@@ -147,8 +147,11 @@ const toggleKpi = (kpiStatus) => {
                 </div>
             </div>
 
-            <!-- KPI tiles -->
-            <div class="mb-[24px] grid grid-cols-[repeat(3,1fr)] gap-[14px]">
+            <!-- KPI tiles (desktop/tablet only — hidden on phones, where they
+                 eat scarce vertical space; filtering stays in the panel) -->
+            <div
+                class="orders-kpis mb-[24px] grid grid-cols-[repeat(3,1fr)] gap-[14px]"
+            >
                 <KpiTile
                     v-for="kpi in kpis"
                     :key="kpi.status"

@@ -1,6 +1,8 @@
 <script setup>
 // Article teaser card — cover with category badge, clamped title/excerpt.
 // Clicking opens the article page. Also used by the Articles pages.
+// Articles carry a real cover image (article.cover); older demo items with no
+// image fall back to the generated ItemCover art.
 import { ref } from 'vue';
 import { ItemCover } from '@/components/shared/art';
 import { visit } from '@/lib/routes';
@@ -37,7 +39,13 @@ function open() {
                     hover ? '[transform:scale(1.04)]' : '[transform:scale(1)]'
                 "
             >
-                <ItemCover kind="article" :item="article" />
+                <img
+                    v-if="article.cover"
+                    :src="article.cover"
+                    :alt="article.title"
+                    class="h-full w-full object-cover"
+                />
+                <ItemCover v-else kind="article" :item="article" />
             </div>
             <span
                 class="absolute top-[12px] right-[12px] rounded-[999px] bg-[rgba(255,255,255,0.92)] px-[10px] py-[4px] text-[11px] font-bold tracking-[0.04em] whitespace-nowrap text-accent backdrop-blur-[4px]"

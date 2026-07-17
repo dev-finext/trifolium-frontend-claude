@@ -1,6 +1,9 @@
 <script setup>
-// Tutorial Videos section + lightbox modal.
-import { ref, computed, watch, onBeforeUnmount } from 'vue';
+// Tutorial Videos section — a snap carousel over ALL tutorial videos (the
+// same track/arrows pattern as HomeArticles, so the home page reads as one
+// system) + the lightbox modal.
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import CarouselArrow from '@/components/shared/home/CarouselArrow.vue';
 import SectionHeader from '@/components/shared/home/SectionHeader.vue';
 import VideoCard from '@/components/shared/home/VideoCard.vue';
 import VideoLightbox from '@/components/shared/home/VideoLightbox.vue';
@@ -12,8 +15,49 @@ const props = defineProps({
 
 const open = ref(null);
 
-// Show 3 cards (per spec — "3 video cards"). Use first 3.
-const cards = computed(() => props.videos.slice(0, 3));
+const cards = computed(() => props.videos);
+
+// ── carousel track (mirrors HomeArticles) ──
+const trackRef = ref(null);
+const atStart = ref(true);
+const atEnd = ref(false);
+
+function updateEdges() {
+    const el = trackRef.value;
+
+    if (!el) {
+        return;
+    }
+
+    // RTL-safe: use absolute scroll offset from the inline-start edge
+    const max = el.scrollWidth - el.clientWidth;
+    const pos = Math.abs(el.scrollLeft);
+    atStart.value = pos <= 2;
+    atEnd.value = pos >= max - 2;
+}
+
+onMounted(() => {
+    updateEdges();
+    trackRef.value?.addEventListener('scroll', updateEdges, { passive: true });
+});
+onBeforeUnmount(() => {
+    trackRef.value?.removeEventListener('scroll', updateEdges);
+});
+
+// In RTL, advancing to "next" cards means scrolling toward negative left.
+function scrollByCards(dir) {
+    const el = trackRef.value;
+
+    if (!el) {
+        return;
+    }
+
+    const amount = 320 * 2; // ~2 cards
+    el.scrollBy({
+        left: dir === 'next' ? -amount : amount,
+        behavior: 'smooth',
+    });
+}
 
 // Escape closes the lightbox — listener bound only while it is open,
 // mirroring the prototype's effect.
@@ -42,13 +86,31 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
                 subtitle="למד כיצד להשתמש במערכת בצעדים פשוטים"
                 link-label="לכל הסרטונים"
             />
-            <div class="grid grid-cols-3 gap-[20px]">
-                <VideoCard
-                    v-for="(v, i) in cards"
-                    :key="v.id"
-                    :video="v"
-                    :index="i"
-                    @play="open = v"
+
+            <div class="relative">
+                <CarouselArrow
+                    dir="prev"
+                    :disabled="atStart"
+                    @click="scrollByCards('prev')"
+                />
+
+                <div
+                    ref="trackRef"
+                    class="tf-carousel-track flex snap-x snap-mandatory [scroll-padding:0_4px] [scrollbar-width:none] gap-[20px] overflow-x-auto pb-[8px]"
+                >
+                    <div
+                        v-for="(v, i) in cards"
+                        :key="v.id"
+                        class="flex-[0_0_340px] snap-start"
+                    >
+                        <VideoCard :video="v" :index="i" @play="open = v" />
+                    </div>
+                </div>
+
+                <CarouselArrow
+                    dir="next"
+                    :disabled="atEnd"
+                    @click="scrollByCards('next')"
                 />
             </div>
         </div>

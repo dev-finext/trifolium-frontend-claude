@@ -2,7 +2,7 @@
 // Patient picker — opens after "הוסף". Pick a patient or "ללא מטופל".
 // Two modes: 'pick' (search existing patients) and 'new' (inline new-patient
 // form, identical to the formula wizard's create-patient flow).
-import { computed, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import PatientRow from '@/components/shared/catalog/PatientRow.vue';
 import NewPatientForm from '@/components/shared/wizard/NewPatientForm.vue';
 import Icon from '@/components/ui/Icon.vue';
@@ -67,6 +67,11 @@ function handleCreate() {
 }
 
 const { dialogRef } = useModal(() => emit('close'));
+
+// UX: land focus in the patient search (not the close button) so typing —
+// and the phone keyboard — start immediately. Runs after useModal's default.
+const searchRef = ref(null);
+onMounted(() => nextTick(() => searchRef.value?.focus()));
 </script>
 
 <template>
@@ -130,6 +135,7 @@ const { dialogRef } = useModal(() => emit('close'));
                     <!-- Search -->
                     <div class="border-b border-b-line px-[24px] py-[14px]">
                         <SearchInput
+                            ref="searchRef"
                             v-model="search"
                             placeholder="חפש מטופל…"
                         />

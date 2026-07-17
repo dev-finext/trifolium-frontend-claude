@@ -4,7 +4,8 @@
 // path); "מטופל חדש" / "ללא מטופל" are secondary actions. Functionality is
 // unchanged: same option state ('existing' | 'new' | 'none'), same search,
 // same new-patient form + interaction-safety flow, same continue gating.
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import TutorialVideo from '@/components/shared/help/TutorialVideo.vue';
 import NewRibbon from '@/components/shared/NewRibbon.vue';
 import EditPatientModal from '@/components/shared/wizard/EditPatientModal.vue';
 import NewPatientForm from '@/components/shared/wizard/NewPatientForm.vue';
@@ -33,6 +34,10 @@ const emit = defineEmits([
 ]);
 
 const search = ref('');
+// UX: focus the patient search on entry — desktop types immediately, phones
+// get the keyboard right away. (Also applies in the shelf-product picker.)
+const searchEl = ref(null);
+onMounted(() => searchEl.value?.focus());
 // Local edits made via the pencil button — keyed by patient id.
 // TODO(backend): persist patient edits via API instead of session-local state.
 const edits = ref({});
@@ -194,6 +199,7 @@ function patientToForm(p, edit) {
                 <Icon name="search" :size="20" />
             </span>
             <input
+                ref="searchEl"
                 class="input h-[56px] border-[1.5px] ps-[50px] text-[15.5px]"
                 :class="
                     existingActive
@@ -226,6 +232,25 @@ function patientToForm(p, edit) {
                     @click="emit('update:option', 'none')"
                 />
             </NewRibbon>
+        </div>
+
+        <!-- Feature-explainer cue for the new "save without a patient" flow.
+             Trigger = pulsing play (icon 7); opens the floating mini-player
+             on desktop / a full modal on phones. -->
+        <div
+            class="mt-[12px] flex items-center gap-[8px] text-[12.5px] text-ink-3"
+        >
+            <TutorialVideo
+                video-id="save-no-patient"
+                title="שמירת פורמולה ללא מטופל"
+                duration="0:45"
+                :steps="[
+                    'בוחרים \'ללא מטופל\' בשלב בחירת המטופל',
+                    'רוקחים את הפורמולה כרגיל במעבדה',
+                    'הפורמולה נשמרת בטיוטות — מקשרים מטופל בכל שלב',
+                ]"
+            />
+            <span>חדש — כך שומרים פורמולה גם ללא שיוך מטופל</span>
         </div>
 
         <!-- Content area — depends on the selected option -->
