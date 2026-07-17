@@ -95,6 +95,7 @@ for (const id of articleIds) {
 writeRoute('/orders/TF-2850', 'orders/Show', { id: 'TF-2850' });
 writeRoute('/terms', 'Terms');
 writeRoute('/accessibility', 'Accessibility');
+writeRoute('/privacy', 'Privacy');
 count++;
 
 // ── 3. Pages plumbing ────────────────────────────────────────────────────────

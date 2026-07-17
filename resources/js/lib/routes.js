@@ -44,6 +44,7 @@ const ROUTE_URLS = {
     'my-formulas': '/my-formulas',
     terms: '/terms',
     accessibility: '/accessibility',
+    privacy: '/privacy',
 };
 
 /**

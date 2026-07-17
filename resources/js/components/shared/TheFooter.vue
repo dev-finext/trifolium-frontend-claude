@@ -4,34 +4,29 @@
 import Icon from '@/components/ui/Icon.vue';
 import { visit } from '@/lib/routes';
 
-// Columns: links with a `route` navigate; the rest are placeholders for
-// destinations that are not part of the current scope.
+// Columns mirror the marketing-site footer. Links with a `route` navigate to
+// a page we have; the rest are placeholders (href="#") for destinations that
+// are not part of the app's current scope.
 const FOOTER_COLS = [
     {
-        title: 'הפלטפורמה',
+        title: 'איך נוכל לעזור?',
         links: [
-            { label: 'ראשי', route: 'home' },
-            { label: 'מוצרי מדף', route: 'catalog' },
-            { label: 'הכנת פורמולה', route: 'compounding' },
-            { label: 'מאמרים מקצועיים', route: 'articles' },
+            { label: 'עבודה מול בית המרקחת' },
+            { label: 'יעוץ' },
+            { label: 'הרשמה לניוזלטר' },
+            { label: 'תקנון ותנאי שימוש', route: 'terms' },
+            { label: 'מדיניות פרטיות', route: 'privacy' },
+            { label: 'זכות עיון במידע', route: 'privacy' },
+            { label: 'הצהרת נגישות', route: 'accessibility' },
+            { label: 'תקנון מועדון לקוחות' },
         ],
     },
     {
-        title: 'מקצועיים',
+        title: 'מפת אתר',
         links: [
-            { label: 'מאגר צמחים' },
-            { label: 'אינטראקציות וטיפוסי קונסטיטוציה' },
-            { label: 'הדרכות וובינרים' },
-            { label: 'שאלות נפוצות' },
-        ],
-    },
-    {
-        title: 'תמיכה',
-        links: [
-            { label: 'יצירת קשר', route: 'contact' },
-            { label: 'מרכז עזרה' },
-            { label: 'דיווח על תקלה' },
-            { label: 'הצעות לשיפור' },
+            { label: 'החשבון שלי', route: 'profile' },
+            { label: 'בלוג', route: 'articles' },
+            { label: 'אודות' },
         ],
     },
 ];
@@ -70,7 +65,7 @@ function onLink(link, event) {
     >
         <!-- MAIN — brand + nav columns -->
         <div
-            class="mx-auto my-0 grid max-w-[1200px] grid-cols-[1.4fr_1fr_1fr_1fr] gap-[48px] px-[24px] pt-[56px] pb-[40px]"
+            class="mx-auto my-0 grid max-w-[1200px] grid-cols-[1.6fr_1.2fr_1fr] gap-[48px] px-[24px] pt-[56px] pb-[40px]"
         >
             <!-- Brand block -->
             <div>
@@ -131,15 +126,19 @@ function onLink(link, event) {
             <div class="flex flex-wrap items-center gap-[28px]">
                 <div class="flex items-center gap-[8px] text-[13px] text-ink-2">
                     <Icon name="phone" :size="14" color="var(--accent)" />
-                    <span class="num" dir="ltr">03-555-0142</span>
+                    <span class="num" dir="ltr">077-200-2717</span>
                 </div>
                 <div class="flex items-center gap-[8px] text-[13px] text-ink-2">
                     <Icon name="mail" :size="14" color="var(--accent)" />
-                    <span class="latin">support@trifolium.co.il</span>
+                    <span class="latin">order@trifolium.co.il</span>
+                </div>
+                <div class="flex items-center gap-[8px] text-[13px] text-ink-3">
+                    <Icon name="pin" :size="14" color="var(--ink-3)" />
+                    <span>נוף 25, ערד</span>
                 </div>
                 <div class="flex items-center gap-[8px] text-[13px] text-ink-3">
                     <Icon name="clock" :size="14" color="var(--ink-3)" />
-                    <span>א׳–ה׳ 09:00–18:00</span>
+                    <span>שעות פתיחה 09:00–14:00</span>
                 </div>
             </div>
 
@@ -174,6 +173,13 @@ function onLink(link, event) {
                     :class="complianceLinkClass"
                     @click.prevent="visit('terms')"
                     >תקנון האתר</a
+                >
+                <span :class="dotClass">•</span>
+                <a
+                    href="#"
+                    :class="complianceLinkClass"
+                    @click.prevent="visit('privacy')"
+                    >מדיניות פרטיות</a
                 >
                 <span :class="dotClass">•</span>
                 <a

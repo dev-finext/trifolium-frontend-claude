@@ -27,6 +27,7 @@ export const STATIC_ROUTES = {
     '/profile/password': 'profile/ChangePassword',
     '/terms': 'Terms',
     '/accessibility': 'Accessibility',
+    '/privacy': 'Privacy',
     '/my-formulas': 'MyFormulas',
 };
 
