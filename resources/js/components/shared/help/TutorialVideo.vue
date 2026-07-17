@@ -79,171 +79,52 @@ function close() {
 </script>
 
 <template>
-    <!-- Trigger — icon 7 (pulsing play). The ring only shows until first view. -->
-    <button
-        type="button"
-        class="tv-trigger relative inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[50%] border-none bg-accent p-0 text-white"
-        :class="{ 'tv-trigger--new': !viewed }"
-        :aria-label="label"
-        @click.stop="openVideo"
-    >
-        <svg
-            width="9"
-            height="9"
-            viewBox="0 0 10 12"
-            fill="currentColor"
-            aria-hidden="true"
-        >
-            <path
-                d="M1 1.2v9.6c0 .8.9 1.3 1.6.9l7-4.8c.6-.4.6-1.4 0-1.8l-7-4.8C1.9-.1 1 .4 1 1.2z"
-            />
-        </svg>
-    </button>
-
-    <!-- ── Desktop: floating mini-player (no scrim; never blocks the screen) ── -->
-    <Teleport to="body">
-        <div
-            v-if="asMini"
-            role="dialog"
+    <!-- Single root so a consumer's fallthrough `class` lands on a real node
+         (the Teleport renders elsewhere) and the trigger stays a compact
+         inline item, immune to row rules that target a bare `> button`. -->
+    <span class="tv-root inline-flex align-middle">
+        <!-- Trigger — icon 7 (pulsing play). The ring only shows until first view. -->
+        <button
+            type="button"
+            class="tv-trigger relative inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[50%] border-none bg-accent p-0 text-white"
+            :class="{ 'tv-trigger--new': !viewed }"
             :aria-label="label"
-            class="fixed start-[18px] bottom-[18px] z-[100] w-[320px] overflow-hidden rounded-[12px] border border-line bg-surface shadow-[0_18px_44px_-12px_rgba(20,28,24,0.4)]"
+            @click.stop="openVideo"
         >
-            <div class="relative">
-                <video
-                    v-if="src"
-                    :src="src"
-                    class="bg-black block aspect-video w-full object-cover"
-                    controls
-                    autoplay
-                />
-                <div v-else class="tv-vid">
-                    <span class="tv-vid__play">
-                        <svg
-                            width="17"
-                            height="17"
-                            viewBox="0 0 10 12"
-                            fill="currentColor"
-                            class="ms-[2px]"
-                        >
-                            <path
-                                d="M1 1.2v9.6c0 .8.9 1.3 1.6.9l7-4.8c.6-.4.6-1.4 0-1.8l-7-4.8C1.9-.1 1 .4 1 1.2z"
-                            />
-                        </svg>
-                    </span>
-                    <span v-if="duration" class="tv-vid__dur num">{{
-                        duration
-                    }}</span>
-                    <div class="tv-vid__bar"></div>
-                </div>
-                <!-- overlay controls -->
-                <div class="absolute end-[8px] top-[8px] flex gap-[4px]">
-                    <button
-                        type="button"
-                        aria-label="הגדלה"
-                        title="הגדלה"
-                        class="tv-ov-btn"
-                        @click="expanded = true"
-                    >
-                        <svg
-                            width="13"
-                            height="13"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                        </svg>
-                    </button>
-                    <button
-                        type="button"
-                        aria-label="סגירה"
-                        class="tv-ov-btn"
-                        @click="close"
-                    >
-                        ✕
-                    </button>
-                </div>
-            </div>
-
-            <!-- option-3 content, on the white player surface -->
-            <div class="p-[14px]">
-                <div class="text-[13.5px] font-bold text-ink">{{ title }}</div>
-                <template v-if="steps.length">
-                    <div class="field-label mt-[10px] mb-[8px]">
-                        מה תראו בסרטון
-                    </div>
-                    <ol class="tv-steps">
-                        <li v-for="(s, i) in steps" :key="i">
-                            <span class="tv-steps__n num">{{ i + 1 }}</span>
-                            <span>{{ s }}</span>
-                        </li>
-                    </ol>
-                </template>
-            </div>
-        </div>
-
-        <!-- ── Phones (and desktop "maximise"): full centered modal ── -->
-        <div
-            v-if="asModal"
-            class="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(20,28,24,0.5)] p-[20px]"
-            @click.self="close"
-        >
-            <div
-                ref="dialogRef"
-                role="dialog"
-                aria-modal="true"
-                :aria-label="label"
-                tabindex="-1"
-                class="w-[min(520px,100%)] overflow-hidden rounded-[12px] bg-surface shadow-[0_30px_80px_-20px_rgba(20,28,24,0.55)]"
+            <svg
+                width="9"
+                height="9"
+                viewBox="0 0 10 12"
+                fill="currentColor"
+                aria-hidden="true"
             >
-                <div
-                    class="flex items-center justify-between gap-[12px] border-b border-b-line px-[18px] py-[14px]"
-                >
-                    <span
-                        class="flex items-center gap-[9px] text-[15.5px] font-bold text-ink"
-                    >
-                        <svg
-                            width="15"
-                            height="15"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="var(--accent)"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <rect x="2" y="6" width="13" height="12" rx="2.5" />
-                            <path d="M15 10.5 21 7v10l-6-3.5" />
-                        </svg>
-                        {{ title }}
-                    </span>
-                    <button
-                        type="button"
-                        aria-label="סגירה"
-                        class="inline-flex h-[32px] w-[32px] items-center justify-center rounded-[6px] border-none bg-transparent text-[16px] text-ink-3 hover:bg-surface-sunk"
-                        @click="close"
-                    >
-                        ✕
-                    </button>
-                </div>
+                <path
+                    d="M1 1.2v9.6c0 .8.9 1.3 1.6.9l7-4.8c.6-.4.6-1.4 0-1.8l-7-4.8C1.9-.1 1 .4 1 1.2z"
+                />
+            </svg>
+        </button>
 
-                <div class="p-[16px_18px]">
+        <!-- ── Desktop: floating mini-player (no scrim; never blocks the screen) ── -->
+        <Teleport to="body">
+            <div
+                v-if="asMini"
+                role="dialog"
+                :aria-label="label"
+                class="fixed start-[18px] bottom-[18px] z-[100] w-[320px] overflow-hidden rounded-[12px] border border-line bg-surface shadow-[0_18px_44px_-12px_rgba(20,28,24,0.4)]"
+            >
+                <div class="relative">
                     <video
                         v-if="src"
                         :src="src"
-                        class="bg-black block aspect-video w-full rounded-[8px] object-cover"
+                        class="bg-black block aspect-video w-full object-cover"
                         controls
                         autoplay
                     />
-                    <div v-else class="tv-vid rounded-[8px]">
-                        <span class="tv-vid__play tv-vid__play--lg">
+                    <div v-else class="tv-vid">
+                        <span class="tv-vid__play">
                             <svg
-                                width="20"
-                                height="20"
+                                width="17"
+                                height="17"
                                 viewBox="0 0 10 12"
                                 fill="currentColor"
                                 class="ms-[2px]"
@@ -258,9 +139,48 @@ function close() {
                         }}</span>
                         <div class="tv-vid__bar"></div>
                     </div>
+                    <!-- overlay controls -->
+                    <div class="absolute end-[8px] top-[8px] flex gap-[4px]">
+                        <button
+                            type="button"
+                            aria-label="הגדלה"
+                            title="הגדלה"
+                            class="tv-ov-btn"
+                            @click="expanded = true"
+                        >
+                            <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            aria-label="סגירה"
+                            class="tv-ov-btn"
+                            @click="close"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                </div>
 
+                <!-- option-3 content, on the white player surface -->
+                <div class="p-[14px]">
+                    <div class="text-[13.5px] font-bold text-ink">
+                        {{ title }}
+                    </div>
                     <template v-if="steps.length">
-                        <div class="field-label mt-[16px] mb-[8px]">
+                        <div class="field-label mt-[10px] mb-[8px]">
                             מה תראו בסרטון
                         </div>
                         <ol class="tv-steps">
@@ -272,8 +192,105 @@ function close() {
                     </template>
                 </div>
             </div>
-        </div>
-    </Teleport>
+
+            <!-- ── Phones (and desktop "maximise"): full centered modal ── -->
+            <div
+                v-if="asModal"
+                class="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(20,28,24,0.5)] p-[20px]"
+                @click.self="close"
+            >
+                <div
+                    ref="dialogRef"
+                    role="dialog"
+                    aria-modal="true"
+                    :aria-label="label"
+                    tabindex="-1"
+                    class="w-[min(520px,100%)] overflow-hidden rounded-[12px] bg-surface shadow-[0_30px_80px_-20px_rgba(20,28,24,0.55)]"
+                >
+                    <div
+                        class="flex items-center justify-between gap-[12px] border-b border-b-line px-[18px] py-[14px]"
+                    >
+                        <span
+                            class="flex items-center gap-[9px] text-[15.5px] font-bold text-ink"
+                        >
+                            <svg
+                                width="15"
+                                height="15"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="var(--accent)"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="2"
+                                    y="6"
+                                    width="13"
+                                    height="12"
+                                    rx="2.5"
+                                />
+                                <path d="M15 10.5 21 7v10l-6-3.5" />
+                            </svg>
+                            {{ title }}
+                        </span>
+                        <button
+                            type="button"
+                            aria-label="סגירה"
+                            class="inline-flex h-[32px] w-[32px] items-center justify-center rounded-[6px] border-none bg-transparent text-[16px] text-ink-3 hover:bg-surface-sunk"
+                            @click="close"
+                        >
+                            ✕
+                        </button>
+                    </div>
+
+                    <div class="p-[16px_18px]">
+                        <video
+                            v-if="src"
+                            :src="src"
+                            class="bg-black block aspect-video w-full rounded-[8px] object-cover"
+                            controls
+                            autoplay
+                        />
+                        <div v-else class="tv-vid rounded-[8px]">
+                            <span class="tv-vid__play tv-vid__play--lg">
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 10 12"
+                                    fill="currentColor"
+                                    class="ms-[2px]"
+                                >
+                                    <path
+                                        d="M1 1.2v9.6c0 .8.9 1.3 1.6.9l7-4.8c.6-.4.6-1.4 0-1.8l-7-4.8C1.9-.1 1 .4 1 1.2z"
+                                    />
+                                </svg>
+                            </span>
+                            <span v-if="duration" class="tv-vid__dur num">{{
+                                duration
+                            }}</span>
+                            <div class="tv-vid__bar"></div>
+                        </div>
+
+                        <template v-if="steps.length">
+                            <div class="field-label mt-[16px] mb-[8px]">
+                                מה תראו בסרטון
+                            </div>
+                            <ol class="tv-steps">
+                                <li v-for="(s, i) in steps" :key="i">
+                                    <span class="tv-steps__n num">{{
+                                        i + 1
+                                    }}</span>
+                                    <span>{{ s }}</span>
+                                </li>
+                            </ol>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </Teleport>
+    </span>
 </template>
 
 <style scoped>

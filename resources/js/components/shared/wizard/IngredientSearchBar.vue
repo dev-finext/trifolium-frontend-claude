@@ -4,6 +4,7 @@
 // shadow. Add → close → clear → refocus, so the practitioner can chain
 // additions quickly.
 import { ref, computed, watch, onBeforeUnmount } from 'vue';
+import TutorialVideo from '@/components/shared/help/TutorialVideo.vue';
 import NewRibbonMark from '@/components/shared/NewRibbonMark.vue';
 import SearchGroupHeader from '@/components/shared/wizard/SearchGroupHeader.vue';
 import SearchResultRow from '@/components/shared/wizard/SearchResultRow.vue';
@@ -137,6 +138,20 @@ function onFocus() {
                 <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon above) -->
                 <span class="tf-new-badge">חדש</span>
             </button>
+
+            <!-- Feature-explainer for the ready-made-formula flow, beside its
+                 "חדש" flag. Pulsing play → mini-player (desktop) / modal (mobile). -->
+            <TutorialVideo
+                class="shrink-0"
+                video-id="preset-formulas"
+                title="בחירת פורמולה מוכנה"
+                duration="0:38"
+                :steps="[
+                    'לוחצים על \'בחר פורמולה מוכנה\'',
+                    'בוחרים מהספרייה — פורמולות המערכת או השמורות שלכם',
+                    'הפורמולה נטענת למעבדה — עורכים ומתאימים לפי הצורך',
+                ]"
+            />
         </div>
 
         <!-- Floating results dropdown — overlays the table below -->
