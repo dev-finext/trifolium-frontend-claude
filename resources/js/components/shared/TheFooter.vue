@@ -169,9 +169,19 @@ function onLink(link, event) {
                 <span :class="dotClass">•</span>
                 <span>ט.ל.ח</span>
                 <span :class="dotClass">•</span>
-                <a href="#" :class="complianceLinkClass">תקנון האתר</a>
+                <a
+                    href="#"
+                    :class="complianceLinkClass"
+                    @click.prevent="visit('terms')"
+                    >תקנון האתר</a
+                >
                 <span :class="dotClass">•</span>
-                <a href="#" :class="complianceLinkClass">הצהרת נגישות</a>
+                <a
+                    href="#"
+                    :class="complianceLinkClass"
+                    @click.prevent="visit('accessibility')"
+                    >הצהרת נגישות</a
+                >
             </div>
         </div>
     </footer>

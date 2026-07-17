@@ -42,6 +42,8 @@ const ROUTE_URLS = {
     profile: '/profile',
     'change-password': '/profile/password',
     'my-formulas': '/my-formulas',
+    terms: '/terms',
+    accessibility: '/accessibility',
 };
 
 /**
