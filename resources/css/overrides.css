@@ -143,10 +143,55 @@ html.tf-mobile {
         align-items: flex-start !important;
     }
 
-    /* M17 · Cart sidebar: drop the desktop sticky offset */
+    /* M17 · Cart sidebar: drop the desktop sticky offset, and turn the
+       stacked sidebar into a clearly-separated SUMMARY ZONE: a labelled
+       divider (rendered by Cart.vue, hidden on desktop) followed by a tinted,
+       accent-top-bordered block — the eye finds "the order part" instantly. */
     .cart-sidebar {
         position: static !important;
         top: auto !important;
+        margin-top: 10px;
+        padding: 16px 12px 18px;
+        background: var(--accent-tint);
+        border: 1px solid var(--accent-tint-strong);
+        border-top: 3px solid var(--accent);
+        border-radius: 12px;
+    }
+
+    .cart-summary-divider {
+        display: flex !important;
+        align-items: center;
+        gap: 12px;
+        margin-top: 18px;
+        color: var(--accent-ink);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+    }
+    .cart-summary-divider::before,
+    .cart-summary-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--line-strong);
+    }
+
+    /* Orders: the KPI tiles eat scarce vertical space on phones — filtering
+       lives on in the filter panel. */
+    .orders-kpis {
+        display: none !important;
+    }
+
+    /* Events bento on phones: the tile hammer gives the section 2 columns —
+       reset the desktop 2×2/2×1 spans (they'd mint phantom columns), then let
+       the FEATURED story keep its presence by spanning the full row; the
+       compact cards pair up beneath it. */
+    .home-events-grid > * {
+        grid-column: auto !important;
+        grid-row: auto !important;
+    }
+    .home-events-grid > :first-child {
+        grid-column: 1 / -1 !important;
     }
 
     /* M18 · Catalog search fills width */
