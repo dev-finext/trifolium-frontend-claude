@@ -42,6 +42,7 @@ const SCREEN_LABELS = {
     profile: '09 עריכת פרטים אישיים',
     'change-password': '09b שינוי סיסמה',
     'my-formulas': '10 רשימת הפורמולות שלי',
+    wallet: '11 תנועות הארנק שלי',
 };
 const screenLabel = computed(
     () => SCREEN_LABELS[currentRoute.value] || currentRoute.value,

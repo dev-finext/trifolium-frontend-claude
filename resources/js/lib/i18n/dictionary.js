@@ -280,6 +280,26 @@ export default {
     'היום,': 'Today,',
     הילה: 'Hila',
     הכל: 'All',
+    // Wallet ("תנועות הארנק שלי")
+    'תנועות הארנק שלי': 'My Wallet Transactions',
+    '11 תנועות הארנק שלי': '11 My Wallet Transactions',
+    'לתנועות הארנק שלי': 'To my wallet transactions',
+    'כל צבירה וכל מימוש של נקודות הזכות שלך, במקום אחד — כמו עו״ש.':
+        'Every credit and redemption of your loyalty points in one place — like a bank statement.',
+    'יתרת נקודות זכות': 'Loyalty-points balance',
+    'נקודות זמינות למימוש בהזמנה הבאה':
+        'Points available to redeem on your next order',
+    'סה״כ נצבר': 'Total earned',
+    'סה״כ מומש': 'Total redeemed',
+    צבירה: 'Earned',
+    מימוש: 'Redeemed',
+    תנועה: 'Transaction',
+    שינוי: 'Change',
+    יתרה: 'Balance',
+    'נקודות זכות נצברות מהזמנות וניתנות למימוש כהנחה בתשלום. פירוט מלא בתקנון המועדון.':
+        'Loyalty points are earned from orders and can be redeemed as a discount at checkout. Full details in the club terms.',
+    // Cart mobile summary header chip
+    'סיכום והזמנה · לתשלום': 'Order summary · checkout',
     'הכן פורמולה': 'Compound a formula',
     'הכן פורמולה ראשונה': 'Compound a first formula',
     'הכנה במעבדה': 'Lab preparation',

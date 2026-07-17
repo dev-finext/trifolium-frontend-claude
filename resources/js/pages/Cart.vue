@@ -314,7 +314,14 @@ const TF_PICKUP_LOCATION = {
                      (both styled in overrides.css; divider hidden on desktop). -->
                 <div class="cart-sidebar col sticky top-[80px] gap-[16px]">
                     <div class="cart-summary-divider hidden" aria-hidden="true">
-                        סיכום והזמנה
+                        <span class="cart-summary-divider__chip">
+                            <Icon
+                                name="clipboard_list"
+                                :size="15"
+                                color="#fff"
+                            />
+                            סיכום והזמנה · לתשלום
+                        </span>
                     </div>
                     <!-- Payment — chosen first; who pays drives the shipping options -->
                     <SideCard title="פרטי תשלום">

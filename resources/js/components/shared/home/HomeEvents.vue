@@ -1,22 +1,34 @@
 <script setup>
 // EVENT BANNERS — "עדכונים ואירועים".
-// Desktop/tablet: a bento grid — the first event is the FEATURED story
+// Desktop (>1080): a bento grid — the first event is the FEATURED story
 // (large, 2×2), the second runs wide (2×1) beside it, the rest sit compact.
-// Phones: the bento would stack into a tall column, so instead we show the
-// same cards as a horizontal snap CAROUSEL (mirroring HomeVideos / HomeArticles
-// so the whole home page reads as one system).
-import { onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue';
+// Mobile + tablet (≤1080): the bento would get cramped/tall, so we keep ONE
+// big, clear FEATURED card on top and put the rest in a horizontal snap
+// CAROUSEL (same track/arrows pattern as HomeVideos / HomeArticles).
+import {
+    computed,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    watch,
+    nextTick,
+} from 'vue';
 import CarouselArrow from '@/components/shared/home/CarouselArrow.vue';
 import EventCard from '@/components/shared/home/EventCard.vue';
 import SectionHeader from '@/components/shared/home/SectionHeader.vue';
-import { useIsMobile } from '@/composables/useIsMobile';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 import { EVENTS } from '@/data/mock';
 
-defineProps({
+const props = defineProps({
     events: { type: Array, default: () => EVENTS },
 });
 
-const isMobile = useIsMobile();
+// One shared switch for the whole non-desktop range (phones + tablets).
+const belowDesktop = useMediaQuery('(max-width: 1080px)');
+
+// Below desktop: first event is the big featured card, the rest ride the carousel.
+const featured = computed(() => props.events[0]);
+const rest = computed(() => props.events.slice(1));
 
 // Bento cell per position: 0 featured (2×2) · 1 wide (2×1) · rest compact.
 const sizeFor = (i) => (i === 0 ? 'featured' : i === 1 ? 'wide' : 'compact');
@@ -29,7 +41,7 @@ function spanFor(i) {
     return i === 1 ? 'col-span-2' : 'col-span-1';
 }
 
-// ── mobile carousel track (mirrors HomeVideos) ──
+// ── carousel track (mirrors HomeVideos) ──
 const trackRef = ref(null);
 const atStart = ref(true);
 const atEnd = ref(false);
@@ -78,8 +90,8 @@ onMounted(bindTrack);
 onBeforeUnmount(() =>
     trackRef.value?.removeEventListener('scroll', updateEdges),
 );
-// The track only exists on phones; rebind if the viewport crosses the breakpoint.
-watch(isMobile, () => nextTick(bindTrack));
+// The track only exists below desktop; rebind if the viewport crosses a tier.
+watch(belowDesktop, () => nextTick(bindTrack));
 </script>
 
 <template>
@@ -87,39 +99,47 @@ watch(isMobile, () => nextTick(bindTrack));
         <div class="mx-auto my-0 max-w-[1200px]">
             <SectionHeader title="עדכונים ואירועים" link-label="לכל האירועים" />
 
-            <!-- Phones: horizontal snap carousel -->
-            <div v-if="isMobile" class="relative">
-                <CarouselArrow
-                    dir="prev"
-                    :disabled="atStart"
-                    @click="scrollByCards('prev')"
+            <!-- Mobile + tablet: one big featured card, then a carousel -->
+            <div v-if="belowDesktop">
+                <EventCard
+                    :event="featured"
+                    size="featured"
+                    class="mb-[16px] w-full"
                 />
 
-                <div
-                    ref="trackRef"
-                    class="tf-carousel-track flex snap-x snap-mandatory [scroll-padding:0_4px] [scrollbar-width:none] gap-[16px] overflow-x-auto pb-[8px]"
-                >
+                <div v-if="rest.length" class="relative">
+                    <CarouselArrow
+                        dir="prev"
+                        :disabled="atStart"
+                        @click="scrollByCards('prev')"
+                    />
+
                     <div
-                        v-for="e in events"
-                        :key="e.id"
-                        class="flex-[0_0_280px] snap-start"
+                        ref="trackRef"
+                        class="tf-carousel-track flex snap-x snap-mandatory [scroll-padding:0_4px] [scrollbar-width:none] gap-[16px] overflow-x-auto pb-[8px]"
                     >
-                        <EventCard
-                            :event="e"
-                            size="compact"
-                            class="h-full w-full"
-                        />
+                        <div
+                            v-for="e in rest"
+                            :key="e.id"
+                            class="flex-[0_0_280px] snap-start"
+                        >
+                            <EventCard
+                                :event="e"
+                                size="compact"
+                                class="h-full w-full"
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <CarouselArrow
-                    dir="next"
-                    :disabled="atEnd"
-                    @click="scrollByCards('next')"
-                />
+                    <CarouselArrow
+                        dir="next"
+                        :disabled="atEnd"
+                        @click="scrollByCards('next')"
+                    />
+                </div>
             </div>
 
-            <!-- Desktop / tablet: bento grid -->
+            <!-- Desktop: bento grid -->
             <div
                 v-else
                 class="home-events-grid grid grid-cols-4 grid-rows-[auto_auto] gap-[16px]"

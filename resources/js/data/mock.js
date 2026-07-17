@@ -3184,6 +3184,110 @@ const EVENTS = [
     },
 ];
 
+// --- Wallet transactions (תנועות הארנק) ---
+// The practitioner's credit-points ledger, like a bank statement: every row is
+// either a credit (`earn`) or a debit (`spend`). Listed oldest→newest; the
+// running balance is derived in the page and ends at DEMO_USER.points (1,240).
+// TODO(backend): the wallet endpoint returns these rows + the current balance.
+const WALLET_TX = [
+    {
+        id: 'w1',
+        date: '02.11.2025',
+        kind: 'earn',
+        title: 'בונוס הצטרפות למועדון',
+        sub: 'נקודות פתיחה למטפלי טריפוליום',
+        amount: 500,
+    },
+    {
+        id: 'w2',
+        date: '15.01.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0412',
+        amount: 124,
+    },
+    {
+        id: 'w3',
+        date: '08.02.2026',
+        kind: 'spend',
+        title: 'מימוש נקודות',
+        sub: 'הזמנה #TF-2026-0455',
+        amount: 150,
+    },
+    {
+        id: 'w4',
+        date: '03.03.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0501',
+        amount: 210,
+    },
+    {
+        id: 'w5',
+        date: '01.04.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0533',
+        amount: 90,
+    },
+    {
+        id: 'w6',
+        date: '19.04.2026',
+        kind: 'spend',
+        title: 'מימוש נקודות — הנחה על מוצרי מדף',
+        sub: 'הזמנה #TF-2026-0559',
+        amount: 200,
+    },
+    {
+        id: 'w7',
+        date: '05.05.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0577',
+        amount: 160,
+    },
+    {
+        id: 'w8',
+        date: '20.05.2026',
+        kind: 'earn',
+        title: 'בונוס — הפניית מטפל עמית',
+        sub: 'תודה על ההפניה!',
+        amount: 250,
+    },
+    {
+        id: 'w9',
+        date: '02.06.2026',
+        kind: 'spend',
+        title: 'מימוש נקודות',
+        sub: 'הזמנה #TF-2026-0602',
+        amount: 120,
+    },
+    {
+        id: 'w10',
+        date: '21.06.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0641',
+        amount: 186,
+    },
+    {
+        id: 'w11',
+        date: '08.07.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0668',
+        amount: 80,
+    },
+    {
+        id: 'w12',
+        date: '15.07.2026',
+        kind: 'earn',
+        title: 'צבירה מהזמנה',
+        sub: 'הזמנה #TF-2026-0690',
+        amount: 110,
+    },
+];
+
 // --- Articles ---
 // Every article shares the same hero/cover image (assets/echinacea.jpg).
 // `sections` carry the long-form body for the article page.
@@ -6028,6 +6132,7 @@ export {
     PATIENTS,
     ORDERS,
     EVENTS,
+    WALLET_TX,
     ARTICLES,
     ARTICLE_IMAGE,
     VIDEOS,

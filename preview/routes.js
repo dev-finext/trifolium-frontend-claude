@@ -29,6 +29,7 @@ export const STATIC_ROUTES = {
     '/accessibility': 'Accessibility',
     '/privacy': 'Privacy',
     '/my-formulas': 'MyFormulas',
+    '/wallet': 'Wallet',
 };
 
 /** Dynamic routes: regex → component + captured props. */

@@ -103,14 +103,24 @@ watch(
                         <span class="block text-[14.5px] font-bold text-ink">{{
                             user.name
                         }}</span>
-                        <span class="mt-[2px] flex items-center gap-[6px]">
+                        <button
+                            type="button"
+                            class="mt-[2px] inline-flex cursor-pointer items-center gap-[6px] rounded-[999px] border-none bg-transparent p-0"
+                            aria-label="תנועות הארנק שלי"
+                            @click="emit('navigate', 'wallet')"
+                        >
                             <GoldCoin :size="15" />
                             <span
                                 class="num text-[12.5px] font-bold text-ink-2"
                                 >{{ user.points }}</span
                             >
                             <span class="text-[11.5px] text-ink-3">נקודות</span>
-                        </span>
+                            <Icon
+                                name="chevron_left"
+                                :size="13"
+                                color="var(--ink-3)"
+                            />
+                        </button>
                     </span>
                 </div>
                 <button
