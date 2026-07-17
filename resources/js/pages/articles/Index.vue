@@ -107,10 +107,7 @@ const groups = computed(() => {
             </div>
 
             <!-- Grouped grids — current style first, divider, then the other -->
-            <template
-                v-for="(group, groupIndex) in groups"
-                :key="group.key"
-            >
+            <template v-for="(group, groupIndex) in groups" :key="group.key">
                 <div
                     v-if="groupIndex > 0"
                     class="mx-0 mt-[44px] mb-[30px] flex items-center gap-[14px]"
