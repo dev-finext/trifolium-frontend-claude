@@ -58,7 +58,13 @@ const crumbLink = {
                 class="relative flex min-h-[320px] items-end overflow-hidden rounded-[16px] shadow-[0_18px_48px_-24px_rgba(31,46,29,0.5)]"
             >
                 <div class="absolute inset-0">
-                    <ItemCover kind="article" :item="article" />
+                    <img
+                        v-if="article.cover"
+                        :src="article.cover"
+                        :alt="article.title"
+                        class="h-full w-full object-cover"
+                    />
+                    <ItemCover v-else kind="article" :item="article" />
                 </div>
                 <div
                     class="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,30,18,0.18)_0%,rgba(20,30,18,0.62)_62%,rgba(15,24,14,0.86)_100%)]"
@@ -117,47 +123,35 @@ const crumbLink = {
                 <span>{{ ARTICLE_DISCLAIMER }}</span>
             </div>
 
-            <!-- BODY (.article-body keeps the global typography hooks) -->
+            <!-- BODY (.article-body keeps the global typography hooks).
+                 Blocks: h = subheading, p = paragraph, li = bullet. -->
             <article class="article-body mx-auto mt-[36px] mb-0 max-w-[760px]">
-                <p
-                    class="m-0 mb-[30px] text-[18px] leading-[1.7] font-normal text-ink"
-                >
-                    {{ article.lead }}
-                </p>
-
-                <section
-                    v-for="(s, i) in article.sections"
-                    :key="i"
-                    class="mb-[30px]"
-                >
+                <template v-for="(b, i) in article.body" :key="i">
                     <h2
-                        v-if="s.h"
-                        class="m-0 mb-[14px] inline-block border-b-2 border-b-accent-tint-strong pb-[8px] text-[21px] font-bold tracking-[-0.01em] text-ink"
+                        v-if="b.t === 'h'"
+                        class="m-0 mt-[30px] mb-[14px] inline-block border-b-2 border-b-accent-tint-strong pb-[8px] text-[21px] font-bold tracking-[-0.01em] text-ink"
                     >
-                        {{ s.h }}
+                        {{ b.text }}
                     </h2>
-                    <template v-if="s.p">
-                        <p
-                            v-for="(para, j) in s.p"
-                            :key="j"
-                            class="m-0 mb-[14px] text-[16px] leading-[1.78] text-ink-2"
-                        >
-                            {{ para }}
-                        </p>
-                    </template>
-                    <ul v-if="s.list" class="mx-0 mt-[8px] mb-0 list-none ps-0">
-                        <li
-                            v-for="(li, j) in s.list"
-                            :key="j"
-                            class="mb-[11px] flex gap-[12px] text-[16px] leading-[1.7] text-ink-2"
-                        >
-                            <span
-                                class="mt-[9px] h-[7px] w-[7px] flex-[0_0_auto] rounded-[50%] bg-accent"
-                            />
-                            <span>{{ li }}</span>
-                        </li>
-                    </ul>
-                </section>
+                    <div
+                        v-else-if="b.t === 'li'"
+                        class="mb-[11px] flex gap-[12px] text-[16px] leading-[1.7] text-ink-2"
+                    >
+                        <span
+                            class="mt-[9px] h-[7px] w-[7px] flex-[0_0_auto] rounded-[50%] bg-accent"
+                        />
+                        <span>{{ b.text }}</span>
+                    </div>
+                    <p
+                        v-else
+                        class="m-0 mb-[14px] text-[16px] leading-[1.78] text-ink-2"
+                        :class="
+                            i === 0 ? 'text-[18px] leading-[1.7] text-ink' : ''
+                        "
+                    >
+                        {{ b.text }}
+                    </p>
+                </template>
 
                 <!-- Author byline card -->
                 <div
