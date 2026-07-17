@@ -30,7 +30,7 @@ const navRoute = computed(() =>
 // for traceability back to the spec (each screen's `data-screen-label`).
 const SCREEN_LABELS = {
     home: '01 ראשי',
-    catalog: '02 מוצרי מדף',
+    catalog: '02 המוצרים שלנו',
     compounding: '03 הכנת פורמולה',
     articles: '04 מאמרים',
     article: '04 מאמר',

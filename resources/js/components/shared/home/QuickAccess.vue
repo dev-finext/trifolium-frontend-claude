@@ -10,8 +10,8 @@ const QUICK_TILES = [
         id: 'catalog',
         route: 'catalog',
         icon: 'package',
-        label: 'מוצרי מדף',
-        sub: 'מוצרים מוכנים',
+        label: 'המוצרים שלנו',
+        sub: 'מוצרי המדף שלנו',
     },
     {
         id: 'compounding',
