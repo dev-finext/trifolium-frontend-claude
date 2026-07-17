@@ -1,6 +1,7 @@
 <script setup>
 // עריכת פרטים אישיים — practitioner account/profile editor.
-// Display-only sketch: local state, addresses persisted via the shared store.
+// Profile fields + addresses persist via their shared stores (localStorage
+// until a backend exists), so edits survive reload and reach the app chrome.
 //
 // Scope (per spec):
 //   • שם פרטי / שם משפחה — editable
@@ -18,6 +19,7 @@ import ProfileSelect from '@/components/shared/profile/ProfileSelect.vue';
 import ReadOnlyField from '@/components/shared/profile/ReadOnlyField.vue';
 import Icon from '@/components/ui/Icon.vue';
 import { tfLoadAddresses, tfSaveAddresses } from '@/composables/useAddresses';
+import { tfLoadProfile, tfSaveProfile } from '@/composables/useProfile';
 import { visit } from '@/lib/routes';
 import { isPhone } from '@/lib/validators';
 
@@ -44,18 +46,10 @@ const TF_SPECIALTIES_OPTS = [
     'מערכת הנשימה',
 ];
 
-// TODO(backend): hard-coded practitioner values — replace with real user
-// props from the Laravel controller (auth user).
-const form = reactive({
-    firstName: 'נעמי',
-    lastName: 'שגב',
-    treatment: 'נטורופתיה',
-    specialty: 'נשים ופוריות',
-    email: 'naomi.segev@trifolium.co.il',
-    phone: '052-481-9230',
-    clinic: 'מרפאת שורש — רעננה',
-    license: 'NAT-2019-4471',
-});
+// The shared profile store (persists to localStorage; the chrome identity
+// derives from it, so a saved name change shows in the navbar immediately).
+// TODO(backend): replace with real user props from the Laravel controller.
+const form = reactive(tfLoadProfile());
 const addresses = ref(tfLoadAddresses());
 const saved = ref(false);
 
@@ -121,8 +115,8 @@ function validate() {
     return ok;
 }
 
-// TODO(backend): also persist the form fields (name, specialization, clinic,
-// license) once a profile endpoint exists; only addresses persist for now.
+// TODO(backend): both stores persist to localStorage until the profile
+// endpoint exists — swap tfSaveProfile/tfSaveAddresses to server calls then.
 function save() {
     if (!validate()) {
         saved.value = false;
@@ -133,6 +127,7 @@ function save() {
         return;
     }
 
+    tfSaveProfile({ ...form });
     addresses.value = tfSaveAddresses(addresses.value);
     saved.value = true;
     window.scrollTo(0, 0);

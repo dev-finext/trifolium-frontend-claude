@@ -5,7 +5,7 @@
 // the raster hero-bg.png, which only ever shipped as a placeholder gradient.
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { HeroPanorama } from '@/components/shared/art';
-import { DEMO_USER } from '@/data/user';
+import { tfUser } from '@/composables/useProfile';
 import markGreenUrl from '@img/trifolium-mark-strong.png';
 
 // Personal, time-aware greeting — same as the mobile home hero, so the two
@@ -100,7 +100,7 @@ const rise = (delay) => ({
                 class="m-0 font-heb text-[clamp(17px,2.4vw,32px)] font-semibold tracking-[0.04em] whitespace-nowrap text-accent-ink"
                 :style="rise(0.27)"
             >
-                {{ greeting }}, {{ DEMO_USER.firstName }}
+                {{ greeting }}, {{ tfUser.firstName }}
             </p>
         </div>
     </section>

@@ -9,7 +9,7 @@ import ModeSwitchConfirmModal from '@/components/shared/mode/ModeSwitchConfirmMo
 import BottomTabBar from '@/components/shared/navbar/BottomTabBar.vue';
 import TheNavbar from '@/components/shared/navbar/TheNavbar.vue';
 import TheFooter from '@/components/shared/TheFooter.vue';
-import { DEMO_USER } from '@/data/user';
+import { tfUser } from '@/composables/useProfile';
 import { routeNameFromUrl } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart';
 import { useModeStore } from '@/stores/mode';
@@ -18,7 +18,10 @@ const page = usePage();
 const cart = useCartStore();
 const modeStore = useModeStore();
 
-const USER = DEMO_USER; // TODO(backend): auth user via Inertia shared props
+// Chrome identity — derives from the saved profile, so a name edit in
+// "עריכת פרטים אישיים" shows up here immediately.
+// TODO(backend): auth user via Inertia shared props.
+const USER = tfUser;
 
 const currentRoute = computed(() => routeNameFromUrl(page.url));
 // The article detail view highlights the "מאמרים" nav entry.

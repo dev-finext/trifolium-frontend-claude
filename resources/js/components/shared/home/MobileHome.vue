@@ -15,7 +15,7 @@ import HomeArticles from '@/components/shared/home/HomeArticles.vue';
 import HomeEvents from '@/components/shared/home/HomeEvents.vue';
 import HomeVideos from '@/components/shared/home/HomeVideos.vue';
 import QuickAccess from '@/components/shared/home/QuickAccess.vue';
-import { DEMO_USER } from '@/data/user';
+import { tfUser } from '@/composables/useProfile';
 import markStrongUrl from '@img/trifolium-mark-strong.png';
 
 defineProps({
@@ -66,7 +66,7 @@ const greeting = computed(() => {
                     <span class="mh-pano__dvd-line"></span>
                 </div>
                 <h1 class="mh-pano__greet">
-                    {{ greeting }}, {{ DEMO_USER.firstName }}
+                    {{ greeting }}, {{ tfUser.firstName }}
                 </h1>
             </div>
         </section>
