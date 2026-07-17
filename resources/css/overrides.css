@@ -182,17 +182,8 @@ html.tf-mobile {
         display: none !important;
     }
 
-    /* Events bento on phones: the tile hammer gives the section 2 columns —
-       reset the desktop 2×2/2×1 spans (they'd mint phantom columns), then let
-       the FEATURED story keep its presence by spanning the full row; the
-       compact cards pair up beneath it. */
-    .home-events-grid > * {
-        grid-column: auto !important;
-        grid-row: auto !important;
-    }
-    .home-events-grid > :first-child {
-        grid-column: 1 / -1 !important;
-    }
+    /* (Events on phones are a horizontal carousel now — see HomeEvents.vue —
+       so the desktop bento grid no longer renders here and needs no reset.) */
 
     /* M18 · Catalog search fills width */
     .catalog-search {
