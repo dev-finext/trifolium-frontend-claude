@@ -313,25 +313,25 @@ function clearAll() {
                     <!-- CATEGORIES -->
                     <FilterGroup label="קטגוריה">
                         <FilterRow
-                            v-for="c in categoryRows"
-                            :key="c.id"
-                            :label="c.heb"
-                            :count="c.count"
-                            :checked="activeCat === c.id"
+                            v-for="category in categoryRows"
+                            :key="category.id"
+                            :label="category.heb"
+                            :count="category.count"
+                            :checked="activeCat === category.id"
                             radio
-                            @change="activeCat = c.id"
+                            @change="activeCat = category.id"
                         />
                     </FilterGroup>
 
                     <!-- PRODUCT FORM -->
                     <FilterGroup label="צורת מוצר">
                         <FilterRow
-                            v-for="f in formRows"
-                            :key="f.label"
-                            :label="f.label"
-                            :count="f.count"
-                            :checked="activeForms.includes(f.label)"
-                            @change="toggleForm(f.label)"
+                            v-for="form in formRows"
+                            :key="form.label"
+                            :label="form.label"
+                            :count="form.count"
+                            :checked="activeForms.includes(form.label)"
+                            @change="toggleForm(form.label)"
                         />
                     </FilterGroup>
 
@@ -365,12 +365,12 @@ function clearAll() {
                     <!-- TAGS -->
                     <FilterGroup label="תגיות" last>
                         <FilterRow
-                            v-for="t in tagRows"
-                            :key="t.label"
-                            :label="t.label"
-                            :count="t.count"
-                            :checked="activeTags.includes(t.label)"
-                            @change="toggleTag(t.label)"
+                            v-for="tag in tagRows"
+                            :key="tag.label"
+                            :label="tag.label"
+                            :count="tag.count"
+                            :checked="activeTags.includes(tag.label)"
+                            @change="toggleTag(tag.label)"
                         />
                     </FilterGroup>
                 </aside>
@@ -433,11 +433,11 @@ function clearAll() {
                     </div>
                     <div v-else class="grid grid-cols-3 gap-[16px]">
                         <ProductCard
-                            v-for="p in sorted"
-                            :key="p.id"
-                            :product="p"
-                            :in-cart="cart[p.id] || 0"
-                            @add="pickFor = p"
+                            v-for="product in sorted"
+                            :key="product.id"
+                            :product="product"
+                            :in-cart="cart[product.id] || 0"
+                            @add="pickFor = product"
                         />
                     </div>
                 </div>

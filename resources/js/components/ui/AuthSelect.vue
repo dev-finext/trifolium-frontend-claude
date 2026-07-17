@@ -29,7 +29,13 @@ const emit = defineEmits(['update:modelValue']);
                 @change="emit('update:modelValue', $event.target.value)"
             >
                 <option value="" disabled>{{ placeholder || 'בחר/י' }}</option>
-                <option v-for="o in options" :key="o" :value="o">{{ o }}</option>
+                <option
+                    v-for="option in options"
+                    :key="option"
+                    :value="option"
+                >
+                    {{ option }}
+                </option>
             </select>
         </div>
         <ErrMsg v-if="error">{{ error }}</ErrMsg>

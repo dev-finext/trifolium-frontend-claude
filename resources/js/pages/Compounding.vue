@@ -363,13 +363,13 @@ function goForward() {
                 </div>
                 <div class="wizard-mobile-progress__track">
                     <span
-                        v-for="s in stepsResolved"
-                        :key="s.n"
+                        v-for="progressStep in stepsResolved"
+                        :key="progressStep.n"
                         :class="[
                             'wizard-mobile-progress__seg',
                             {
                                 'wizard-mobile-progress__seg--done':
-                                    s.n <= step,
+                                    progressStep.n <= step,
                             },
                         ]"
                     />

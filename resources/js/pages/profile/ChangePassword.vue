@@ -189,26 +189,28 @@ function submit() {
                         class="mt-[-6px] flex flex-wrap gap-x-[16px] gap-y-[6px]"
                     >
                         <span
-                            v-for="r in CP_RULES"
-                            :key="r.id"
+                            v-for="rule in CP_RULES"
+                            :key="rule.id"
                             class="inline-flex items-center gap-[6px] text-[12.5px] transition-[color] duration-150"
-                            :class="r.test(next) ? 'text-accent' : 'text-ink-4'"
+                            :class="
+                                rule.test(next) ? 'text-accent' : 'text-ink-4'
+                            "
                         >
                             <span
                                 class="inline-flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border-[1.5px] transition-all duration-150"
                                 :class="
-                                    r.test(next)
+                                    rule.test(next)
                                         ? 'border-accent bg-accent'
                                         : 'border-line-strong bg-transparent'
                                 "
                                 ><Icon
-                                    v-if="r.test(next)"
+                                    v-if="rule.test(next)"
                                     name="check"
                                     :size="9"
                                     color="#fff"
                                     :stroke="3"
                             /></span>
-                            {{ r.label }}
+                            {{ rule.label }}
                         </span>
                     </div>
 

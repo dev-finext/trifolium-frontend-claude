@@ -229,17 +229,17 @@ function submit() {
                     <div class="mx-0 my-[22px] h-[1px] bg-(--line)" />
 
                     <ul class="m-0 flex list-none flex-col gap-[14px] p-0">
-                        <li v-for="s in SOCIALS" :key="s.id">
+                        <li v-for="social in SOCIALS" :key="social.id">
                             <a
                                 href="#"
                                 class="tf-social-link flex items-center justify-end gap-[12px] text-[14px] text-ink-2 transition-[color] duration-150"
                                 @click.prevent
                             >
-                                <span>{{ s.label }}</span>
+                                <span>{{ social.label }}</span>
                                 <span
                                     class="inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] border border-line bg-bg"
                                 >
-                                    <SocialGlyph :id="s.id" :size="15" />
+                                    <SocialGlyph :id="social.id" :size="15" />
                                 </span>
                             </a>
                         </li>

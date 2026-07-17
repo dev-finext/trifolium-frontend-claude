@@ -92,12 +92,14 @@ const groups = computed(() => {
                 class="mx-0 mt-[24px] mb-[28px] flex flex-wrap gap-[8px] border-b border-b-line pb-[24px]"
             >
                 <button
-                    v-for="c in cats"
-                    :key="c"
-                    :class="'tag' + (activeCat === c ? ' tag--selected' : '')"
-                    @click="activeCat = c"
+                    v-for="category in cats"
+                    :key="category"
+                    :class="
+                        'tag' + (activeCat === category ? ' tag--selected' : '')
+                    "
+                    @click="activeCat = category"
                 >
-                    {{ c }}
+                    {{ category }}
                 </button>
                 <span class="ms-auto self-center text-[13px] text-ink-3">
                     <span class="num">{{ list.length }}</span> מאמרים
@@ -105,9 +107,12 @@ const groups = computed(() => {
             </div>
 
             <!-- Grouped grids — current style first, divider, then the other -->
-            <template v-for="(g, gi) in groups" :key="g.key">
+            <template
+                v-for="(group, groupIndex) in groups"
+                :key="group.key"
+            >
                 <div
-                    v-if="gi > 0"
+                    v-if="groupIndex > 0"
                     class="mx-0 mt-[44px] mb-[30px] flex items-center gap-[14px]"
                 >
                     <span class="h-[1px] flex-1 bg-(--line)" />
@@ -118,21 +123,21 @@ const groups = computed(() => {
                     <span class="h-[1px] flex-1 bg-(--line)" />
                 </div>
                 <div class="mb-[18px] flex items-center gap-[10px]">
-                    <ModeGlyph :mode="g.key" :size="16" />
+                    <ModeGlyph :mode="group.key" :size="16" />
                     <h2 class="m-0 text-[17px] font-bold text-ink">
-                        {{ g.label }}
+                        {{ group.label }}
                     </h2>
                     <span class="text-[12.5px] text-ink-3">
-                        <span class="num">{{ g.items.length }}</span> מאמרים
+                        <span class="num">{{ group.items.length }}</span> מאמרים
                     </span>
                 </div>
                 <div
                     class="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] items-stretch gap-[22px]"
                 >
                     <ArticleCard
-                        v-for="a in g.items"
-                        :key="a.id"
-                        :article="a"
+                        v-for="article in group.items"
+                        :key="article.id"
+                        :article="article"
                     />
                 </div>
             </template>

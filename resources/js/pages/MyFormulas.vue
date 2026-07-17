@@ -177,15 +177,15 @@ const totalUses = computed(() =>
                     class="formula-grid grid grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-[16px]"
                 >
                     <MyFormulaCard
-                        v-for="f in filtered"
-                        :key="f.id"
-                        :saved="f"
-                        :highlighted="f.id === highlightId"
-                        :confirming="confirmId === f.id"
-                        @load="handleLoad(f)"
-                        @request-delete="confirmId = f.id"
+                        v-for="formula in filtered"
+                        :key="formula.id"
+                        :saved="formula"
+                        :highlighted="formula.id === highlightId"
+                        :confirming="confirmId === formula.id"
+                        @load="handleLoad(formula)"
+                        @request-delete="confirmId = formula.id"
                         @cancel-delete="confirmId = null"
-                        @delete="handleDelete(f.id)"
+                        @delete="handleDelete(formula.id)"
                     />
                 </div>
             </div>
@@ -240,10 +240,10 @@ const totalUses = computed(() =>
                     class="formula-grid grid grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-[16px]"
                 >
                     <SystemFormulaCard
-                        v-for="f in filteredSystem"
-                        :key="f.id"
-                        :formula="f"
-                        @load="handleLoad(f)"
+                        v-for="formula in filteredSystem"
+                        :key="formula.id"
+                        :formula="formula"
+                        @load="handleLoad(formula)"
                     />
                 </div>
             </div>

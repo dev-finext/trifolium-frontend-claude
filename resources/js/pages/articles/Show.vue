@@ -126,35 +126,38 @@ const crumbLink = {
                 </p>
 
                 <section
-                    v-for="(s, i) in article.sections"
-                    :key="i"
+                    v-for="(section, index) in article.sections"
+                    :key="index"
                     class="mb-[30px]"
                 >
                     <h2
-                        v-if="s.h"
+                        v-if="section.h"
                         class="m-0 mb-[14px] inline-block border-b-2 border-b-accent-tint-strong pb-[8px] text-[21px] font-bold tracking-[-0.01em] text-ink"
                     >
-                        {{ s.h }}
+                        {{ section.h }}
                     </h2>
-                    <template v-if="s.p">
+                    <template v-if="section.p">
                         <p
-                            v-for="(para, j) in s.p"
-                            :key="j"
+                            v-for="(para, paraIndex) in section.p"
+                            :key="paraIndex"
                             class="m-0 mb-[14px] text-[16px] leading-[1.78] text-ink-2"
                         >
                             {{ para }}
                         </p>
                     </template>
-                    <ul v-if="s.list" class="mx-0 mt-[8px] mb-0 list-none ps-0">
+                    <ul
+                        v-if="section.list"
+                        class="mx-0 mt-[8px] mb-0 list-none ps-0"
+                    >
                         <li
-                            v-for="(li, j) in s.list"
-                            :key="j"
+                            v-for="(item, itemIndex) in section.list"
+                            :key="itemIndex"
                             class="mb-[11px] flex gap-[12px] text-[16px] leading-[1.7] text-ink-2"
                         >
                             <span
                                 class="mt-[9px] h-[7px] w-[7px] flex-[0_0_auto] rounded-[50%] bg-accent"
                             />
-                            <span>{{ li }}</span>
+                            <span>{{ item }}</span>
                         </li>
                     </ul>
                 </section>
@@ -197,7 +200,11 @@ const crumbLink = {
                 @link-click="visit('articles')"
             />
             <div class="grid grid-cols-3 gap-[22px]">
-                <ArticleCard v-for="a in others" :key="a.id" :article="a" />
+                <ArticleCard
+                    v-for="article in others"
+                    :key="article.id"
+                    :article="article"
+                />
             </div>
         </div>
     </div>

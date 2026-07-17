@@ -46,9 +46,9 @@ function onRemove(id) {
             <EmptyPending v-if="cart.state.pendingItems.length === 0" />
             <div v-else class="col gap-[16px]">
                 <PendingCard
-                    v-for="it in cart.state.pendingItems"
-                    :key="it.id"
-                    :item="it"
+                    v-for="item in cart.state.pendingItems"
+                    :key="item.id"
+                    :item="item"
                     @return="onReturn"
                     @remove="onRemove"
                 />

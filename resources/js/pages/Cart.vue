@@ -281,12 +281,12 @@ const TF_PICKUP_LOCATION = {
                 <!-- MAIN — item list -->
                 <div class="col gap-[16px]">
                     <CartCard
-                        v-for="it in items"
-                        :key="it.id"
-                        :item="it"
-                        @qty="(q) => setQty(it, q)"
-                        @remove="removeItem(it)"
-                        @hold="hold(it)"
+                        v-for="item in items"
+                        :key="item.id"
+                        :item="item"
+                        @qty="(q) => setQty(item, q)"
+                        @remove="removeItem(item)"
+                        @hold="hold(item)"
                     />
                 </div>
 

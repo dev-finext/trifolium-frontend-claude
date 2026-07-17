@@ -150,14 +150,14 @@ const toggleKpi = (kpiStatus) => {
             <!-- KPI tiles -->
             <div class="mb-[24px] grid grid-cols-[repeat(3,1fr)] gap-[14px]">
                 <KpiTile
-                    v-for="k in kpis"
-                    :key="k.status"
-                    :icon="k.icon"
-                    :count="k.count"
-                    :label="k.label"
-                    :tone="k.tone"
-                    :active="status === k.status"
-                    @click="toggleKpi(k.status)"
+                    v-for="kpi in kpis"
+                    :key="kpi.status"
+                    :icon="kpi.icon"
+                    :count="kpi.count"
+                    :label="kpi.label"
+                    :tone="kpi.tone"
+                    :active="status === kpi.status"
+                    @click="toggleKpi(kpi.status)"
                 />
             </div>
 
@@ -201,11 +201,15 @@ const toggleKpi = (kpiStatus) => {
                     <Field label="סטטוס">
                         <select v-model="status" class="select">
                             <option
-                                v-for="f in ORDERS_STATUS_FILTERS"
-                                :key="f.id"
-                                :value="f.id"
+                                v-for="filter in ORDERS_STATUS_FILTERS"
+                                :key="filter.id"
+                                :value="filter.id"
                             >
-                                {{ f.id === 'all' ? 'כל הסטטוסים' : f.label }}
+                                {{
+                                    filter.id === 'all'
+                                        ? 'כל הסטטוסים'
+                                        : filter.label
+                                }}
                             </option>
                         </select>
                     </Field>
@@ -276,7 +280,7 @@ const toggleKpi = (kpiStatus) => {
                     <thead>
                         <tr>
                             <th
-                                v-for="h in [
+                                v-for="header in [
                                     'מס׳ הזמנה',
                                     'מטופל',
                                     'טלפון לקוח',
@@ -286,69 +290,69 @@ const toggleKpi = (kpiStatus) => {
                                     'סטטוס',
                                     'פעולות',
                                 ]"
-                                :key="h"
+                                :key="header"
                                 class="border-b border-line bg-surface-sunk px-[16px] py-[12px] text-right text-[11px] font-semibold tracking-[0.08em] text-ink-3 uppercase"
                             >
-                                {{ h }}
+                                {{ header }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="(o, i) in filtered"
-                            :key="o.id"
+                            v-for="(order, index) in filtered"
+                            :key="order.id"
                             class="cursor-pointer transition-[background] duration-[120ms] ease-[ease]"
                             :class="[
-                                hoverId === o.id
+                                hoverId === order.id
                                     ? 'bg-accent-tint'
                                     : 'bg-transparent',
-                                i === filtered.length - 1
+                                index === filtered.length - 1
                                     ? ''
                                     : 'border-b border-line',
                             ]"
-                            @mouseenter="hoverId = o.id"
+                            @mouseenter="hoverId = order.id"
                             @mouseleave="hoverId = null"
-                            @click="openOrder(o)"
+                            @click="openOrder(order)"
                         >
                             <td
                                 class="num muted px-[16px] py-[14px] text-[13px]"
                             >
-                                {{ o.id }}
+                                {{ order.id }}
                             </td>
                             <td
                                 class="px-[16px] py-[14px] text-[14px] font-medium"
                             >
-                                {{ o.patient }}
+                                {{ order.patient }}
                             </td>
                             <td
                                 class="num px-[16px] py-[14px] text-right text-[13px] text-ink-2 [direction:ltr]"
                             >
-                                {{ o.phone }}
+                                {{ order.phone }}
                             </td>
                             <td
                                 class="overflow-hidden px-[16px] py-[14px] text-[14px] text-ellipsis whitespace-nowrap text-ink-2"
                             >
-                                {{ o.formula }}
+                                {{ order.formula }}
                             </td>
                             <td
                                 class="px-[16px] py-[14px] text-[13px] text-ink-3"
                             >
-                                {{ o.type }}
+                                {{ order.type }}
                             </td>
                             <td
                                 class="num px-[16px] py-[14px] text-[13px] text-ink-3"
                             >
-                                {{ o.date }}
+                                {{ order.date }}
                             </td>
                             <td class="px-[16px] py-[14px]">
-                                <StatusDot :tone="o.dot">{{
-                                    o.status
+                                <StatusDot :tone="order.dot">{{
+                                    order.status
                                 }}</StatusDot>
                             </td>
                             <td class="px-[16px] py-[14px]">
                                 <a
                                     class="cursor-pointer text-[13px] font-semibold text-accent"
-                                    @click.stop="openOrder(o)"
+                                    @click.stop="openOrder(order)"
                                     >צפה</a
                                 >
                             </td>

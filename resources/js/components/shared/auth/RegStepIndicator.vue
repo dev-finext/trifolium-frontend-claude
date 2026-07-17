@@ -18,59 +18,62 @@ const emit = defineEmits(['jump']);
         <div
             class="relative mx-auto my-0 flex max-w-[600px] items-start justify-between px-[24px] py-[22px]"
         >
-            <template v-for="(s, i) in sections" :key="s.id">
+            <template
+                v-for="(section, index) in sections"
+                :key="section.id"
+            >
                 <div
                     class="relative z-[2] flex flex-col items-center gap-[9px] bg-surface px-[12px] py-0"
                     :class="
-                        i + 1 < current ? 'cursor-pointer' : 'cursor-default'
+                        index + 1 < current ? 'cursor-pointer' : 'cursor-default'
                     "
-                    @click="i + 1 < current && emit('jump', s.id)"
+                    @click="index + 1 < current && emit('jump', section.id)"
                 >
                     <div
                         class="flex h-[32px] w-[32px] items-center justify-center rounded-full border-[1.5px] font-latin text-[14.5px] font-bold transition-all duration-150"
                         :class="[
-                            i + 1 === current ||
-                            ((done[s.id] || i + 1 < current) &&
-                                i + 1 !== current)
+                            index + 1 === current ||
+                            ((done[section.id] || index + 1 < current) &&
+                                index + 1 !== current)
                                 ? 'border-accent'
                                 : 'border-line-strong',
-                            i + 1 === current ? 'bg-accent' : 'bg-surface',
-                            i + 1 === current
+                            index + 1 === current ? 'bg-accent' : 'bg-surface',
+                            index + 1 === current
                                 ? 'text-[#fff]'
-                                : done[s.id] || i + 1 < current
+                                : done[section.id] || index + 1 < current
                                   ? 'text-accent'
                                   : 'text-ink-4',
                         ]"
                     >
                         <Icon
                             v-if="
-                                (done[s.id] || i + 1 < current) &&
-                                i + 1 !== current
+                                (done[section.id] || index + 1 < current) &&
+                                index + 1 !== current
                             "
                             name="check"
                             :size="16"
                             color="var(--accent)"
                             :stroke="2.6"
                         />
-                        <template v-else>{{ i + 1 }}</template>
+                        <template v-else>{{ index + 1 }}</template>
                     </div>
                     <span
                         class="text-[14px] whitespace-nowrap"
                         :class="[
-                            i + 1 === current ? 'font-bold' : 'font-medium',
-                            i + 1 === current
+                            index + 1 === current ? 'font-bold' : 'font-medium',
+                            index + 1 === current
                                 ? 'text-accent'
-                                : done[s.id] || i + 1 < current
+                                : done[section.id] || index + 1 < current
                                   ? 'text-ink-2'
                                   : 'text-ink-4',
                         ]"
-                        >{{ s.title }}</span
+                        >{{ section.title }}</span
                     >
                 </div>
                 <div
-                    v-if="i < sections.length - 1"
+                    v-if="index < sections.length - 1"
                     class="relative z-[1] mx-[-4px] mt-[15px] h-[2px] flex-1 transition-[background] duration-150"
-                    :class="i + 1 < current ? 'bg-accent' : 'bg-line-strong'"
+                    :class="index + 1 < current ? 'bg-accent' : 'bg-line-strong'"
                 />
             </template>
         </div>
