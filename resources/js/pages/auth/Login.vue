@@ -100,9 +100,9 @@ function submit() {
                     <div>
                         <label class="field-label" :for="pwId">סיסמה</label>
                         <div class="input-wrap">
-                            <span class="lead-icon"
-                                ><Icon name="lock" :size="16"
-                            /></span>
+                            <span class="lead-icon">
+                                <Icon name="lock" :size="16" />
+                            </span>
                             <input
                                 :id="pwId"
                                 ref="passwordEl"

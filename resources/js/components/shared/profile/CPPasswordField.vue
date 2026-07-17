@@ -55,7 +55,7 @@ defineExpose({ focus: () => inputEl.value?.focus() });
             <button
                 type="button"
                 :aria-label="show ? 'הסתר סיסמה' : 'הצג סיסמה'"
-                class="absolute top-[50%] left-[8px] inline-flex [transform:translateY(-50%)] cursor-pointer border-0 bg-transparent p-[4px] text-ink-3"
+                class="pw-eye absolute top-[50%] left-[8px] inline-flex [transform:translateY(-50%)] cursor-pointer items-center justify-center border-0 bg-transparent p-[4px] text-ink-3"
                 @click="show = !show"
             >
                 <Icon :name="show ? 'eye_off' : 'eye'" :size="17" />

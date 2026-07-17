@@ -229,10 +229,6 @@ html.tf-mobile {
     .page-title {
         font-size: 22px;
     }
-    .section-title {
-        margin-bottom: 12px;
-    }
-
     /* ---- Grid collapse hammer: stack every multi-column grid ----
      Grids are declared via grid-cols-* utility classes, so the hammers key on
      the class attribute (they used to key on the inline style attribute). */

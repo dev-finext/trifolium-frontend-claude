@@ -105,7 +105,7 @@ function submit() {
     <Head title="שינוי סיסמה" />
     <div
         data-screen-label="שינוי סיסמה"
-        class="flex min-h-[100vh] items-center justify-center bg-bg p-[24px]"
+        class="cp-shell flex min-h-[100vh] items-center justify-center bg-bg p-[24px]"
     >
         <div class="card w-full max-w-[480px] p-[40px] pb-[36px]">
             <div v-if="done" class="text-center">

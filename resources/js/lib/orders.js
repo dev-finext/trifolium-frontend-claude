@@ -12,7 +12,7 @@
 // It exists so /orders/:id never renders empty when opened directly without
 // a hand-off. In production the Order view fetches the order by id from the
 // backend; delete this object (and the fallback branch) then.
-export const FALLBACK_ORDER = {
+const FALLBACK_ORDER = {
     id: 'TF-2850',
     date: 'היום, 09:42',
     paymentRoute: 'patient',

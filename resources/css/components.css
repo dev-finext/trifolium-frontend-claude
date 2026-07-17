@@ -142,11 +142,6 @@
     border-radius: var(--r-card);
     overflow: hidden;
 }
-.card--selected {
-    border-color: var(--accent);
-    background: var(--accent-tint);
-}
-
 /* ---------- Status dot ---------- */
 .status {
     display: inline-flex;
@@ -247,68 +242,6 @@
     object-fit: contain;
     filter: contrast(1.02);
 }
-.nav__brand-mark {
-    /* fallback when image fails: a serif T */
-    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
-    font-size: 36px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--accent);
-    line-height: 1;
-}
-
-.nav__user {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    justify-content: flex-start; /* In RTL this is the visual right; we want it on visual left, override below */
-}
-.nav__user {
-    justify-content: flex-end;
-} /* visual right under RTL */
-[dir='rtl'] .nav__user {
-    justify-content: flex-start;
-}
-
-.nav__user .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--accent-tint-strong);
-    color: var(--accent-ink);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 13px;
-    border: 1px solid var(--line-strong);
-}
-.nav__user .name {
-    font-size: 14px;
-    font-weight: 500;
-}
-.nav__user .points {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--ink-3);
-}
-.nav__user .bell {
-    color: var(--ink-3);
-    position: relative;
-    cursor: pointer;
-}
-.nav__user .bell::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-}
 
 /* ---------- Page ---------- */
 .page {
@@ -341,15 +274,6 @@
     margin-bottom: 32px;
     padding-bottom: 24px;
     border-bottom: 1px solid var(--line);
-}
-
-.section-title {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin: 0 0 16px;
-    font-weight: 600;
 }
 
 /* ---------- Utility ----------
@@ -398,26 +322,6 @@
 }
 .hoverable-img:hover {
     filter: grayscale(0);
-}
-
-/* striped placeholder for imagery */
-.img-placeholder {
-    background-color: var(--surface-sunk);
-    background-image: repeating-linear-gradient(
-        135deg,
-        transparent 0,
-        transparent 8px,
-        rgba(0, 0, 0, 0.04) 8px,
-        rgba(0, 0, 0, 0.04) 9px
-    );
-    color: var(--ink-4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-latin);
-    font-size: 11px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
 }
 
 /* Scrollbar — subtle */

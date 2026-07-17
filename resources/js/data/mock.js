@@ -3062,55 +3062,6 @@ const PATIENTS = [
     },
 ];
 
-// Recent orders for dashboard
-const ORDERS = [
-    {
-        id: 'TF-2845',
-        patient: 'דנה כהן',
-        items: 'פורמולה מותאמת — 7 צמחים',
-        total: 218,
-        status: 'בהכנה במעבדה',
-        dot: 'amber',
-        date: 'היום, 09:42',
-    },
-    {
-        id: 'TF-2844',
-        patient: 'אבי שטרן',
-        items: 'תמיסת שינה רגועה ×2',
-        total: 178,
-        status: 'נשלח',
-        dot: 'blue',
-        date: 'אתמול',
-    },
-    {
-        id: 'TF-2843',
-        patient: 'יעל ברק',
-        items: 'פורמולה מותאמת — 5 צמחים',
-        total: 165,
-        status: 'ממתין לתשלום',
-        dot: 'gray',
-        date: '24.05',
-    },
-    {
-        id: 'TF-2842',
-        patient: 'אלון מזרחי',
-        items: 'אדפטוגן בוקר + מיקס חיסון',
-        total: 266,
-        status: 'נמסר',
-        dot: 'green',
-        date: '22.05',
-    },
-    {
-        id: 'TF-2841',
-        patient: 'נעמה לוי',
-        items: 'תה ערב ×3',
-        total: 114,
-        status: 'נמסר',
-        dot: 'green',
-        date: '20.05',
-    },
-];
-
 // (TFDATA assignment is at end of file)
 
 // --- Events / updates (3-4 cards) ---
@@ -3187,7 +3138,7 @@ const EVENTS = [
 // --- Wallet transactions (תנועות הארנק) ---
 // The practitioner's credit-points ledger, like a bank statement: every row is
 // either a credit (`earn`) or a debit (`spend`). Listed oldest→newest; the
-// running balance is derived in the page and ends at DEMO_USER.points (1,240).
+// running balance is derived in the page and ends at DEMO_POINTS (1,240).
 // TODO(backend): the wallet endpoint returns these rows + the current balance.
 const WALLET_TX = [
     {
@@ -3292,52 +3243,6 @@ const WALLET_TX = [
 // Every article shares the same hero/cover image (assets/echinacea.jpg).
 // `sections` carry the long-form body for the article page.
 const ARTICLE_IMAGE = echinaceaImg;
-
-// --- Homepage promotional HERO carousel (the "sales" slot) ---
-// Rotating campaigns: events, new products, fresh stock. Each slide carries
-// an image (photo or system illustration), marketing copy, and a CTA.
-const PROMOS = [
-    {
-        id: 'p1',
-        kind: 'webinar',
-        icon: 'camera',
-        kicker: 'הרצאת זום · אונליין',
-        title: 'פורמולציות מוכנות לשימוש בקליניקה',
-        titleB: 'בדגש על שימוש חיצוני',
-        desc: 'הרצאת זום למטפלות ומטפלי טריפוליום — נכיר פורמולציות מן המוכן ואת דרכי היישום החיצוני בקליניקה היומיומית.',
-        when: { wday: 'יום רביעי', date: '13.05.26', time: '20:15–21:30' },
-        media: { type: 'photo', src: ARTICLE_IMAGE },
-        primary: { label: 'מילוי טופס הרשמה', action: 'register' },
-        secondary: { label: 'פרטים נוספים', action: 'contact' },
-        note: 'המקומות מוגבלים · לינק הזום יישלח בוואטסאפ',
-    },
-    {
-        id: 'p2',
-        kind: 'product',
-        icon: 'package',
-        kicker: 'מוצר חדש במדף',
-        title: 'תמצית אכינצאה מרוכזת',
-        titleB: 'סדרת חיזוק החורף',
-        desc: 'תמצית אלכוהולית בריכוז גבוה לתמיכה במערכת החיסון — זמינה כעת להזמנה במדף המוצרים המוכנים.',
-        media: { type: 'product', heb: 'תמצית אכינצאה' },
-        primary: { label: 'לצפייה במוצר', action: 'catalog' },
-        secondary: { label: 'לכל המדף', action: 'catalog' },
-        note: 'אחריות איכות · משלוח תוך 3 ימי עסקים',
-    },
-    {
-        id: 'p3',
-        kind: 'stock',
-        icon: 'leaf',
-        kicker: 'נכנס למלאי',
-        title: '14 צמחים חדשים',
-        titleB: 'נוספו למאגר הרכיבים',
-        desc: 'כולל אסטרגלוס סיני, סייבריאן ועוד צמחים נדירים — זמינים כעת לרקיחת פורמולות אישיות במרשם.',
-        media: { type: 'hero' },
-        primary: { label: 'למאגר הרכיבים', action: 'compounding' },
-        secondary: { label: 'מה התחדש', action: 'articles' },
-        note: 'עודכן היום · 142 רכיבים פעילים',
-    },
-];
 
 // Real article covers (from the live site). articleImg(n) resolves the
 // bundled asset by the source article id.
@@ -5151,73 +5056,6 @@ const FORMULA_TYPES = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// Extended herb properties — keyed by herb id
-// (warming/cooling, taste, organ system)
-// ─────────────────────────────────────────────────────────────
-const HERB_PROPS = {
-    ashwagandha: {
-        temp: 'מחמם',
-        taste: 'מר וחריף',
-        organ: 'יותרת הכליה · עצבים',
-    },
-    echinacea: { temp: 'נייטרלי', taste: 'מר', organ: 'חיסון · לימפה' },
-    calendula: { temp: 'נייטרלי', taste: 'מר', organ: 'עור · ריריות' },
-    chamomile: { temp: 'מקרר', taste: 'מר ומתוק', organ: 'עצבים · עיכול' },
-    valerian: { temp: 'מחמם', taste: 'מר וחריף', organ: 'עצבים · שינה' },
-    passionflower: { temp: 'מקרר', taste: 'מתוק ומר', organ: 'עצבים' },
-    milkthistle: { temp: 'מקרר', taste: 'מר', organ: 'כבד' },
-    dandelion: { temp: 'מקרר', taste: 'מר', organ: 'כבד · כליות' },
-    nettle: { temp: 'נייטרלי', taste: 'מינרלי', organ: 'דם · כליות' },
-    ginger: { temp: 'מחמם', taste: 'חריף', organ: 'עיכול · מחזור דם' },
-    turmeric: { temp: 'מחמם', taste: 'חריף ומר', organ: 'כבד · מפרקים' },
-    licorice: { temp: 'נייטרלי', taste: 'מתוק', organ: 'יותרת הכליה · ריאות' },
-    rhodiola: { temp: 'מקרר', taste: 'מר', organ: 'עצבים · יותרת הכליה' },
-    lemonbalm: { temp: 'מקרר', taste: 'חמוץ ומתוק', organ: 'עצבים · עיכול' },
-    sage: { temp: 'מחמם', taste: 'מר וחריף', organ: 'גרון · עיכול' },
-    rosemary: { temp: 'מחמם', taste: 'חריף', organ: 'מחזור דם · ראש' },
-    hawthorn: { temp: 'נייטרלי', taste: 'חמצמץ', organ: 'לב' },
-    astragalus: { temp: 'מחמם', taste: 'מתוק', organ: 'חיסון · ריאות' },
-    reishi: { temp: 'נייטרלי', taste: 'מר', organ: 'חיסון · שינה' },
-    lavender: { temp: 'מקרר', taste: 'מר ומתוק', organ: 'עצבים · עור' },
-    stjohnswort: { temp: 'מחמם', taste: 'מר', organ: 'עצבים · עור' },
-    ginseng: { temp: 'מחמם', taste: 'מר ומתוק', organ: 'יותרת הכליה' },
-    schisandra: { temp: 'מחמם', taste: 'חמיץ ומתוק', organ: 'כבד · עצבים' },
-    olive: { temp: 'מקרר', taste: 'מר', organ: 'לב · חיסון' },
-    thyme: { temp: 'מחמם', taste: 'חריף ומר', organ: 'ריאות · גרון' },
-    mullein: { temp: 'מקרר', taste: 'מתוק ומריר', organ: 'ריאות' },
-    marshmallow: {
-        temp: 'מקרר',
-        taste: 'מתוק רירי',
-        organ: 'ריאות · קיבה · שתן',
-    },
-    plantain: { temp: 'מקרר', taste: 'מליח ומריר', organ: 'ריאות · עור' },
-    eucalyptus: { temp: 'מחמם', taste: 'חריף', organ: 'ריאות' },
-    elder: { temp: 'מקרר', taste: 'מתוק ומריר', organ: 'חיסון · ריאות' },
-    peppermint: { temp: 'מקרר', taste: 'חריף', organ: 'עיכול · ראש' },
-    fennel: { temp: 'מחמם', taste: 'מתוק וחריף', organ: 'עיכול' },
-    yarrow: { temp: 'מקרר', taste: 'מר וחריף', organ: 'דם · עיכול' },
-    cinnamon: { temp: 'מחמם', taste: 'חריף ומתוק', organ: 'עיכול · מחזור דם' },
-    cardamom: { temp: 'מחמם', taste: 'חריף', organ: 'עיכול' },
-    clove: { temp: 'מחמם', taste: 'חריף', organ: 'עיכול · שיניים' },
-    gentian: { temp: 'מקרר', taste: 'מר מאוד', organ: 'קיבה · כבד' },
-    wormwood: { temp: 'מקרר', taste: 'מר מאוד', organ: 'קיבה · כבד' },
-    gotukola: { temp: 'מקרר', taste: 'מר ומתוק', organ: 'מוח · עור' },
-    oats: { temp: 'נייטרלי', taste: 'מתוק', organ: 'עצבים' },
-    skullcap: { temp: 'מקרר', taste: 'מר', organ: 'עצבים' },
-    motherwort: { temp: 'מקרר', taste: 'מר וחריף', organ: 'לב · רחם' },
-    ginkgo: { temp: 'נייטרלי', taste: 'מר ועפיץ', organ: 'מוח · מחזור דם' },
-    garlic: { temp: 'מחמם', taste: 'חריף', organ: 'מחזור דם · חיסון' },
-    vitex: { temp: 'מחמם', taste: 'חריף ומר', organ: 'ציר הורמונלי' },
-    blackcohosh: { temp: 'מקרר', taste: 'מר וחריף', organ: 'רחם · מפרקים' },
-    raspberry: { temp: 'מקרר', taste: 'עפיץ', organ: 'רחם' },
-    cranberry: { temp: 'מקרר', taste: 'חמצמץ', organ: 'שלפוחית · שתן' },
-    uvaursi: { temp: 'מקרר', taste: 'עפיץ ומר', organ: 'שלפוחית · שתן' },
-    goldenrod: { temp: 'מקרר', taste: 'מר וחריף', organ: 'כליות · שתן' },
-    burdock: { temp: 'מקרר', taste: 'מר ומתוק', organ: 'עור · כבד' },
-    redclover: { temp: 'מקרר', taste: 'מתוק', organ: 'עור · לימפה' },
-};
-
-// ─────────────────────────────────────────────────────────────
 // Known herb–drug interactions (sample, conservative subset)
 // herbId → { drugMatch: regex string, severity, note }
 // ─────────────────────────────────────────────────────────────
@@ -5379,63 +5217,6 @@ const HERB_WARNINGS = {
     gentian: ['כיב קיבה'],
     motherwort: ['הריון'],
     eucalyptus: ['ילדים קטנים'],
-};
-
-// Recommended adult daily dose per herb — dried-herb equivalent (illustrative
-// reference values, g/day). Shown as the "מינון מומלץ" column in Step 3.
-const HERB_DOSE = {
-    ashwagandha: '3–6 ליום',
-    echinacea: '1–3 ליום',
-    calendula: '1–4 ליום',
-    chamomile: '2–8 ליום',
-    valerian: '2–4 ליום',
-    passionflower: '1–4 ליום',
-    milkthistle: '4–9 ליום',
-    dandelion: '3–10 ליום',
-    nettle: '4–8 ליום',
-    ginger: '1–3 ליום',
-    turmeric: '3–9 ליום',
-    licorice: '1–4 ליום',
-    rhodiola: '1–3 ליום',
-    lemonbalm: '2–6 ליום',
-    sage: '1–3 ליום',
-    rosemary: '2–4 ליום',
-    hawthorn: '3–6 ליום',
-    astragalus: '4–12 ליום',
-    reishi: '2–6 ליום',
-    lavender: '1–3 ליום',
-    stjohnswort: '2–4 ליום',
-    ginseng: '1–3 ליום',
-    schisandra: '1.5–6 ליום',
-    olive: '2–6 ליום',
-    thyme: '1–4 ליום',
-    mullein: '3–4 ליום',
-    marshmallow: '3–6 ליום',
-    plantain: '3–6 ליום',
-    eucalyptus: '1–3 ליום',
-    elder: '3–5 ליום',
-    peppermint: '1.5–3 ליום',
-    fennel: '1–3 ליום',
-    yarrow: '2–4 ליום',
-    cinnamon: '1–4 ליום',
-    cardamom: '0.5–2 ליום',
-    clove: '0.5–2 ליום',
-    gentian: '0.5–2 ליום',
-    wormwood: '0.5–2 ליום',
-    gotukola: '1–4 ליום',
-    oats: '3–6 ליום',
-    skullcap: '1–3 ליום',
-    motherwort: '2–4 ליום',
-    ginkgo: '1–3 ליום',
-    garlic: '2–4 ליום',
-    vitex: '0.5–1.5 ליום',
-    blackcohosh: '0.5–2 ליום',
-    raspberry: '4–8 ליום',
-    cranberry: '2–6 ליום',
-    uvaursi: '1.5–4 ליום',
-    goldenrod: '3–5 ליום',
-    burdock: '2–6 ליום',
-    redclover: '2–4 ליום',
 };
 
 // Botanical family per herb (משפחה בוטנית) — shown in the monograph info row.
@@ -6125,12 +5906,10 @@ const FREEPOUR_FORMULAS = [
 
 export {
     HERBS,
-    CN_HERB_IDS,
     PRODUCTS,
     PRODUCT_TYPES,
     PRODUCT_CONDITIONS,
     PATIENTS,
-    ORDERS,
     EVENTS,
     WALLET_TX,
     ARTICLES,
@@ -6138,17 +5917,14 @@ export {
     VIDEOS,
     HOME_ORDERS,
     FORMULA_TYPES,
-    HERB_PROPS,
     KNOWN_INTERACTIONS,
     HERB_BLURBS,
     HERB_WARNINGS,
-    HERB_DOSE,
     HERB_FAMILY,
     HERB_MONOGRAPH,
     SAVED_FORMULAS,
     CART_ITEMS,
     PENDING_ORDERS,
-    PROMOS,
     PRESET_FORMULAS,
     SYSTEM_FORMULAS,
     FREEPOUR_FORMULAS,

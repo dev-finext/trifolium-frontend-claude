@@ -13,7 +13,7 @@ const TF_ADDR_KEY = 'tf:addresses:v1';
 // In production the practitioner's saved addresses come from the backend;
 // delete this seed (return [] / fetch instead) when wiring real data.
 // The first address is the primary (default) one.
-export const TF_DEFAULT_ADDRESSES = [
+const TF_DEFAULT_ADDRESSES = [
     {
         id: 'addr-clinic',
         label: 'מרפאת שורש',

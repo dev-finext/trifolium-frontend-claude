@@ -53,7 +53,7 @@ const SKIP_TAGS = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, TEXTAREA: 1 };
 const ATTRS = ['placeholder', 'title', 'aria-label', 'alt'];
 
 /** Is the English overlay requested? URL `?lang=en` only. */
-export function isEnglishRequested() {
+function isEnglishRequested() {
     try {
         return new URLSearchParams(window.location.search).get('lang') === 'en';
     } catch {
