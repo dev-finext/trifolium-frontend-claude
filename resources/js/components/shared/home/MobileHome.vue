@@ -13,6 +13,7 @@ import { HeroPanorama } from '@/components/shared/art';
 import BackToTop from '@/components/shared/home/BackToTop.vue';
 import HomeArticles from '@/components/shared/home/HomeArticles.vue';
 import HomeEvents from '@/components/shared/home/HomeEvents.vue';
+import HomeSaleStrip from '@/components/shared/home/HomeSaleStrip.vue';
 import HomeVideos from '@/components/shared/home/HomeVideos.vue';
 import QuickAccess from '@/components/shared/home/QuickAccess.vue';
 import { tfUser } from '@/composables/useProfile';
@@ -73,6 +74,9 @@ const greeting = computed(() => {
 
         <!-- quick access — same destinations as the desktop home (content parity) -->
         <QuickAccess />
+
+        <!-- periodic sale — the leading discounted product, prominent up top -->
+        <HomeSaleStrip />
 
         <!-- shared content sections (same components as desktop) -->
         <HomeEvents :events="events" />

@@ -10,6 +10,7 @@ import BackToTop from '@/components/shared/home/BackToTop.vue';
 import HeroPromo from '@/components/shared/home/HeroPromo.vue';
 import HomeArticles from '@/components/shared/home/HomeArticles.vue';
 import HomeEvents from '@/components/shared/home/HomeEvents.vue';
+import HomeSaleStrip from '@/components/shared/home/HomeSaleStrip.vue';
 import HomeVideos from '@/components/shared/home/HomeVideos.vue';
 import MobileHome from '@/components/shared/home/MobileHome.vue';
 import QuickAccess from '@/components/shared/home/QuickAccess.vue';
@@ -38,6 +39,7 @@ const isMobile = useIsMobile();
     <div v-else>
         <HeroPromo />
         <QuickAccess />
+        <HomeSaleStrip />
         <HomeEvents :events="events" />
         <HomeArticles :articles="articles" />
         <HomeVideos :videos="videos" />

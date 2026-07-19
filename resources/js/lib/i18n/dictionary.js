@@ -12,6 +12,29 @@
 // ============================================================================
 
 export default {
+    'מחיר מחירון': 'List price',
+    'הנחה על מוצר מדף — 40%': 'Shelf-product discount — 40%',
+    'הנחה בסיסית — 20%': 'Base discount — 20%',
+    'הנחה 10%': '10% discount',
+    '(הנחה 10%)': '(10% discount)',
+    '(צבירה 10%)': '(10% points)',
+    '*הזול מביניהם': '*the cheapest one',
+    'בתשלום של הלקוח — הנחה על מוצר מדף אין.':
+        'When the customer pays — there is no shelf-product discount.',
+    'הנחות המטפל שלך — הנחה בסיסית 20% והנחה על מוצר מדף 40% — יורדות אוטומטית בסיכום ההזמנה.':
+        'Your practitioner discounts — 20% base and 40% on shelf products — come off automatically in the order summary.',
+    'קונים 10 מוצרי מדף — ה-11 חינם':
+        'Buy 10 shelf products — the 11th is free',
+    'עוד מוצר אחד — וה-11 חינם': 'One more product — and the 11th is free',
+    'מבצע 10+1 פעיל — מוצר חינם בסל':
+        '10+1 active — a free product is in your cart',
+    'מוצרי המדף של בית המרקחת — פורמולות, תמציות, שמנים ותכשירים · הנחה על מוצר מדף 40% יורדת בסל':
+        "The pharmacy's shelf products — formulas, extracts, oils and preparations · the 40% shelf discount comes off in the cart",
+    'מבצע החורף': 'Winter sale',
+    למוצר: 'View product',
+    במקום: 'instead of',
+    'מבצע תקופתי': 'Periodic sale',
+
     '— ללא שם —': '— Untitled —',
     '— ניתן להשלים את הרכישה משם בכל רגע.':
         '— you can complete the purchase from there at any time.',
@@ -23,7 +46,6 @@ export default {
     '· גיל': '· Age',
     '· טעינתה תחליף את הפורמולה הנוכחית':
         '· loading it will replace the current formula',
-    '(5% · מוצרי מדף בלבד)': '(5% · shelf products only)',
     '← הכנת פורמולה': '← Formula compounding',
     '✱ אחריות הספקת התכשיר הינה של הרוקח האחראי בבית המרקחת וההובלה תיעשה בעזרת שליח.':
         "✱ Responsibility for supplying the preparation lies with the pharmacy's responsible pharmacist, and delivery will be made by courier.",
@@ -328,12 +350,8 @@ export default {
     'הנחיות למטופל': 'Patient instructions',
     'הנחיות נוספות עבור המטופל/ת': 'Additional instructions for the patient',
     'הנחיות פנימיות — בית מרקחת בלבד': 'Internal instructions — pharmacy only',
-    'הנחת לקוח 5% · מוצרי מדף': '5% customer discount · shelf products',
     'הנחת מטופל 10%': '10% patient discount',
-    'הנחת מטופל/ת 10%': '10% patient discount',
-    'הנחת מטפל 20%': '20% practitioner discount',
-    'הנחת מטפל 20% כלולה במחירים':
-        '20% practitioner discount included in prices',
+    'הנחה בסיסית 20%': '20% base discount',
     'הנקודות שלי': 'My points',
     הסבר: 'Explanation',
     'הסיסמאות אינן תואמות': 'The passwords do not match',
@@ -592,8 +610,6 @@ export default {
     'לפני ארוחה': 'Before a meal',
     'לפני האוכל': 'Before food',
     'לפני השינה': 'Before bed',
-    'לצבור נקודות או לתת הנחה ללקוח?':
-        'Accrue points or give the customer a discount?',
     'לצבור נקודות או לתת הנחה למטופל/ת?':
         'Accrue points or give the patient a discount?',
     'לקריאה ←': 'Read ←',
@@ -623,8 +639,6 @@ export default {
     'מוצרי מדף': 'Shelf products',
     'המוצרים שלנו': 'Our Products',
     'מוצרי המדף שלנו': 'Our shelf products',
-    'מוצרי המדף של בית המרקחת — פורמולות, תמציות, שמנים ותכשירים · הנחת מטפל 20% כלולה':
-        "The pharmacy's shelf products — formulas, extracts, oils and preparations · 20% practitioner discount included",
     'חיפוש מוצר או מק״ט…': 'Search product or SKU…',
     'סוג מוצר': 'Product type',
     'מצב בריאותי': 'Health condition',
@@ -793,8 +807,6 @@ export default {
     'נקה סינון': 'Clear filter',
     נקודות: 'points',
     'נקודות זכות בהזמנה זו': 'Credit points on this order',
-    'נקודות זכות יועברו לחשבונך':
-        'Credit points will be transferred to your account',
     'נקודות זכות יצברו בחשבונך': 'Credit points will accrue in your account',
     'נקודות זכות למימוש': 'Credit points to redeem',
     'נראה שיש חישוב עשרוני — רוצה שנעגל עבורך?':
@@ -839,7 +851,6 @@ export default {
     'סיסמה ואבטחה': 'Password and security',
     'סיסמה חדשה': 'New password',
     'סיסמה נוכחית': 'Current password',
-    'סכום ביניים': 'Subtotal',
     'סל הקניות': 'Shopping cart',
     ספיר: 'Sapir',
     'ספרה אחת לפחות': 'At least one digit',
@@ -895,8 +906,6 @@ export default {
     'פורמולה סינית מוכנה': 'Ready-made Chinese formula',
     'פורמולות מוכנות שנוצרו על ידי צוות טריפוליום · ניתן לערוך הכל':
         'Ready-made formulas created by the Trifolium team · everything is editable',
-    'פורמולות מוכנות, תמיסות ותערובות · הנחת מטפל 20% כלולה':
-        'Ready-made formulas, tinctures and blends · 20% practitioner discount included',
     'פורמולות מערכת': 'System formulas',
     'פורמולות קלאסיות מוכנות עם יחסי בסיס קבועים. הפורמולה כבר מוכנה — יחסי הבסיס נעולים ואינם ניתנים לשינוי. לאחר הטעינה ניתן רק להוסיף רכיבים נוספים מעל הבסיס.':
         'Ready-made classical formulas with fixed base ratios. The formula is already prepared — the base ratios are locked and cannot be changed. After loading you can only add extra ingredients on top of the base.',

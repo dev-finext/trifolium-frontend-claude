@@ -153,7 +153,7 @@ function onRxToggle() {
 
                     <PriceLine label="מחיר בסיס" :value="`₪${base}`" />
                     <PriceLine
-                        label="הנחת מטפל 20%"
+                        label="הנחה בסיסית 20%"
                         :value="`−₪${practitionerDisc}`"
                         muted
                     />

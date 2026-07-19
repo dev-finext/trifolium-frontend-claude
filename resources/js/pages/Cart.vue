@@ -170,43 +170,86 @@ function hold(item) {
     cart.moveToPending(item);
 }
 
-const subtotal = computed(() =>
+// ── Pricing (per the SAP discount sheet) ──────────────────────────────
+// Item prices are LIST prices (מחיר מחירון). המטפל משלם: הנחה בסיסית 20%
+// (everything except shelf) + הנחה על מוצר מדף 40%. הלקוח משלם: no
+// practitioner discounts (הנחה על מוצר מדף — אין); the practitioner chooses
+// הנחה 10% למטופל/ת OR צבירה 10% (points). The 10+1 promo applies either
+// way: every full 11 shelf units make the cheapest one free.
+// TODO(backend): checkout recomputes all of this server-side; this mirror
+// exists so the receipt is honest in the demo.
+const listTotal = computed(() =>
     items.reduce((s, it) => s + it.price * it.qty, 0),
 );
-const shelfSubtotal = computed(() =>
+const shelfList = computed(() =>
     items
         .filter((it) => it.kind === 'shelf')
         .reduce((s, it) => s + it.price * it.qty, 0),
 );
+const formulaList = computed(() => listTotal.value - shelfList.value);
+
+// 10+1 — one free unit per full 11 shelf units, always the cheapest.
+const shelfUnits = computed(() =>
+    items.filter((it) => it.kind === 'shelf').reduce((s, it) => s + it.qty, 0),
+);
+const freeUnits = computed(() => Math.floor(shelfUnits.value / 11));
+const cheapestShelf = computed(() => {
+    const shelf = items.filter((it) => it.kind === 'shelf');
+
+    if (!shelf.length) {
+        return null;
+    }
+
+    return shelf.reduce((m, it) => (it.price < m.price ? it : m), shelf[0]);
+});
+// List value of the free unit(s)…
+const tenPlusOneList = computed(() =>
+    freeUnits.value && cheapestShelf.value
+        ? cheapestShelf.value.price * freeUnits.value
+        : 0,
+);
+// …and what the promo actually saves: when the practitioner pays, the 40%
+// line already covers 40% of it, so the promo line carries the remaining 60%.
+const tenPlusOneValue = computed(() =>
+    payer.value === 'me' ? 0.6 * tenPlusOneList.value : tenPlusOneList.value,
+);
+
+// המטפל משלם — the two SAP discounts.
+const shelfDiscount = computed(() =>
+    payer.value === 'me' ? 0.4 * shelfList.value : 0,
+);
+const baseDiscount = computed(() =>
+    payer.value === 'me' ? 0.2 * formulaList.value : 0,
+);
+
+// הלקוח משלם — the chosen benefit (on the order minus the free 10+1 items).
+const customerDiscount = computed(() =>
+    payer.value === 'patient' && benefit.value === 'discount'
+        ? 0.1 * (listTotal.value - tenPlusOneList.value)
+        : 0,
+);
+const pointsEarned = computed(() =>
+    payer.value === 'patient' && benefit.value === 'points'
+        ? Math.round(0.1 * (listTotal.value - tenPlusOneList.value))
+        : 0,
+);
+
+const savings = computed(
+    () =>
+        shelfDiscount.value +
+        baseDiscount.value +
+        tenPlusOneValue.value +
+        customerDiscount.value,
+);
+const goodsTotal = computed(() => listTotal.value - savings.value);
 const shipping = computed(() =>
     items.length === 0 || ship.value === 'pickup'
         ? 0
-        : subtotal.value >= 250
+        : goodsTotal.value >= 250
           ? 0
           : 29,
 );
-
-// Benefit applies whoever pays:
-//   • practitioner pays → discount 5% (shelf products only) OR 10% points
-//   • patient pays      → discount 10% (whole order)        OR 10% points
-const customerDiscount = computed(() => {
-    if (benefit.value !== 'discount') {
-        return 0;
-    }
-
-    const discountRate = payer.value === 'patient' ? 0.1 : 0.05;
-    const discountBase =
-        payer.value === 'patient' ? subtotal.value : shelfSubtotal.value;
-
-    return discountBase * discountRate;
-});
-const pointsEarned = computed(() =>
-    benefit.value === 'points' ? Math.round(subtotal.value * 0.1) : 0,
-);
-
-const total = computed(
-    () => subtotal.value - customerDiscount.value + shipping.value,
-);
+const total = computed(() => goodsTotal.value + shipping.value);
 const unitCount = computed(() => items.reduce((s, it) => s + it.qty, 0));
 
 // Checkout gate (F36) — the "continue to payment" action must not fire while
@@ -339,55 +382,23 @@ const TF_PICKUP_LOCATION = {
                             />
                         </div>
 
-                        <!-- When the practitioner pays → choose loyalty points or a customer discount -->
+                        <!-- When the practitioner pays — the SAP discounts apply automatically -->
                         <div v-if="payer === 'me'" class="mt-[16px]">
-                            <FieldGroupLabel
-                                >לצבור נקודות או לתת הנחה
-                                ללקוח?</FieldGroupLabel
-                            >
-                            <div class="flex flex-col gap-[4px]">
-                                <RadioRow
-                                    label="צבירת נקודות זכות"
-                                    :checked="benefit === 'points'"
-                                    @change="benefit = 'points'"
-                                />
-                                <RadioRow
-                                    label="הנחה ללקוח"
-                                    :checked="benefit === 'discount'"
-                                    @change="benefit = 'discount'"
-                                />
-                            </div>
                             <div
-                                class="mt-[12px] flex gap-[8px] rounded-control bg-accent-tint px-[12px] py-[10px] text-[12.5px] leading-[1.55] text-accent-ink"
+                                class="flex gap-[8px] rounded-control bg-accent-tint px-[12px] py-[10px] text-[12.5px] leading-[1.6] text-accent-ink"
                             >
                                 <Icon
-                                    :name="
-                                        benefit === 'points'
-                                            ? 'coin'
-                                            : 'sparkles'
-                                    "
+                                    name="sparkles"
                                     :size="15"
                                     color="var(--accent)"
                                     class="mt-[1px] shrink-0"
                                 />
-                                <span v-if="benefit === 'points'"
-                                    ><strong class="num">{{
-                                        pointsEarned
-                                    }}</strong>
-                                    נקודות זכות יועברו לחשבונך
-                                    <span class="muted">(10%)</span>.</span
-                                >
-                                <span v-else
-                                    >הנחה של
-                                    <strong
-                                        >₪<span class="num">{{
-                                            fmt(customerDiscount)
-                                        }}</span></strong
+                                <span
+                                    >הנחות המטפל שלך —
+                                    <strong>הנחה בסיסית 20%</strong> ו<strong
+                                        >הנחה על מוצר מדף 40%</strong
                                     >
-                                    על כלל ההזמנה
-                                    <span class="muted"
-                                        >(5% · מוצרי מדף בלבד)</span
-                                    >. לא חל על פורמולות בהנחה אישית.</span
+                                    — יורדות אוטומטית בסיכום ההזמנה.</span
                                 >
                             </div>
                         </div>
@@ -452,7 +463,8 @@ const TF_PICKUP_LOCATION = {
                                         pointsEarned
                                     }}</strong>
                                     נקודות זכות יצברו בחשבונך
-                                    <span class="muted">(10%)</span>.</span
+                                    <span class="muted">(צבירה 10%)</span
+                                    >.</span
                                 >
                                 <span v-else
                                     >הנחה של
@@ -462,8 +474,14 @@ const TF_PICKUP_LOCATION = {
                                         }}</span></strong
                                     >
                                     למטופל/ת על כלל ההזמנה
-                                    <span class="muted">(10%)</span>.</span
+                                    <span class="muted">(הנחה 10%)</span>.</span
                                 >
+                            </div>
+                            <div
+                                v-if="shelfList > 0"
+                                class="mt-[8px] text-[11.5px] leading-[1.5] text-ink-3"
+                            >
+                                בתשלום של הלקוח — הנחה על מוצר מדף אין.
                             </div>
                             <div
                                 class="mt-[10px] flex gap-[8px] rounded-control bg-surface-sunk px-[12px] py-[10px] text-[12.5px] leading-[1.5] text-ink-3"
@@ -665,22 +683,45 @@ const TF_PICKUP_LOCATION = {
                         />
                     </SideCard>
 
-                    <!-- Summary -->
+                    <!-- Summary — a full receipt: list price, then every benefit
+                         as its own line (SAP wording), so the practitioner sees
+                         exactly what they pay for and what they saved. -->
                     <div class="card p-[20px]">
                         <h3 class="m-0 mb-[16px] text-[16px] font-semibold">
                             סיכום הזמנה
                         </h3>
                         <SumRow
-                            label="סכום ביניים"
-                            :value="`₪${fmt(subtotal)}`"
+                            label="מחיר מחירון"
+                            :value="`₪${fmt(listTotal)}`"
+                            :strike="savings > 0"
                         />
                         <SumRow
+                            v-if="shelfDiscount > 0"
+                            label="הנחה על מוצר מדף — 40%"
+                            :value="`−₪${fmt(shelfDiscount)}`"
+                            accent
+                        />
+                        <SumRow
+                            v-if="baseDiscount > 0"
+                            label="הנחה בסיסית — 20%"
+                            :value="`−₪${fmt(baseDiscount)}`"
+                            accent
+                        />
+                        <SumRow
+                            v-if="tenPlusOneValue > 0"
+                            :label="`מבצע 10+1 · ${cheapestShelf.name} חינם*`"
+                            :value="`−₪${fmt(tenPlusOneValue)}`"
+                            accent
+                        />
+                        <div
+                            v-if="tenPlusOneValue > 0"
+                            class="small muted mt-[-4px] text-[11px]"
+                        >
+                            *הזול מביניהם
+                        </div>
+                        <SumRow
                             v-if="customerDiscount > 0"
-                            :label="
-                                payer === 'patient'
-                                    ? 'הנחת מטופל/ת 10%'
-                                    : 'הנחת לקוח 5% · מוצרי מדף'
-                            "
+                            label="הנחה 10%"
                             :value="`−₪${fmt(customerDiscount)}`"
                             accent
                         />
@@ -712,6 +753,16 @@ const TF_PICKUP_LOCATION = {
                             </span>
                         </div>
 
+                        <!-- The savings banner — the whole point of the receipt -->
+                        <div
+                            v-if="savings > 0"
+                            class="mt-[12px] rounded-control bg-accent px-[12px] py-[9px] text-center text-[14px] font-bold text-white"
+                        >
+                            🎉 חסכתם בהזמנה זו ₪<span class="num">{{
+                                fmt(savings)
+                            }}</span>
+                        </div>
+
                         <div
                             v-if="pointsEarned > 0"
                             class="mt-[14px] flex items-center gap-[8px] rounded-control bg-accent-tint px-[12px] py-[10px] text-[13px] text-accent-ink"
@@ -726,7 +777,7 @@ const TF_PICKUP_LOCATION = {
                                 >תצברו
                                 <strong class="num">{{ pointsEarned }}</strong>
                                 נקודות זכות בהזמנה זו
-                                <span class="muted">(10%)</span></span
+                                <span class="muted">(צבירה 10%)</span></span
                             >
                         </div>
 
@@ -786,12 +837,6 @@ const TF_PICKUP_LOCATION = {
                                     {{ b }}
                                 </li>
                             </ul>
-                        </div>
-                        <div
-                            class="small muted mt-[12px] flex items-center justify-center gap-[6px] text-center"
-                        >
-                            <Icon name="info" :size="13" color="var(--ink-4)" />
-                            הנחת מטפל 20% כלולה במחירים
                         </div>
                     </div>
                 </div>

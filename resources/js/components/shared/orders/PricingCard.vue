@@ -12,7 +12,7 @@ defineProps({
     <SideCard title="תמחור">
         <PriceRow label="מחיר בסיס" :value="`₪${pricing.base}`" />
         <PriceRow
-            label="הנחת מטפל 20%"
+            label="הנחה בסיסית 20%"
             :value="`−₪${pricing.practitionerDisc}`"
             muted
         />

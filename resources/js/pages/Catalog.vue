@@ -8,6 +8,7 @@ import FilterGroup from '@/components/shared/catalog/FilterGroup.vue';
 import FilterRow from '@/components/shared/catalog/FilterRow.vue';
 import PatientPickerModal from '@/components/shared/catalog/PatientPickerModal.vue';
 import ProductCard from '@/components/shared/catalog/ProductCard.vue';
+import TenPlusOnePill from '@/components/shared/catalog/TenPlusOnePill.vue';
 import Icon from '@/components/ui/Icon.vue';
 import SearchInput from '@/components/ui/SearchInput.vue';
 import { useIsMobile } from '@/composables/useIsMobile';
@@ -24,6 +25,8 @@ const props = defineProps({
     productTypes: { type: Array, default: () => PRODUCT_TYPES },
     conditions: { type: Array, default: () => PRODUCT_CONDITIONS },
     patients: { type: Array, default: () => PATIENTS },
+    /** Pre-filled search term (?q=...) — used by the home sale strip's CTA. */
+    q: { type: String, default: '' },
 });
 
 const cartStore = useCartStore();
@@ -41,7 +44,7 @@ const activeType = ref('all');
 const activeConditions = ref([]);
 const kidsOnly = ref(false);
 const priceMax = ref(PRICE_CAP);
-const search = ref('');
+const search = ref(props.q);
 const sortBy = ref('default'); // 'default' | 'price-asc' | 'price-desc' | 'name'
 const pickFor = ref(null); // product awaiting patient selection
 // Per-product added quantity — drives each card's "בסל" badge.
@@ -177,7 +180,7 @@ function clearAll() {
                     <h1 class="page-title">המוצרים שלנו</h1>
                     <p class="page-sub">
                         מוצרי המדף של בית המרקחת — פורמולות, תמציות, שמנים
-                        ותכשירים · הנחת מטפל 20% כלולה
+                        ותכשירים · הנחה על מוצר מדף 40% יורדת בסל
                     </p>
                 </div>
                 <div class="row gap-[8px]">
@@ -385,6 +388,9 @@ function clearAll() {
                 </div>
             </div>
         </div>
+
+        <!-- 10+1 promo progress — floats over the catalog while browsing -->
+        <TenPlusOnePill />
 
         <PatientPickerModal
             v-if="pickFor"
