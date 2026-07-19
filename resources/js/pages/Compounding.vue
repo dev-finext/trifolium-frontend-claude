@@ -28,7 +28,8 @@ const STEPS = [
 // Default formula state — used on first mount AND when restarting after a
 // treatment-style switch (we clear the formula but keep the patient).
 const makeDefaultFormula = () => ({
-    name: '',
+    name: '', // internal name (הפורמולות שלי) — never printed on the label
+    labelName: '', // the name printed on the label sticker (המדבקה)
     typeId: 'tincture',
     formulaVolume: null,
     tinctureVolume: null,

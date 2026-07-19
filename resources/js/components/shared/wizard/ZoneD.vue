@@ -1,7 +1,6 @@
 <script setup>
-// ZONE D — Stats bar + bottle composition + upgraded legend.
+// ZONE D — Stats bar + composition legend (פירוט הרכב).
 import { computed } from 'vue';
-import BottleChart from '@/components/shared/wizard/BottleChart.vue';
 import LegendRow from '@/components/shared/wizard/LegendRow.vue';
 import StatCell from '@/components/shared/wizard/StatCell.vue';
 import { INGREDIENT_PALETTE } from '@/components/shared/wizard/step3-data';
@@ -25,9 +24,6 @@ const totalPct = computed(() =>
 );
 const tRounded = computed(() => Math.round(totalPct.value * 10) / 10);
 const isOver = computed(() => !isChinese.value && tRounded.value > 100.04);
-const isDone = computed(
-    () => !isChinese.value && Math.abs(tRounded.value - 100) < 0.05,
-);
 const rules = computed(() => VOLUME_RULES[props.formula.typeId]);
 const volume = computed(() => props.formula.formulaVolume);
 const volumeUnit = computed(
@@ -98,22 +94,12 @@ const hasContent = computed(() => segments.value.length > 0);
                 <path d="M12 2a10 10 0 0 1 10 10" />
             </svg>
             <div class="mb-[4px] font-semibold text-ink-2">
-                הוסף רכיבים כדי לראות את התרשים
+                הוסף רכיבים כדי לראות את פירוט ההרכב
             </div>
-            <div class="small">התרשים מתעדכן בזמן אמת.</div>
+            <div class="small">הפירוט מתעדכן בזמן אמת.</div>
         </div>
 
-        <div
-            v-else
-            class="grid grid-cols-[220px_1fr] items-center gap-[28px] px-[24px] py-[16px]"
-        >
-            <BottleChart
-                :segments="segments"
-                :total-pct="tRounded"
-                :is-done="isChinese ? false : isDone"
-                :is-over="isOver"
-            />
-
+        <div v-else class="px-[24px] py-[16px]">
             <!-- Legend + physical volume -->
             <div>
                 <FieldLabel>פירוט הרכב</FieldLabel>

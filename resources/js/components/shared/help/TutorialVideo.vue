@@ -31,6 +31,21 @@ const isMobile = useIsMobile();
 const open = ref(false);
 const expanded = ref(false); // desktop: maximised from mini → full modal
 
+// Hover/focus tooltip ("לצפייה בסרטון הדרכה") — teleported to <body> with
+// fixed coordinates so it never clips inside overflow-hidden host buttons.
+const tipVisible = ref(false);
+const tipPos = ref({ x: 0, y: 0 });
+
+function showTip(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    tipPos.value = { x: r.left + r.width / 2, y: r.top };
+    tipVisible.value = true;
+}
+
+function hideTip() {
+    tipVisible.value = false;
+}
+
 const STORAGE_KEY = 'tf:tutorial-viewed';
 const viewed = ref(false);
 onMounted(() => {
@@ -68,6 +83,7 @@ function markViewed() {
 }
 
 function openVideo() {
+    hideTip();
     open.value = true;
     markViewed();
 }
@@ -90,6 +106,10 @@ function close() {
             :class="{ 'tv-trigger--new': !viewed }"
             :aria-label="label"
             @click.stop="openVideo"
+            @mouseenter="showTip"
+            @mouseleave="hideTip"
+            @focus="showTip"
+            @blur="hideTip"
         >
             <svg
                 width="9"
@@ -106,6 +126,14 @@ function close() {
 
         <!-- ── Desktop: floating mini-player (no scrim; never blocks the screen) ── -->
         <Teleport to="body">
+            <!-- hover tooltip, above the trigger -->
+            <span
+                v-if="tipVisible"
+                role="tooltip"
+                class="pointer-events-none fixed z-[120] -translate-x-1/2 -translate-y-[calc(100%+8px)] rounded-[7px] bg-(--ink) px-[9px] py-[5px] text-[11.5px] leading-none font-semibold whitespace-nowrap text-(--surface) shadow-[0_6px_18px_rgba(20,28,24,0.22)]"
+                :style="{ left: tipPos.x + 'px', top: tipPos.y + 'px' }"
+                >לצפייה בסרטון הדרכה</span
+            >
             <div
                 v-if="asMini"
                 role="dialog"

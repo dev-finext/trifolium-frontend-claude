@@ -113,45 +113,51 @@ function onFocus() {
                     @focus="onFocus"
                 />
             </div>
-            <button
-                class="tf-preset-btn relative inline-flex h-[50px] shrink-0 cursor-pointer items-center gap-[8px] overflow-hidden rounded-control border-[1.5px] border-accent bg-surface ps-[18px] pe-[44px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent transition-[background,color] duration-[120ms] ease-[ease]"
-                @click="emit('open-preset')"
+            <!-- The button frame is a <div> so the tutorial play trigger sits
+                 INSIDE it as a legal sibling of the main action. -->
+            <div
+                class="tf-preset-btn relative flex h-[50px] shrink-0 items-center overflow-hidden rounded-control border-[1.5px] border-accent bg-surface"
             >
                 <NewRibbonMark :top="9" :left="-32" />
-                <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                <button
+                    class="inline-flex h-full cursor-pointer items-center gap-[8px] border-none bg-transparent ps-[18px] pe-[6px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent"
+                    @click="emit('open-preset')"
                 >
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                    <path
-                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                    />
-                    <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
-                </svg>
-                בחר פורמולה מוכנה
-                <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon above) -->
-                <span class="tf-new-badge">חדש</span>
-            </button>
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                        <path
+                            d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                        />
+                        <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
+                    </svg>
+                    בחר פורמולה מוכנה
+                    <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon above) -->
+                    <span class="tf-new-badge">חדש</span>
+                </button>
 
-            <!-- Feature-explainer for the ready-made-formula flow, beside its
-                 "חדש" flag. Pulsing play → mini-player (desktop) / modal (mobile). -->
-            <TutorialVideo
-                class="shrink-0"
-                video-id="preset-formulas"
-                title="בחירת פורמולה מוכנה"
-                duration="0:38"
-                :steps="[
-                    'לוחצים על \'בחר פורמולה מוכנה\'',
-                    'בוחרים מהספרייה — פורמולות המערכת או השמורות שלכם',
-                    'הפורמולה נטענת למעבדה — עורכים ומתאימים לפי הצורך',
-                ]"
-            />
+                <!-- Feature-explainer inside the button's frame; pe-[40px]
+                     keeps it clear of the desktop corner ribbon. -->
+                <TutorialVideo
+                    class="pe-[40px]"
+                    video-id="preset-formulas"
+                    title="בחירת פורמולה מוכנה"
+                    duration="0:38"
+                    :steps="[
+                        'לוחצים על \'בחר פורמולה מוכנה\'',
+                        'בוחרים מהספרייה — פורמולות המערכת או השמורות שלכם',
+                        'הפורמולה נטענת למעבדה — עורכים ומתאימים לפי הצורך',
+                    ]"
+                />
+            </div>
         </div>
 
         <!-- Floating results dropdown — overlays the table below -->

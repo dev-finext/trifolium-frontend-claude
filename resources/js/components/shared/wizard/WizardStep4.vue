@@ -242,32 +242,18 @@ function focusBorder(e, on) {
                     </div>
                 </DoseCol>
             </div>
-
-            <!-- הנחיות נוספות עבור המטופל/ת -->
-            <div class="border-t border-line px-[20px] pt-[14px] pb-[18px]">
-                <div
-                    class="mb-[8px] text-right text-[13px] font-semibold text-ink-2"
-                >
-                    הנחיות נוספות עבור המטופל/ת
-                </div>
-                <textarea
-                    :value="formula.externalNotes || ''"
-                    placeholder="הנחיות נוספות עבור המטופל/ת"
-                    class="box-border block min-h-[72px] w-full resize-y rounded-control border border-line bg-surface px-[14px] py-[10px] [font-family:inherit] text-[14px] leading-[1.55] text-ink outline-none"
-                    @input="setF({ externalNotes: $event.target.value })"
-                    @focus="focusBorder($event, true)"
-                    @blur="focusBorder($event, false)"
-                />
-            </div>
         </section>
 
-        <!-- ─── Card 2: הוראות לבית המרקחת ────────────────── -->
+        <!-- ─── Card 2: הוראות לבית המרקחת (internal — above the patient area) ── -->
         <section class="card pharmacy-notes-card overflow-hidden p-0">
             <div
-                class="flex justify-start border-b border-line px-[20px] py-[10px]"
+                class="flex items-baseline justify-between gap-[10px] border-b border-line px-[20px] py-[10px]"
             >
                 <span class="text-[13.5px] font-bold text-accent"
                     >הוראות לבית המרקחת</span
+                >
+                <span class="text-[11.5px] text-ink-3"
+                    >לשימוש פנימי — לא מוצג למטופל/ת</span
                 >
             </div>
             <div class="px-[20px] pt-[16px] pb-[20px]">
@@ -276,6 +262,67 @@ function focusBorder(e, on) {
                     class="box-border block min-h-[110px] w-full resize-y rounded-control border border-line bg-surface px-[14px] py-[10px] [font-family:inherit] text-[14px] leading-[1.55] text-ink outline-none"
                     @input="setF({ internalNotes: $event.target.value })"
                 />
+            </div>
+        </section>
+
+        <!-- ─── Card 3: הנחיות למטופל/ת — CUSTOMER-FACING zone. Everything
+             here reaches the patient (label name + printed directions), so the
+             card is visually flagged as such: accent frame + header badge. ── -->
+        <section class="card overflow-hidden border-[1.5px] border-accent p-0">
+            <div
+                class="flex flex-wrap items-center justify-between gap-[8px] border-b border-accent-tint-strong bg-accent-tint px-[20px] py-[10px]"
+            >
+                <span
+                    class="flex items-center gap-[8px] text-[13.5px] font-bold text-accent-ink"
+                >
+                    <Icon name="eye" :size="15" color="var(--accent)" />
+                    הנחיות למטופל/ת
+                </span>
+                <span
+                    class="rounded-[999px] bg-accent px-[10px] py-[3px] text-[11px] font-bold text-white"
+                    >מוצג למטופל/ת — לא לשימוש פנימי</span
+                >
+            </div>
+
+            <div class="col gap-[16px] px-[20px] pt-[16px] pb-[20px]">
+                <!-- The name printed on the label sticker -->
+                <div>
+                    <label class="field-label" for="tf-label-name"
+                        >שם הפורמולה למדבקה</label
+                    >
+                    <input
+                        id="tf-label-name"
+                        class="input h-[44px]"
+                        :value="formula.labelName || ''"
+                        :maxlength="15"
+                        @input="
+                            setF({
+                                labelName: $event.target.value.slice(0, 15),
+                            })
+                        "
+                    />
+                    <div class="small muted mt-[8px]">
+                        לתשומת ליבך: שם הפורמולה מודפס על המדבקה ועל גבי
+                        החשבונית. אין לכתוב בשם הפורמולה כל התוויה רפואית.
+                    </div>
+                </div>
+
+                <!-- הנחיות נוספות עבור המטופל/ת -->
+                <div>
+                    <div
+                        class="mb-[8px] text-right text-[13px] font-semibold text-ink-2"
+                    >
+                        הנחיות נוספות עבור המטופל/ת
+                    </div>
+                    <textarea
+                        :value="formula.externalNotes || ''"
+                        placeholder="הנחיות נוספות עבור המטופל/ת"
+                        class="box-border block min-h-[72px] w-full resize-y rounded-control border border-line bg-surface px-[14px] py-[10px] [font-family:inherit] text-[14px] leading-[1.55] text-ink outline-none"
+                        @input="setF({ externalNotes: $event.target.value })"
+                        @focus="focusBorder($event, true)"
+                        @blur="focusBorder($event, false)"
+                    />
+                </div>
             </div>
         </section>
 

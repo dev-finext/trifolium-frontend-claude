@@ -261,7 +261,8 @@ export default {
     'הוסף פרטים ומידע רפואי': 'Add details and medical information',
     'הוסף צמחים מהמאגר משמאל': 'Add herbs from the database on the left',
     'הוסף רכיב': 'Add ingredient',
-    'הוסף רכיבים כדי לראות את התרשים': 'Add ingredients to see the chart',
+    'הוסף רכיבים כדי לראות את פירוט ההרכב':
+        'Add ingredients to see the composition breakdown',
     'הועבר להזמנות בהמתנה': 'Moved to pending orders',
     הוקפא: 'On hold',
     'הוראות לבית המרקחת': 'Instructions for the pharmacy',
@@ -433,7 +434,7 @@ export default {
     התנתק: 'Log out',
     'התקבל — ממתין למעבדה': 'Received — awaiting lab',
     התקבלה: 'Received',
-    'התרשים מתעדכן בזמן אמת.': 'The chart updates in real time.',
+    'הפירוט מתעדכן בזמן אמת.': 'The breakdown updates in real time.',
     וואטסאפ: 'WhatsApp',
     וובינר: 'Webinar',
     ווטסאפ: 'WhatsApp',
@@ -1043,6 +1044,17 @@ export default {
     'שם המשתמש מורכב מספרות בלבד': 'The username consists of digits only',
     'שם העסק': 'Business name',
     'שם הפורמולה': 'Formula name',
+    'שם הפורמולה — (לא מופיע על המדבקה)':
+        'Formula name — (not printed on the label)',
+    'שם הפורמולה הוא לשימוש המטפל בלבד ולא יהיה חשוף ללקוח. לא יוצג על המדבקה.':
+        'The formula name is for your own use only and is never exposed to the customer. It will not appear on the label.',
+    'שם הפורמולה למדבקה': 'Formula name for the label',
+    'מוצג למטופל/ת — לא לשימוש פנימי': 'Shown to the patient — not internal',
+    'לשימוש פנימי — לא מוצג למטופל/ת':
+        'Internal use — not shown to the patient',
+    'הנחיות למטופל/ת': 'Patient directions',
+    'לצפייה בסרטון הדרכה': 'Watch the tutorial video',
+    'קפסולות ותוספים': 'Capsules & supplements',
     'שם הפורמולה הוא שדה חובה — לא ניתן להמשיך ללא שם.':
         "The formula name is a required field — you can't continue without a name.",
     'שם הקליניקה': 'Clinic name',

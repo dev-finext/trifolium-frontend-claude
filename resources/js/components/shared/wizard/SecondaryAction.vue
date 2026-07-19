@@ -1,6 +1,8 @@
 <script setup>
 // Secondary patient-path button ("מטופל חדש" / "ללא מטופל") — sits under the
 // hero search, highlights with the accent tint when its option is active.
+// The card frame is a <div> so extras (the tutorial-video play trigger) can
+// sit INSIDE the button's frame as legal siblings of the main action.
 import Icon from '@/components/ui/Icon.vue';
 
 defineProps({
@@ -18,38 +20,50 @@ const emit = defineEmits(['click']);
 </script>
 
 <template>
-    <button
-        type="button"
-        class="relative flex flex-1 cursor-pointer items-center gap-[12px] rounded-card border px-[16px] py-[13px] text-right [font-family:inherit] transition-all duration-150"
+    <div
+        class="relative flex flex-1 items-center rounded-card border transition-all duration-150"
         :class="
             active
                 ? 'border-accent bg-accent-tint shadow-[inset_0_0_0_1px_var(--accent)]'
                 : 'border-line bg-surface shadow-none'
         "
-        @click="emit('click')"
     >
         <!-- "חדש" flag — tucked into the top-inline-start (right, RTL) corner,
              in the round icon's empty corner, clear of the label text. -->
         <span v-if="badge" class="tf-new-badge tf-new-badge--corner">{{
             badge
         }}</span>
-        <span
-            class="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[50%]"
-            :class="
-                active ? 'bg-accent text-white' : 'bg-surface-sunk text-accent'
-            "
+
+        <button
+            type="button"
+            class="flex flex-1 cursor-pointer items-center gap-[12px] rounded-card border-none bg-transparent px-[16px] py-[13px] text-right [font-family:inherit]"
+            @click="emit('click')"
         >
-            <Icon :name="icon" :size="17" />
-        </span>
-        <span>
             <span
-                class="block text-[13.5px] leading-[1.3] font-semibold"
-                :class="active ? 'text-accent-ink' : 'text-ink'"
-                >{{ label }}</span
+                class="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[50%]"
+                :class="
+                    active
+                        ? 'bg-accent text-white'
+                        : 'bg-surface-sunk text-accent'
+                "
             >
-            <span class="block text-[11.5px] font-light text-ink-3">{{
-                sub
-            }}</span>
+                <Icon :name="icon" :size="17" />
+            </span>
+            <span>
+                <span
+                    class="block text-[13.5px] leading-[1.3] font-semibold"
+                    :class="active ? 'text-accent-ink' : 'text-ink'"
+                    >{{ label }}</span
+                >
+                <span class="block text-[11.5px] font-light text-ink-3">{{
+                    sub
+                }}</span>
+            </span>
+        </button>
+
+        <!-- Extras inside the frame (e.g. the tutorial play trigger) -->
+        <span v-if="$slots.extra" class="flex items-center pe-[14px]">
+            <slot name="extra" />
         </span>
-    </button>
+    </div>
 </template>

@@ -25,21 +25,3 @@ export const CHIP_TONE = {
 };
 
 // Lighten/darken a #rrggbb hex toward white (amt>0) or black (amt<0).
-// Used to shade each bottle liquid layer into a glassy gradient.
-export const bottleLighten = (hex, amt) => {
-    const n = parseInt(hex.slice(1), 16);
-    let r = (n >> 16) & 255,
-        g = (n >> 8) & 255,
-        b = n & 255;
-    const t = amt < 0 ? 0 : 255,
-        a = Math.abs(amt);
-    r = Math.round(r + (t - r) * a);
-    g = Math.round(g + (t - g) * a);
-    b = Math.round(b + (t - b) * a);
-
-    return `rgb(${r},${g},${b})`;
-};
-
-// Wavy crest mask for the top of every liquid layer in the bottle chart.
-export const TF_WAVE_URI =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14'%3E%3Cpath d='M0 8 Q10 1 20 8 T40 8 V14 H0 Z' fill='%23000'/%3E%3C/svg%3E";

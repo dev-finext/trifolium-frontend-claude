@@ -230,27 +230,23 @@ function patientToForm(p, edit) {
                     badge="חדש"
                     :active="option === 'none'"
                     @click="emit('update:option', 'none')"
-                />
+                >
+                    <!-- Feature-explainer inside the button's frame: pulsing
+                         play → mini-player (desktop) / full modal (phones). -->
+                    <template #extra>
+                        <TutorialVideo
+                            video-id="save-no-patient"
+                            title="שמירת פורמולה ללא מטופל"
+                            duration="0:45"
+                            :steps="[
+                                'בוחרים \'ללא מטופל\' בשלב בחירת המטופל',
+                                'רוקחים את הפורמולה כרגיל במעבדה',
+                                'הפורמולה נשמרת בטיוטות — מקשרים מטופל בכל שלב',
+                            ]"
+                        />
+                    </template>
+                </SecondaryAction>
             </NewRibbon>
-        </div>
-
-        <!-- Feature-explainer cue for the new "save without a patient" flow.
-             Trigger = pulsing play (icon 7); opens the floating mini-player
-             on desktop / a full modal on phones. -->
-        <div
-            class="mt-[12px] flex items-center gap-[8px] text-[12.5px] text-ink-3"
-        >
-            <TutorialVideo
-                video-id="save-no-patient"
-                title="שמירת פורמולה ללא מטופל"
-                duration="0:45"
-                :steps="[
-                    'בוחרים \'ללא מטופל\' בשלב בחירת המטופל',
-                    'רוקחים את הפורמולה כרגיל במעבדה',
-                    'הפורמולה נשמרת בטיוטות — מקשרים מטופל בכל שלב',
-                ]"
-            />
-            <span>חדש — כך שומרים פורמולה גם ללא שיוך מטופל</span>
         </div>
 
         <!-- Content area — depends on the selected option -->
