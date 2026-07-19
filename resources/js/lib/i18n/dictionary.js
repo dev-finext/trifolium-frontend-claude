@@ -1054,6 +1054,7 @@ export default {
         'Internal use — not shown to the patient',
     'הנחיות למטופל/ת': 'Patient directions',
     'לצפייה בסרטון הדרכה': 'Watch the tutorial video',
+    'לצפייה בהרצאה ↗': 'Watch the lecture ↗',
     'קפסולות ותוספים': 'Capsules & supplements',
     'שם הפורמולה הוא שדה חובה — לא ניתן להמשיך ללא שם.':
         "The formula name is a required field — you can't continue without a name.",

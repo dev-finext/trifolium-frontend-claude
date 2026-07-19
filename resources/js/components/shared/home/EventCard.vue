@@ -2,8 +2,8 @@
 // Single event/update card — cover image, category kicker, clamped copy.
 // `size` drives the bento grid: 'featured' (large, 2×2 cell), 'wide' (2×1)
 // or 'compact' (1×1) — same card anatomy, scaled cover and type.
-// A video event (event.kind === 'video') swaps the illustrated cover for a
-// YouTube-style poster and links out to the clip / channel.
+// A video event (event.kind === 'video', with a real `youtube` id) swaps the
+// illustrated cover for the lecture's real thumbnail and opens it on click.
 import { computed, ref } from 'vue';
 import { ItemCover } from '@/components/shared/art';
 
@@ -16,20 +16,23 @@ const props = defineProps({
 const hover = ref(false);
 
 const isVideo = computed(() => props.event.kind === 'video');
-// Play the clip itself when we have its id; otherwise fall back to the channel.
-const watchUrl = computed(() =>
-    props.event.youtube
-        ? `https://www.youtube.com/watch?v=${props.event.youtube}`
-        : props.event.channelUrl || null,
+const watchUrl = computed(
+    () => `https://www.youtube.com/watch?v=${props.event.youtube}`,
 );
-const poster = computed(() =>
-    props.event.youtube
-        ? `https://img.youtube.com/vi/${props.event.youtube}/hqdefault.jpg`
-        : null,
-);
+// The big featured cell gets the sharper 640×480 thumbnail; the small cells
+// keep the lighter 480×360. A failed load falls back to the safe hqdefault.
+const posterFailed = ref(false);
+const poster = computed(() => {
+    const quality =
+        props.size === 'featured' && !posterFailed.value
+            ? 'sddefault'
+            : 'hqdefault';
+
+    return `https://img.youtube.com/vi/${props.event.youtube}/${quality}.jpg`;
+});
 
 function openVideo() {
-    if (isVideo.value && watchUrl.value) {
+    if (isVideo.value) {
         window.open(watchUrl.value, '_blank', 'noopener');
     }
 }
@@ -59,17 +62,13 @@ function openVideo() {
                       : 'h-[124px]'
             "
         >
-            <!-- Video event: YouTube-style poster -->
+            <!-- Video event: the lecture's real YouTube thumbnail -->
             <div v-if="isVideo" class="relative h-full w-full bg-[#1f2e1d]">
                 <img
-                    v-if="poster"
                     :src="poster"
                     :alt="event.title"
                     class="h-full w-full object-cover opacity-90"
-                />
-                <div
-                    v-else
-                    class="h-full w-full bg-[radial-gradient(120%_120%_at_70%_20%,#3d5a3a_0%,#1f2e1d_70%)]"
+                    @error="posterFailed = true"
                 />
                 <!-- channel chip -->
                 <div
@@ -150,7 +149,7 @@ function openVideo() {
                     v-if="isVideo"
                     class="inline-flex items-center gap-[5px] text-[12px] font-semibold text-accent"
                 >
-                    למעבר לערוץ YouTube ↗
+                    לצפייה בהרצאה ↗
                 </span>
                 <span v-else class="text-[12px] font-medium text-accent">
                     לקריאה ←

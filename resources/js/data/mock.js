@@ -3069,35 +3069,13 @@ const SALE_PROMO = {
     img: 'https://my.trifolium.co.il/productImages/500627S.png',
 };
 
-// --- Events / updates (3-4 cards) ---
+// --- Events / updates ---
+// Exactly 4 recorded lectures (הרצאות מוקלטות) from the Trifolium YouTube
+// channel (youtube.com/@Trifolium_Pharmacy) — the bento holds featured + wide
+// + two compacts, no more. `youtube` is the real video id: EventCard shows
+// the real thumbnail and opens the lecture on click. First = FEATURED (the
+// channel's most-viewed lecture).
 const EVENTS = [
-    {
-        // Community ZOOM lecture — featured video event (from the YouTube
-        // channel). TODO(content): set `youtube` to the lecture's video id to
-        // play it inline; until then the poster links to the channel.
-        id: 'e-cholesterol',
-        cat: 'הרצאת קהילה',
-        title: 'כולסטרול — פרוטוקול טיפולי',
-        desc: 'הרצאת ZOOM לקהילה · 1.7.2026',
-        date: '01.07.2026',
-        accentHue: 4,
-        kind: 'video',
-        youtube: '',
-        channelUrl: 'https://www.youtube.com/@Trifolium_Pharmacy',
-    },
-    // Recorded lectures (הרצאות מוקלטות) from the Trifolium YouTube channel
-    // (youtube.com/@Trifolium_Pharmacy). `youtube` is the real video id, so
-    // EventCard pulls the real thumbnail and opens the lecture on click.
-    {
-        id: 'e-allergy',
-        cat: 'הרצאה מוקלטת',
-        title: 'אלרגיה — תהליכים דלקתיים, תזונה וטיפול מערבי וסיני',
-        desc: 'הרצאה מלאה על התהליכים הדלקתיים באלרגיה, תזונה מותאמת וטיפול משולב מערבי-סיני.',
-        date: '04.2026',
-        accentHue: 110,
-        kind: 'video',
-        youtube: 'A6BO_cYA8FM',
-    },
     {
         id: 'e-brain',
         cat: 'הרצאה מוקלטת',
@@ -3107,6 +3085,16 @@ const EVENTS = [
         accentHue: 150,
         kind: 'video',
         youtube: 'qrUSqCuopXk',
+    },
+    {
+        id: 'e-allergy',
+        cat: 'הרצאה מוקלטת',
+        title: 'אלרגיה — תהליכים דלקתיים, תזונה וטיפול מערבי וסיני',
+        desc: 'הרצאה מלאה על התהליכים הדלקתיים באלרגיה, תזונה מותאמת וטיפול משולב מערבי-סיני.',
+        date: '04.2026',
+        accentHue: 110,
+        kind: 'video',
+        youtube: 'A6BO_cYA8FM',
     },
     {
         id: 'e-cough',
@@ -3127,16 +3115,6 @@ const EVENTS = [
         accentHue: 40,
         kind: 'video',
         youtube: 'Ef01XfhViuE',
-    },
-    {
-        id: 'e-pregnancy',
-        cat: 'הרצאה מוקלטת',
-        title: 'בטיחות השימוש בצמחי מרפא בהריון ובהנקה',
-        desc: 'כללי בטיחות ושימוש מושכל בצמחי מרפא לאורך ההריון ותקופת ההנקה.',
-        date: '2023',
-        accentHue: 200,
-        kind: 'video',
-        youtube: 'ny_02CsiWVE',
     },
 ];
 
