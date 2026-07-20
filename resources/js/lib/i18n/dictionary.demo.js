@@ -11,8 +11,6 @@
 // ============================================================================
 
 export default {
-    'עד סוף החודש או עד גמר המלאי':
-        'Until the end of the month or while stocks last',
     'תמצית סמבוק שחור 125 מ"ל': 'Black elderberry extract 125 ml',
 
     '0.5–1.5 ליום': '0.5–1.5 /day',

@@ -3055,20 +3055,6 @@ const PATIENTS = [
 
 // (TFDATA assignment is at end of file)
 
-// --- Periodic sale (מבצע תקופתי) — the one leading product promo featured on
-// the home page's sale strip. Prices are list prices (before the practitioner
-// discounts). TODO(backend): comes from the campaigns table; one active at a time.
-const SALE_PROMO = {
-    id: 'sale-sambucus-winter',
-    kicker: 'מבצע החורף',
-    heb: 'תמצית סמבוק שחור 125 מ"ל',
-    listPrice: 125,
-    salePrice: 87,
-    pct: 30,
-    until: 'עד סוף החודש או עד גמר המלאי',
-    img: 'https://my.trifolium.co.il/productImages/500627S.png',
-};
-
 // --- Events / updates ---
 // Exactly 4 recorded lectures (הרצאות מוקלטות) from the Trifolium YouTube
 // channel (youtube.com/@Trifolium_Pharmacy) — the bento holds featured + wide
@@ -5894,7 +5880,6 @@ export {
     PRODUCT_CONDITIONS,
     PATIENTS,
     EVENTS,
-    SALE_PROMO,
     WALLET_TX,
     ARTICLES,
     ARTICLE_IMAGE,

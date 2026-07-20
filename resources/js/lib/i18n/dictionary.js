@@ -30,10 +30,8 @@ export default {
         '10+1 active — a free product is in your cart',
     'מוצרי המדף של בית המרקחת — פורמולות, תמציות, שמנים ותכשירים · הנחה על מוצר מדף 40% יורדת בסל':
         "The pharmacy's shelf products — formulas, extracts, oils and preparations · the 40% shelf discount comes off in the cart",
-    'מבצע החורף': 'Winter sale',
     למוצר: 'View product',
     במקום: 'instead of',
-    'מבצע תקופתי': 'Periodic sale',
 
     '— ללא שם —': '— Untitled —',
     '— ניתן להשלים את הרכישה משם בכל רגע.':
