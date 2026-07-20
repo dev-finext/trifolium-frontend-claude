@@ -22,11 +22,12 @@ const emit = defineEmits(['click']);
 <template>
     <div
         class="relative flex flex-1 items-center rounded-card border transition-all duration-150"
-        :class="
+        :class="[
             active
                 ? 'border-accent bg-accent-tint shadow-[inset_0_0_0_1px_var(--accent)]'
-                : 'border-line bg-surface shadow-none'
-        "
+                : 'border-line bg-surface shadow-none',
+            $slots.extra ? 'pb-[30px]' : '',
+        ]"
     >
         <!-- "חדש" flag — tucked into the top-inline-start (right, RTL) corner,
              in the round icon's empty corner, clear of the label text. -->
@@ -61,8 +62,14 @@ const emit = defineEmits(['click']);
             </span>
         </button>
 
-        <!-- Extras inside the frame (e.g. the tutorial play trigger) -->
-        <span v-if="$slots.extra" class="flex items-center pe-[14px]">
+        <!-- Extras (e.g. the tutorial play trigger) live in a dedicated bottom
+             band created by the card's pb — below all content, so the play
+             never overlaps the icon/label, nor the top-corner "חדש" ribbon
+             (desktop) / pill (mobile), at any width. -->
+        <span
+            v-if="$slots.extra"
+            class="absolute bottom-[5px] left-[12px] z-[7] inline-flex"
+        >
             <slot name="extra" />
         </span>
     </div>
