@@ -93,37 +93,38 @@ function onFocus() {
                     @focus="onFocus"
                 />
             </div>
-            <!-- Preset picker + its tutorial play. The pill is a single button
-                 (greens with white text on hover); the play sits BESIDE it on
-                 the surface, so it stays visible and never overlaps the text. -->
-            <div class="tf-preset-wrap flex shrink-0 items-center gap-[8px]">
-                <button
-                    class="tf-preset-btn relative inline-flex h-[50px] cursor-pointer items-center gap-[8px] overflow-hidden rounded-control border-[1.5px] border-accent bg-surface px-[18px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent transition-[background-color,color] duration-[120ms]"
-                    @click="emit('open-preset')"
+            <!-- Preset picker. A role=button container (so the tutorial play,
+                 itself a <button>, can nest INSIDE it). The pill greens with
+                 white text on hover; the play flips to a white disc on hover so
+                 it stays visible on the green fill. -->
+            <div
+                role="button"
+                tabindex="0"
+                class="tf-preset-btn relative flex h-[50px] shrink-0 cursor-pointer items-center gap-[8px] overflow-hidden rounded-control border-[1.5px] border-accent bg-surface ps-[18px] pe-[12px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent transition-[background-color,color] duration-[120ms]"
+                @click="emit('open-preset')"
+                @keydown.enter.space.prevent="emit('open-preset')"
+            >
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                 >
-                    <NewRibbonMark :top="9" :left="-32" />
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                        <path
-                            d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                        />
-                        <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
-                    </svg>
-                    בחר פורמולה מוכנה
-                    <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon above) -->
-                    <span class="tf-new-badge">חדש</span>
-                </button>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                    <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                    />
+                    <path d="M12 11h4M12 16h4M8 11h.01M8 16h.01" />
+                </svg>
+                בחר פורמולה מוכנה
+                <!-- Mobile-only "חדש" pill (desktop uses the corner ribbon below) -->
+                <span class="tf-new-badge">חדש</span>
 
-                <!-- Feature-explainer, beside the pill (on the surface). -->
+                <!-- Feature-explainer, INSIDE the pill, beside the text. -->
                 <TutorialVideo
                     class="shrink-0"
                     video-id="preset-formulas"
@@ -135,6 +136,7 @@ function onFocus() {
                         'הפורמולה נטענת למעבדה — עורכים ומתאימים לפי הצורך',
                     ]"
                 />
+                <NewRibbonMark :top="9" :left="-32" />
             </div>
         </div>
 
@@ -170,5 +172,11 @@ function onFocus() {
 .tf-preset-btn:hover {
     background: var(--accent) !important;
     color: var(--on-accent) !important;
+}
+/* On the green hover fill, flip the nested play to a white disc with a green
+   glyph so it stays clearly visible. */
+.tf-preset-btn:hover .tv-trigger {
+    background: #fff !important;
+    color: var(--accent) !important;
 }
 </style>

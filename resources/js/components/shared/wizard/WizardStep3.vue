@@ -38,6 +38,9 @@ const savedStore = useSavedFormulasStore();
 const savedOpen = ref(false);
 const nameError = ref(false);
 const savingList = ref(false);
+// Success popup shown after saving when a patient IS selected (there we stay
+// on the page so the practitioner can carry on to checkout).
+const savedPopup = ref(false);
 
 function onSaveToList() {
     // Guard: a formula may never be saved without a name.
@@ -75,12 +78,18 @@ function onSaveToList() {
     // window.TFDATA.SAVED_FORMULAS mutation + window.__tfHighlightFormula).
     savedStore.add(saved);
 
-    // Brief loading state, then route to the library.
-    savingList.value = true;
-    window.setTimeout(() => {
-        visit('my-formulas');
-        window.scrollTo(0, 0);
-    }, 700);
+    // With a patient, saving is a SECONDARY action alongside checkout — just
+    // confirm with a popup and stay put. Without a patient ("ללא מטופל"), the
+    // whole flow is about the library, so route there.
+    if (props.noPatient) {
+        savingList.value = true;
+        window.setTimeout(() => {
+            visit('my-formulas');
+            window.scrollTo(0, 0);
+        }, 700);
+    } else {
+        savedPopup.value = true;
+    }
 }
 
 // Continue-button blocker reasons (in priority order).
@@ -204,6 +213,51 @@ const blocker = computed(() => {
                 }
             "
         />
+
+        <!-- Save-success popup (patient flow): confirm and stay on the page. -->
+        <div
+            v-if="savedPopup"
+            class="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(20,28,24,0.5)] p-[20px]"
+            @click.self="savedPopup = false"
+        >
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="הפורמולה נשמרה"
+                class="w-[min(420px,100%)] rounded-[12px] bg-surface p-[26px] text-center shadow-[0_30px_80px_-20px_rgba(20,28,24,0.55)]"
+            >
+                <div
+                    class="mx-auto mb-[16px] inline-flex h-[56px] w-[56px] items-center justify-center rounded-full border border-accent-tint-strong bg-accent-tint"
+                >
+                    <Icon
+                        name="check"
+                        :size="26"
+                        color="var(--accent)"
+                        :stroke="2.4"
+                    />
+                </div>
+                <h3 class="m-0 text-[18px] font-bold text-ink">
+                    הפורמולה נשמרה לרשימה שלי
+                </h3>
+                <p class="mt-[8px] text-[13.5px] leading-[1.5] text-ink-3">
+                    תוכל/י לטעון אותה מ״הפורמולות שלי״ בכל עת.
+                </p>
+                <div class="mt-[20px] flex justify-center gap-[10px]">
+                    <button
+                        class="btn btn--ghost"
+                        @click="visit('my-formulas')"
+                    >
+                        למעבר לפורמולות שלי
+                    </button>
+                    <button
+                        class="btn btn--primary px-[24px]"
+                        @click="savedPopup = false"
+                    >
+                        המשך
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
