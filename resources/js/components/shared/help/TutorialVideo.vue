@@ -233,7 +233,7 @@ function close() {
                     aria-modal="true"
                     :aria-label="label"
                     tabindex="-1"
-                    class="w-[min(520px,100%)] overflow-hidden rounded-[12px] bg-surface shadow-[0_30px_80px_-20px_rgba(20,28,24,0.55)]"
+                    class="max-h-[92vh] w-[min(920px,95vw)] overflow-y-auto rounded-[12px] bg-surface shadow-[0_30px_80px_-20px_rgba(20,28,24,0.55)]"
                 >
                     <div
                         class="flex items-center justify-between gap-[12px] border-b border-b-line px-[18px] py-[14px]"

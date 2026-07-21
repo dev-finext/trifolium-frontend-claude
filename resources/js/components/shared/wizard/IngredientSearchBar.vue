@@ -6,10 +6,8 @@
 import { ref, computed, watch, onBeforeUnmount } from 'vue';
 import TutorialVideo from '@/components/shared/help/TutorialVideo.vue';
 import NewRibbonMark from '@/components/shared/NewRibbonMark.vue';
-import SearchGroupHeader from '@/components/shared/wizard/SearchGroupHeader.vue';
 import SearchResultRow from '@/components/shared/wizard/SearchResultRow.vue';
 import Icon from '@/components/ui/Icon.vue';
-import { useModeStore } from '@/stores/mode';
 
 const props = defineProps({
     query: { type: String, default: '' },
@@ -20,8 +18,6 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:query', 'add', 'open-preset']);
 
-const { isChinese } = useModeStore();
-
 const open = ref(false);
 const wrapRef = ref(null);
 const inputRef = ref(null);
@@ -29,25 +25,9 @@ const inputRef = ref(null);
 const skipOpen = ref(false);
 
 // Results not yet in the formula — searching is for adding the NEXT ingredient.
+// One flat list, no Chinese/Western split (the divider was removed).
 const available = computed(() =>
     props.results.filter((h) => !props.inFormula(h.id)),
-);
-// Chinese mode: surface the Chinese materia medica first, then the Western
-// herbs, split by a labeled divider. (Western mode keeps a single flat list.)
-const cnHerbs = computed(() =>
-    available.value.filter((h) => h.origin === 'cn'),
-);
-const westHerbs = computed(() =>
-    available.value.filter((h) => h.origin !== 'cn'),
-);
-const grouped = computed(
-    () =>
-        isChinese.value &&
-        cnHerbs.value.length > 0 &&
-        westHerbs.value.length > 0,
-);
-const ordered = computed(() =>
-    isChinese.value ? [...cnHerbs.value, ...westHerbs.value] : available.value,
 );
 
 // Close the dropdown when clicking anywhere outside the search area.
@@ -113,16 +93,15 @@ function onFocus() {
                     @focus="onFocus"
                 />
             </div>
-            <!-- The button frame is a <div> so the tutorial play trigger sits
-                 INSIDE it as a legal sibling of the main action. -->
-            <div
-                class="tf-preset-btn relative flex h-[50px] shrink-0 items-center overflow-hidden rounded-control border-[1.5px] border-accent bg-surface"
-            >
-                <NewRibbonMark :top="9" :left="-32" />
+            <!-- Preset picker + its tutorial play. The pill is a single button
+                 (greens with white text on hover); the play sits BESIDE it on
+                 the surface, so it stays visible and never overlaps the text. -->
+            <div class="tf-preset-wrap flex shrink-0 items-center gap-[8px]">
                 <button
-                    class="inline-flex h-full cursor-pointer items-center gap-[8px] border-none bg-transparent ps-[18px] pe-[6px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent"
+                    class="tf-preset-btn relative inline-flex h-[50px] cursor-pointer items-center gap-[8px] overflow-hidden rounded-control border-[1.5px] border-accent bg-surface px-[18px] [font-family:inherit] text-[13.5px] font-bold whitespace-nowrap text-accent transition-[background-color,color] duration-[120ms]"
                     @click="emit('open-preset')"
                 >
+                    <NewRibbonMark :top="9" :left="-32" />
                     <svg
                         width="16"
                         height="16"
@@ -144,10 +123,9 @@ function onFocus() {
                     <span class="tf-new-badge">חדש</span>
                 </button>
 
-                <!-- Feature-explainer inside the button's frame; pe-[40px]
-                     keeps it clear of the desktop corner ribbon. -->
+                <!-- Feature-explainer, beside the pill (on the surface). -->
                 <TutorialVideo
-                    class="pe-[40px]"
+                    class="shrink-0"
                     video-id="preset-formulas"
                     title="בחירת פורמולה מוכנה"
                     duration="0:38"
@@ -175,27 +153,9 @@ function onFocus() {
                         : 'כל הרכיבים המתאימים כבר נוספו'
                 }}
             </div>
-            <template v-else-if="grouped">
-                <SearchGroupHeader label="רפואה סינית" first />
-                <SearchResultRow
-                    v-for="h in cnHerbs"
-                    :key="h.id"
-                    :herb="h"
-                    :patient-meds="patientMeds"
-                    @add="handleAdd(h)"
-                />
-                <SearchGroupHeader label="רפואה מערבית" />
-                <SearchResultRow
-                    v-for="h in westHerbs"
-                    :key="h.id"
-                    :herb="h"
-                    :patient-meds="patientMeds"
-                    @add="handleAdd(h)"
-                />
-            </template>
             <template v-else>
                 <SearchResultRow
-                    v-for="h in ordered"
+                    v-for="h in available"
                     :key="h.id"
                     :herb="h"
                     :patient-meds="patientMeds"

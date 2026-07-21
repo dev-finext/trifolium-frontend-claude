@@ -995,7 +995,6 @@ export default {
     'רכיבים נוספים': 'Additional ingredients',
     'רכיבים:': 'Ingredients:',
     רעננה: "Ra'anana",
-    'רפואה מערבית': 'Western medicine',
     'רפואה סינית': 'Chinese medicine',
     'רפואת צמחים מערבית': 'Western herbal medicine',
     רפלקסולוגיה: 'Reflexology',
@@ -1042,11 +1041,6 @@ export default {
     'שם המשתמש מורכב מספרות בלבד': 'The username consists of digits only',
     'שם העסק': 'Business name',
     'שם הפורמולה': 'Formula name',
-    'שם הפורמולה — (לא מופיע על המדבקה)':
-        'Formula name — (not printed on the label)',
-    'שם הפורמולה הוא לשימוש המטפל בלבד ולא יהיה חשוף ללקוח. לא יוצג על המדבקה.':
-        'The formula name is for your own use only and is never exposed to the customer. It will not appear on the label.',
-    'שם הפורמולה למדבקה': 'Formula name for the label',
     'מוצג למטופל/ת — לא לשימוש פנימי': 'Shown to the patient — not internal',
     'לשימוש פנימי — לא מוצג למטופל/ת':
         'Internal use — not shown to the patient',

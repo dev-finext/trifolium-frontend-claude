@@ -136,7 +136,7 @@ const pendingLabel = computed(() =>
     <section class="card mt-[24px] p-[28px]" id="tf-anchor-name">
         <div>
             <label class="field-label"
-                >שם הפורמולה — (לא מופיע על המדבקה)
+                >שם הפורמולה
                 <span class="text-[var(--danger,#c0392b)]">*</span></label
             >
             <input
@@ -162,8 +162,8 @@ const pendingLabel = computed(() =>
                 שם הפורמולה הוא שדה חובה — לא ניתן להמשיך ללא שם.
             </div>
             <div v-else class="small muted mt-[8px]">
-                שם הפורמולה הוא לשימוש המטפל בלבד ולא יהיה חשוף ללקוח. לא יוצג
-                על המדבקה.
+                לתשומת ליבך: שם הפורמולה מודפס על המדבקה ועל גבי החשבונית. אין
+                לכתוב בשם הפורמולה כל התוויה רפואית.
             </div>
         </div>
     </section>

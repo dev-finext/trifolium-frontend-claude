@@ -28,8 +28,7 @@ const STEPS = [
 // Default formula state — used on first mount AND when restarting after a
 // treatment-style switch (we clear the formula but keep the patient).
 const makeDefaultFormula = () => ({
-    name: '', // internal name (הפורמולות שלי) — never printed on the label
-    labelName: '', // the name printed on the label sticker (המדבקה)
+    name: '',
     typeId: 'tincture',
     formulaVolume: null,
     tinctureVolume: null,
@@ -41,8 +40,9 @@ const makeDefaultFormula = () => ({
     packageCount: 2,
     // Clean start — the practitioner builds the formula from an empty slate.
     ingredients: [],
-    dose: { qty: 20, unit: 'drops', perDay: 3 },
-    tags: ['לפני האוכל', 'לפני השינה'],
+    // Daily dose starts fully unselected — the practitioner picks each value.
+    dose: { qty: null, unit: '', perDay: '' },
+    tags: [],
     // No prefilled instructions — example text lives in the textarea placeholders (step 4).
     externalNotes: '',
     internalNotes: '',

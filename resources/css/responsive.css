@@ -413,20 +413,15 @@ html.tf-mobile {
     .ingredient-search-row .ingredient-search-input {
         height: 44px !important;
     }
-    .ingredient-search-row > .tf-preset-btn {
+    .ingredient-search-row > .tf-preset-wrap {
         flex: 1 1 100% !important;
-        height: 42px !important;
-        justify-content: space-between;
     }
-    .ingredient-search-row > .tf-preset-btn > button {
-        height: 100% !important;
-        padding-inline: 16px 6px !important; /* corner ribbon is gone on phones → no reserve */
+    .ingredient-search-row > .tf-preset-wrap > .tf-preset-btn {
+        flex: 1 1 auto;
+        height: 42px !important;
+        padding-inline: 16px !important;
         gap: 7px !important;
         font-size: 12.5px !important;
-    }
-    /* no desktop corner ribbon on phones → the play needs no extra reserve */
-    .ingredient-search-row > .tf-preset-btn > .tv-root {
-        padding-inline-end: 14px !important;
     }
 
     /* Formula-type selection becomes a dropdown; hide the desktop card grid. */

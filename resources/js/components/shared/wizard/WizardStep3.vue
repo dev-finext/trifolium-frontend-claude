@@ -9,9 +9,8 @@ import SavedFormulaPicker from '@/components/shared/wizard/SavedFormulaPicker.vu
 import ValidationNote from '@/components/shared/wizard/ValidationNote.vue';
 import ZoneA from '@/components/shared/wizard/ZoneA.vue';
 import ZoneBC from '@/components/shared/wizard/ZoneBC.vue';
-import ZoneD from '@/components/shared/wizard/ZoneD.vue';
 import Icon from '@/components/ui/Icon.vue';
-import { HERBS, FORMULA_TYPES } from '@/data/mock';
+import { HERBS } from '@/data/mock';
 import { visit } from '@/lib/routes';
 import { useSavedFormulasStore } from '@/stores/savedFormulas';
 
@@ -34,10 +33,6 @@ const setF = (patch) => emit('patch', patch);
 const loadSavedFormula = (saved) => emit('load-saved', saved);
 
 const savedStore = useSavedFormulasStore();
-
-const ftype = computed(() =>
-    FORMULA_TYPES.find((t) => t.id === props.formula.typeId),
-);
 
 // "Save to my list" — persists the formula and routes to הפורמולות שלי.
 const savedOpen = ref(false);
@@ -131,12 +126,6 @@ const blocker = computed(() => {
             :set-f="setF"
             :patient-meds="patientMeds"
             :load-saved-formula="loadSavedFormula"
-        />
-        <ZoneD
-            :formula="formula"
-            :ftype="ftype"
-            :patient-label="patientLabel"
-            :no-patient="noPatient"
         />
 
         <!-- DoseInline is hidden when the directions slot is present — the new
