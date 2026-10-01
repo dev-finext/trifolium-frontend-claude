@@ -1,6 +1,7 @@
 # Prompt for Claude — checkout flow diagram
 
-Paste everything below the line into Claude and ask for the artifact.
+Paste everything below the line into Claude and ask for the artifact. The status
+names are the real ones from `app/Enums/OrderStatus.php`; keep them exact.
 
 ---
 
@@ -22,47 +23,67 @@ the cart, and together they decide everything that follows:
 Two rules govern the whole flow, and the diagram should make both legible at a
 glance:
 
-1. **Payment never blocks production.** A practitioner approved for deferred
-   payment ("credit") sends the order to the lab unpaid.
+1. **Payment never blocks production.** A practitioner whose account is on
+   credit terms sends the order to the lab unpaid.
 2. **A missing recipient authorisation does block production.** Whoever takes
    the parcel from the courier must sign a power of attorney, and there must be
    an address. Until both exist, nothing is compounded.
+
+## Status names — use these exactly
+
+The order statuses are a fixed set. Where a node is a status, label it with the
+value in code font:
+
+`pending_payment` · `paid` · `in_production` · `ready_for_delivery` ·
+`shipped` · `completed` · `cancelled`
+
+Two are being added by this specification, and the diagram must mark them
+visibly as new — a badge, a dashed outline, something that reads as "does not
+exist yet":
+
+`paid_awaiting_details` · `credit_awaiting_details`
+
+The payment provider is **Pelecard**. The practitioner's permission is a field
+called `payment_terms` with two values, `immediate` and `credit`.
 
 ## The nodes and edges
 
 **Start:** `Cart — practitioner selects payer and recipient`
 
-**Branch 1 — the practitioner pays.** Decision: `Practitioner approved for
-deferred payment?`
+**Branch 1 — the practitioner pays.** Decision: `payment_terms = credit?`
 
-- **No** → `Placard payment` (no alternative is offered)
+- **No** (`immediate`) → `Pelecard payment` — no alternative is offered
 - **Yes** → decision `Pay now?`
-  - **Yes** → `Placard payment`
-  - **No** → `Order summary and final confirmation` → `Order created on credit`
+  - **Yes** → `Pelecard payment`
+  - **No** → `Order summary and final confirmation` → `Order created — on credit,
+    unpaid`
 
 **Branch 2 — the patient pays.**
-`Order created` → `WhatsApp: payment link` → `Delivery details (address +
-power of attorney)` — *this screen only when the parcel goes to the patient* →
-`Order summary` → `Placard payment` → `Success or failure`
+`Order created — pending_payment` → `WhatsApp: payment link` → `Delivery details
+(address + power of attorney)` — *this screen only when the parcel goes to the
+patient* → `Order summary` → `Pelecard payment` → on success the webhook sets
+`paid`
 
-**After the order exists**, a second decision governs it:
+**After the order exists**, both branches meet at one decision:
 `Does the recipient's authorisation and address already exist?`
 
-- **Yes** → `Order proceeds to the lab`
-- **No** (this happens only when the parcel goes to the patient and the patient
-  is not the payer) → one of two blocking states:
-  - `Paid — awaiting customer authorisation and address`
-  - `On credit — awaiting customer authorisation and address`
+- **Yes** → `in_production`
+- **No** — this happens only when the parcel goes to the patient and the patient
+  is not the payer → one of the two new blocking statuses:
+  - `paid_awaiting_details` — the practitioner paid at checkout
+  - `credit_awaiting_details` — the practitioner is on credit
 
   Both → `WhatsApp: details-completion link` → `Patient submits address and
-  signature` → `Order proceeds to the lab`
+  signature` → `in_production`
 
-  And from the blocking states, a timeout path:
-  `No response after 3 days` → `Automatic reminder` →
-  `No response after 7 days` → `Raised as an admin exception`
+  And from both, a timeout path:
+  `No submission after 3 days` → `Automatic reminder, same link` →
+  `No submission after 7 days` → `Raised as an admin exception`.
+  Label this path clearly as **not** a cancellation — the money has been taken,
+  or the goods are owed.
 
-**Failure path:** `Placard payment` → on failure → `No order created; back to
-the cart` (for the practitioner's own payment).
+**Failure path:** `Pelecard payment` → on failure → `No order created; back to
+the cart`.
 
 ## The six cases
 
@@ -72,8 +93,8 @@ branches — the branches would be unreadable and the table is exact:
 | Pays | Receives | Result |
 |---|---|---|
 | Practitioner | Practitioner | Everything collected in the cart. Proceeds. |
-| Practitioner (paid) | Patient | Blocked — paid, awaiting customer |
-| Practitioner (credit) | Patient | Blocked — on credit, awaiting customer |
+| Practitioner (paid) | Patient | Blocked — `paid_awaiting_details` |
+| Practitioner (credit) | Patient | Blocked — `credit_awaiting_details` |
 | Practitioner | Pickup | No courier, no authorisation. Proceeds. |
 | Patient | Practitioner | Practitioner signs in the cart. Proceeds on payment. |
 | Patient | Patient | Collected inside the payment flow. Proceeds on payment. |
@@ -83,18 +104,20 @@ branches — the branches would be unreadable and the table is exact:
 - **Left to right**, with the two payer branches as two clearly separate lanes
   that rejoin at the authorisation decision. The rejoining is the point of the
   diagram: both ways of paying meet the same gate.
-- **Decisions as diamonds**, states as rounded rectangles, the two blocking
-  states visually distinct from every other node — they are the only places an
-  order stops.
+- **Decisions as diamonds**, states as rounded rectangles, the two new blocking
+  statuses visually distinct from every other node twice over — they are the
+  only places an order stops, *and* they are the only things that do not exist
+  in the code yet.
 - **Colour carries meaning and nothing else.** One hue for the flow, one for
-  blocked states, one for the terminal success state. No decoration, no
-  gradients on nodes, no drop shadows for their own sake.
+  blocked states, one for the terminal success state, and a separate visual
+  treatment (not a fourth hue) for "new". No decoration, no gradients on nodes,
+  no drop shadows for their own sake.
 - **Label every edge** that leaves a decision — "yes", "no", "to patient", "to
   practitioner", and so on. An unlabelled edge out of a diamond is a bug.
-- The timeout path (reminder → exception) should read as secondary: thinner,
-  quieter, clearly a side road rather than the main line.
+- The timeout path should read as secondary: thinner, quieter, clearly a side
+  road rather than the main line.
 - Legible at A4 width, and readable in both light and dark.
-- English labels.
+- English labels. Status values in code font so they stand apart from prose.
 
 Keep the node text short — three or four words. The detail lives in the table
 and in the specification, not inside the boxes.
