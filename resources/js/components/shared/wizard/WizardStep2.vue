@@ -13,7 +13,7 @@ import NoPatientNotice from '@/components/shared/wizard/NoPatientNotice.vue';
 import PatientResultCard from '@/components/shared/wizard/PatientResultCard.vue';
 import SecondaryAction from '@/components/shared/wizard/SecondaryAction.vue';
 import Icon from '@/components/ui/Icon.vue';
-import { PATIENTS } from '@/data/mock';
+import { HOME_ORDERS, PATIENTS } from '@/data/mock';
 
 const props = defineProps({
     /** 'existing' | 'new' | 'none' */
@@ -68,8 +68,38 @@ const rows = computed(() => {
             p.heb.includes(trimmed.value),
     ).map((p) => ({ p, d: displayFor(p) }));
 });
+
+// Recent patients shown before the practitioner types: the ones ordered for,
+// most-recent order first (HOME_ORDERS is already newest-first, matched to the
+// patient record by name), then any remaining patients so the list is never
+// empty. TODO(backend): derive "ordered for" from the orders API.
+const recent = computed(() => {
+    const byName = new Map(PATIENTS.map((p) => [p.heb, p]));
+    const ordered = [];
+    const seen = new Set();
+
+    for (const order of HOME_ORDERS) {
+        const patient = byName.get(order.patient);
+
+        if (patient && !seen.has(patient.id)) {
+            seen.add(patient.id);
+            ordered.push(patient);
+        }
+    }
+
+    for (const patient of PATIENTS) {
+        if (!seen.has(patient.id)) {
+            ordered.push(patient);
+        }
+    }
+
+    return ordered.map((p) => ({ p, d: displayFor(p) }));
+});
+
+// Before typing → recent patients; while typing → search results.
+const list = computed(() => (trimmed.value ? rows.value : recent.value));
 // Scroll only kicks in past 5 patients; up to 5 render at natural height.
-const scrolls = computed(() => rows.value.length > 5);
+const scrolls = computed(() => list.value.length > 5);
 const existingActive = computed(() => props.option === 'existing');
 const patientsTotal = PATIENTS.length;
 
@@ -251,11 +281,11 @@ function patientToForm(p, edit) {
 
         <!-- Content area — depends on the selected option -->
         <div class="mt-[24px] mb-[28px]">
-            <div v-if="option === 'existing' && trimmed">
+            <div v-if="option === 'existing'">
                 <div
                     class="mb-[12px] text-[11px] font-semibold tracking-[.08em] text-ink-3 uppercase"
                 >
-                    תוצאות חיפוש
+                    {{ trimmed ? 'חיפוש מטופל' : 'מטופלים אחרונים' }}
                 </div>
                 <div
                     class="flex flex-col gap-[12px]"
@@ -266,14 +296,18 @@ function patientToForm(p, edit) {
                     "
                 >
                     <div
-                        v-if="rows.length === 0"
+                        v-if="list.length === 0"
                         class="muted small p-[16px] text-center"
                     >
-                        לא נמצאו תוצאות.
+                        {{
+                            trimmed
+                                ? 'לא נמצאו תוצאות.'
+                                : 'עדיין אין מטופלים להצגה.'
+                        }}
                     </div>
                     <template v-else>
                         <PatientResultCard
-                            v-for="{ p, d } in rows"
+                            v-for="{ p, d } in list"
                             :key="p.id"
                             :p="p"
                             :heb="d.heb"
@@ -286,7 +320,10 @@ function patientToForm(p, edit) {
                         />
                     </template>
                 </div>
-                <div v-if="rows.length > 0" class="small muted mt-[16px]">
+                <div
+                    v-if="trimmed && rows.length > 0"
+                    class="small muted mt-[16px]"
+                >
                     מציג {{ rows.length }} מתוך {{ patientsTotal }} מטופלים
                     פעילים
                 </div>

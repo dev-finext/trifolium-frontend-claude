@@ -9,6 +9,7 @@ import Icon from '@/components/ui/Icon.vue';
 import SearchInput from '@/components/ui/SearchInput.vue';
 // The prototype resolved this from window.NewPatientForm (shared with the wizard).
 import { useModal } from '@/composables/useModal';
+import { HOME_ORDERS } from '@/data/mock';
 
 const props = defineProps({
     product: { type: Object, required: true },
@@ -37,6 +38,38 @@ const q = computed(() => search.value.trim());
 const filtered = computed(() =>
     q.value ? props.patients.filter((p) => p.heb.includes(q.value)) : [],
 );
+
+// Recent patients shown before typing: the ones ordered for, most-recent order
+// first (HOME_ORDERS is already newest-first, matched to the patient record by
+// name), then any remaining patients so the list is never empty.
+// TODO(backend): derive "ordered for" from the orders API.
+const recent = computed(() => {
+    const byName = new Map(props.patients.map((p) => [p.heb, p]));
+    const ordered = [];
+    const seen = new Set();
+
+    for (const order of HOME_ORDERS) {
+        const patient = byName.get(order.patient);
+
+        if (patient && !seen.has(patient.id)) {
+            seen.add(patient.id);
+            ordered.push(patient);
+        }
+    }
+
+    for (const patient of props.patients) {
+        if (!seen.has(patient.id)) {
+            ordered.push(patient);
+        }
+    }
+
+    return ordered;
+});
+
+// Before typing → recent patients; while typing → filtered search results.
+const list = computed(() => (q.value ? filtered.value : recent.value));
+// Scroll only kicks in past 5 patients; up to 5 render at natural height.
+const scrolls = computed(() => list.value.length > 5);
 
 // Same validation as the formula's new-patient step (wizard).
 const canCreate = computed(() => {
@@ -141,20 +174,29 @@ onMounted(() => nextTick(() => searchRef.value?.focus()));
                         />
                     </div>
 
-                    <!-- List — only after the practitioner types a name -->
-                    <div class="flex-1 overflow-y-auto px-[16px] py-[10px]">
-                        <div v-if="!q" class="muted small p-[32px] text-center">
-                            הקלד שם כדי לחפש מטופל.
-                        </div>
+                    <!-- List — recent patients by default; switches to search on typing -->
+                    <div
+                        class="mt-[12px] mb-[6px] px-[24px] text-[11px] font-semibold tracking-[.08em] text-ink-3 uppercase"
+                    >
+                        {{ q ? 'חיפוש מטופל' : 'מטופלים אחרונים' }}
+                    </div>
+                    <div
+                        class="px-[16px] pb-[10px]"
+                        :class="scrolls ? 'max-h-[344px] overflow-y-auto' : ''"
+                    >
                         <div
-                            v-else-if="filtered.length === 0"
+                            v-if="list.length === 0"
                             class="muted small p-[32px] text-center"
                         >
-                            לא נמצאו מטופלים מתאימים.
+                            {{
+                                q
+                                    ? 'לא נמצאו מטופלים מתאימים.'
+                                    : 'עדיין אין מטופלים להצגה.'
+                            }}
                         </div>
                         <div v-else class="col gap-[8px]">
                             <PatientRow
-                                v-for="p in filtered"
+                                v-for="p in list"
                                 :key="p.id"
                                 :patient="p"
                                 @pick="emit('pick', p)"
